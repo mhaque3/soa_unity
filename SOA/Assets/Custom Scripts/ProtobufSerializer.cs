@@ -11,16 +11,17 @@ namespace soa
         // Last message type must be NUM_MESSAGETYPE
         private enum MessageType
         {
-            UNDEFINED = 0,
+            INVALID = 0,
             ACTOR, 
-            BASECELL, 
+            BASE,
+            GRIDSPEC,
             MODE_COMMAND,
-            NGOSITECELL, 
-            NOGO, 
-            ROAD, 
+            NGOSITE, 
+            ROADCELL, 
             SPOI, 
+            TERRAIN,
             TIME,
-            VILLAGECELL, 
+            VILLAGE, 
             WAYPOINT, 
             WAYPOINT_OVERRIDE
         };
@@ -69,15 +70,33 @@ namespace soa
                         body = proto.Build().ToByteArray();
                         break;
                     }
-                case Belief.BeliefType.BASECELL:
-                    { // Base Cell
-                        Gpb_BaseCell.Builder proto = Gpb_BaseCell.CreateBuilder();
-                        Belief_BaseCell b = (Belief_BaseCell)belief;
+                case Belief.BeliefType.BASE:
+                    { // Base
+                        Gpb_Base.Builder proto = Gpb_Base.CreateBuilder();
+                        Belief_Base b = (Belief_Base)belief;
                         proto.SetId(b.getId());
-                        proto.SetPosX(b.getPos_x());
-                        proto.SetPosY(b.getPos_y());
+                        // Copy contents of cell list
+                        List<GridCell> cells = b.getCells();
+                        for (int i = 0; i < cells.Count; i++)
+                        {
+                            Gpb_GridCell.Builder g = Gpb_GridCell.CreateBuilder();
+                            g.SetRow(cells[i].getRow());
+                            g.SetCol(cells[i].getCol());
+                            proto.AddCells(g.Build());
+                        }
                         // Form header + serialized message
-                        header = (byte)MessageType.BASECELL;
+                        header = (byte)MessageType.BASE;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
+                case Belief.BeliefType.GRIDSPEC:
+                    { // Grid Specification
+                        Gpb_GridSpec.Builder proto = Gpb_GridSpec.CreateBuilder();
+                        Belief_GridSpec b = (Belief_GridSpec)belief;
+                        proto.SetWidth(b.getWidth());
+                        proto.SetHeight(b.getHeight());
+                        // Form header + serialized message
+                        header = (byte)MessageType.GRIDSPEC;
                         body = proto.Build().ToByteArray();
                         break;
                     }
@@ -93,38 +112,38 @@ namespace soa
                         body = proto.Build().ToByteArray();
                         break;
                     }
-                case Belief.BeliefType.NGOSITECELL:
-                    { // NGO Site Cell
-                        Gpb_NGOSiteCell.Builder proto = Gpb_NGOSiteCell.CreateBuilder();
-                        Belief_NGOSiteCell b = (Belief_NGOSiteCell)belief;
+                case Belief.BeliefType.NGOSITE:
+                    { // NGO Site
+                        Gpb_NGOSite.Builder proto = Gpb_NGOSite.CreateBuilder();
+                        Belief_NGOSite b = (Belief_NGOSite)belief;
                         proto.SetId(b.getId());
-                        proto.SetPosX(b.getPos_x());
-                        proto.SetPosY(b.getPos_y());
+                        // Copy contents of cell list
+                        List<GridCell> cells = b.getCells();
+                        for (int i = 0; i < cells.Count; i++)
+                        {
+                            Gpb_GridCell.Builder g = Gpb_GridCell.CreateBuilder();
+                            g.SetRow(cells[i].getRow());
+                            g.SetCol(cells[i].getCol());
+                            proto.AddCells(g.Build());
+                        }
                         // Form header + serialized message
-                        header = (byte)MessageType.NGOSITECELL;
+                        header = (byte)MessageType.NGOSITE;
                         body = proto.Build().ToByteArray();
                         break;
                     }
-                case Belief.BeliefType.NOGO:
-                    { // No Go
-                        Gpb_Nogo.Builder proto = Gpb_Nogo.CreateBuilder();
-                        Belief_Nogo b = (Belief_Nogo)belief;
-                        proto.SetPosX(b.getPos_x());
-                        proto.SetPosY(b.getPos_y());
-                        // Form header + serialized message
-                        header = (byte)MessageType.NOGO;
-                        body = proto.Build().ToByteArray();
-                        break;
-                    }
-                case Belief.BeliefType.ROAD:
-                    { // Road
-                        Gpb_Road.Builder proto = Gpb_Road.CreateBuilder();
-                        Belief_Road b = (Belief_Road)belief;
+                case Belief.BeliefType.ROADCELL:
+                    { // Road Cell
+                        Gpb_RoadCell.Builder proto = Gpb_RoadCell.CreateBuilder();
+                        Belief_RoadCell b = (Belief_RoadCell)belief;
                         proto.SetIsRoadEnd(b.getIsRoadEnd());
-                        proto.SetPosX(b.getPos_x());
-                        proto.SetPosY(b.getPos_y());
+                        // Copy contents of cell
+                        GridCell cell = b.getCell();
+                        Gpb_GridCell.Builder g = Gpb_GridCell.CreateBuilder();
+                        g.SetRow(cell.getRow());
+                        g.SetCol(cell.getCol());
+                        proto.SetCell(g.Build());
                         // Form header + serialized message
-                        header = (byte)MessageType.ROAD;
+                        header = (byte)MessageType.ROADCELL;
                         body = proto.Build().ToByteArray();
                         break;
                     }
@@ -141,6 +160,25 @@ namespace soa
                         body = proto.Build().ToByteArray();
                         break;
                     }
+                case Belief.BeliefType.TERRAIN:
+                    { // Terrain
+                        Gpb_Terrain.Builder proto = Gpb_Terrain.CreateBuilder();
+                        Belief_Terrain b = (Belief_Terrain)belief;
+                        proto.SetType(b.getType());
+                        // Copy contents of cell list
+                        List<GridCell> cells = b.getCells();
+                        for (int i = 0; i < cells.Count; i++)
+                        {
+                            Gpb_GridCell.Builder g = Gpb_GridCell.CreateBuilder();
+                            g.SetRow(cells[i].getRow());
+                            g.SetCol(cells[i].getCol());
+                            proto.AddCells(g.Build());
+                        }
+                        // Form header + serialized message
+                        header = (byte)MessageType.TERRAIN;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
                 case Belief.BeliefType.TIME:
                     { // Time
                         Gpb_Time.Builder proto = Gpb_Time.CreateBuilder();
@@ -151,15 +189,22 @@ namespace soa
                         body = proto.Build().ToByteArray();
                         break;
                     }
-                case Belief.BeliefType.VILLAGECELL:
-                    { // Village Cell
-                        Gpb_VillageCell.Builder proto = Gpb_VillageCell.CreateBuilder();
-                        Belief_VillageCell b = (Belief_VillageCell)belief;
+                case Belief.BeliefType.VILLAGE:
+                    { // Village
+                        Gpb_Village.Builder proto = Gpb_Village.CreateBuilder();
+                        Belief_Village b = (Belief_Village)belief;
                         proto.SetId(b.getId());
-                        proto.SetPosX(b.getPos_x());
-                        proto.SetPosY(b.getPos_y());
+                        // Copy contents of cell list
+                        List<GridCell> cells = b.getCells();
+                        for (int i = 0; i < cells.Count; i++)
+                        {
+                            Gpb_GridCell.Builder g = Gpb_GridCell.CreateBuilder();
+                            g.SetRow(cells[i].getRow());
+                            g.SetCol(cells[i].getCol());
+                            proto.AddCells(g.Build());
+                        }
                         // Form header + serialized message
-                        header = (byte)MessageType.VILLAGECELL;
+                        header = (byte)MessageType.VILLAGE;
                         body = proto.Build().ToByteArray();
                         break;
                     }
@@ -194,7 +239,11 @@ namespace soa
 
                 default:
                     // Unrecognized type, return empty array
-                    Console.Error.WriteLine("ProtobufSerializer.serializeBelief(): Unrecognized Belief type ");
+                    #if(USING_UNITY)
+                        Debug.Log("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
+                    #else
+                        Console.Error.WriteLine("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
+                    #endif
                     return new byte[0];
             }
 
@@ -237,13 +286,25 @@ namespace soa
                             proto.VelocityZ);
                         break;
                     }
-                case MessageType.BASECELL:
-                    { // Base Cell
-                        Gpb_BaseCell proto = Gpb_BaseCell.CreateBuilder().MergeFrom(body).Build();
-                        b = new Belief_BaseCell(
+                case MessageType.BASE:
+                    { // Base
+                        Gpb_Base proto = Gpb_Base.CreateBuilder().MergeFrom(body).Build();
+                        List<GridCell> cells = new List<GridCell>(proto.CellsCount);
+                        for (int i = 0; i < proto.CellsCount; i++)
+                        {
+                            cells.Add(new GridCell(proto.CellsList[i].Row, proto.CellsList[i].Col));
+                        }
+                        b = new Belief_Base(
                             proto.Id,
-                            proto.PosX,
-                            proto.PosY);
+                            cells);
+                        break;
+                    }
+                case MessageType.GRIDSPEC:
+                    { // Grid Specification
+                        Gpb_GridSpec proto = Gpb_GridSpec.CreateBuilder().MergeFrom(body).Build();
+                        b = new Belief_GridSpec(
+                            proto.Width,
+                            proto.Height);
                         break;
                     }
                 case MessageType.MODE_COMMAND:
@@ -255,30 +316,25 @@ namespace soa
                             proto.ModeId);
                         break;
                     }
-                case MessageType.NGOSITECELL:
-                    { // NGO Site Cell
-                        Gpb_NGOSiteCell proto = Gpb_NGOSiteCell.CreateBuilder().MergeFrom(body).Build();
-                        b = new Belief_NGOSiteCell(
+                case MessageType.NGOSITE:
+                    { // NGO Site
+                        Gpb_NGOSite proto = Gpb_NGOSite.CreateBuilder().MergeFrom(body).Build();
+                        List<GridCell> cells = new List<GridCell>(proto.CellsCount);
+                        for (int i = 0; i < proto.CellsCount; i++)
+                        {
+                            cells.Add(new GridCell(proto.CellsList[i].Row, proto.CellsList[i].Col));
+                        }
+                        b = new Belief_NGOSite(
                             proto.Id,
-                            proto.PosX,
-                            proto.PosY);
+                            cells);
                         break;
                     }
-                case MessageType.NOGO:
-                    { // No Go
-                        Gpb_Nogo proto = Gpb_Nogo.CreateBuilder().MergeFrom(body).Build();
-                        b = new Belief_Nogo(
-                            proto.PosX,
-                            proto.PosY);
-                        break;
-                    }
-                case MessageType.ROAD:
-                    { // Road
-                        Gpb_Road proto = Gpb_Road.CreateBuilder().MergeFrom(body).Build();
-                        b = new Belief_Road(
+                case MessageType.ROADCELL:
+                    { // Road Cell
+                        Gpb_RoadCell proto = Gpb_RoadCell.CreateBuilder().MergeFrom(body).Build();
+                        b = new Belief_RoadCell(
                             proto.IsRoadEnd,
-                            proto.PosX,
-                            proto.PosY);
+                            new GridCell(proto.Cell.Row, proto.Cell.Col));
                         break;
                     }
                 case MessageType.SPOI:
@@ -291,6 +347,19 @@ namespace soa
                             proto.PosY);
                         break;
                     }
+                case MessageType.TERRAIN:
+                    { // Terrain
+                        Gpb_Terrain proto = Gpb_Terrain.CreateBuilder().MergeFrom(body).Build();
+                        List<GridCell> cells = new List<GridCell>(proto.CellsCount);
+                        for (int i = 0; i < proto.CellsCount; i++)
+                        {
+                            cells.Add(new GridCell(proto.CellsList[i].Row, proto.CellsList[i].Col));
+                        }
+                        b = new Belief_Terrain(
+                            proto.Type,
+                            cells);
+                        break;
+                    }
                 case MessageType.TIME:
                     { // Time
                         Gpb_Time proto = Gpb_Time.CreateBuilder().MergeFrom(body).Build();
@@ -298,13 +367,17 @@ namespace soa
                             proto.Time);
                         break;
                     }
-                case MessageType.VILLAGECELL:
-                    { // Village Cell
-                        Gpb_VillageCell proto = Gpb_VillageCell.CreateBuilder().MergeFrom(body).Build();
-                        b = new Belief_VillageCell(
+                case MessageType.VILLAGE:
+                    { // Village
+                        Gpb_Village proto = Gpb_Village.CreateBuilder().MergeFrom(body).Build();
+                        List<GridCell> cells = new List<GridCell>(proto.CellsCount);
+                        for (int i = 0; i < proto.CellsCount; i++)
+                        {
+                            cells.Add(new GridCell(proto.CellsList[i].Row, proto.CellsList[i].Col));
+                        }
+                        b = new Belief_Village(
                             proto.Id,
-                            proto.PosX,
-                            proto.PosY);
+                            cells);
                         break;
                     }
                 case MessageType.WAYPOINT:
@@ -331,7 +404,11 @@ namespace soa
                     }
                 default:
                     // Unrecognized type
-                    Console.Error.WriteLine("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType );
+                    #if(USING_UNITY)
+                        Debug.Log("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
+                    #else
+                        Console.Error.WriteLine("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
+                    #endif
                     // Don't create a new belief object and return to caller
                     return null;
             }

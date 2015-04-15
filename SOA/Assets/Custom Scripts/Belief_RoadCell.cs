@@ -5,41 +5,37 @@ using System.Text;
 
 namespace soa
 {
-    public class Belief_Road : Belief
+    public class Belief_RoadCell : Belief
     {
         // Members
         private bool isRoadEnd;
-        private float pos_x;
-        private float pos_y;
+        private GridCell cell;
 
         // Constructor
-        public Belief_Road(bool isRoadEnd, float pos_x, float pos_y)
+        public Belief_RoadCell(bool isRoadEnd, GridCell cell)
         {
             this.isRoadEnd = isRoadEnd;
-            this.pos_x = pos_x;
-            this.pos_y = pos_y;
+            this.cell = new GridCell(cell);
         }
 
         // Type information
         public override BeliefType getBeliefType()
         {
-            return BeliefType.ROAD;
+            return BeliefType.ROADCELL;
         }
 
         // String representation
         public override string ToString()
         {
-            string s = "Belief_BaseCell {"
+            string s = "Belief_RoadCell {"
                 + "\n" + "  isRoadEnd: " + isRoadEnd
-                + "\n" + "  pos_x: " + pos_x
-                + "\n" + "  pos_y: " + pos_y
+                + "\n  " + cell
                 + "\n" + "}";
             return s;
         }
 
         // Get methods
         public bool getIsRoadEnd() { return isRoadEnd; }
-        public float getPos_x() { return pos_x; }
-        public float getPos_y() { return pos_y; }
+        public GridCell getCell() { return new GridCell(cell); }
     }
 }

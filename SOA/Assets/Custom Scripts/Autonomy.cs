@@ -16,28 +16,32 @@ namespace autonomy_msg {
     }
     #endregion
     #region Static variables
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder> internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Actor__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder> internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder> internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_GridSpec__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridSpec, global::autonomy_msg.Gpb_GridSpec.Builder> internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_NGOSite__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSite, global::autonomy_msg.Gpb_NGOSite.Builder> internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_SPOI__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder> internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Nogo__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Nogo, global::autonomy_msg.Gpb_Nogo.Builder> internal__static_autonomy_msg_Gpb_Nogo__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_NGOSiteCell__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSiteCell, global::autonomy_msg.Gpb_NGOSiteCell.Builder> internal__static_autonomy_msg_Gpb_NGOSiteCell__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Time__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder> internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder> internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Village__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Village, global::autonomy_msg.Gpb_Village.Builder> internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_GridCell__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridCell, global::autonomy_msg.Gpb_GridCell.Builder> internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Actor__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder> internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Base__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder> internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Terrain__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Terrain, global::autonomy_msg.Gpb_Terrain.Builder> internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder> internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Waypoint__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint, global::autonomy_msg.Gpb_Waypoint.Builder> internal__static_autonomy_msg_Gpb_Waypoint__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_VillageCell__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_VillageCell, global::autonomy_msg.Gpb_VillageCell.Builder> internal__static_autonomy_msg_Gpb_VillageCell__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Road__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Road, global::autonomy_msg.Gpb_Road.Builder> internal__static_autonomy_msg_Gpb_Road__FieldAccessorTable;
-    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_BaseCell__Descriptor;
-    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_BaseCell, global::autonomy_msg.Gpb_BaseCell.Builder> internal__static_autonomy_msg_Gpb_BaseCell__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Time__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder> internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_RoadCell__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder> internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable;
     #endregion
     #region Descriptor
     public static pbd::FileDescriptor Descriptor {
@@ -47,72 +51,84 @@ namespace autonomy_msg {
     
     static Autonomy() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
-          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnImwKFUdwYl9XYXlwb2lu" + 
-          "dF9PdmVycmlkZRIUCgxyZXF1ZXN0X3RpbWUYASACKAQSEAoIYWN0b3JfaWQY" + 
-          "AiACKAUSDQoFcG9zX3gYAyACKAISDQoFcG9zX3kYBCACKAISDQoFcG9zX3oY" + 
-          "BSACKAIiqgEKCUdwYl9BY3RvchIRCgl1bmlxdWVfaWQYASACKAUSEwoLYWZm" + 
-          "aWxpYXRpb24YAiACKAUSDAoEdHlwZRgDIAIoBRINCgVwb3NfeBgEIAIoAhIN" + 
-          "CgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAhISCgp2ZWxvY2l0eV94GAcg" + 
-          "ASgCEhIKCnZlbG9jaXR5X3kYCCABKAISEgoKdmVsb2NpdHlfehgJIAEoAiJL" + 
+          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIi0KDEdwYl9HcmlkU3Bl" + 
+          "YxIOCgZoZWlnaHQYASACKAUSDQoFd2lkdGgYAiACKAUiRAoLR3BiX05HT1Np" + 
+          "dGUSCgoCaWQYASACKAUSKQoFY2VsbHMYAiADKAsyGi5hdXRvbm9teV9tc2cu" + 
+          "R3BiX0dyaWRDZWxsIlAKCEdwYl9TUE9JEhQKDHJlcXVlc3RfdGltZRgBIAIo" + 
+          "BBIQCghhY3Rvcl9pZBgCIAIoBRINCgVwb3NfeBgDIAIoAhINCgVwb3NfeRgE" + 
+          "IAIoAiJsChVHcGJfV2F5cG9pbnRfT3ZlcnJpZGUSFAoMcmVxdWVzdF90aW1l" + 
+          "GAEgAigEEhAKCGFjdG9yX2lkGAIgAigFEg0KBXBvc194GAMgAigCEg0KBXBv" + 
+          "c195GAQgAigCEg0KBXBvc196GAUgAigCIkQKC0dwYl9WaWxsYWdlEgoKAmlk" + 
+          "GAEgAigFEikKBWNlbGxzGAIgAygLMhouYXV0b25vbXlfbXNnLkdwYl9Hcmlk" + 
+          "Q2VsbCIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgCIAIo" + 
+          "BSKqAQoJR3BiX0FjdG9yEhEKCXVuaXF1ZV9pZBgBIAIoBRITCgthZmZpbGlh" + 
+          "dGlvbhgCIAIoBRIMCgR0eXBlGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBv" + 
+          "c195GAUgAigCEg0KBXBvc196GAYgAigCEhIKCnZlbG9jaXR5X3gYByABKAIS" + 
+          "EgoKdmVsb2NpdHlfeRgIIAEoAhISCgp2ZWxvY2l0eV96GAkgASgCIkEKCEdw" + 
+          "Yl9CYXNlEgoKAmlkGAEgAigFEikKBWNlbGxzGAIgAygLMhouYXV0b25vbXlf" + 
+          "bXNnLkdwYl9HcmlkQ2VsbCJGCgtHcGJfVGVycmFpbhIMCgR0eXBlGAEgAigF" + 
+          "EikKBWNlbGxzGAIgAygLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbCJL" + 
           "ChBHcGJfTW9kZV9Db21tYW5kEhQKDHJlcXVlc3RfdGltZRgBIAIoBBIQCghh" + 
-          "Y3Rvcl9pZBgCIAIoBRIPCgdtb2RlX2lkGAMgAigFIlAKCEdwYl9TUE9JEhQK" + 
-          "DHJlcXVlc3RfdGltZRgBIAIoBBIQCghhY3Rvcl9pZBgCIAIoBRINCgVwb3Nf" + 
-          "eBgDIAIoAhINCgVwb3NfeRgEIAIoAiIoCghHcGJfTm9nbxINCgVwb3NfeBgB" + 
-          "IAIoAhINCgVwb3NfeRgCIAIoAiI7Cg9HcGJfTkdPU2l0ZUNlbGwSCgoCaWQY" + 
-          "ASACKAUSDQoFcG9zX3gYAiACKAISDQoFcG9zX3kYAyACKAIiGAoIR3BiX1Rp" + 
-          "bWUSDAoEdGltZRgBIAIoBCJjCgxHcGJfV2F5cG9pbnQSFAoMcmVxdWVzdF90" + 
-          "aW1lGAEgAigEEhAKCGFjdG9yX2lkGAIgAigFEg0KBXBvc194GAMgAigCEg0K" + 
-          "BXBvc195GAQgAigCEg0KBXBvc196GAUgAigCIjsKD0dwYl9WaWxsYWdlQ2Vs" + 
-          "bBIKCgJpZBgBIAIoBRINCgVwb3NfeBgCIAIoAhINCgVwb3NfeRgDIAIoAiI7" + 
-          "CghHcGJfUm9hZBIRCglpc1JvYWRFbmQYASACKAgSDQoFcG9zX3gYAiACKAIS" + 
-          "DQoFcG9zX3kYAyACKAIiOAoMR3BiX0Jhc2VDZWxsEgoKAmlkGAEgAigFEg0K" + 
-          "BXBvc194GAIgAigCEg0KBXBvc195GAMgAigC");
+          "Y3Rvcl9pZBgCIAIoBRIPCgdtb2RlX2lkGAMgAigFImMKDEdwYl9XYXlwb2lu" + 
+          "dBIUCgxyZXF1ZXN0X3RpbWUYASACKAQSEAoIYWN0b3JfaWQYAiACKAUSDQoF" + 
+          "cG9zX3gYAyACKAISDQoFcG9zX3kYBCACKAISDQoFcG9zX3oYBSACKAIiGAoI" + 
+          "R3BiX1RpbWUSDAoEdGltZRgBIAIoBCJLCgxHcGJfUm9hZENlbGwSEQoJaXNS" + 
+          "b2FkRW5kGAEgAigIEigKBGNlbGwYAiACKAsyGi5hdXRvbm9teV9tc2cuR3Bi" + 
+          "X0dyaWRDZWxs");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
-        internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor = Descriptor.MessageTypes[0];
-        internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder>(internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor,
-                new string[] { "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
-        internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[1];
-        internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
-                new string[] { "UniqueId", "Affiliation", "Type", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
-        internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[2];
-        internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder>(internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor,
-                new string[] { "RequestTime", "ActorId", "ModeId", });
-        internal__static_autonomy_msg_Gpb_SPOI__Descriptor = Descriptor.MessageTypes[3];
+        internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
+        internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridSpec, global::autonomy_msg.Gpb_GridSpec.Builder>(internal__static_autonomy_msg_Gpb_GridSpec__Descriptor,
+                new string[] { "Height", "Width", });
+        internal__static_autonomy_msg_Gpb_NGOSite__Descriptor = Descriptor.MessageTypes[1];
+        internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSite, global::autonomy_msg.Gpb_NGOSite.Builder>(internal__static_autonomy_msg_Gpb_NGOSite__Descriptor,
+                new string[] { "Id", "Cells", });
+        internal__static_autonomy_msg_Gpb_SPOI__Descriptor = Descriptor.MessageTypes[2];
         internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder>(internal__static_autonomy_msg_Gpb_SPOI__Descriptor,
                 new string[] { "RequestTime", "ActorId", "PosX", "PosY", });
-        internal__static_autonomy_msg_Gpb_Nogo__Descriptor = Descriptor.MessageTypes[4];
-        internal__static_autonomy_msg_Gpb_Nogo__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Nogo, global::autonomy_msg.Gpb_Nogo.Builder>(internal__static_autonomy_msg_Gpb_Nogo__Descriptor,
-                new string[] { "PosX", "PosY", });
-        internal__static_autonomy_msg_Gpb_NGOSiteCell__Descriptor = Descriptor.MessageTypes[5];
-        internal__static_autonomy_msg_Gpb_NGOSiteCell__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSiteCell, global::autonomy_msg.Gpb_NGOSiteCell.Builder>(internal__static_autonomy_msg_Gpb_NGOSiteCell__Descriptor,
-                new string[] { "Id", "PosX", "PosY", });
-        internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[6];
-        internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder>(internal__static_autonomy_msg_Gpb_Time__Descriptor,
-                new string[] { "Time", });
-        internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor = Descriptor.MessageTypes[3];
+        internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder>(internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor,
+                new string[] { "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
+        internal__static_autonomy_msg_Gpb_Village__Descriptor = Descriptor.MessageTypes[4];
+        internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Village, global::autonomy_msg.Gpb_Village.Builder>(internal__static_autonomy_msg_Gpb_Village__Descriptor,
+                new string[] { "Id", "Cells", });
+        internal__static_autonomy_msg_Gpb_GridCell__Descriptor = Descriptor.MessageTypes[5];
+        internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridCell, global::autonomy_msg.Gpb_GridCell.Builder>(internal__static_autonomy_msg_Gpb_GridCell__Descriptor,
+                new string[] { "Row", "Col", });
+        internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[6];
+        internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
+                new string[] { "UniqueId", "Affiliation", "Type", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
+        internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder>(internal__static_autonomy_msg_Gpb_Base__Descriptor,
+                new string[] { "Id", "Cells", });
+        internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[8];
+        internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Terrain, global::autonomy_msg.Gpb_Terrain.Builder>(internal__static_autonomy_msg_Gpb_Terrain__Descriptor,
+                new string[] { "Type", "Cells", });
+        internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[9];
+        internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder>(internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor,
+                new string[] { "RequestTime", "ActorId", "ModeId", });
+        internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[10];
         internal__static_autonomy_msg_Gpb_Waypoint__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint, global::autonomy_msg.Gpb_Waypoint.Builder>(internal__static_autonomy_msg_Gpb_Waypoint__Descriptor,
                 new string[] { "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
-        internal__static_autonomy_msg_Gpb_VillageCell__Descriptor = Descriptor.MessageTypes[8];
-        internal__static_autonomy_msg_Gpb_VillageCell__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_VillageCell, global::autonomy_msg.Gpb_VillageCell.Builder>(internal__static_autonomy_msg_Gpb_VillageCell__Descriptor,
-                new string[] { "Id", "PosX", "PosY", });
-        internal__static_autonomy_msg_Gpb_Road__Descriptor = Descriptor.MessageTypes[9];
-        internal__static_autonomy_msg_Gpb_Road__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Road, global::autonomy_msg.Gpb_Road.Builder>(internal__static_autonomy_msg_Gpb_Road__Descriptor,
-                new string[] { "IsRoadEnd", "PosX", "PosY", });
-        internal__static_autonomy_msg_Gpb_BaseCell__Descriptor = Descriptor.MessageTypes[10];
-        internal__static_autonomy_msg_Gpb_BaseCell__FieldAccessorTable = 
-            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_BaseCell, global::autonomy_msg.Gpb_BaseCell.Builder>(internal__static_autonomy_msg_Gpb_BaseCell__Descriptor,
-                new string[] { "Id", "PosX", "PosY", });
+        internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[11];
+        internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder>(internal__static_autonomy_msg_Gpb_Time__Descriptor,
+                new string[] { "Time", });
+        internal__static_autonomy_msg_Gpb_RoadCell__Descriptor = Descriptor.MessageTypes[12];
+        internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder>(internal__static_autonomy_msg_Gpb_RoadCell__Descriptor,
+                new string[] { "IsRoadEnd", "Cell", });
         return null;
       };
       pbd::FileDescriptor.InternalBuildGeneratedFileFrom(descriptorData,
@@ -123,6 +139,1071 @@ namespace autonomy_msg {
     
   }
   #region Messages
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_GridSpec : pb::GeneratedMessage<Gpb_GridSpec, Gpb_GridSpec.Builder> {
+    private Gpb_GridSpec() { }
+    private static readonly Gpb_GridSpec defaultInstance = new Gpb_GridSpec().MakeReadOnly();
+    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "height", "width" };
+    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 16 };
+    public static Gpb_GridSpec DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_GridSpec DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_GridSpec ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_GridSpec__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_GridSpec, Gpb_GridSpec.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable; }
+    }
+    
+    public const int HeightFieldNumber = 1;
+    private bool hasHeight;
+    private int height_;
+    public bool HasHeight {
+      get { return hasHeight; }
+    }
+    public int Height {
+      get { return height_; }
+    }
+    
+    public const int WidthFieldNumber = 2;
+    private bool hasWidth;
+    private int width_;
+    public bool HasWidth {
+      get { return hasWidth; }
+    }
+    public int Width {
+      get { return width_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasHeight) return false;
+        if (!hasWidth) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbGridSpecFieldNames;
+      if (hasHeight) {
+        output.WriteInt32(1, field_names[0], Height);
+      }
+      if (hasWidth) {
+        output.WriteInt32(2, field_names[1], Width);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasHeight) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, Height);
+        }
+        if (hasWidth) {
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Width);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_GridSpec ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_GridSpec ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_GridSpec MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_GridSpec prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_GridSpec, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_GridSpec cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_GridSpec result;
+      
+      private Gpb_GridSpec PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_GridSpec original = result;
+          result = new Gpb_GridSpec();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_GridSpec MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_GridSpec.Descriptor; }
+      }
+      
+      public override Gpb_GridSpec DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_GridSpec.DefaultInstance; }
+      }
+      
+      public override Gpb_GridSpec BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_GridSpec) {
+          return MergeFrom((Gpb_GridSpec) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_GridSpec other) {
+        if (other == global::autonomy_msg.Gpb_GridSpec.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasHeight) {
+          Height = other.Height;
+        }
+        if (other.HasWidth) {
+          Width = other.Width;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbGridSpecFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbGridSpecFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasHeight = input.ReadInt32(ref result.height_);
+              break;
+            }
+            case 16: {
+              result.hasWidth = input.ReadInt32(ref result.width_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasHeight {
+        get { return result.hasHeight; }
+      }
+      public int Height {
+        get { return result.Height; }
+        set { SetHeight(value); }
+      }
+      public Builder SetHeight(int value) {
+        PrepareBuilder();
+        result.hasHeight = true;
+        result.height_ = value;
+        return this;
+      }
+      public Builder ClearHeight() {
+        PrepareBuilder();
+        result.hasHeight = false;
+        result.height_ = 0;
+        return this;
+      }
+      
+      public bool HasWidth {
+        get { return result.hasWidth; }
+      }
+      public int Width {
+        get { return result.Width; }
+        set { SetWidth(value); }
+      }
+      public Builder SetWidth(int value) {
+        PrepareBuilder();
+        result.hasWidth = true;
+        result.width_ = value;
+        return this;
+      }
+      public Builder ClearWidth() {
+        PrepareBuilder();
+        result.hasWidth = false;
+        result.width_ = 0;
+        return this;
+      }
+    }
+    static Gpb_GridSpec() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_NGOSite : pb::GeneratedMessage<Gpb_NGOSite, Gpb_NGOSite.Builder> {
+    private Gpb_NGOSite() { }
+    private static readonly Gpb_NGOSite defaultInstance = new Gpb_NGOSite().MakeReadOnly();
+    private static readonly string[] _gpbNGOSiteFieldNames = new string[] { "cells", "id" };
+    private static readonly uint[] _gpbNGOSiteFieldTags = new uint[] { 18, 8 };
+    public static Gpb_NGOSite DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_NGOSite DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_NGOSite ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_NGOSite__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_NGOSite, Gpb_NGOSite.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable; }
+    }
+    
+    public const int IdFieldNumber = 1;
+    private bool hasId;
+    private int id_;
+    public bool HasId {
+      get { return hasId; }
+    }
+    public int Id {
+      get { return id_; }
+    }
+    
+    public const int CellsFieldNumber = 2;
+    private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
+    public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
+      get { return cells_; }
+    }
+    public int CellsCount {
+      get { return cells_.Count; }
+    }
+    public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+      return cells_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasId) return false;
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          if (!element.IsInitialized) return false;
+        }
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbNGOSiteFieldNames;
+      if (hasId) {
+        output.WriteInt32(1, field_names[1], Id);
+      }
+      if (cells_.Count > 0) {
+        output.WriteMessageArray(2, field_names[0], cells_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
+        }
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_NGOSite ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_NGOSite ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_NGOSite MakeReadOnly() {
+      cells_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_NGOSite prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_NGOSite, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_NGOSite cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_NGOSite result;
+      
+      private Gpb_NGOSite PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_NGOSite original = result;
+          result = new Gpb_NGOSite();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_NGOSite MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_NGOSite.Descriptor; }
+      }
+      
+      public override Gpb_NGOSite DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_NGOSite.DefaultInstance; }
+      }
+      
+      public override Gpb_NGOSite BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_NGOSite) {
+          return MergeFrom((Gpb_NGOSite) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_NGOSite other) {
+        if (other == global::autonomy_msg.Gpb_NGOSite.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasId) {
+          Id = other.Id;
+        }
+        if (other.cells_.Count != 0) {
+          result.cells_.Add(other.cells_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbNGOSiteFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbNGOSiteFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasId = input.ReadInt32(ref result.id_);
+              break;
+            }
+            case 18: {
+              input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasId {
+        get { return result.hasId; }
+      }
+      public int Id {
+        get { return result.Id; }
+        set { SetId(value); }
+      }
+      public Builder SetId(int value) {
+        PrepareBuilder();
+        result.hasId = true;
+        result.id_ = value;
+        return this;
+      }
+      public Builder ClearId() {
+        PrepareBuilder();
+        result.hasId = false;
+        result.id_ = 0;
+        return this;
+      }
+      
+      public pbc::IPopsicleList<global::autonomy_msg.Gpb_GridCell> CellsList {
+        get { return PrepareBuilder().cells_; }
+      }
+      public int CellsCount {
+        get { return result.CellsCount; }
+      }
+      public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+        return result.GetCells(index);
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_[index] = value;
+        return this;
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_[index] = builderForValue.Build();
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_.Add(value);
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_.Add(builderForValue.Build());
+        return this;
+      }
+      public Builder AddRangeCells(scg::IEnumerable<global::autonomy_msg.Gpb_GridCell> values) {
+        PrepareBuilder();
+        result.cells_.Add(values);
+        return this;
+      }
+      public Builder ClearCells() {
+        PrepareBuilder();
+        result.cells_.Clear();
+        return this;
+      }
+    }
+    static Gpb_NGOSite() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_SPOI : pb::GeneratedMessage<Gpb_SPOI, Gpb_SPOI.Builder> {
+    private Gpb_SPOI() { }
+    private static readonly Gpb_SPOI defaultInstance = new Gpb_SPOI().MakeReadOnly();
+    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "pos_x", "pos_y", "request_time" };
+    private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 16, 29, 37, 8 };
+    public static Gpb_SPOI DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_SPOI DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_SPOI ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SPOI__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_SPOI, Gpb_SPOI.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable; }
+    }
+    
+    public const int RequestTimeFieldNumber = 1;
+    private bool hasRequestTime;
+    private ulong requestTime_;
+    public bool HasRequestTime {
+      get { return hasRequestTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong RequestTime {
+      get { return requestTime_; }
+    }
+    
+    public const int ActorIdFieldNumber = 2;
+    private bool hasActorId;
+    private int actorId_;
+    public bool HasActorId {
+      get { return hasActorId; }
+    }
+    public int ActorId {
+      get { return actorId_; }
+    }
+    
+    public const int PosXFieldNumber = 3;
+    private bool hasPosX;
+    private float posX_;
+    public bool HasPosX {
+      get { return hasPosX; }
+    }
+    public float PosX {
+      get { return posX_; }
+    }
+    
+    public const int PosYFieldNumber = 4;
+    private bool hasPosY;
+    private float posY_;
+    public bool HasPosY {
+      get { return hasPosY; }
+    }
+    public float PosY {
+      get { return posY_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasRequestTime) return false;
+        if (!hasActorId) return false;
+        if (!hasPosX) return false;
+        if (!hasPosY) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbSPOIFieldNames;
+      if (hasRequestTime) {
+        output.WriteUInt64(1, field_names[3], RequestTime);
+      }
+      if (hasActorId) {
+        output.WriteInt32(2, field_names[0], ActorId);
+      }
+      if (hasPosX) {
+        output.WriteFloat(3, field_names[1], PosX);
+      }
+      if (hasPosY) {
+        output.WriteFloat(4, field_names[2], PosY);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasRequestTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, RequestTime);
+        }
+        if (hasActorId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
+        }
+        if (hasPosX) {
+          size += pb::CodedOutputStream.ComputeFloatSize(3, PosX);
+        }
+        if (hasPosY) {
+          size += pb::CodedOutputStream.ComputeFloatSize(4, PosY);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_SPOI ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_SPOI ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_SPOI ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_SPOI MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_SPOI prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_SPOI, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_SPOI cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_SPOI result;
+      
+      private Gpb_SPOI PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_SPOI original = result;
+          result = new Gpb_SPOI();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_SPOI MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_SPOI.Descriptor; }
+      }
+      
+      public override Gpb_SPOI DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_SPOI.DefaultInstance; }
+      }
+      
+      public override Gpb_SPOI BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_SPOI) {
+          return MergeFrom((Gpb_SPOI) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_SPOI other) {
+        if (other == global::autonomy_msg.Gpb_SPOI.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasRequestTime) {
+          RequestTime = other.RequestTime;
+        }
+        if (other.HasActorId) {
+          ActorId = other.ActorId;
+        }
+        if (other.HasPosX) {
+          PosX = other.PosX;
+        }
+        if (other.HasPosY) {
+          PosY = other.PosY;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbSPOIFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbSPOIFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              break;
+            }
+            case 16: {
+              result.hasActorId = input.ReadInt32(ref result.actorId_);
+              break;
+            }
+            case 29: {
+              result.hasPosX = input.ReadFloat(ref result.posX_);
+              break;
+            }
+            case 37: {
+              result.hasPosY = input.ReadFloat(ref result.posY_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasRequestTime {
+        get { return result.hasRequestTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong RequestTime {
+        get { return result.RequestTime; }
+        set { SetRequestTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetRequestTime(ulong value) {
+        PrepareBuilder();
+        result.hasRequestTime = true;
+        result.requestTime_ = value;
+        return this;
+      }
+      public Builder ClearRequestTime() {
+        PrepareBuilder();
+        result.hasRequestTime = false;
+        result.requestTime_ = 0UL;
+        return this;
+      }
+      
+      public bool HasActorId {
+        get { return result.hasActorId; }
+      }
+      public int ActorId {
+        get { return result.ActorId; }
+        set { SetActorId(value); }
+      }
+      public Builder SetActorId(int value) {
+        PrepareBuilder();
+        result.hasActorId = true;
+        result.actorId_ = value;
+        return this;
+      }
+      public Builder ClearActorId() {
+        PrepareBuilder();
+        result.hasActorId = false;
+        result.actorId_ = 0;
+        return this;
+      }
+      
+      public bool HasPosX {
+        get { return result.hasPosX; }
+      }
+      public float PosX {
+        get { return result.PosX; }
+        set { SetPosX(value); }
+      }
+      public Builder SetPosX(float value) {
+        PrepareBuilder();
+        result.hasPosX = true;
+        result.posX_ = value;
+        return this;
+      }
+      public Builder ClearPosX() {
+        PrepareBuilder();
+        result.hasPosX = false;
+        result.posX_ = 0F;
+        return this;
+      }
+      
+      public bool HasPosY {
+        get { return result.hasPosY; }
+      }
+      public float PosY {
+        get { return result.PosY; }
+        set { SetPosY(value); }
+      }
+      public Builder SetPosY(float value) {
+        PrepareBuilder();
+        result.hasPosY = true;
+        result.posY_ = value;
+        return this;
+      }
+      public Builder ClearPosY() {
+        PrepareBuilder();
+        result.hasPosY = false;
+        result.posY_ = 0F;
+        return this;
+      }
+    }
+    static Gpb_SPOI() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Gpb_Waypoint_Override : pb::GeneratedMessage<Gpb_Waypoint_Override, Gpb_Waypoint_Override.Builder> {
     private Gpb_Waypoint_Override() { }
@@ -569,6 +1650,665 @@ namespace autonomy_msg {
       }
     }
     static Gpb_Waypoint_Override() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_Village : pb::GeneratedMessage<Gpb_Village, Gpb_Village.Builder> {
+    private Gpb_Village() { }
+    private static readonly Gpb_Village defaultInstance = new Gpb_Village().MakeReadOnly();
+    private static readonly string[] _gpbVillageFieldNames = new string[] { "cells", "id" };
+    private static readonly uint[] _gpbVillageFieldTags = new uint[] { 18, 8 };
+    public static Gpb_Village DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_Village DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_Village ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Village__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Village, Gpb_Village.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable; }
+    }
+    
+    public const int IdFieldNumber = 1;
+    private bool hasId;
+    private int id_;
+    public bool HasId {
+      get { return hasId; }
+    }
+    public int Id {
+      get { return id_; }
+    }
+    
+    public const int CellsFieldNumber = 2;
+    private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
+    public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
+      get { return cells_; }
+    }
+    public int CellsCount {
+      get { return cells_.Count; }
+    }
+    public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+      return cells_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasId) return false;
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          if (!element.IsInitialized) return false;
+        }
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbVillageFieldNames;
+      if (hasId) {
+        output.WriteInt32(1, field_names[1], Id);
+      }
+      if (cells_.Count > 0) {
+        output.WriteMessageArray(2, field_names[0], cells_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
+        }
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_Village ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Village ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_Village ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Village ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_Village MakeReadOnly() {
+      cells_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_Village prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Village, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_Village cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_Village result;
+      
+      private Gpb_Village PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_Village original = result;
+          result = new Gpb_Village();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_Village MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_Village.Descriptor; }
+      }
+      
+      public override Gpb_Village DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_Village.DefaultInstance; }
+      }
+      
+      public override Gpb_Village BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_Village) {
+          return MergeFrom((Gpb_Village) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_Village other) {
+        if (other == global::autonomy_msg.Gpb_Village.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasId) {
+          Id = other.Id;
+        }
+        if (other.cells_.Count != 0) {
+          result.cells_.Add(other.cells_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbVillageFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbVillageFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasId = input.ReadInt32(ref result.id_);
+              break;
+            }
+            case 18: {
+              input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasId {
+        get { return result.hasId; }
+      }
+      public int Id {
+        get { return result.Id; }
+        set { SetId(value); }
+      }
+      public Builder SetId(int value) {
+        PrepareBuilder();
+        result.hasId = true;
+        result.id_ = value;
+        return this;
+      }
+      public Builder ClearId() {
+        PrepareBuilder();
+        result.hasId = false;
+        result.id_ = 0;
+        return this;
+      }
+      
+      public pbc::IPopsicleList<global::autonomy_msg.Gpb_GridCell> CellsList {
+        get { return PrepareBuilder().cells_; }
+      }
+      public int CellsCount {
+        get { return result.CellsCount; }
+      }
+      public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+        return result.GetCells(index);
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_[index] = value;
+        return this;
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_[index] = builderForValue.Build();
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_.Add(value);
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_.Add(builderForValue.Build());
+        return this;
+      }
+      public Builder AddRangeCells(scg::IEnumerable<global::autonomy_msg.Gpb_GridCell> values) {
+        PrepareBuilder();
+        result.cells_.Add(values);
+        return this;
+      }
+      public Builder ClearCells() {
+        PrepareBuilder();
+        result.cells_.Clear();
+        return this;
+      }
+    }
+    static Gpb_Village() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_GridCell : pb::GeneratedMessage<Gpb_GridCell, Gpb_GridCell.Builder> {
+    private Gpb_GridCell() { }
+    private static readonly Gpb_GridCell defaultInstance = new Gpb_GridCell().MakeReadOnly();
+    private static readonly string[] _gpbGridCellFieldNames = new string[] { "col", "row" };
+    private static readonly uint[] _gpbGridCellFieldTags = new uint[] { 16, 8 };
+    public static Gpb_GridCell DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_GridCell DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_GridCell ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_GridCell__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_GridCell, Gpb_GridCell.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable; }
+    }
+    
+    public const int RowFieldNumber = 1;
+    private bool hasRow;
+    private int row_;
+    public bool HasRow {
+      get { return hasRow; }
+    }
+    public int Row {
+      get { return row_; }
+    }
+    
+    public const int ColFieldNumber = 2;
+    private bool hasCol;
+    private int col_;
+    public bool HasCol {
+      get { return hasCol; }
+    }
+    public int Col {
+      get { return col_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasRow) return false;
+        if (!hasCol) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbGridCellFieldNames;
+      if (hasRow) {
+        output.WriteInt32(1, field_names[1], Row);
+      }
+      if (hasCol) {
+        output.WriteInt32(2, field_names[0], Col);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasRow) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, Row);
+        }
+        if (hasCol) {
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Col);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_GridCell ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_GridCell ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_GridCell ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_GridCell MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_GridCell prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_GridCell, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_GridCell cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_GridCell result;
+      
+      private Gpb_GridCell PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_GridCell original = result;
+          result = new Gpb_GridCell();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_GridCell MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_GridCell.Descriptor; }
+      }
+      
+      public override Gpb_GridCell DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_GridCell.DefaultInstance; }
+      }
+      
+      public override Gpb_GridCell BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_GridCell) {
+          return MergeFrom((Gpb_GridCell) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_GridCell other) {
+        if (other == global::autonomy_msg.Gpb_GridCell.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasRow) {
+          Row = other.Row;
+        }
+        if (other.HasCol) {
+          Col = other.Col;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbGridCellFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbGridCellFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasRow = input.ReadInt32(ref result.row_);
+              break;
+            }
+            case 16: {
+              result.hasCol = input.ReadInt32(ref result.col_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasRow {
+        get { return result.hasRow; }
+      }
+      public int Row {
+        get { return result.Row; }
+        set { SetRow(value); }
+      }
+      public Builder SetRow(int value) {
+        PrepareBuilder();
+        result.hasRow = true;
+        result.row_ = value;
+        return this;
+      }
+      public Builder ClearRow() {
+        PrepareBuilder();
+        result.hasRow = false;
+        result.row_ = 0;
+        return this;
+      }
+      
+      public bool HasCol {
+        get { return result.hasCol; }
+      }
+      public int Col {
+        get { return result.Col; }
+        set { SetCol(value); }
+      }
+      public Builder SetCol(int value) {
+        PrepareBuilder();
+        result.hasCol = true;
+        result.col_ = value;
+        return this;
+      }
+      public Builder ClearCol() {
+        PrepareBuilder();
+        result.hasCol = false;
+        result.col_ = 0;
+        return this;
+      }
+    }
+    static Gpb_GridCell() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }
@@ -1194,6 +2934,694 @@ namespace autonomy_msg {
   }
   
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_Base : pb::GeneratedMessage<Gpb_Base, Gpb_Base.Builder> {
+    private Gpb_Base() { }
+    private static readonly Gpb_Base defaultInstance = new Gpb_Base().MakeReadOnly();
+    private static readonly string[] _gpbBaseFieldNames = new string[] { "cells", "id" };
+    private static readonly uint[] _gpbBaseFieldTags = new uint[] { 18, 8 };
+    public static Gpb_Base DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_Base DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_Base ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Base__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Base, Gpb_Base.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable; }
+    }
+    
+    public const int IdFieldNumber = 1;
+    private bool hasId;
+    private int id_;
+    public bool HasId {
+      get { return hasId; }
+    }
+    public int Id {
+      get { return id_; }
+    }
+    
+    public const int CellsFieldNumber = 2;
+    private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
+    public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
+      get { return cells_; }
+    }
+    public int CellsCount {
+      get { return cells_.Count; }
+    }
+    public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+      return cells_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasId) return false;
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          if (!element.IsInitialized) return false;
+        }
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbBaseFieldNames;
+      if (hasId) {
+        output.WriteInt32(1, field_names[1], Id);
+      }
+      if (cells_.Count > 0) {
+        output.WriteMessageArray(2, field_names[0], cells_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
+        }
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_Base ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Base ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_Base ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Base ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_Base MakeReadOnly() {
+      cells_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_Base prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Base, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_Base cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_Base result;
+      
+      private Gpb_Base PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_Base original = result;
+          result = new Gpb_Base();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_Base MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_Base.Descriptor; }
+      }
+      
+      public override Gpb_Base DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_Base.DefaultInstance; }
+      }
+      
+      public override Gpb_Base BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_Base) {
+          return MergeFrom((Gpb_Base) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_Base other) {
+        if (other == global::autonomy_msg.Gpb_Base.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasId) {
+          Id = other.Id;
+        }
+        if (other.cells_.Count != 0) {
+          result.cells_.Add(other.cells_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbBaseFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbBaseFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasId = input.ReadInt32(ref result.id_);
+              break;
+            }
+            case 18: {
+              input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasId {
+        get { return result.hasId; }
+      }
+      public int Id {
+        get { return result.Id; }
+        set { SetId(value); }
+      }
+      public Builder SetId(int value) {
+        PrepareBuilder();
+        result.hasId = true;
+        result.id_ = value;
+        return this;
+      }
+      public Builder ClearId() {
+        PrepareBuilder();
+        result.hasId = false;
+        result.id_ = 0;
+        return this;
+      }
+      
+      public pbc::IPopsicleList<global::autonomy_msg.Gpb_GridCell> CellsList {
+        get { return PrepareBuilder().cells_; }
+      }
+      public int CellsCount {
+        get { return result.CellsCount; }
+      }
+      public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+        return result.GetCells(index);
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_[index] = value;
+        return this;
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_[index] = builderForValue.Build();
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_.Add(value);
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_.Add(builderForValue.Build());
+        return this;
+      }
+      public Builder AddRangeCells(scg::IEnumerable<global::autonomy_msg.Gpb_GridCell> values) {
+        PrepareBuilder();
+        result.cells_.Add(values);
+        return this;
+      }
+      public Builder ClearCells() {
+        PrepareBuilder();
+        result.cells_.Clear();
+        return this;
+      }
+    }
+    static Gpb_Base() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_Terrain : pb::GeneratedMessage<Gpb_Terrain, Gpb_Terrain.Builder> {
+    private Gpb_Terrain() { }
+    private static readonly Gpb_Terrain defaultInstance = new Gpb_Terrain().MakeReadOnly();
+    private static readonly string[] _gpbTerrainFieldNames = new string[] { "cells", "type" };
+    private static readonly uint[] _gpbTerrainFieldTags = new uint[] { 18, 8 };
+    public static Gpb_Terrain DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_Terrain DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_Terrain ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Terrain__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Terrain, Gpb_Terrain.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable; }
+    }
+    
+    public const int TypeFieldNumber = 1;
+    private bool hasType;
+    private int type_;
+    public bool HasType {
+      get { return hasType; }
+    }
+    public int Type {
+      get { return type_; }
+    }
+    
+    public const int CellsFieldNumber = 2;
+    private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
+    public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
+      get { return cells_; }
+    }
+    public int CellsCount {
+      get { return cells_.Count; }
+    }
+    public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+      return cells_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasType) return false;
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          if (!element.IsInitialized) return false;
+        }
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbTerrainFieldNames;
+      if (hasType) {
+        output.WriteInt32(1, field_names[1], Type);
+      }
+      if (cells_.Count > 0) {
+        output.WriteMessageArray(2, field_names[0], cells_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasType) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, Type);
+        }
+        foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
+          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_Terrain ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_Terrain ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Terrain ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_Terrain MakeReadOnly() {
+      cells_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_Terrain prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Terrain, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_Terrain cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_Terrain result;
+      
+      private Gpb_Terrain PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_Terrain original = result;
+          result = new Gpb_Terrain();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_Terrain MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_Terrain.Descriptor; }
+      }
+      
+      public override Gpb_Terrain DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_Terrain.DefaultInstance; }
+      }
+      
+      public override Gpb_Terrain BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_Terrain) {
+          return MergeFrom((Gpb_Terrain) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_Terrain other) {
+        if (other == global::autonomy_msg.Gpb_Terrain.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasType) {
+          Type = other.Type;
+        }
+        if (other.cells_.Count != 0) {
+          result.cells_.Add(other.cells_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbTerrainFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbTerrainFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasType = input.ReadInt32(ref result.type_);
+              break;
+            }
+            case 18: {
+              input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasType {
+        get { return result.hasType; }
+      }
+      public int Type {
+        get { return result.Type; }
+        set { SetType(value); }
+      }
+      public Builder SetType(int value) {
+        PrepareBuilder();
+        result.hasType = true;
+        result.type_ = value;
+        return this;
+      }
+      public Builder ClearType() {
+        PrepareBuilder();
+        result.hasType = false;
+        result.type_ = 0;
+        return this;
+      }
+      
+      public pbc::IPopsicleList<global::autonomy_msg.Gpb_GridCell> CellsList {
+        get { return PrepareBuilder().cells_; }
+      }
+      public int CellsCount {
+        get { return result.CellsCount; }
+      }
+      public global::autonomy_msg.Gpb_GridCell GetCells(int index) {
+        return result.GetCells(index);
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_[index] = value;
+        return this;
+      }
+      public Builder SetCells(int index, global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_[index] = builderForValue.Build();
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.cells_.Add(value);
+        return this;
+      }
+      public Builder AddCells(global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.cells_.Add(builderForValue.Build());
+        return this;
+      }
+      public Builder AddRangeCells(scg::IEnumerable<global::autonomy_msg.Gpb_GridCell> values) {
+        PrepareBuilder();
+        result.cells_.Add(values);
+        return this;
+      }
+      public Builder ClearCells() {
+        PrepareBuilder();
+        result.cells_.Clear();
+        return this;
+      }
+    }
+    static Gpb_Terrain() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Gpb_Mode_Command : pb::GeneratedMessage<Gpb_Mode_Command, Gpb_Mode_Command.Builder> {
     private Gpb_Mode_Command() { }
     private static readonly Gpb_Mode_Command defaultInstance = new Gpb_Mode_Command().MakeReadOnly();
@@ -1551,1360 +3979,6 @@ namespace autonomy_msg {
       }
     }
     static Gpb_Mode_Command() {
-      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
-    }
-  }
-  
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_SPOI : pb::GeneratedMessage<Gpb_SPOI, Gpb_SPOI.Builder> {
-    private Gpb_SPOI() { }
-    private static readonly Gpb_SPOI defaultInstance = new Gpb_SPOI().MakeReadOnly();
-    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "pos_x", "pos_y", "request_time" };
-    private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 16, 29, 37, 8 };
-    public static Gpb_SPOI DefaultInstance {
-      get { return defaultInstance; }
-    }
-    
-    public override Gpb_SPOI DefaultInstanceForType {
-      get { return DefaultInstance; }
-    }
-    
-    protected override Gpb_SPOI ThisMessage {
-      get { return this; }
-    }
-    
-    public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SPOI__Descriptor; }
-    }
-    
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_SPOI, Gpb_SPOI.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable; }
-    }
-    
-    public const int RequestTimeFieldNumber = 1;
-    private bool hasRequestTime;
-    private ulong requestTime_;
-    public bool HasRequestTime {
-      get { return hasRequestTime; }
-    }
-    [global::System.CLSCompliant(false)]
-    public ulong RequestTime {
-      get { return requestTime_; }
-    }
-    
-    public const int ActorIdFieldNumber = 2;
-    private bool hasActorId;
-    private int actorId_;
-    public bool HasActorId {
-      get { return hasActorId; }
-    }
-    public int ActorId {
-      get { return actorId_; }
-    }
-    
-    public const int PosXFieldNumber = 3;
-    private bool hasPosX;
-    private float posX_;
-    public bool HasPosX {
-      get { return hasPosX; }
-    }
-    public float PosX {
-      get { return posX_; }
-    }
-    
-    public const int PosYFieldNumber = 4;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
-    }
-    public float PosY {
-      get { return posY_; }
-    }
-    
-    public override bool IsInitialized {
-      get {
-        if (!hasRequestTime) return false;
-        if (!hasActorId) return false;
-        if (!hasPosX) return false;
-        if (!hasPosY) return false;
-        return true;
-      }
-    }
-    
-    public override void WriteTo(pb::ICodedOutputStream output) {
-      int size = SerializedSize;
-      string[] field_names = _gpbSPOIFieldNames;
-      if (hasRequestTime) {
-        output.WriteUInt64(1, field_names[3], RequestTime);
-      }
-      if (hasActorId) {
-        output.WriteInt32(2, field_names[0], ActorId);
-      }
-      if (hasPosX) {
-        output.WriteFloat(3, field_names[1], PosX);
-      }
-      if (hasPosY) {
-        output.WriteFloat(4, field_names[2], PosY);
-      }
-      UnknownFields.WriteTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public override int SerializedSize {
-      get {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-        
-        size = 0;
-        if (hasRequestTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, RequestTime);
-        }
-        if (hasActorId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
-        }
-        if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosX);
-        }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(4, PosY);
-        }
-        size += UnknownFields.SerializedSize;
-        memoizedSerializedSize = size;
-        return size;
-      }
-    }
-    
-    public static Gpb_SPOI ParseFrom(pb::ByteString data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(byte[] data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(global::System.IO.Stream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseDelimitedFrom(global::System.IO.Stream input) {
-      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
-    }
-    public static Gpb_SPOI ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(pb::ICodedInputStream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_SPOI ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    private Gpb_SPOI MakeReadOnly() {
-      return this;
-    }
-    
-    public static Builder CreateBuilder() { return new Builder(); }
-    public override Builder ToBuilder() { return CreateBuilder(this); }
-    public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_SPOI prototype) {
-      return new Builder(prototype);
-    }
-    
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_SPOI, Builder> {
-      protected override Builder ThisBuilder {
-        get { return this; }
-      }
-      public Builder() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-      }
-      internal Builder(Gpb_SPOI cloneFrom) {
-        result = cloneFrom;
-        resultIsReadOnly = true;
-      }
-      
-      private bool resultIsReadOnly;
-      private Gpb_SPOI result;
-      
-      private Gpb_SPOI PrepareBuilder() {
-        if (resultIsReadOnly) {
-          Gpb_SPOI original = result;
-          result = new Gpb_SPOI();
-          resultIsReadOnly = false;
-          MergeFrom(original);
-        }
-        return result;
-      }
-      
-      public override bool IsInitialized {
-        get { return result.IsInitialized; }
-      }
-      
-      protected override Gpb_SPOI MessageBeingBuilt {
-        get { return PrepareBuilder(); }
-      }
-      
-      public override Builder Clear() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-        return this;
-      }
-      
-      public override Builder Clone() {
-        if (resultIsReadOnly) {
-          return new Builder(result);
-        } else {
-          return new Builder().MergeFrom(result);
-        }
-      }
-      
-      public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_SPOI.Descriptor; }
-      }
-      
-      public override Gpb_SPOI DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_SPOI.DefaultInstance; }
-      }
-      
-      public override Gpb_SPOI BuildPartial() {
-        if (resultIsReadOnly) {
-          return result;
-        }
-        resultIsReadOnly = true;
-        return result.MakeReadOnly();
-      }
-      
-      public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_SPOI) {
-          return MergeFrom((Gpb_SPOI) other);
-        } else {
-          base.MergeFrom(other);
-          return this;
-        }
-      }
-      
-      public override Builder MergeFrom(Gpb_SPOI other) {
-        if (other == global::autonomy_msg.Gpb_SPOI.DefaultInstance) return this;
-        PrepareBuilder();
-        if (other.HasRequestTime) {
-          RequestTime = other.RequestTime;
-        }
-        if (other.HasActorId) {
-          ActorId = other.ActorId;
-        }
-        if (other.HasPosX) {
-          PosX = other.PosX;
-        }
-        if (other.HasPosY) {
-          PosY = other.PosY;
-        }
-        this.MergeUnknownFields(other.UnknownFields);
-        return this;
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-        PrepareBuilder();
-        pb::UnknownFieldSet.Builder unknownFields = null;
-        uint tag;
-        string field_name;
-        while (input.ReadTag(out tag, out field_name)) {
-          if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbSPOIFieldNames, field_name, global::System.StringComparer.Ordinal);
-            if(field_ordinal >= 0)
-              tag = _gpbSPOIFieldTags[field_ordinal];
-            else {
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              continue;
-            }
-          }
-          switch (tag) {
-            case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
-            }
-            default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
-                if (unknownFields != null) {
-                  this.UnknownFields = unknownFields.Build();
-                }
-                return this;
-              }
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              break;
-            }
-            case 8: {
-              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
-              break;
-            }
-            case 16: {
-              result.hasActorId = input.ReadInt32(ref result.actorId_);
-              break;
-            }
-            case 29: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
-              break;
-            }
-            case 37: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
-              break;
-            }
-          }
-        }
-        
-        if (unknownFields != null) {
-          this.UnknownFields = unknownFields.Build();
-        }
-        return this;
-      }
-      
-      
-      public bool HasRequestTime {
-        get { return result.hasRequestTime; }
-      }
-      [global::System.CLSCompliant(false)]
-      public ulong RequestTime {
-        get { return result.RequestTime; }
-        set { SetRequestTime(value); }
-      }
-      [global::System.CLSCompliant(false)]
-      public Builder SetRequestTime(ulong value) {
-        PrepareBuilder();
-        result.hasRequestTime = true;
-        result.requestTime_ = value;
-        return this;
-      }
-      public Builder ClearRequestTime() {
-        PrepareBuilder();
-        result.hasRequestTime = false;
-        result.requestTime_ = 0UL;
-        return this;
-      }
-      
-      public bool HasActorId {
-        get { return result.hasActorId; }
-      }
-      public int ActorId {
-        get { return result.ActorId; }
-        set { SetActorId(value); }
-      }
-      public Builder SetActorId(int value) {
-        PrepareBuilder();
-        result.hasActorId = true;
-        result.actorId_ = value;
-        return this;
-      }
-      public Builder ClearActorId() {
-        PrepareBuilder();
-        result.hasActorId = false;
-        result.actorId_ = 0;
-        return this;
-      }
-      
-      public bool HasPosX {
-        get { return result.hasPosX; }
-      }
-      public float PosX {
-        get { return result.PosX; }
-        set { SetPosX(value); }
-      }
-      public Builder SetPosX(float value) {
-        PrepareBuilder();
-        result.hasPosX = true;
-        result.posX_ = value;
-        return this;
-      }
-      public Builder ClearPosX() {
-        PrepareBuilder();
-        result.hasPosX = false;
-        result.posX_ = 0F;
-        return this;
-      }
-      
-      public bool HasPosY {
-        get { return result.hasPosY; }
-      }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
-      }
-      public Builder SetPosY(float value) {
-        PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
-        return this;
-      }
-      public Builder ClearPosY() {
-        PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
-        return this;
-      }
-    }
-    static Gpb_SPOI() {
-      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
-    }
-  }
-  
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_Nogo : pb::GeneratedMessage<Gpb_Nogo, Gpb_Nogo.Builder> {
-    private Gpb_Nogo() { }
-    private static readonly Gpb_Nogo defaultInstance = new Gpb_Nogo().MakeReadOnly();
-    private static readonly string[] _gpbNogoFieldNames = new string[] { "pos_x", "pos_y" };
-    private static readonly uint[] _gpbNogoFieldTags = new uint[] { 13, 21 };
-    public static Gpb_Nogo DefaultInstance {
-      get { return defaultInstance; }
-    }
-    
-    public override Gpb_Nogo DefaultInstanceForType {
-      get { return DefaultInstance; }
-    }
-    
-    protected override Gpb_Nogo ThisMessage {
-      get { return this; }
-    }
-    
-    public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Nogo__Descriptor; }
-    }
-    
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Nogo, Gpb_Nogo.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Nogo__FieldAccessorTable; }
-    }
-    
-    public const int PosXFieldNumber = 1;
-    private bool hasPosX;
-    private float posX_;
-    public bool HasPosX {
-      get { return hasPosX; }
-    }
-    public float PosX {
-      get { return posX_; }
-    }
-    
-    public const int PosYFieldNumber = 2;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
-    }
-    public float PosY {
-      get { return posY_; }
-    }
-    
-    public override bool IsInitialized {
-      get {
-        if (!hasPosX) return false;
-        if (!hasPosY) return false;
-        return true;
-      }
-    }
-    
-    public override void WriteTo(pb::ICodedOutputStream output) {
-      int size = SerializedSize;
-      string[] field_names = _gpbNogoFieldNames;
-      if (hasPosX) {
-        output.WriteFloat(1, field_names[0], PosX);
-      }
-      if (hasPosY) {
-        output.WriteFloat(2, field_names[1], PosY);
-      }
-      UnknownFields.WriteTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public override int SerializedSize {
-      get {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-        
-        size = 0;
-        if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(1, PosX);
-        }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(2, PosY);
-        }
-        size += UnknownFields.SerializedSize;
-        memoizedSerializedSize = size;
-        return size;
-      }
-    }
-    
-    public static Gpb_Nogo ParseFrom(pb::ByteString data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(byte[] data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(global::System.IO.Stream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseDelimitedFrom(global::System.IO.Stream input) {
-      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
-    }
-    public static Gpb_Nogo ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(pb::ICodedInputStream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_Nogo ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    private Gpb_Nogo MakeReadOnly() {
-      return this;
-    }
-    
-    public static Builder CreateBuilder() { return new Builder(); }
-    public override Builder ToBuilder() { return CreateBuilder(this); }
-    public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_Nogo prototype) {
-      return new Builder(prototype);
-    }
-    
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Nogo, Builder> {
-      protected override Builder ThisBuilder {
-        get { return this; }
-      }
-      public Builder() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-      }
-      internal Builder(Gpb_Nogo cloneFrom) {
-        result = cloneFrom;
-        resultIsReadOnly = true;
-      }
-      
-      private bool resultIsReadOnly;
-      private Gpb_Nogo result;
-      
-      private Gpb_Nogo PrepareBuilder() {
-        if (resultIsReadOnly) {
-          Gpb_Nogo original = result;
-          result = new Gpb_Nogo();
-          resultIsReadOnly = false;
-          MergeFrom(original);
-        }
-        return result;
-      }
-      
-      public override bool IsInitialized {
-        get { return result.IsInitialized; }
-      }
-      
-      protected override Gpb_Nogo MessageBeingBuilt {
-        get { return PrepareBuilder(); }
-      }
-      
-      public override Builder Clear() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-        return this;
-      }
-      
-      public override Builder Clone() {
-        if (resultIsReadOnly) {
-          return new Builder(result);
-        } else {
-          return new Builder().MergeFrom(result);
-        }
-      }
-      
-      public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_Nogo.Descriptor; }
-      }
-      
-      public override Gpb_Nogo DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_Nogo.DefaultInstance; }
-      }
-      
-      public override Gpb_Nogo BuildPartial() {
-        if (resultIsReadOnly) {
-          return result;
-        }
-        resultIsReadOnly = true;
-        return result.MakeReadOnly();
-      }
-      
-      public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_Nogo) {
-          return MergeFrom((Gpb_Nogo) other);
-        } else {
-          base.MergeFrom(other);
-          return this;
-        }
-      }
-      
-      public override Builder MergeFrom(Gpb_Nogo other) {
-        if (other == global::autonomy_msg.Gpb_Nogo.DefaultInstance) return this;
-        PrepareBuilder();
-        if (other.HasPosX) {
-          PosX = other.PosX;
-        }
-        if (other.HasPosY) {
-          PosY = other.PosY;
-        }
-        this.MergeUnknownFields(other.UnknownFields);
-        return this;
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-        PrepareBuilder();
-        pb::UnknownFieldSet.Builder unknownFields = null;
-        uint tag;
-        string field_name;
-        while (input.ReadTag(out tag, out field_name)) {
-          if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbNogoFieldNames, field_name, global::System.StringComparer.Ordinal);
-            if(field_ordinal >= 0)
-              tag = _gpbNogoFieldTags[field_ordinal];
-            else {
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              continue;
-            }
-          }
-          switch (tag) {
-            case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
-            }
-            default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
-                if (unknownFields != null) {
-                  this.UnknownFields = unknownFields.Build();
-                }
-                return this;
-              }
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              break;
-            }
-            case 13: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
-              break;
-            }
-            case 21: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
-              break;
-            }
-          }
-        }
-        
-        if (unknownFields != null) {
-          this.UnknownFields = unknownFields.Build();
-        }
-        return this;
-      }
-      
-      
-      public bool HasPosX {
-        get { return result.hasPosX; }
-      }
-      public float PosX {
-        get { return result.PosX; }
-        set { SetPosX(value); }
-      }
-      public Builder SetPosX(float value) {
-        PrepareBuilder();
-        result.hasPosX = true;
-        result.posX_ = value;
-        return this;
-      }
-      public Builder ClearPosX() {
-        PrepareBuilder();
-        result.hasPosX = false;
-        result.posX_ = 0F;
-        return this;
-      }
-      
-      public bool HasPosY {
-        get { return result.hasPosY; }
-      }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
-      }
-      public Builder SetPosY(float value) {
-        PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
-        return this;
-      }
-      public Builder ClearPosY() {
-        PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
-        return this;
-      }
-    }
-    static Gpb_Nogo() {
-      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
-    }
-  }
-  
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_NGOSiteCell : pb::GeneratedMessage<Gpb_NGOSiteCell, Gpb_NGOSiteCell.Builder> {
-    private Gpb_NGOSiteCell() { }
-    private static readonly Gpb_NGOSiteCell defaultInstance = new Gpb_NGOSiteCell().MakeReadOnly();
-    private static readonly string[] _gpbNGOSiteCellFieldNames = new string[] { "id", "pos_x", "pos_y" };
-    private static readonly uint[] _gpbNGOSiteCellFieldTags = new uint[] { 8, 21, 29 };
-    public static Gpb_NGOSiteCell DefaultInstance {
-      get { return defaultInstance; }
-    }
-    
-    public override Gpb_NGOSiteCell DefaultInstanceForType {
-      get { return DefaultInstance; }
-    }
-    
-    protected override Gpb_NGOSiteCell ThisMessage {
-      get { return this; }
-    }
-    
-    public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_NGOSiteCell__Descriptor; }
-    }
-    
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_NGOSiteCell, Gpb_NGOSiteCell.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_NGOSiteCell__FieldAccessorTable; }
-    }
-    
-    public const int IdFieldNumber = 1;
-    private bool hasId;
-    private int id_;
-    public bool HasId {
-      get { return hasId; }
-    }
-    public int Id {
-      get { return id_; }
-    }
-    
-    public const int PosXFieldNumber = 2;
-    private bool hasPosX;
-    private float posX_;
-    public bool HasPosX {
-      get { return hasPosX; }
-    }
-    public float PosX {
-      get { return posX_; }
-    }
-    
-    public const int PosYFieldNumber = 3;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
-    }
-    public float PosY {
-      get { return posY_; }
-    }
-    
-    public override bool IsInitialized {
-      get {
-        if (!hasId) return false;
-        if (!hasPosX) return false;
-        if (!hasPosY) return false;
-        return true;
-      }
-    }
-    
-    public override void WriteTo(pb::ICodedOutputStream output) {
-      int size = SerializedSize;
-      string[] field_names = _gpbNGOSiteCellFieldNames;
-      if (hasId) {
-        output.WriteInt32(1, field_names[0], Id);
-      }
-      if (hasPosX) {
-        output.WriteFloat(2, field_names[1], PosX);
-      }
-      if (hasPosY) {
-        output.WriteFloat(3, field_names[2], PosY);
-      }
-      UnknownFields.WriteTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public override int SerializedSize {
-      get {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-        
-        size = 0;
-        if (hasId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
-        }
-        if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(2, PosX);
-        }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosY);
-        }
-        size += UnknownFields.SerializedSize;
-        memoizedSerializedSize = size;
-        return size;
-      }
-    }
-    
-    public static Gpb_NGOSiteCell ParseFrom(pb::ByteString data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(byte[] data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(global::System.IO.Stream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseDelimitedFrom(global::System.IO.Stream input) {
-      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(pb::ICodedInputStream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_NGOSiteCell ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    private Gpb_NGOSiteCell MakeReadOnly() {
-      return this;
-    }
-    
-    public static Builder CreateBuilder() { return new Builder(); }
-    public override Builder ToBuilder() { return CreateBuilder(this); }
-    public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_NGOSiteCell prototype) {
-      return new Builder(prototype);
-    }
-    
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_NGOSiteCell, Builder> {
-      protected override Builder ThisBuilder {
-        get { return this; }
-      }
-      public Builder() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-      }
-      internal Builder(Gpb_NGOSiteCell cloneFrom) {
-        result = cloneFrom;
-        resultIsReadOnly = true;
-      }
-      
-      private bool resultIsReadOnly;
-      private Gpb_NGOSiteCell result;
-      
-      private Gpb_NGOSiteCell PrepareBuilder() {
-        if (resultIsReadOnly) {
-          Gpb_NGOSiteCell original = result;
-          result = new Gpb_NGOSiteCell();
-          resultIsReadOnly = false;
-          MergeFrom(original);
-        }
-        return result;
-      }
-      
-      public override bool IsInitialized {
-        get { return result.IsInitialized; }
-      }
-      
-      protected override Gpb_NGOSiteCell MessageBeingBuilt {
-        get { return PrepareBuilder(); }
-      }
-      
-      public override Builder Clear() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-        return this;
-      }
-      
-      public override Builder Clone() {
-        if (resultIsReadOnly) {
-          return new Builder(result);
-        } else {
-          return new Builder().MergeFrom(result);
-        }
-      }
-      
-      public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_NGOSiteCell.Descriptor; }
-      }
-      
-      public override Gpb_NGOSiteCell DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_NGOSiteCell.DefaultInstance; }
-      }
-      
-      public override Gpb_NGOSiteCell BuildPartial() {
-        if (resultIsReadOnly) {
-          return result;
-        }
-        resultIsReadOnly = true;
-        return result.MakeReadOnly();
-      }
-      
-      public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_NGOSiteCell) {
-          return MergeFrom((Gpb_NGOSiteCell) other);
-        } else {
-          base.MergeFrom(other);
-          return this;
-        }
-      }
-      
-      public override Builder MergeFrom(Gpb_NGOSiteCell other) {
-        if (other == global::autonomy_msg.Gpb_NGOSiteCell.DefaultInstance) return this;
-        PrepareBuilder();
-        if (other.HasId) {
-          Id = other.Id;
-        }
-        if (other.HasPosX) {
-          PosX = other.PosX;
-        }
-        if (other.HasPosY) {
-          PosY = other.PosY;
-        }
-        this.MergeUnknownFields(other.UnknownFields);
-        return this;
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-        PrepareBuilder();
-        pb::UnknownFieldSet.Builder unknownFields = null;
-        uint tag;
-        string field_name;
-        while (input.ReadTag(out tag, out field_name)) {
-          if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbNGOSiteCellFieldNames, field_name, global::System.StringComparer.Ordinal);
-            if(field_ordinal >= 0)
-              tag = _gpbNGOSiteCellFieldTags[field_ordinal];
-            else {
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              continue;
-            }
-          }
-          switch (tag) {
-            case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
-            }
-            default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
-                if (unknownFields != null) {
-                  this.UnknownFields = unknownFields.Build();
-                }
-                return this;
-              }
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              break;
-            }
-            case 8: {
-              result.hasId = input.ReadInt32(ref result.id_);
-              break;
-            }
-            case 21: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
-              break;
-            }
-            case 29: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
-              break;
-            }
-          }
-        }
-        
-        if (unknownFields != null) {
-          this.UnknownFields = unknownFields.Build();
-        }
-        return this;
-      }
-      
-      
-      public bool HasId {
-        get { return result.hasId; }
-      }
-      public int Id {
-        get { return result.Id; }
-        set { SetId(value); }
-      }
-      public Builder SetId(int value) {
-        PrepareBuilder();
-        result.hasId = true;
-        result.id_ = value;
-        return this;
-      }
-      public Builder ClearId() {
-        PrepareBuilder();
-        result.hasId = false;
-        result.id_ = 0;
-        return this;
-      }
-      
-      public bool HasPosX {
-        get { return result.hasPosX; }
-      }
-      public float PosX {
-        get { return result.PosX; }
-        set { SetPosX(value); }
-      }
-      public Builder SetPosX(float value) {
-        PrepareBuilder();
-        result.hasPosX = true;
-        result.posX_ = value;
-        return this;
-      }
-      public Builder ClearPosX() {
-        PrepareBuilder();
-        result.hasPosX = false;
-        result.posX_ = 0F;
-        return this;
-      }
-      
-      public bool HasPosY {
-        get { return result.hasPosY; }
-      }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
-      }
-      public Builder SetPosY(float value) {
-        PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
-        return this;
-      }
-      public Builder ClearPosY() {
-        PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
-        return this;
-      }
-    }
-    static Gpb_NGOSiteCell() {
-      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
-    }
-  }
-  
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_Time : pb::GeneratedMessage<Gpb_Time, Gpb_Time.Builder> {
-    private Gpb_Time() { }
-    private static readonly Gpb_Time defaultInstance = new Gpb_Time().MakeReadOnly();
-    private static readonly string[] _gpbTimeFieldNames = new string[] { "time" };
-    private static readonly uint[] _gpbTimeFieldTags = new uint[] { 8 };
-    public static Gpb_Time DefaultInstance {
-      get { return defaultInstance; }
-    }
-    
-    public override Gpb_Time DefaultInstanceForType {
-      get { return DefaultInstance; }
-    }
-    
-    protected override Gpb_Time ThisMessage {
-      get { return this; }
-    }
-    
-    public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Time__Descriptor; }
-    }
-    
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Time, Gpb_Time.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable; }
-    }
-    
-    public const int TimeFieldNumber = 1;
-    private bool hasTime;
-    private ulong time_;
-    public bool HasTime {
-      get { return hasTime; }
-    }
-    [global::System.CLSCompliant(false)]
-    public ulong Time {
-      get { return time_; }
-    }
-    
-    public override bool IsInitialized {
-      get {
-        if (!hasTime) return false;
-        return true;
-      }
-    }
-    
-    public override void WriteTo(pb::ICodedOutputStream output) {
-      int size = SerializedSize;
-      string[] field_names = _gpbTimeFieldNames;
-      if (hasTime) {
-        output.WriteUInt64(1, field_names[0], Time);
-      }
-      UnknownFields.WriteTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public override int SerializedSize {
-      get {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-        
-        size = 0;
-        if (hasTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, Time);
-        }
-        size += UnknownFields.SerializedSize;
-        memoizedSerializedSize = size;
-        return size;
-      }
-    }
-    
-    public static Gpb_Time ParseFrom(pb::ByteString data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(byte[] data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(global::System.IO.Stream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_Time ParseDelimitedFrom(global::System.IO.Stream input) {
-      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
-    }
-    public static Gpb_Time ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(pb::ICodedInputStream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_Time ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    private Gpb_Time MakeReadOnly() {
-      return this;
-    }
-    
-    public static Builder CreateBuilder() { return new Builder(); }
-    public override Builder ToBuilder() { return CreateBuilder(this); }
-    public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_Time prototype) {
-      return new Builder(prototype);
-    }
-    
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Time, Builder> {
-      protected override Builder ThisBuilder {
-        get { return this; }
-      }
-      public Builder() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-      }
-      internal Builder(Gpb_Time cloneFrom) {
-        result = cloneFrom;
-        resultIsReadOnly = true;
-      }
-      
-      private bool resultIsReadOnly;
-      private Gpb_Time result;
-      
-      private Gpb_Time PrepareBuilder() {
-        if (resultIsReadOnly) {
-          Gpb_Time original = result;
-          result = new Gpb_Time();
-          resultIsReadOnly = false;
-          MergeFrom(original);
-        }
-        return result;
-      }
-      
-      public override bool IsInitialized {
-        get { return result.IsInitialized; }
-      }
-      
-      protected override Gpb_Time MessageBeingBuilt {
-        get { return PrepareBuilder(); }
-      }
-      
-      public override Builder Clear() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-        return this;
-      }
-      
-      public override Builder Clone() {
-        if (resultIsReadOnly) {
-          return new Builder(result);
-        } else {
-          return new Builder().MergeFrom(result);
-        }
-      }
-      
-      public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_Time.Descriptor; }
-      }
-      
-      public override Gpb_Time DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_Time.DefaultInstance; }
-      }
-      
-      public override Gpb_Time BuildPartial() {
-        if (resultIsReadOnly) {
-          return result;
-        }
-        resultIsReadOnly = true;
-        return result.MakeReadOnly();
-      }
-      
-      public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_Time) {
-          return MergeFrom((Gpb_Time) other);
-        } else {
-          base.MergeFrom(other);
-          return this;
-        }
-      }
-      
-      public override Builder MergeFrom(Gpb_Time other) {
-        if (other == global::autonomy_msg.Gpb_Time.DefaultInstance) return this;
-        PrepareBuilder();
-        if (other.HasTime) {
-          Time = other.Time;
-        }
-        this.MergeUnknownFields(other.UnknownFields);
-        return this;
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-        PrepareBuilder();
-        pb::UnknownFieldSet.Builder unknownFields = null;
-        uint tag;
-        string field_name;
-        while (input.ReadTag(out tag, out field_name)) {
-          if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbTimeFieldNames, field_name, global::System.StringComparer.Ordinal);
-            if(field_ordinal >= 0)
-              tag = _gpbTimeFieldTags[field_ordinal];
-            else {
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              continue;
-            }
-          }
-          switch (tag) {
-            case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
-            }
-            default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
-                if (unknownFields != null) {
-                  this.UnknownFields = unknownFields.Build();
-                }
-                return this;
-              }
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              break;
-            }
-            case 8: {
-              result.hasTime = input.ReadUInt64(ref result.time_);
-              break;
-            }
-          }
-        }
-        
-        if (unknownFields != null) {
-          this.UnknownFields = unknownFields.Build();
-        }
-        return this;
-      }
-      
-      
-      public bool HasTime {
-        get { return result.hasTime; }
-      }
-      [global::System.CLSCompliant(false)]
-      public ulong Time {
-        get { return result.Time; }
-        set { SetTime(value); }
-      }
-      [global::System.CLSCompliant(false)]
-      public Builder SetTime(ulong value) {
-        PrepareBuilder();
-        result.hasTime = true;
-        result.time_ = value;
-        return this;
-      }
-      public Builder ClearTime() {
-        PrepareBuilder();
-        result.hasTime = false;
-        result.time_ = 0UL;
-        return this;
-      }
-    }
-    static Gpb_Time() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }
@@ -3360,81 +4434,54 @@ namespace autonomy_msg {
   }
   
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_VillageCell : pb::GeneratedMessage<Gpb_VillageCell, Gpb_VillageCell.Builder> {
-    private Gpb_VillageCell() { }
-    private static readonly Gpb_VillageCell defaultInstance = new Gpb_VillageCell().MakeReadOnly();
-    private static readonly string[] _gpbVillageCellFieldNames = new string[] { "id", "pos_x", "pos_y" };
-    private static readonly uint[] _gpbVillageCellFieldTags = new uint[] { 8, 21, 29 };
-    public static Gpb_VillageCell DefaultInstance {
+  public sealed partial class Gpb_Time : pb::GeneratedMessage<Gpb_Time, Gpb_Time.Builder> {
+    private Gpb_Time() { }
+    private static readonly Gpb_Time defaultInstance = new Gpb_Time().MakeReadOnly();
+    private static readonly string[] _gpbTimeFieldNames = new string[] { "time" };
+    private static readonly uint[] _gpbTimeFieldTags = new uint[] { 8 };
+    public static Gpb_Time DefaultInstance {
       get { return defaultInstance; }
     }
     
-    public override Gpb_VillageCell DefaultInstanceForType {
+    public override Gpb_Time DefaultInstanceForType {
       get { return DefaultInstance; }
     }
     
-    protected override Gpb_VillageCell ThisMessage {
+    protected override Gpb_Time ThisMessage {
       get { return this; }
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_VillageCell__Descriptor; }
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Time__Descriptor; }
     }
     
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_VillageCell, Gpb_VillageCell.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_VillageCell__FieldAccessorTable; }
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Time, Gpb_Time.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable; }
     }
     
-    public const int IdFieldNumber = 1;
-    private bool hasId;
-    private int id_;
-    public bool HasId {
-      get { return hasId; }
+    public const int TimeFieldNumber = 1;
+    private bool hasTime;
+    private ulong time_;
+    public bool HasTime {
+      get { return hasTime; }
     }
-    public int Id {
-      get { return id_; }
-    }
-    
-    public const int PosXFieldNumber = 2;
-    private bool hasPosX;
-    private float posX_;
-    public bool HasPosX {
-      get { return hasPosX; }
-    }
-    public float PosX {
-      get { return posX_; }
-    }
-    
-    public const int PosYFieldNumber = 3;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
-    }
-    public float PosY {
-      get { return posY_; }
+    [global::System.CLSCompliant(false)]
+    public ulong Time {
+      get { return time_; }
     }
     
     public override bool IsInitialized {
       get {
-        if (!hasId) return false;
-        if (!hasPosX) return false;
-        if (!hasPosY) return false;
+        if (!hasTime) return false;
         return true;
       }
     }
     
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
-      string[] field_names = _gpbVillageCellFieldNames;
-      if (hasId) {
-        output.WriteInt32(1, field_names[0], Id);
-      }
-      if (hasPosX) {
-        output.WriteFloat(2, field_names[1], PosX);
-      }
-      if (hasPosY) {
-        output.WriteFloat(3, field_names[2], PosY);
+      string[] field_names = _gpbTimeFieldNames;
+      if (hasTime) {
+        output.WriteUInt64(1, field_names[0], Time);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3446,14 +4493,8 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
-        if (hasId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
-        }
-        if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(2, PosX);
-        }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosY);
+        if (hasTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, Time);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3461,49 +4502,49 @@ namespace autonomy_msg {
       }
     }
     
-    public static Gpb_VillageCell ParseFrom(pb::ByteString data) {
+    public static Gpb_Time ParseFrom(pb::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_Time ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(byte[] data) {
+    public static Gpb_Time ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_Time ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(global::System.IO.Stream input) {
+    public static Gpb_Time ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_Time ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseDelimitedFrom(global::System.IO.Stream input) {
+    public static Gpb_Time ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static Gpb_VillageCell ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_Time ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(pb::ICodedInputStream input) {
+    public static Gpb_Time ParseFrom(pb::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static Gpb_VillageCell ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_Time ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
-    private Gpb_VillageCell MakeReadOnly() {
+    private Gpb_Time MakeReadOnly() {
       return this;
     }
     
     public static Builder CreateBuilder() { return new Builder(); }
     public override Builder ToBuilder() { return CreateBuilder(this); }
     public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_VillageCell prototype) {
+    public static Builder CreateBuilder(Gpb_Time prototype) {
       return new Builder(prototype);
     }
     
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_VillageCell, Builder> {
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Time, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -3511,18 +4552,18 @@ namespace autonomy_msg {
         result = DefaultInstance;
         resultIsReadOnly = true;
       }
-      internal Builder(Gpb_VillageCell cloneFrom) {
+      internal Builder(Gpb_Time cloneFrom) {
         result = cloneFrom;
         resultIsReadOnly = true;
       }
       
       private bool resultIsReadOnly;
-      private Gpb_VillageCell result;
+      private Gpb_Time result;
       
-      private Gpb_VillageCell PrepareBuilder() {
+      private Gpb_Time PrepareBuilder() {
         if (resultIsReadOnly) {
-          Gpb_VillageCell original = result;
-          result = new Gpb_VillageCell();
+          Gpb_Time original = result;
+          result = new Gpb_Time();
           resultIsReadOnly = false;
           MergeFrom(original);
         }
@@ -3533,7 +4574,7 @@ namespace autonomy_msg {
         get { return result.IsInitialized; }
       }
       
-      protected override Gpb_VillageCell MessageBeingBuilt {
+      protected override Gpb_Time MessageBeingBuilt {
         get { return PrepareBuilder(); }
       }
       
@@ -3552,14 +4593,14 @@ namespace autonomy_msg {
       }
       
       public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_VillageCell.Descriptor; }
+        get { return global::autonomy_msg.Gpb_Time.Descriptor; }
       }
       
-      public override Gpb_VillageCell DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_VillageCell.DefaultInstance; }
+      public override Gpb_Time DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_Time.DefaultInstance; }
       }
       
-      public override Gpb_VillageCell BuildPartial() {
+      public override Gpb_Time BuildPartial() {
         if (resultIsReadOnly) {
           return result;
         }
@@ -3568,25 +4609,19 @@ namespace autonomy_msg {
       }
       
       public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_VillageCell) {
-          return MergeFrom((Gpb_VillageCell) other);
+        if (other is Gpb_Time) {
+          return MergeFrom((Gpb_Time) other);
         } else {
           base.MergeFrom(other);
           return this;
         }
       }
       
-      public override Builder MergeFrom(Gpb_VillageCell other) {
-        if (other == global::autonomy_msg.Gpb_VillageCell.DefaultInstance) return this;
+      public override Builder MergeFrom(Gpb_Time other) {
+        if (other == global::autonomy_msg.Gpb_Time.DefaultInstance) return this;
         PrepareBuilder();
-        if (other.HasId) {
-          Id = other.Id;
-        }
-        if (other.HasPosX) {
-          PosX = other.PosX;
-        }
-        if (other.HasPosY) {
-          PosY = other.PosY;
+        if (other.HasTime) {
+          Time = other.Time;
         }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
@@ -3603,9 +4638,9 @@ namespace autonomy_msg {
         string field_name;
         while (input.ReadTag(out tag, out field_name)) {
           if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbVillageCellFieldNames, field_name, global::System.StringComparer.Ordinal);
+            int field_ordinal = global::System.Array.BinarySearch(_gpbTimeFieldNames, field_name, global::System.StringComparer.Ordinal);
             if(field_ordinal >= 0)
-              tag = _gpbVillageCellFieldTags[field_ordinal];
+              tag = _gpbTimeFieldTags[field_ordinal];
             else {
               if (unknownFields == null) {
                 unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
@@ -3632,15 +4667,7 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasId = input.ReadInt32(ref result.id_);
-              break;
-            }
-            case 21: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
-              break;
-            }
-            case 29: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
+              result.hasTime = input.ReadUInt64(ref result.time_);
               break;
             }
           }
@@ -3653,95 +4680,57 @@ namespace autonomy_msg {
       }
       
       
-      public bool HasId {
-        get { return result.hasId; }
+      public bool HasTime {
+        get { return result.hasTime; }
       }
-      public int Id {
-        get { return result.Id; }
-        set { SetId(value); }
+      [global::System.CLSCompliant(false)]
+      public ulong Time {
+        get { return result.Time; }
+        set { SetTime(value); }
       }
-      public Builder SetId(int value) {
+      [global::System.CLSCompliant(false)]
+      public Builder SetTime(ulong value) {
         PrepareBuilder();
-        result.hasId = true;
-        result.id_ = value;
+        result.hasTime = true;
+        result.time_ = value;
         return this;
       }
-      public Builder ClearId() {
+      public Builder ClearTime() {
         PrepareBuilder();
-        result.hasId = false;
-        result.id_ = 0;
-        return this;
-      }
-      
-      public bool HasPosX {
-        get { return result.hasPosX; }
-      }
-      public float PosX {
-        get { return result.PosX; }
-        set { SetPosX(value); }
-      }
-      public Builder SetPosX(float value) {
-        PrepareBuilder();
-        result.hasPosX = true;
-        result.posX_ = value;
-        return this;
-      }
-      public Builder ClearPosX() {
-        PrepareBuilder();
-        result.hasPosX = false;
-        result.posX_ = 0F;
-        return this;
-      }
-      
-      public bool HasPosY {
-        get { return result.hasPosY; }
-      }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
-      }
-      public Builder SetPosY(float value) {
-        PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
-        return this;
-      }
-      public Builder ClearPosY() {
-        PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
+        result.hasTime = false;
+        result.time_ = 0UL;
         return this;
       }
     }
-    static Gpb_VillageCell() {
+    static Gpb_Time() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }
   
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_Road : pb::GeneratedMessage<Gpb_Road, Gpb_Road.Builder> {
-    private Gpb_Road() { }
-    private static readonly Gpb_Road defaultInstance = new Gpb_Road().MakeReadOnly();
-    private static readonly string[] _gpbRoadFieldNames = new string[] { "isRoadEnd", "pos_x", "pos_y" };
-    private static readonly uint[] _gpbRoadFieldTags = new uint[] { 8, 21, 29 };
-    public static Gpb_Road DefaultInstance {
+  public sealed partial class Gpb_RoadCell : pb::GeneratedMessage<Gpb_RoadCell, Gpb_RoadCell.Builder> {
+    private Gpb_RoadCell() { }
+    private static readonly Gpb_RoadCell defaultInstance = new Gpb_RoadCell().MakeReadOnly();
+    private static readonly string[] _gpbRoadCellFieldNames = new string[] { "cell", "isRoadEnd" };
+    private static readonly uint[] _gpbRoadCellFieldTags = new uint[] { 18, 8 };
+    public static Gpb_RoadCell DefaultInstance {
       get { return defaultInstance; }
     }
     
-    public override Gpb_Road DefaultInstanceForType {
+    public override Gpb_RoadCell DefaultInstanceForType {
       get { return DefaultInstance; }
     }
     
-    protected override Gpb_Road ThisMessage {
+    protected override Gpb_RoadCell ThisMessage {
       get { return this; }
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Road__Descriptor; }
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_RoadCell__Descriptor; }
     }
     
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Road, Gpb_Road.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Road__FieldAccessorTable; }
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_RoadCell, Gpb_RoadCell.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable; }
     }
     
     public const int IsRoadEndFieldNumber = 1;
@@ -3754,46 +4743,33 @@ namespace autonomy_msg {
       get { return isRoadEnd_; }
     }
     
-    public const int PosXFieldNumber = 2;
-    private bool hasPosX;
-    private float posX_;
-    public bool HasPosX {
-      get { return hasPosX; }
+    public const int CellFieldNumber = 2;
+    private bool hasCell;
+    private global::autonomy_msg.Gpb_GridCell cell_;
+    public bool HasCell {
+      get { return hasCell; }
     }
-    public float PosX {
-      get { return posX_; }
-    }
-    
-    public const int PosYFieldNumber = 3;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
-    }
-    public float PosY {
-      get { return posY_; }
+    public global::autonomy_msg.Gpb_GridCell Cell {
+      get { return cell_ ?? global::autonomy_msg.Gpb_GridCell.DefaultInstance; }
     }
     
     public override bool IsInitialized {
       get {
         if (!hasIsRoadEnd) return false;
-        if (!hasPosX) return false;
-        if (!hasPosY) return false;
+        if (!hasCell) return false;
+        if (!Cell.IsInitialized) return false;
         return true;
       }
     }
     
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
-      string[] field_names = _gpbRoadFieldNames;
+      string[] field_names = _gpbRoadCellFieldNames;
       if (hasIsRoadEnd) {
-        output.WriteBool(1, field_names[0], IsRoadEnd);
+        output.WriteBool(1, field_names[1], IsRoadEnd);
       }
-      if (hasPosX) {
-        output.WriteFloat(2, field_names[1], PosX);
-      }
-      if (hasPosY) {
-        output.WriteFloat(3, field_names[2], PosY);
+      if (hasCell) {
+        output.WriteMessage(2, field_names[0], Cell);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3808,11 +4784,8 @@ namespace autonomy_msg {
         if (hasIsRoadEnd) {
           size += pb::CodedOutputStream.ComputeBoolSize(1, IsRoadEnd);
         }
-        if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(2, PosX);
-        }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosY);
+        if (hasCell) {
+          size += pb::CodedOutputStream.ComputeMessageSize(2, Cell);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3820,49 +4793,49 @@ namespace autonomy_msg {
       }
     }
     
-    public static Gpb_Road ParseFrom(pb::ByteString data) {
+    public static Gpb_RoadCell ParseFrom(pb::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_RoadCell ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(byte[] data) {
+    public static Gpb_RoadCell ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_RoadCell ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(global::System.IO.Stream input) {
+    public static Gpb_RoadCell ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_RoadCell ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
-    public static Gpb_Road ParseDelimitedFrom(global::System.IO.Stream input) {
+    public static Gpb_RoadCell ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static Gpb_Road ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_RoadCell ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(pb::ICodedInputStream input) {
+    public static Gpb_RoadCell ParseFrom(pb::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static Gpb_Road ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static Gpb_RoadCell ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
-    private Gpb_Road MakeReadOnly() {
+    private Gpb_RoadCell MakeReadOnly() {
       return this;
     }
     
     public static Builder CreateBuilder() { return new Builder(); }
     public override Builder ToBuilder() { return CreateBuilder(this); }
     public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_Road prototype) {
+    public static Builder CreateBuilder(Gpb_RoadCell prototype) {
       return new Builder(prototype);
     }
     
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Road, Builder> {
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_RoadCell, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -3870,18 +4843,18 @@ namespace autonomy_msg {
         result = DefaultInstance;
         resultIsReadOnly = true;
       }
-      internal Builder(Gpb_Road cloneFrom) {
+      internal Builder(Gpb_RoadCell cloneFrom) {
         result = cloneFrom;
         resultIsReadOnly = true;
       }
       
       private bool resultIsReadOnly;
-      private Gpb_Road result;
+      private Gpb_RoadCell result;
       
-      private Gpb_Road PrepareBuilder() {
+      private Gpb_RoadCell PrepareBuilder() {
         if (resultIsReadOnly) {
-          Gpb_Road original = result;
-          result = new Gpb_Road();
+          Gpb_RoadCell original = result;
+          result = new Gpb_RoadCell();
           resultIsReadOnly = false;
           MergeFrom(original);
         }
@@ -3892,7 +4865,7 @@ namespace autonomy_msg {
         get { return result.IsInitialized; }
       }
       
-      protected override Gpb_Road MessageBeingBuilt {
+      protected override Gpb_RoadCell MessageBeingBuilt {
         get { return PrepareBuilder(); }
       }
       
@@ -3911,14 +4884,14 @@ namespace autonomy_msg {
       }
       
       public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_Road.Descriptor; }
+        get { return global::autonomy_msg.Gpb_RoadCell.Descriptor; }
       }
       
-      public override Gpb_Road DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_Road.DefaultInstance; }
+      public override Gpb_RoadCell DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_RoadCell.DefaultInstance; }
       }
       
-      public override Gpb_Road BuildPartial() {
+      public override Gpb_RoadCell BuildPartial() {
         if (resultIsReadOnly) {
           return result;
         }
@@ -3927,25 +4900,22 @@ namespace autonomy_msg {
       }
       
       public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_Road) {
-          return MergeFrom((Gpb_Road) other);
+        if (other is Gpb_RoadCell) {
+          return MergeFrom((Gpb_RoadCell) other);
         } else {
           base.MergeFrom(other);
           return this;
         }
       }
       
-      public override Builder MergeFrom(Gpb_Road other) {
-        if (other == global::autonomy_msg.Gpb_Road.DefaultInstance) return this;
+      public override Builder MergeFrom(Gpb_RoadCell other) {
+        if (other == global::autonomy_msg.Gpb_RoadCell.DefaultInstance) return this;
         PrepareBuilder();
         if (other.HasIsRoadEnd) {
           IsRoadEnd = other.IsRoadEnd;
         }
-        if (other.HasPosX) {
-          PosX = other.PosX;
-        }
-        if (other.HasPosY) {
-          PosY = other.PosY;
+        if (other.HasCell) {
+          MergeCell(other.Cell);
         }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
@@ -3962,9 +4932,9 @@ namespace autonomy_msg {
         string field_name;
         while (input.ReadTag(out tag, out field_name)) {
           if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbRoadFieldNames, field_name, global::System.StringComparer.Ordinal);
+            int field_ordinal = global::System.Array.BinarySearch(_gpbRoadCellFieldNames, field_name, global::System.StringComparer.Ordinal);
             if(field_ordinal >= 0)
-              tag = _gpbRoadFieldTags[field_ordinal];
+              tag = _gpbRoadCellFieldTags[field_ordinal];
             else {
               if (unknownFields == null) {
                 unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
@@ -3994,12 +4964,13 @@ namespace autonomy_msg {
               result.hasIsRoadEnd = input.ReadBool(ref result.isRoadEnd_);
               break;
             }
-            case 21: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
-              break;
-            }
-            case 29: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
+            case 18: {
+              global::autonomy_msg.Gpb_GridCell.Builder subBuilder = global::autonomy_msg.Gpb_GridCell.CreateBuilder();
+              if (result.hasCell) {
+                subBuilder.MergeFrom(Cell);
+              }
+              input.ReadMessage(subBuilder, extensionRegistry);
+              Cell = subBuilder.BuildPartial();
               break;
             }
           }
@@ -4032,406 +5003,47 @@ namespace autonomy_msg {
         return this;
       }
       
-      public bool HasPosX {
-        get { return result.hasPosX; }
+      public bool HasCell {
+       get { return result.hasCell; }
       }
-      public float PosX {
-        get { return result.PosX; }
-        set { SetPosX(value); }
+      public global::autonomy_msg.Gpb_GridCell Cell {
+        get { return result.Cell; }
+        set { SetCell(value); }
       }
-      public Builder SetPosX(float value) {
+      public Builder SetCell(global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
-        result.hasPosX = true;
-        result.posX_ = value;
+        result.hasCell = true;
+        result.cell_ = value;
         return this;
       }
-      public Builder ClearPosX() {
+      public Builder SetCell(global::autonomy_msg.Gpb_GridCell.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
         PrepareBuilder();
-        result.hasPosX = false;
-        result.posX_ = 0F;
+        result.hasCell = true;
+        result.cell_ = builderForValue.Build();
         return this;
       }
-      
-      public bool HasPosY {
-        get { return result.hasPosY; }
-      }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
-      }
-      public Builder SetPosY(float value) {
+      public Builder MergeCell(global::autonomy_msg.Gpb_GridCell value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
-        return this;
-      }
-      public Builder ClearPosY() {
-        PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
-        return this;
-      }
-    }
-    static Gpb_Road() {
-      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
-    }
-  }
-  
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class Gpb_BaseCell : pb::GeneratedMessage<Gpb_BaseCell, Gpb_BaseCell.Builder> {
-    private Gpb_BaseCell() { }
-    private static readonly Gpb_BaseCell defaultInstance = new Gpb_BaseCell().MakeReadOnly();
-    private static readonly string[] _gpbBaseCellFieldNames = new string[] { "id", "pos_x", "pos_y" };
-    private static readonly uint[] _gpbBaseCellFieldTags = new uint[] { 8, 21, 29 };
-    public static Gpb_BaseCell DefaultInstance {
-      get { return defaultInstance; }
-    }
-    
-    public override Gpb_BaseCell DefaultInstanceForType {
-      get { return DefaultInstance; }
-    }
-    
-    protected override Gpb_BaseCell ThisMessage {
-      get { return this; }
-    }
-    
-    public static pbd::MessageDescriptor Descriptor {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_BaseCell__Descriptor; }
-    }
-    
-    protected override pb::FieldAccess.FieldAccessorTable<Gpb_BaseCell, Gpb_BaseCell.Builder> InternalFieldAccessors {
-      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_BaseCell__FieldAccessorTable; }
-    }
-    
-    public const int IdFieldNumber = 1;
-    private bool hasId;
-    private int id_;
-    public bool HasId {
-      get { return hasId; }
-    }
-    public int Id {
-      get { return id_; }
-    }
-    
-    public const int PosXFieldNumber = 2;
-    private bool hasPosX;
-    private float posX_;
-    public bool HasPosX {
-      get { return hasPosX; }
-    }
-    public float PosX {
-      get { return posX_; }
-    }
-    
-    public const int PosYFieldNumber = 3;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
-    }
-    public float PosY {
-      get { return posY_; }
-    }
-    
-    public override bool IsInitialized {
-      get {
-        if (!hasId) return false;
-        if (!hasPosX) return false;
-        if (!hasPosY) return false;
-        return true;
-      }
-    }
-    
-    public override void WriteTo(pb::ICodedOutputStream output) {
-      int size = SerializedSize;
-      string[] field_names = _gpbBaseCellFieldNames;
-      if (hasId) {
-        output.WriteInt32(1, field_names[0], Id);
-      }
-      if (hasPosX) {
-        output.WriteFloat(2, field_names[1], PosX);
-      }
-      if (hasPosY) {
-        output.WriteFloat(3, field_names[2], PosY);
-      }
-      UnknownFields.WriteTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public override int SerializedSize {
-      get {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-        
-        size = 0;
-        if (hasId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
-        }
-        if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(2, PosX);
-        }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosY);
-        }
-        size += UnknownFields.SerializedSize;
-        memoizedSerializedSize = size;
-        return size;
-      }
-    }
-    
-    public static Gpb_BaseCell ParseFrom(pb::ByteString data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(byte[] data) {
-      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(global::System.IO.Stream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseDelimitedFrom(global::System.IO.Stream input) {
-      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
-      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(pb::ICodedInputStream input) {
-      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
-    }
-    public static Gpb_BaseCell ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
-      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
-    }
-    private Gpb_BaseCell MakeReadOnly() {
-      return this;
-    }
-    
-    public static Builder CreateBuilder() { return new Builder(); }
-    public override Builder ToBuilder() { return CreateBuilder(this); }
-    public override Builder CreateBuilderForType() { return new Builder(); }
-    public static Builder CreateBuilder(Gpb_BaseCell prototype) {
-      return new Builder(prototype);
-    }
-    
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_BaseCell, Builder> {
-      protected override Builder ThisBuilder {
-        get { return this; }
-      }
-      public Builder() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-      }
-      internal Builder(Gpb_BaseCell cloneFrom) {
-        result = cloneFrom;
-        resultIsReadOnly = true;
-      }
-      
-      private bool resultIsReadOnly;
-      private Gpb_BaseCell result;
-      
-      private Gpb_BaseCell PrepareBuilder() {
-        if (resultIsReadOnly) {
-          Gpb_BaseCell original = result;
-          result = new Gpb_BaseCell();
-          resultIsReadOnly = false;
-          MergeFrom(original);
-        }
-        return result;
-      }
-      
-      public override bool IsInitialized {
-        get { return result.IsInitialized; }
-      }
-      
-      protected override Gpb_BaseCell MessageBeingBuilt {
-        get { return PrepareBuilder(); }
-      }
-      
-      public override Builder Clear() {
-        result = DefaultInstance;
-        resultIsReadOnly = true;
-        return this;
-      }
-      
-      public override Builder Clone() {
-        if (resultIsReadOnly) {
-          return new Builder(result);
+        if (result.hasCell &&
+            result.cell_ != global::autonomy_msg.Gpb_GridCell.DefaultInstance) {
+            result.cell_ = global::autonomy_msg.Gpb_GridCell.CreateBuilder(result.cell_).MergeFrom(value).BuildPartial();
         } else {
-          return new Builder().MergeFrom(result);
+          result.cell_ = value;
         }
-      }
-      
-      public override pbd::MessageDescriptor DescriptorForType {
-        get { return global::autonomy_msg.Gpb_BaseCell.Descriptor; }
-      }
-      
-      public override Gpb_BaseCell DefaultInstanceForType {
-        get { return global::autonomy_msg.Gpb_BaseCell.DefaultInstance; }
-      }
-      
-      public override Gpb_BaseCell BuildPartial() {
-        if (resultIsReadOnly) {
-          return result;
-        }
-        resultIsReadOnly = true;
-        return result.MakeReadOnly();
-      }
-      
-      public override Builder MergeFrom(pb::IMessage other) {
-        if (other is Gpb_BaseCell) {
-          return MergeFrom((Gpb_BaseCell) other);
-        } else {
-          base.MergeFrom(other);
-          return this;
-        }
-      }
-      
-      public override Builder MergeFrom(Gpb_BaseCell other) {
-        if (other == global::autonomy_msg.Gpb_BaseCell.DefaultInstance) return this;
-        PrepareBuilder();
-        if (other.HasId) {
-          Id = other.Id;
-        }
-        if (other.HasPosX) {
-          PosX = other.PosX;
-        }
-        if (other.HasPosY) {
-          PosY = other.PosY;
-        }
-        this.MergeUnknownFields(other.UnknownFields);
+        result.hasCell = true;
         return this;
       }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
-      }
-      
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      public Builder ClearCell() {
         PrepareBuilder();
-        pb::UnknownFieldSet.Builder unknownFields = null;
-        uint tag;
-        string field_name;
-        while (input.ReadTag(out tag, out field_name)) {
-          if(tag == 0 && field_name != null) {
-            int field_ordinal = global::System.Array.BinarySearch(_gpbBaseCellFieldNames, field_name, global::System.StringComparer.Ordinal);
-            if(field_ordinal >= 0)
-              tag = _gpbBaseCellFieldTags[field_ordinal];
-            else {
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              continue;
-            }
-          }
-          switch (tag) {
-            case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
-            }
-            default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
-                if (unknownFields != null) {
-                  this.UnknownFields = unknownFields.Build();
-                }
-                return this;
-              }
-              if (unknownFields == null) {
-                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
-              }
-              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
-              break;
-            }
-            case 8: {
-              result.hasId = input.ReadInt32(ref result.id_);
-              break;
-            }
-            case 21: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
-              break;
-            }
-            case 29: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
-              break;
-            }
-          }
-        }
-        
-        if (unknownFields != null) {
-          this.UnknownFields = unknownFields.Build();
-        }
-        return this;
-      }
-      
-      
-      public bool HasId {
-        get { return result.hasId; }
-      }
-      public int Id {
-        get { return result.Id; }
-        set { SetId(value); }
-      }
-      public Builder SetId(int value) {
-        PrepareBuilder();
-        result.hasId = true;
-        result.id_ = value;
-        return this;
-      }
-      public Builder ClearId() {
-        PrepareBuilder();
-        result.hasId = false;
-        result.id_ = 0;
-        return this;
-      }
-      
-      public bool HasPosX {
-        get { return result.hasPosX; }
-      }
-      public float PosX {
-        get { return result.PosX; }
-        set { SetPosX(value); }
-      }
-      public Builder SetPosX(float value) {
-        PrepareBuilder();
-        result.hasPosX = true;
-        result.posX_ = value;
-        return this;
-      }
-      public Builder ClearPosX() {
-        PrepareBuilder();
-        result.hasPosX = false;
-        result.posX_ = 0F;
-        return this;
-      }
-      
-      public bool HasPosY {
-        get { return result.hasPosY; }
-      }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
-      }
-      public Builder SetPosY(float value) {
-        PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
-        return this;
-      }
-      public Builder ClearPosY() {
-        PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
+        result.hasCell = false;
+        result.cell_ = null;
         return this;
       }
     }
-    static Gpb_BaseCell() {
+    static Gpb_RoadCell() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }

@@ -11,14 +11,15 @@ namespace soa
         {
             INVALID = 0,
             ACTOR, 
-            BASECELL, 
+            BASE, 
+            GRIDSPEC,
             MODE_COMMAND,
-            NGOSITECELL, 
-            NOGO, 
-            ROAD, 
+            NGOSITE, 
+            ROADCELL, 
             SPOI, 
+            TERRAIN,
             TIME,
-            VILLAGECELL, 
+            VILLAGE, 
             WAYPOINT, 
             WAYPOINT_OVERRIDE
         }; 

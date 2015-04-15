@@ -1,20 +1,20 @@
-﻿using System;
+﻿// Additinonal using statements are needed if we are running in Unity
+#if(NOT_UNITY)
+#else
+    using UnityEngine; // Uncomment this if running in Unity
+    using Hashtable = ExitGames.Client.Photon.Hashtable; // Uncomment this if running in Unity#endif
+#endif
+
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.Threading;
-using UnityEngine; // Uncomment this if running in Unity
-
 using ExitGames.Client.Photon;
 using ExitGames.Client.Photon.Lite;
 
-// Note:
-// If running within Unity, replace all System.WriteLine( with Debug.Log(
-
 namespace soa
 {
-    using Hashtable = ExitGames.Client.Photon.Hashtable; // Uncomment this if running in Unity
-
     class PhotonLiteCommManager : IPhotonPeerListener
     {
         // Reference to data manager
@@ -131,12 +131,20 @@ namespace soa
 
                     // Wait for it to start up
                     while (!photonUpdateThread.IsAlive) ;
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: Update thread started");                        
+                    #else
                     Debug.Log("PhotonLiteCommManager: Update thread started");
+                    #endif
                 }
                 else
                 {
                     // Photon update thread already running, no need to do anything else
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: start() has no effect, update thread already running");                       
+                    #else
                     Debug.Log("PhotonLiteCommManager: start() has no effect, update thread already running");
+                    #endif
                 }
             } // Unlock
         }
@@ -151,7 +159,11 @@ namespace soa
                 if (!startEligible)
                 {
                     // Request to disconnect has been sent
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: Termination request sent");                    
+                    #else
                     Debug.Log("PhotonLiteCommManager: Termination request sent");
+                    #endif
                     terminateRequested = true;
 
                     // Wait for termination
@@ -163,7 +175,11 @@ namespace soa
                 else
                 {
                     // Photon update thread already inactive, no need to do anything else
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: terminate() has no effect, update thread already inactive");
+                    #else
                     Debug.Log("PhotonLiteCommManager: terminate() has no effect, update thread already inactive");
+                    #endif
                 }
             } // Unlock
         }
@@ -183,9 +199,11 @@ namespace soa
                 // Print out if any state transitions have been made
                 if (prevState != currState)
                 {
-                    Debug.Log("PhotonLiteCommManager: " +
-                        getStateString(prevState) + " -> " +
-                        getStateString(currState));
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
+                    #else
+                    Debug.Log("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
+                    #endif
                 }
 
                 // Make copy of current state
@@ -206,8 +224,11 @@ namespace soa
                             {
                                 // Try (re)connecting to the photon server
                                 currState = State.CONNECTING;
-                                Debug.Log("PhotonLiteCommManager: Connecting to Photon server at " +
-                                    ipAddress);
+                                #if(NOT_UNITY)
+                                Console.WriteLine("PhotonLiteCommManager: Connecting to Photon server at " + ipAddress);                               
+                                #else
+                                Debug.Log("PhotonLiteCommManager: Connecting to Photon server at " + ipAddress);
+                                #endif
                                 peer.Connect(ipAddress, roomName);
                             }
                             break;
@@ -237,7 +258,11 @@ namespace soa
                             else
                             {
                                 // Connected to Photon server, now join our game
+                                #if(NOT_UNITY)
+                                Console.WriteLine("PhotonLiteCommManager: Joining room \"" + roomName + "\"");                                
+                                #else
                                 Debug.Log("PhotonLiteCommManager: Joining room \"" + roomName + "\"");
+                                #endif
                                 currState = State.JOINING;
                                 Dictionary<byte, object> opParams = new Dictionary<byte, object>();
                                 opParams[LiteOpKey.GameId] = roomName;
@@ -286,9 +311,11 @@ namespace soa
                 // Print out if any state transitions have been made
                 if (prevState != currState)
                 {
-                    Debug.Log("PhotonLiteCommManager: " +
-                        getStateString(prevState) + " -> " +
-                        getStateString(currState));
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
+                    #else
+                    Debug.Log("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
+                    #endif
                 }
 
                 // Make copy of current state
@@ -329,7 +356,11 @@ namespace soa
                     // Just successfully joined a room
                     mActorNumber = (int)operationResponse.Parameters[LiteOpKey.ActorNr];
                     currState = State.JOINED;
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonLiteCommManager: Joined room \"" + roomName + "\" as Player " + mActorNumber);
+                    #else
                     Debug.Log("PhotonLiteCommManager: Joined room \"" + roomName + "\" as Player " + mActorNumber);
+                    #endif
                     break;
                 case LiteOpCode.Leave:
                     // Just successfully left a room, now we are connected to server only
@@ -370,7 +401,11 @@ namespace soa
                         else
                         {
                             // Something went wrong with deserialization
+                            #if(NOT_UNITY)
+                            Console.Error.WriteLine("PhotonLiteCommManager: Belief deserialization failed");
+                            #else
                             Debug.Log("PhotonLiteCommManager: Belief deserialization failed");
+                            #endif
                         }
                         break;
                     }
@@ -380,7 +415,11 @@ namespace soa
                         int actorNrJoined = (int)eventData.Parameters[LiteEventKey.ActorNr];
                         if (actorNrJoined != mActorNumber)
                         {
+                            #if(NOT_UNITY)
+                            Console.WriteLine("PhotonLiteCommManager: Player " + actorNrJoined + " joined the room");                            
+                            #else
                             Debug.Log("PhotonLiteCommManager: Player " + actorNrJoined + " joined the room");
+                            #endif
                         }
 
                         // Provide update on all players in room
@@ -393,7 +432,11 @@ namespace soa
                                 statusMessage += (", " + actorList[i]);
                             }
                             statusMessage += "}";
+                            #if(NOT_UNITY)
+                            Console.WriteLine(statusMessage);                            
+                            #else
                             Debug.Log(statusMessage);
+                            #endif
                         }
                         break;
                     }
@@ -401,7 +444,11 @@ namespace soa
                     {
                         // Exiting player just left, print status
                         int actorNrJoined = (int)eventData.Parameters[LiteEventKey.ActorNr];
+                        #if(NOT_UNITY)
+                        Console.WriteLine("PhotonLiteCommManager: Player " + actorNrJoined + " left the room");
+                        #else
                         Debug.Log("PhotonLiteCommManager: Player " + actorNrJoined + " left the room");
+                        #endif
 
                         // Provide update on all players in room
                         int[] actorList = (int[])eventData.Parameters[LiteEventKey.ActorList];
@@ -413,7 +460,11 @@ namespace soa
                                 statusMessage += (", " + actorList[i]);
                             }
                             statusMessage += "}";
+                            #if(NOT_UNITY)
+                            Console.WriteLine(statusMessage);                            
+                            #else
                             Debug.Log(statusMessage);
+                            #endif
                         }
                         break;
                     }
@@ -456,7 +507,11 @@ namespace soa
             else
             {
                 // Something went wrong with serialization
+                #if(NOT_UNITY)
+                Console.Error.WriteLine("PhotonLiteCommManager: Belief serialization failed");
+                #else
                 Debug.Log("PhotonLiteCommManager: Belief serialization failed");
+                #endif
             }
         }
 
@@ -506,7 +561,11 @@ namespace soa
 
         public void DebugReturn(DebugLevel level, string message)
         {
-            // Debug.Log("PhotonLiteCommManager: DebugReturn() " + message); 
+            #if(NOT_UNITY)
+            //Console.WriteLine("PhotonLiteCommManager: DebugReturn() " + message);             
+            #else
+            //Debug.Log("PhotonLiteCommManager: DebugReturn() " + message); 
+            #endif
         }
 
         // Prints a description of the state

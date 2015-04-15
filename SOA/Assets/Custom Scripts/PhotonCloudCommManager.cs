@@ -1,14 +1,16 @@
-﻿using ExitGames.Client.Photon;
-using ExitGames.Client.Photon.LoadBalancing;
+﻿// Additinonal using statements are needed if we are running in Unity
+#if(NOT_UNITY)
+#else
+using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+#endif
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-
-
-using UnityEngine;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+using ExitGames.Client.Photon;
+using ExitGames.Client.Photon.LoadBalancing;
 
 namespace soa
 {
@@ -115,12 +117,20 @@ namespace soa
 
                     // Wait for it to start up
                     while (!photonUpdateThread.IsAlive) ;
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonCloudCommManager: Update thread started");
+                    #else
                     Debug.Log("PhotonCloudCommManager: Update thread started");
+                    #endif
                 }
                 else
                 {
                     // Photon update thread already running, no need to do anything else
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonCloudCommManager: start() has no effect, update thread already running");
+                    #else
                     Debug.Log("PhotonCloudCommManager: start() has no effect, update thread already running");
+                    #endif
                 }
             } // Unlock
         }
@@ -137,7 +147,11 @@ namespace soa
                 if (!startEligible)
                 {
                     // Request to disconnect has been sent
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonCloudCommManager: Termination request sent");
+                    #else
                     Debug.Log("PhotonCloudCommManager: Termination request sent");
+                    #endif
                     terminateRequested = true;
 
                     // Wait for termination
@@ -149,7 +163,11 @@ namespace soa
                 else
                 {
                     // Photon update thread already inactive, no need to do anything else
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonCloudCommManager: terminate() has no effect, update thread already inactive");
+                    #else
                     Debug.Log("PhotonCloudCommManager: terminate() has no effect, update thread already inactive");
+                    #endif
                 }
             } // Unlock
         }
@@ -165,7 +183,11 @@ namespace soa
                 // Print internal state
                 if (prevState != State)
                 {
+                    #if(NOT_UNITY)
+                    Console.WriteLine("PhotonCloudCommManager: " + prevState + " -> " + State);                  
+                    #else
                     Debug.Log("PhotonCloudCommManager: " + prevState + " -> " + State);
+                    #endif
                     prevState = State;
                 }
 
@@ -238,7 +260,11 @@ namespace soa
             else
             {
                 // Something went wrong with serialization
+                #if(NOT_UNITY)
+                Console.Error.WriteLine("PhotonCloudCommManager: Belief serialization failed");
+                #else
                 Debug.Log("PhotonCloudCommManager: Belief serialization failed");
+                #endif
             }
         }
 
@@ -325,7 +351,11 @@ namespace soa
                         else
                         {
                             // Something went wrong with deserialization
+                            #if(NOT_UNITY)
+                            Console.Error.WriteLine("PhotonCloudCommManager: Belief deserialization failed");
+                            #else
                             Debug.Log("PhotonCloudCommManager: Belief deserialization failed");
+                            #endif
                         }
                         break;
                     }
@@ -337,7 +367,11 @@ namespace soa
         /// </summary>
         private void DebugReturn(string debugStr)
         {
-            // Console.Out.WriteLine(debugStr);
+            #if(NOT_UNITY)
+            //Console.WriteLine(debugStr);            
+            #else
+            //Debug.Log(debugStr);
+            #endif
         }
     }
 }
