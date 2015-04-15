@@ -1,0 +1,132 @@
+fileFormatVersion: 2
+guid: bee53ce53d9cf544f9af6a0cdbe7be22
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: longWings_StandardMissile polySurface14
+    100002: longWings_StandardMissile polySurface7
+    100004: longWings_StandardMissile polySurface8
+    100006: longWings_StandardMissile polySurface9
+    100008: polySurface13_longWings StandardMissile
+    100010: //RootNode
+    100012: StandardMissile_flame
+    100014: StandardMissile_group2 pCube2 group4
+    100016: StandardMissile_group2 pCube2 group5
+    100018: StandardMissile_group2 pCube2 group6
+    100020: StandardMissile_nurbsToPoly1
+    100022: StandardMissile_pCube2 group3 group2
+    100024: StandardMissile_polySurface11
+    100026: StandardMissile_polySurface12
+    100028: StandardMissile_pPipe1
+    400000: longWings_StandardMissile polySurface14
+    400002: longWings_StandardMissile polySurface7
+    400004: longWings_StandardMissile polySurface8
+    400006: longWings_StandardMissile polySurface9
+    400008: polySurface13_longWings StandardMissile
+    400010: //RootNode
+    400012: StandardMissile_flame
+    400014: StandardMissile_group2 pCube2 group4
+    400016: StandardMissile_group2 pCube2 group5
+    400018: StandardMissile_group2 pCube2 group6
+    400020: StandardMissile_nurbsToPoly1
+    400022: StandardMissile_pCube2 group3 group2
+    400024: StandardMissile_polySurface11
+    400026: StandardMissile_polySurface12
+    400028: StandardMissile_pPipe1
+    2300000: longWings_StandardMissile polySurface14
+    2300002: longWings_StandardMissile polySurface7
+    2300004: longWings_StandardMissile polySurface8
+    2300006: longWings_StandardMissile polySurface9
+    2300008: polySurface13_longWings StandardMissile
+    2300010: StandardMissile_flame
+    2300012: StandardMissile_group2 pCube2 group4
+    2300014: StandardMissile_group2 pCube2 group5
+    2300016: StandardMissile_group2 pCube2 group6
+    2300018: StandardMissile_nurbsToPoly1
+    2300020: StandardMissile_pCube2 group3 group2
+    2300022: StandardMissile_polySurface11
+    2300024: StandardMissile_polySurface12
+    2300026: StandardMissile_pPipe1
+    3300000: longWings_StandardMissile polySurface14
+    3300002: longWings_StandardMissile polySurface7
+    3300004: longWings_StandardMissile polySurface8
+    3300006: longWings_StandardMissile polySurface9
+    3300008: polySurface13_longWings StandardMissile
+    3300010: StandardMissile_flame
+    3300012: StandardMissile_group2 pCube2 group4
+    3300014: StandardMissile_group2 pCube2 group5
+    3300016: StandardMissile_group2 pCube2 group6
+    3300018: StandardMissile_nurbsToPoly1
+    3300020: StandardMissile_pCube2 group3 group2
+    3300022: StandardMissile_polySurface11
+    3300024: StandardMissile_polySurface12
+    3300026: StandardMissile_pPipe1
+    4300000: longWings_StandardMissile polySurface14
+    4300002: longWings_StandardMissile polySurface7
+    4300004: longWings_StandardMissile polySurface8
+    4300006: longWings_StandardMissile polySurface9
+    4300008: polySurface13_longWings StandardMissile
+    4300010: StandardMissile_flame
+    4300012: StandardMissile_group2 pCube2 group4
+    4300014: StandardMissile_group2 pCube2 group5
+    4300016: StandardMissile_group2 pCube2 group6
+    4300018: StandardMissile_nurbsToPoly1
+    4300020: StandardMissile_pCube2 group3 group2
+    4300022: StandardMissile_polySurface11
+    4300024: StandardMissile_polySurface12
+    4300026: StandardMissile_pPipe1
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
