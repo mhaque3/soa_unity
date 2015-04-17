@@ -12,6 +12,7 @@ namespace soa
 
         // Constructor
         public Belief_Time(ulong time)
+            : base(0)
         {
             this.time = time;
         }

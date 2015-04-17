@@ -13,6 +13,7 @@ namespace soa
 
         // Constructor
         public Belief_RoadCell(bool isRoadEnd, GridCell cell)
+            : base(0)
         {
             this.isRoadEnd = isRoadEnd;
             this.cell = new GridCell(cell);

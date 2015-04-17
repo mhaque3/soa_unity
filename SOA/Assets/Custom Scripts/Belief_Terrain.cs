@@ -13,6 +13,7 @@ namespace soa
 
         // Constructor
         public Belief_Terrain(int type, List<GridCell> cells)
+            : base(0)
         {
             this.type = type;
             this.cells = GridCell.cloneList(cells);

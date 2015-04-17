@@ -14,6 +14,7 @@ namespace soa
 
         // Constructor
         public Belief_Mode_Command(ulong request_time, int actor_id, int mode_id)
+            : base(actor_id)
         {
             this.request_time = request_time;
             this.actor_id = actor_id;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace soa
 {
-    abstract public class Belief
+    public class Belief
     {
         public enum BeliefType
         {
@@ -22,9 +22,31 @@ namespace soa
             VILLAGE, 
             WAYPOINT, 
             WAYPOINT_OVERRIDE
-        }; 
+        };
+
+        public Belief(int id)
+        {
+            this.id = id;
+        }
 
         // Each belief must be able to give its type
-        abstract public BeliefType getBeliefType();
+        public virtual BeliefType getBeliefType()
+        {
+            return BeliefType.INVALID;
+        }
+
+
+        public int getId()
+        {
+            return id;
+        }
+        public UInt64 getTime()
+        {
+            return time;
+        }
+
+        private UInt64 time;
+        private int id;
+
     }
 }

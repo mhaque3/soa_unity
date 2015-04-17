@@ -15,6 +15,7 @@ namespace soa
 
         // Constructor
         public Belief_SPOI(ulong request_time, int actor_id, float pos_x, float pos_y)
+            : base(actor_id)
         {
             this.request_time = request_time;
             this.actor_id = actor_id;

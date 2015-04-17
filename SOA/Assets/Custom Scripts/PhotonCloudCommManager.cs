@@ -342,11 +342,15 @@ namespace soa
                         if (b != null)
                         {
                             // Filter the belief
+                            #if(NOT_UNITY)
                             if (dataManager.filterBelief(b))
                             {
-                                // Add the belief to the data manager if it passed filter
+                            #endif
+                                // Add the belief to the data manager if it passed filter, no filter for Unity
                                 dataManager.addBelief(b);
+                            #if(NOT_UNITY)
                             }
+                            #endif
                         }
                         else
                         {

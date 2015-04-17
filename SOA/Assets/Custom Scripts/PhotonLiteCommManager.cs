@@ -391,12 +391,16 @@ namespace soa
                         // If deserialization was successful
                         if (b != null)
                         {
+                            #if(NOT_UNITY)
                             // Filter the belief
                             if (dataManager.filterBelief(b))
                             {
+                            #endif
                                 // Add the belief to the data manager if it passed filter
                                 dataManager.addBelief(b);
+                            #if(NOT_UNITY)
                             }
+                            #endif
                         }
                         else
                         {

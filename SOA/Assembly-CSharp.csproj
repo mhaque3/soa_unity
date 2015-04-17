@@ -71,7 +71,6 @@
      <Compile Include="Assets\Custom Scripts\NgoSim.cs" />
      <Compile Include="Assets\Custom Scripts\OverheadMouseCamera.cs" />
      <Compile Include="Assets\Custom Scripts\PhotonCloudCommManager.cs" />
-     <Compile Include="Assets\Custom Scripts\PhotonCommManager.cs" />
      <Compile Include="Assets\Custom Scripts\PhotonLiteCommManager.cs" />
      <Compile Include="Assets\Custom Scripts\PropSpinX.cs" />
      <Compile Include="Assets\Custom Scripts\PropSpinY.cs" />

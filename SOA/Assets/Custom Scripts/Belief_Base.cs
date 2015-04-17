@@ -13,6 +13,7 @@ namespace soa
 
         // Constructor
         public Belief_Base(int id, List<GridCell> cells)
+            : base(id)
         {
             this.id = id;
             this.cells = GridCell.cloneList(cells);

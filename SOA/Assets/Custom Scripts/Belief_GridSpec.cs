@@ -13,6 +13,7 @@ namespace soa
 
         // Constructor
         public Belief_GridSpec(int width, int height)
+            : base(0)
         {
             this.width = width;
             this.height = height;

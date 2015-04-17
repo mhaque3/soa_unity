@@ -26,7 +26,7 @@ namespace soa
             float pos_x, float pos_y, float pos_z,
             bool velocity_x_valid = false, float velocity_x = 0.0f,
             bool velocity_y_valid = false, float velocity_y = 0.0f,
-            bool velocity_z_valid = false, float velocity_z = 0.0f)
+            bool velocity_z_valid = false, float velocity_z = 0.0f): base(unique_id)
         {
             this.unique_id = unique_id;
             this.affiliation = affiliation;

@@ -16,6 +16,7 @@ namespace soa
 
         // Constructor
         public Belief_Waypoint_Override(ulong request_time, int actor_id, float pos_x, float pos_y, float pos_z)
+            : base(actor_id)
         {
             this.request_time = request_time;
             this.actor_id = actor_id;
