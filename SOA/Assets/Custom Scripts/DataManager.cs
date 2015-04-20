@@ -13,15 +13,23 @@ namespace soa
 {
     public class DataManager
     {
-        //Dictionary of belief data
-        protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
-
-        protected SortedDictionary<int, SortedDictionary<int, double> > actorDistanceDictionary;
-        protected List<SoaActor> actors;
+        public float updateRateMs;
+        //List of all actors in this scenario
+        public List<SoaActor> actors;
         protected SortedDictionary<int, SoaActor> soaActorDictionary;
 
+        protected SortedDictionary<int, SortedDictionary<int, double>> actorDistanceDictionary;
+
+        //Dictionary of belief data
+        protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
+        private System.Object bliefDictionaryLock = new System.Object();
+
+
         // Constructor
-        public DataManager(){}
+        public DataManager(float updateRate)
+        {
+            updateRateMs = updateRate;
+        }
 
         #if(NOT_UNITY)
         // Dummy functions for filtering
@@ -115,6 +123,26 @@ namespace soa
             {
                 Debug.LogError("TRIED TO ADD ACTOR TO DATA MANAGER THAT ALREADY EXISTS");
             }
+        }
+
+        public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > getActorWorldView(int actorId)
+        {
+
+            SoaActor soaActor = soaActorDictionary[actorId];
+            if (soaActor != null)
+            {
+                return soaActor.getBeliefDictionary();
+            }
+            else
+            {
+                Debug.LogError("getActorWorldView actor id " + actorId + " does not exist.");
+                return null;
+            }
+        }
+
+        public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getGodsEyeView()
+        {
+            return beliefDictionary;
         }
     }
 }

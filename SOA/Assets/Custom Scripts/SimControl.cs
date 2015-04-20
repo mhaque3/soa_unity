@@ -18,6 +18,8 @@ public class SimControl : MonoBehaviour
 	// Use this for initialization
 
     PhotonCloudCommManager cm;
+    DataManager dataManager;
+
 	void Start () 
     {
         NavMesh.pathfindingIterationsPerFrame = 50;
@@ -91,7 +93,12 @@ public class SimControl : MonoBehaviour
             messageTimer += Time.deltaTime;
             if (messageTimer > 5f)
             {
+                //TODO get display parameters
 
+                //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
+                SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = dataManager.getGodsEyeView();
+
+                //TODO Update local platforms correctly in new architecture
                 for (int i = 0; i < LocalPlatforms.Count; i++)
                 {
                     GameObject platform = LocalPlatforms[i];
@@ -106,6 +113,11 @@ public class SimControl : MonoBehaviour
                 }
 
                 messageTimer = 0f;
+
+
+                //TODO Iterate over remote platform and update their position
+
+
 
                 /*
                 // Create 64 bit time field
