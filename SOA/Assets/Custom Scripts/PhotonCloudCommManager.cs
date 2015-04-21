@@ -228,7 +228,7 @@ namespace soa
         /// <summary>
         /// Adds information from data manager to outgoing queue 
         /// </summary>
-        public void addOutgoing(Belief b)
+        public void addOutgoing(Belief b, int sourceId)
         {
             // Serialize the belief
             Byte[] serial = serializer.serializeBelief(b);
@@ -347,7 +347,7 @@ namespace soa
                             {
                             #endif
                                 // Add the belief to the data manager if it passed filter, no filter for Unity
-                                dataManager.addBelief(b);
+                                dataManager.addBelief(b, 0);
                             #if(NOT_UNITY)
                             }
                             #endif

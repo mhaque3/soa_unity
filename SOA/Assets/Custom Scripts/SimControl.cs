@@ -14,28 +14,28 @@ public class SimControl : MonoBehaviour
     public List<GameObject> RedBases;
     public bool BroadcastOn;
     public OverheadMouseCamera omcScript;
+    public float updateRateS;
+    public bool simulateLocalPlatformMotion;
+    public bool simulateActors;
+    private bool showTruePositions = true;
 
+    //only access this when you have the DataManager lock
+    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayBeliefDictionary;
 	// Use this for initialization
 
-    PhotonCloudCommManager cm;
     DataManager dataManager;
 
 	void Start () 
     {
         NavMesh.pathfindingIterationsPerFrame = 50;
 
-        if (BroadcastOn)
-        {
-            // Create managers
+        //if (BroadcastOn)
+        //{
+            // Create manager
             DataManager dm = new DataManager();
-            Serializer ps = new ProtobufSerializer();
+            displayBeliefDictionary = dm.getGodsEyeView();
 
-            cm = new PhotonCloudCommManager(dm, ps, "app-us.exitgamescloud.com:5055", "soa");
-            //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
-
-            // Start them
-            cm.start();
-        }
+        //}
 
         for (int i=0; i<LocalPlatforms.Count; i++)
         {
@@ -86,106 +86,155 @@ public class SimControl : MonoBehaviour
     int randDraw;
     Belief b;
     float messageTimer = 0f;
+    float updateTimer = 0f;
 	void Update () 
     {
-        if (BroadcastOn)
+        updateTimer += Time.deltaTime;
+        if (updateTimer > updateRateS)
         {
-            messageTimer += Time.deltaTime;
-            if (messageTimer > 5f)
+            //TODO get display parameters
+
+            //This lock keeps the comms manager from adding data while we are reading
+            lock (dataManager.dataManagerLock)
             {
-                //TODO get display parameters
-
-                //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
-                SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = dataManager.getGodsEyeView();
-
-                //TODO Update local platforms correctly in new architecture
+                //TODO update local platform positions
                 for (int i = 0; i < LocalPlatforms.Count; i++)
                 {
                     GameObject platform = LocalPlatforms[i];
-                    SoldierWaypointMotion motion = platform.GetComponent<SoldierWaypointMotion>();
-                    Vector3 velocity = platform.transform.forward * motion.GetSpeed();
                     SoaActor actor = platform.GetComponent<SoaActor>();
-                    b = new Belief_Actor(actor.unique_id, actor.affiliation, actor.type,
-                            platform.transform.position.x, platform.transform.position.y, platform.transform.position.z,
-                            true, velocity.x, true, velocity.y, true, velocity.z);
-                    Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType() + "\n" + b);
-                    cm.addOutgoing(b);
+
+                    //Tells the actor if it should simulate its own motion
+                    actor.simulateMotion = simulateActors;
+                    
+                    //If showing true position, first arg gets ignored
+                    //Otherwise, the data in the first arg is represented in the display.
+                    //If null the actor is no longer visible.
+                    actor.updateActor((Belief_Actor)displayBeliefDictionary[Belief.BeliefType.ACTOR][actor.unique_id], showTruePositions);
                 }
 
-                messageTimer = 0f;
-
-
-                //TODO Iterate over remote platform and update their position
-
-
-
-                /*
-                // Create 64 bit time field
-                ulong randTime = (ulong)Random.Range(ulong.MinValue, ulong.MaxValue);
-
-                // Create and send beliefs		
-                randDraw = Random.Range(0, 10);
-                switch (randDraw)
+                //TODO Iterate over remote platform and update their positions
+                for (int i = 0; i < RemotePlatforms.Count; i++)
                 {
-                    case 0:
-                        b = new Belief_Actor((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)),
-                            (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), true, (int)(Random.Range(int.MinValue, int.MaxValue)),
-                            false, (int)(Random.Range(int.MinValue, int.MaxValue)), true, (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 1:
-                        b = new Belief_BaseCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 2:
-                        b = new Belief_Mode_Command(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 3:
-                        b = new Belief_NGOSiteCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 4:
-                        b = new Belief_Nogo((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 5:
-                        b = new Belief_Road(true, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 6:
-                        b = new Belief_SPOI(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 7:
-                        b = new Belief_Time(randTime);
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 8:
-                        b = new Belief_VillageCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 9:
-                        b = new Belief_Waypoint(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
-                    case 10:
-                        b = new Belief_Waypoint_Override(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                        cm.addOutgoing(b);
-                        break;
+                    GameObject platform = LocalPlatforms[i];
+                    SoaActor actor = platform.GetComponent<SoaActor>();
+
+                    //Tells the actor if it should simulate its own motion
+                    actor.simulateMotion = simulateActors;
+
+                    //If showing true position, first arg gets ignored
+                    //Otherwise, the data in the first arg is represented in the display.
+                    //If null the actor is no longer visible.
+                    actor.updateActor((Belief_Actor)displayBeliefDictionary[Belief.BeliefType.ACTOR][actor.unique_id], showTruePositions);
                 }
-                 * */
+
+                updateTimer = 0f;
+            }
+        }
+
+        if (BroadcastOn)
+        {
+            messageTimer += Time.deltaTime;
+            if (messageTimer > updateRateS / 5f)
+            {
+                //This lock keeps the comms manager from adding data while we pushing out comms
+                lock (dataManager.dataManagerLock)
+                {
+                    
+
+                    //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
+                    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = dataManager.getGodsEyeView();
+
+                    //TODO Update local platforms comms
+                    for (int i = 0; i < LocalPlatforms.Count; i++)
+                    {
+                        GameObject platform = LocalPlatforms[i];
+                        SoaActor actor = platform.GetComponent<SoaActor>();
+                        actor.broadcastComms();
+                    }
+                    
+                    /*for (int i = 0; i < LocalPlatforms.Count; i++)
+                    {
+                        GameObject platform = LocalPlatforms[i];
+                        SoldierWaypointMotion motion = platform.GetComponent<SoldierWaypointMotion>();
+                        Vector3 velocity = platform.transform.forward * motion.GetSpeed();
+                        SoaActor actor = platform.GetComponent<SoaActor>();
+                        b = new Belief_Actor(actor.unique_id, actor.affiliation, actor.type,
+                                platform.transform.position.x, platform.transform.position.y, platform.transform.position.z,
+                                true, velocity.x, true, velocity.y, true, velocity.z);
+                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType() + "\n" + b);
+                        cm.addOutgoing(b);
+                    }
+                    */
+                    messageTimer = 0f;
+
+                    /*
+                    // Create 64 bit time field
+                    ulong randTime = (ulong)Random.Range(ulong.MinValue, ulong.MaxValue);
+
+                    // Create and send beliefs		
+                    randDraw = Random.Range(0, 10);
+                    switch (randDraw)
+                    {
+                        case 0:
+                            b = new Belief_Actor((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)),
+                                (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), true, (int)(Random.Range(int.MinValue, int.MaxValue)),
+                                false, (int)(Random.Range(int.MinValue, int.MaxValue)), true, (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 1:
+                            b = new Belief_BaseCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 2:
+                            b = new Belief_Mode_Command(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 3:
+                            b = new Belief_NGOSiteCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 4:
+                            b = new Belief_Nogo((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 5:
+                            b = new Belief_Road(true, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 6:
+                            b = new Belief_SPOI(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 7:
+                            b = new Belief_Time(randTime);
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 8:
+                            b = new Belief_VillageCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 9:
+                            b = new Belief_Waypoint(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                        case 10:
+                            b = new Belief_Waypoint_Override(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
+                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
+                            cm.addOutgoing(b);
+                            break;
+                    }
+                     * */
+                }
                 Debug.Log("*** END OUTGOING MESSAGE BLOCK ***");
             }
         }
@@ -213,7 +262,6 @@ public class SimControl : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        if(cm != null)
-            cm.terminate();
+        dataManager.stopPhoton();
     }
 }
