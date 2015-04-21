@@ -397,7 +397,7 @@ namespace soa
                             {
                             #endif
                                 // Add the belief to the data manager if it passed filter
-                                dataManager.addBelief(b);
+                                dataManager.addBelief(b,0);
                             #if(NOT_UNITY)
                             }
                             #endif

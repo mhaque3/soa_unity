@@ -13,7 +13,7 @@ namespace soa
 {
     public class DataManager
     {
-        public float updateRateMs;
+        //public float updateRateMs;
         //List of all actors in this scenario
         public List<SoaActor> actors;
         protected SortedDictionary<int, SoaActor> soaActorDictionary;
@@ -22,13 +22,19 @@ namespace soa
 
         //Dictionary of belief data
         protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
-        private System.Object bliefDictionaryLock = new System.Object();
+        public System.Object dataManagerLock = new System.Object();
+        private PhotonCloudCommManager cm;
 
 
         // Constructor
-        public DataManager(float updateRate)
+        public DataManager()
         {
-            updateRateMs = updateRate;
+            Serializer ps = new ProtobufSerializer();
+            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", "soa");
+            //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
+
+            // Start them
+            cm.start();
         }
 
         #if(NOT_UNITY)
@@ -40,47 +46,55 @@ namespace soa
         }
         #endif
 
+        public void addAndBroadcastBelief(Belief b, int sourceId)
+        {
+            cm.addOutgoing(b, sourceId);
+            addBelief(b, sourceId);
+            
+        }
+
         // Check if belief is newer than current belief of matching type and id, if so,
         // replace old belief with b.
-        public void addBelief(Belief b)
+        public void addBelief(Belief b, int sourceId)
         {
-            #if(NOT_UNITY)
+            lock (dataManagerLock)
+            {
+#if(NOT_UNITY)
             Console.WriteLine("DataManager: Received belief of type "
                 + (int)b.getBeliefType() + "\n" + b);
-            #else
-            Debug.Log("DataManager: Received belief of type "
-                + (int)b.getBeliefType() + "\n" + b);
+#else
+                Debug.Log("DataManager: Received belief of type "
+                    + (int)b.getBeliefType() + "\n" + b);
 
-            SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
-            if (tempTypeDict != null)
-            {
-                Belief oldBelief = beliefDictionary[b.getBeliefType()][b.getId()];
-                if (oldBelief == null || oldBelief.getTime()<b.getTime())
+                SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
+                if (tempTypeDict != null)
+                {
+                    Belief oldBelief = beliefDictionary[b.getBeliefType()][b.getId()];
+                    if (oldBelief == null || oldBelief.getTime() < b.getTime())
+                    {
+                        beliefDictionary[b.getBeliefType()][b.getId()] = b;
+                    }
+                }
+                else
                 {
                     beliefDictionary[b.getBeliefType()][b.getId()] = b;
                 }
-            }else
-            {
-                beliefDictionary[b.getBeliefType()][b.getId()] = b;
-            }
 
-            //TODO use actual source of the belief
-            int sourceId = b.getId();
-            SortedDictionary<int, double> sourceDistanceDictionary = actorDistanceDictionary[sourceId];
-            if (sourceDistanceDictionary != null)
-            {
-                foreach (KeyValuePair<int, double> entry in sourceDistanceDictionary)
+                SortedDictionary<int, double> sourceDistanceDictionary = actorDistanceDictionary[sourceId];
+                if (sourceDistanceDictionary != null)
                 {
-                    //TODO use actual sensor range
-                    SoaActor destActor = soaActorDictionary[entry.Key];
-                    double commsRange = destActor.commsRange;
-                    if (entry.Value <= commsRange)
+                    foreach (KeyValuePair<int, double> entry in sourceDistanceDictionary)
                     {
-                        destActor.addBelief(b);
+                        //TODO use actual sensor range
+                        SoaActor destActor = soaActorDictionary[entry.Key];
+                        double commsRange = destActor.commsRange;
+                        if (entry.Value <= commsRange)
+                        {
+                            destActor.addBelief(b);
+                        }
                     }
                 }
             }
-
             #endif
         }
 
@@ -143,6 +157,12 @@ namespace soa
         public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getGodsEyeView()
         {
             return beliefDictionary;
+        }
+
+        public void stopPhoton()
+        {
+            if (cm != null)
+                cm.terminate();
         }
     }
 }

@@ -92,11 +92,11 @@ public class SoaActor : MonoBehaviour
      * 
      * Set whether or not to display the true position of the agent
      */ 
-    void updateActor(Belief_Actor myActor, bool displayTruePosition)
+    public void updateActor(Belief_Actor myActor, bool displayTruePosition)
     {
         this.displayTruePosition = displayTruePosition;
 
-        if (myActor.getId() != unique_id)
+        if (myActor != null && myActor.getId() != unique_id)
         {
             Debug.LogError("Update Actor " + unique_id + " has invalid id " + myActor.getId());
             return;
@@ -107,8 +107,8 @@ public class SoaActor : MonoBehaviour
             displayActor = true;
             //TODO Update the true position based on the waypoint for this actor
             
-            //TODO add new actor belief to the data manager.
             Belief_Actor newActorData = new Belief_Actor(unique_id, myActor.getAffiliation(), myActor.getType(), truePosition.x, truePosition.y, truePosition.z);
+            beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             
             useGhostModel = false;
             
@@ -166,6 +166,30 @@ public class SoaActor : MonoBehaviour
     public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getBeliefDictionary()
     {
         return beliefDictionary;
+    }
+
+    public void broadcastComms()
+    {
+        //Broadcast types ACTOR, MODE_COMMAND, SPOI, WAYPOINT, WAYPOINT_OVERRIDE
+        publishBeliefsOfType(Belief.BeliefType.ACTOR);
+        publishBeliefsOfType(Belief.BeliefType.MODE_COMMAND);
+        publishBeliefsOfType(Belief.BeliefType.SPOI);
+        publishBeliefsOfType(Belief.BeliefType.WAYPOINT);
+        publishBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE);
+    }
+
+    private void publishBeliefsOfType(Belief.BeliefType type)
+    {
+        ulong currentTime = 2222222222222222;//  timeManager.getCurrentTime();
+        SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
+        foreach(KeyValuePair<int, Belief> entry in typeDict)
+        {
+            //only publish new data
+            if (entry.Value.getTime() < currentTime - 5000)
+            {
+                dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+            }
+        }
     }
 
 }
