@@ -1,6 +1,5 @@
 ﻿// Additinonal using statements are needed if we are running in Unity
-#if(NOT_UNITY)
-#else
+#if(UNITY_STANDALONE)
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 #endif
@@ -121,19 +120,19 @@ namespace soa
 
                     // Wait for it to start up
                     while (!photonUpdateThread.IsAlive) ;
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonCloudCommManager: Update thread started");
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonCloudCommManager: Update thread started");
+                    #else
+                    Console.WriteLine("PhotonCloudCommManager: Update thread started");
                     #endif
                 }
                 else
                 {
                     // Photon update thread already running, no need to do anything else
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonCloudCommManager: start() has no effect, update thread already running");
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonCloudCommManager: start() has no effect, update thread already running");
+                    #else
+                    Console.WriteLine("PhotonCloudCommManager: start() has no effect, update thread already running");
                     #endif
                 }
             } // Unlock
@@ -151,10 +150,10 @@ namespace soa
                 if (!startEligible)
                 {
                     // Request to disconnect has been sent
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonCloudCommManager: Termination request sent");
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonCloudCommManager: Termination request sent");
+                    #else
+                    Console.WriteLine("PhotonCloudCommManager: Termination request sent");
                     #endif
                     terminateRequested = true;
 
@@ -167,10 +166,10 @@ namespace soa
                 else
                 {
                     // Photon update thread already inactive, no need to do anything else
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonCloudCommManager: terminate() has no effect, update thread already inactive");
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonCloudCommManager: terminate() has no effect, update thread already inactive");
+                    #else
+                    Console.WriteLine("PhotonCloudCommManager: terminate() has no effect, update thread already inactive");
                     #endif
                 }
             } // Unlock
@@ -187,10 +186,10 @@ namespace soa
                 // Print internal state
                 if (prevState != State)
                 {
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonCloudCommManager: " + prevState + " -> " + State);                  
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonCloudCommManager: " + prevState + " -> " + State);
+                    #else
+                    Console.WriteLine("PhotonCloudCommManager: " + prevState + " -> " + State);
                     #endif
                     prevState = State;
                 }
@@ -242,9 +241,13 @@ namespace soa
         /// </summary>
         public void addOutgoing(Belief b, int sourceID)
         {
-            // Serialize the source ID into 4 bytes, network byte order (Big Endian)
+            // Serialize the 4-byte source ID, network byte order (Big Endian)
             Byte[] sourceIDBytes = BitConverter.GetBytes(sourceID);
-            
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(sourceIDBytes);
+            }
+
             // Serialize the belief
             Byte[] beliefBytes = serializer.serializeBelief(b);
 
@@ -253,9 +256,9 @@ namespace soa
             if (beliefBytes.Length > 0)
             {
                 // Combine the serialized source ID and belief into one message
-                Byte[] message = new Byte[sourceIDBytes.Length + beliefBytes.Length];
-                System.Buffer.BlockCopy(sourceIDBytes, 0, message, 0, sourceIDBytes.Length);
-                System.Buffer.BlockCopy(beliefBytes, 0, message, sourceIDBytes.Length, beliefBytes.Length);
+                Byte[] message = new Byte[4 + beliefBytes.Length];
+                System.Buffer.BlockCopy(sourceIDBytes, 0, message, 0, 4);
+                System.Buffer.BlockCopy(beliefBytes, 0, message, 4, beliefBytes.Length);
                 
                 lock (outgoingQueue)
                 {
@@ -280,10 +283,10 @@ namespace soa
             else
             {
                 // Something went wrong with serialization
-                #if(NOT_UNITY)
-                Console.Error.WriteLine("PhotonCloudCommManager: Belief serialization failed");
-                #else
+                #if(UNITY_STANDALONE)
                 Debug.Log("PhotonCloudCommManager: Belief serialization failed");
+                #else
+                Console.Error.WriteLine("PhotonCloudCommManager: Belief serialization failed");
                 #endif
             }
         }
@@ -293,9 +296,9 @@ namespace soa
         /// </summary>
         private void sendOutgoing()
         {
-            // Protobuf message
-            Byte[] serial;
+            // Buffers
             Byte[] message;
+            Byte[] packet;
 
             // Acquire lock
             lock (outgoingQueue)
@@ -306,10 +309,10 @@ namespace soa
                 while (outgoingQueue.Count > 0)
                 {
                     // Pop out first element in queue
-                    serial = outgoingQueue.Dequeue();
+                    message = outgoingQueue.Dequeue();
 
                     // Push into local queue
-                    localQueue.Enqueue(serial);
+                    localQueue.Enqueue(message);
                 }
             } // Unlock
 
@@ -317,20 +320,25 @@ namespace soa
             while (localQueue.Count > 0)
             {
                 // Pop out first element in queue
-                serial = localQueue.Dequeue();
+                message = localQueue.Dequeue();
 
-                // Create message by appending own size header
-                message = new Byte[serial.Length + 1];
-                message[0] = (byte)serial.Length;
-                System.Buffer.BlockCopy(serial, 0, message, 1, serial.Length);
+                // Header is serialized 4-byte message length, network byte order (Big Endian)
+                Byte[] headerBytes = BitConverter.GetBytes(message.Length);
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(headerBytes);
+                }
+
+                // Create packet by appending header to message
+                int packetLength = message.Length + 4;
+                packet = new Byte[packetLength];
+                System.Buffer.BlockCopy(headerBytes, 0, packet, 0, 4);
+                System.Buffer.BlockCopy(message, 0, packet, 4, message.Length);
 
                 // Send it out over Photon to everyone else
                 Dictionary<byte, object> opParams = new Dictionary<byte, object>();
-                //op/Params[ParameterCode.Code] = (byte)0;
                 Hashtable evData = new Hashtable();
-                evData[(byte)0] = message;
-                //opParams[ParameterCode.Data] = evData;
-                //peer.OpCustom((byte)LiteOpCode.RaiseEvent, opParams, true);
+                evData[(byte)0] = packet;
                 OpRaiseEvent(0, evData, true, null);
             }
         }
@@ -352,40 +360,50 @@ namespace soa
                         // Get the byte[] message from protobuf
                         // Message = 1 byte for length of rest of message, 4 bytes for source ID, rest is serialized belief
                         Hashtable evData = (Hashtable)photonEvent.Parameters[ParameterCode.Data];
-                        Byte[] message = (Byte[])evData[(byte)0];
+                        Byte[] packet = (Byte[])evData[(byte)0];
 
-                        // Extract belief length and source ID
-                        int serializedBeliefLength = (int)message[0] - 4;
-                        int sourceID = BitConverter.ToInt32(message, 1); // get from bytes 1 through 4 in array
+                        // Extract 4-byte message length (convert from network byte order (Big Endian) to native order if necessary)
+                        Byte[] messageLengthBytes = new Byte[4];
+                        System.Buffer.BlockCopy(packet, 0, messageLengthBytes, 0, 4);
+                        if (BitConverter.IsLittleEndian)
+                        {
+                            Array.Reverse(messageLengthBytes);
+                        }
+                        int messageLength = BitConverter.ToInt32(messageLengthBytes, 0);
+
+
+                        // Extract 4-byte source ID (convert from network byte order (Big Endian) to native order if necessary)
+                        Byte[] sourceIDBytes = new Byte[4];
+                        System.Buffer.BlockCopy(packet, 4, sourceIDBytes, 0, 4);
+                        if (BitConverter.IsLittleEndian)
+                        {
+                            Array.Reverse(sourceIDBytes);
+                        }
+                        int sourceID = BitConverter.ToInt32(sourceIDBytes, 0);
+
+                        // Get belief length
+                        int serializedBeliefLength = messageLength - 4;
 
                         // Extract serialized belief
                         Byte[] serializedBelief = new Byte[serializedBeliefLength];
-                        System.Buffer.BlockCopy(message, 5, serializedBelief, 0, serializedBeliefLength);
+                        System.Buffer.BlockCopy(packet, 8, serializedBelief, 0, serializedBeliefLength);
 
-                        // Generate the belief
+                        // Extract the belief
                         Belief b = serializer.generateBelief(serializedBelief);
 
                         // If deserialization was successful
                         if (b != null)
                         {
-                            // Filter the belief
-                            #if(NOT_UNITY)
-                            if (dataManager.filterBelief(b))
-                            {
-                            #endif
-                                // Add the belief to the data manager if it passed filter, no filter for Unity
-                                dataManager.addBelief(b, sourceID);
-                            #if(NOT_UNITY)
-                            }
-                            #endif
+                            // Add the belief to the data manager if it passed filter, no filter for Unity
+                            dataManager.addBelief(b, sourceID);
                         }
                         else
                         {
                             // Something went wrong with deserialization
-                            #if(NOT_UNITY)
-                            Console.Error.WriteLine("PhotonCloudCommManager: Belief deserialization failed");
-                            #else
+                            #if(UNITY_STANDALONE)
                             Debug.Log("PhotonCloudCommManager: Belief deserialization failed");
+                            #else
+                            Console.Error.WriteLine("PhotonCloudCommManager: Belief deserialization failed");
                             #endif
                         }
                         break;
@@ -398,10 +416,10 @@ namespace soa
         /// </summary>
         private void DebugReturn(string debugStr)
         {
-            #if(NOT_UNITY)
-            //Console.WriteLine(debugStr);            
-            #else
+            #if(UNITY_STANDALONE)
             //Debug.Log(debugStr);
+            #else
+            //Console.WriteLine(debugStr);            
             #endif
         }
     }

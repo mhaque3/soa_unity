@@ -1,6 +1,5 @@
 ﻿// Additinonal using statements are needed if we are running in Unity
-#if(NOT_UNITY)
-#else
+#if(UNITY_STANDALONE)
 using UnityEngine;
 #endif
 
@@ -37,15 +36,6 @@ namespace soa
             cm.start();
         }
 
-        #if(NOT_UNITY)
-        // Dummy functions for filtering
-        public bool filterBelief(Belief b)
-        {
-            // Everything passes for now
-            return true;
-        }
-        #endif
-
         public void addAndBroadcastBelief(Belief b, int sourceId)
         {
             cm.addOutgoing(b, sourceId);
@@ -59,12 +49,13 @@ namespace soa
         {
             lock (dataManagerLock)
             {
-#if(NOT_UNITY)
-            Console.WriteLine("DataManager: Received belief of type "
-                + (int)b.getBeliefType() + "\n" + b);
-#else
+                #if(UNITY_STANDALONE)
                 Debug.Log("DataManager: Received belief of type "
                     + (int)b.getBeliefType() + "\n" + b);
+                #else
+                Console.WriteLine("DataManager: Received belief of type "
+                    + (int)b.getBeliefType() + "\n" + b);
+                #endif
 
                 SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
                 if (tempTypeDict != null)
@@ -95,7 +86,6 @@ namespace soa
                     }
                 }
             }
-            #endif
         }
 
         /*

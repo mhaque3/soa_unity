@@ -239,7 +239,7 @@ namespace soa
 
                 default:
                     // Unrecognized type, return empty array
-                    #if(USING_UNITY)
+                    #if(UNITY_STANDALONE)
                         Debug.Log("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
                     #else
                         Console.Error.WriteLine("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
@@ -404,7 +404,7 @@ namespace soa
                     }
                 default:
                     // Unrecognized type
-                    #if(USING_UNITY)
+                    #if(UNITY_STANDALONE)
                         Debug.Log("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
                     #else
                         Console.Error.WriteLine("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
