@@ -248,15 +248,15 @@ namespace soa
             // Serialize the belief
             Byte[] beliefBytes = serializer.serializeBelief(b);
 
-            // Combine the serialized source ID and belief into one message
-            Byte[] message = new Byte[sourceIDBytes.Length + beliefBytes.Length];
-            System.Buffer.BlockCopy(sourceIDBytes, 0, message, 0, sourceIDBytes.Length);
-            System.Buffer.BlockCopy(beliefBytes, 0, message, sourceIDBytes.Length, beliefBytes.Length);
-
             // Enqueue the serialized message if serialization was
             // successful (if serial is nonempty)
-            if (serial.Length > 0)
+            if (beliefBytes.Length > 0)
             {
+                // Combine the serialized source ID and belief into one message
+                Byte[] message = new Byte[sourceIDBytes.Length + beliefBytes.Length];
+                System.Buffer.BlockCopy(sourceIDBytes, 0, message, 0, sourceIDBytes.Length);
+                System.Buffer.BlockCopy(beliefBytes, 0, message, sourceIDBytes.Length, beliefBytes.Length);
+                
                 lock (outgoingQueue)
                 {
                     if (outgoingQueue.Count < maxQueueSize)

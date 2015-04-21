@@ -30,7 +30,7 @@ namespace soa
         public DataManager()
         {
             Serializer ps = new ProtobufSerializer();
-            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", "soa");
+            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", "soa", 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             // Start them
