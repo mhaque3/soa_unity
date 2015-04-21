@@ -30,6 +30,9 @@ namespace soa
         // Sleep time between Photon server updates
         private int updateSleepTime_ms;
 
+        // Default source ID to send along with Belief to data manager
+        private int defaultSourceID;
+
         // Outgoing messages
         private Queue<Byte[]> outgoingQueue;
         private Queue<Byte[]> localQueue;
@@ -70,7 +73,7 @@ namespace soa
 
         // Constructor
         public PhotonLiteCommManager(DataManager dataManager, Serializer serializer,
-            string ipAddress, string roomName, int updateSleepTime_ms = 10,
+            string ipAddress, string roomName, int defaultSourceID, int updateSleepTime_ms = 10,
             int maxQueueSize = 1000000, bool overwriteWhenQueueFull = true)
         {
             // Copy variables
@@ -78,6 +81,7 @@ namespace soa
             this.serializer = serializer;
             this.ipAddress = ipAddress;
             this.roomName = roomName;
+            this.defaultSourceID = defaultSourceID;
             this.updateSleepTime_ms = updateSleepTime_ms;
             this.maxQueueSize = maxQueueSize;
             this.overwriteWhenQueueFull = overwriteWhenQueueFull;
@@ -379,14 +383,21 @@ namespace soa
             {
                 case 0: // Received a Protobuff message
                     {
-                        // Extract serialized message
+                        // Get the byte[] message from protobuf
+                        // Message = 1 byte for length of rest of message, 4 bytes for source ID, rest is serialized belief
                         Hashtable evData = (Hashtable)eventData.Parameters[LiteEventKey.Data];
                         Byte[] message = (Byte[])evData[(byte)0];
-                        Byte[] serial = new Byte[(int)message[0]];
-                        System.Buffer.BlockCopy(message, 1, serial, 0, serial.Length);
+
+                        // Extract belief length and source ID
+                        int serializedBeliefLength = (int)message[0] - 4;
+                        int sourceID = BitConverter.ToInt32(message, 1); // get from bytes 1 through 4 in array
+
+                        // Extract serialized belief
+                        Byte[] serializedBelief = new Byte[serializedBeliefLength];
+                        System.Buffer.BlockCopy(message, 5, serializedBelief, 0, serializedBeliefLength);
 
                         // Extract the belief
-                        Belief b = serializer.generateBelief(serial);
+                        Belief b = serializer.generateBelief(serializedBelief);
 
                         // If deserialization was successful
                         if (b != null)
@@ -397,7 +408,7 @@ namespace soa
                             {
                             #endif
                                 // Add the belief to the data manager if it passed filter
-                                dataManager.addBelief(b,0);
+                                dataManager.addBelief(b, sourceID);
                             #if(NOT_UNITY)
                             }
                             #endif
@@ -478,29 +489,45 @@ namespace soa
             }
         }
 
-        // Adds information from data manager to outgoing queue
+        /// <summary>
+        /// Adds information from data manager to outgoing queue using default source ID
+        /// </summary>
         public void addOutgoing(Belief b)
         {
+            addOutgoing(b, defaultSourceID);
+        }
+
+        // Adds information from data manager to outgoing queue
+        public void addOutgoing(Belief b, int sourceID)
+        {
+            // Serialize the source ID into 4 bytes, network byte order (Big Endian)
+            Byte[] sourceIDBytes = BitConverter.GetBytes(sourceID);
+
             // Serialize the belief
-            Byte[] serial = serializer.serializeBelief(b);
+            Byte[] beliefBytes = serializer.serializeBelief(b);
+
+            // Combine the serialized source ID and belief into one message
+            Byte[] message = new Byte[sourceIDBytes.Length + beliefBytes.Length];
+            System.Buffer.BlockCopy(sourceIDBytes, 0, message, 0, sourceIDBytes.Length);
+            System.Buffer.BlockCopy(beliefBytes, 0, message, sourceIDBytes.Length, beliefBytes.Length);
 
             // Enqueue the serialized message if serialization was
             // successful (if serial is nonempty)
-            if (serial.Length > 0)
+            if (beliefBytes.Length > 0)
             {
                 lock (outgoingQueue)
                 {
                     if (outgoingQueue.Count < maxQueueSize)
                     {
                         // There is still space in queue, go ahead and enqueue
-                        outgoingQueue.Enqueue(serial);
+                        outgoingQueue.Enqueue(message);
                     }
                     else if (outgoingQueue.Count == maxQueueSize && overwriteWhenQueueFull)
                     {
                         // No more space left and our policy is to overwrite old data
                         // Dequeue the oldest entry before enqueuing the new data
                         outgoingQueue.Dequeue();
-                        outgoingQueue.Enqueue(serial);
+                        outgoingQueue.Enqueue(message);
                     }
                     else
                     {
