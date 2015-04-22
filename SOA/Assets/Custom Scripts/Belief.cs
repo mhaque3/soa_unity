@@ -24,9 +24,12 @@ namespace soa
             WAYPOINT_OVERRIDE
         };
 
+        private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
+
         public Belief(int id)
         {
             this.id = id;
+            time = (UInt64)(System.DateTime.UtcNow - epoch).Milliseconds;
         }
 
         // Each belief must be able to give its type

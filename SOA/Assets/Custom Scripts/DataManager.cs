@@ -15,10 +15,10 @@ namespace soa
     {
         //public float updateRateMs;
         //List of all actors in this scenario
-        public List<SoaActor> actors;
-        protected SortedDictionary<int, SoaActor> soaActorDictionary;
+        public List<SoaActor> actors = new List<SoaActor>();
+        protected SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
 
-        protected SortedDictionary<int, SortedDictionary<int, double>> actorDistanceDictionary;
+        protected SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int,SortedDictionary<int,bool>>();
 
         //Dictionary of belief data
         protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
@@ -27,14 +27,29 @@ namespace soa
 
 
         // Constructor
-        public DataManager()
+        public DataManager(string roomName)
         {
             Serializer ps = new ProtobufSerializer();
-            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", "soa", 0);
+            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             // Start them
             cm.start();
+
+            beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
+            beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
         }
 
         #if(NOT_UNITY)
@@ -63,14 +78,13 @@ namespace soa
             Console.WriteLine("DataManager: Received belief of type "
                 + (int)b.getBeliefType() + "\n" + b);
 #else
-                Debug.Log("DataManager: Received belief of type "
-                    + (int)b.getBeliefType() + "\n" + b);
+                //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
 
                 SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
                 if (tempTypeDict != null)
                 {
-                    Belief oldBelief = beliefDictionary[b.getBeliefType()][b.getId()];
-                    if (oldBelief == null || oldBelief.getTime() < b.getTime())
+                    Belief oldBelief;
+                    if (!beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(),out oldBelief) || oldBelief.getTime() < b.getTime())
                     {
                         beliefDictionary[b.getBeliefType()][b.getId()] = b;
                     }
@@ -80,15 +94,14 @@ namespace soa
                     beliefDictionary[b.getBeliefType()][b.getId()] = b;
                 }
 
-                SortedDictionary<int, double> sourceDistanceDictionary = actorDistanceDictionary[sourceId];
-                if (sourceDistanceDictionary != null)
+                SortedDictionary<int, bool> sourceDistanceDictionary;
+                if (actorDistanceDictionary.TryGetValue(sourceId, out sourceDistanceDictionary))
                 {
-                    foreach (KeyValuePair<int, double> entry in sourceDistanceDictionary)
+                    foreach (KeyValuePair<int, bool> entry in sourceDistanceDictionary)
                     {
-                        //TODO use actual sensor range
                         SoaActor destActor = soaActorDictionary[entry.Key];
                         double commsRange = destActor.commsRange;
-                        if (entry.Value <= commsRange)
+                        if (entry.Value)
                         {
                             destActor.addBelief(b);
                         }
@@ -100,7 +113,8 @@ namespace soa
 
         /*
          * Call this function once every update of the simulation time step to refresh the true position data for all the actors
-         */ 
+         * A pair of actors actorDistanceDictionary[destId][sourceId] = true if the source comms range is large enough to reach the destination.
+         */
         public void calcualteDistances()
         {
             SortedDictionary<int, Belief> actorDictionary = beliefDictionary[Belief.BeliefType.ACTOR];
@@ -117,7 +131,7 @@ namespace soa
 
                     actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = Math.Sqrt(Math.Pow(actorPos.x - neighborPos.x, 2)
                         + Math.Pow(actorPos.y - neighborPos.y, 2)
-                        + Math.Pow(actorPos.z - neighborPos.z, 2));
+                        + Math.Pow(actorPos.z - neighborPos.z, 2)) < neighborActor.commsRange;
                 }
 
             }
@@ -132,10 +146,11 @@ namespace soa
             {
                 actors.Add(actor);
                 soaActorDictionary.Add(actor.unique_id, actor);
+                actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
             }
             else
             {
-                Debug.LogError("TRIED TO ADD ACTOR TO DATA MANAGER THAT ALREADY EXISTS");
+                Debug.LogError("TRIED TO ADD ACTOR TO DATA MANAGER THAT ALREADY EXISTS: " + actor.unique_id);
             }
         }
 

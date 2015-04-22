@@ -16,27 +16,27 @@ public class SoaActor : MonoBehaviour
     public List<GameObject> Tracks;
 
     public DataManager dataManager;
-    public bool simulateMotion = true;
+    public bool simulateMotion;
+    public bool useExternalWaypoint;
     public bool displayTruePosition = true;
 
     private Vector3 displayPosition;
     private Quaternion displayOrientation;
 
-    private Vector3 truePosition;
-    private Quaternion trueOrientation;
-
     private bool useGhostModel = false;
     private bool displayActor = true;
 
     protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
+
+    private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
+
+    public SoldierWaypointMotion motionScript;
+    public NavMeshAgent navAgent;
 	// Use this for initialization
 	void Start () 
     {
         displayPosition = transform.position;
         displayOrientation = transform.rotation;
-
-        truePosition = transform.position;
-        trueOrientation = transform.rotation;
 
         Sensors = transform.GetComponentsInChildren<SoaSensor>();
 
@@ -44,6 +44,25 @@ public class SoaActor : MonoBehaviour
         {
             sensor.soaActor = this;
         }
+
+        motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
+        navAgent = gameObject.GetComponent<NavMeshAgent>();
+
+        beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
+        beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
+
 	}
 
     // Update is called once per frame
@@ -59,22 +78,14 @@ public class SoaActor : MonoBehaviour
         {
             if (displayTruePosition)
             {
-                transform.position = truePosition;
-                transform.rotation = trueOrientation;
+                //TODO turn on real model, destroy/turn off other models
             }
-            else
+            else if(!useGhostModel)
             {
-                transform.position = displayPosition;
-                transform.rotation = displayOrientation;
-            }
-
-            if (useGhostModel)
+                //TODO spawn substitute model, turn off real model
+            }else
             {
-                //TODO set ghost model visible
-            }
-            else
-            {
-                //TODO set real model visible
+                //TODO spawn ghost model at display position, turn off real model
             }
         }
         else
@@ -85,16 +96,16 @@ public class SoaActor : MonoBehaviour
     }
 
     /**
-     * Update the position of the actor vectors.  If this is a simulation instance (simulateMotion = true)
-     * then simulate the next position.
-     * Otherwise set the display position vectors to the Belief_Actor position.
-     * Check if displaying old data and choose the appropriate model.
+     * Update the position of the actor vectors.  This function is called when in simulation mode
+     * If Sim is in charge of waypoints, get the current target from the motion script and add to 
+     * belief map.  Otherwise get the waypointBelief from the dictionary and set as navAgent destination.
      * 
-     * Set whether or not to display the true position of the agent
+     * TODO create functions for when in client mode and only reading position data
      */ 
-    public void updateActor(Belief_Actor myActor, bool displayTruePosition)
+    public void updateActor()
     {
-        this.displayTruePosition = displayTruePosition;
+        Belief myActor = null;
+        displayTruePosition = true;
 
         if (myActor != null && myActor.getId() != unique_id)
         {
@@ -105,34 +116,39 @@ public class SoaActor : MonoBehaviour
         if (simulateMotion)
         {
             displayActor = true;
-            //TODO Update the true position based on the waypoint for this actor
-            
-            Belief_Actor newActorData = new Belief_Actor(unique_id, myActor.getAffiliation(), myActor.getType(), truePosition.x, truePosition.y, truePosition.z);
+
+            if (useExternalWaypoint)
+            {
+                Belief newBelief;
+                motionScript.On = false;
+                if (beliefDictionary[Belief.BeliefType.WAYPOINT].TryGetValue(unique_id, out newBelief))
+                {
+                    Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
+                    navAgent.SetDestination(new Vector3(newWaypoint.getPos_x(), newWaypoint.getPos_y(), newWaypoint.getPos_z()));
+                }
+                else
+                {
+                    navAgent.SetDestination(new Vector3(transform.position.x, transform.position.y, transform.position.z));
+                }
+            }
+            else
+            {
+                float targetX = motionScript.targetPosition.x;
+                float targetY = motionScript.targetPosition.y;
+                float targetZ = motionScript.targetPosition.z;
+                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id, targetX, targetY, targetZ);
+                beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
+                dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
+            }
+
+            Belief_Actor newActorData = new Belief_Actor(unique_id, affiliation, type, transform.position.x, transform.position.y, transform.position.z);
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+            dataManager.addAndBroadcastBelief(newActorData, unique_id);
             
             useGhostModel = false;
             
         }
-        else if (myActor != null)
-        {
-            displayActor = true;
-            displayPosition = new Vector3(myActor.getPos_x(), myActor.getPos_y(), myActor.getPos_z());
-
-            //TODO Check age of belief, if belief is older than 5 seconds, switch to ghost model, otherwise use normal model
-            useGhostModel = true;
-        }
-        else
-        {
-            displayActor = false;
-        }
-                
-
-
-    }
-
-    void setSimulateMotion(bool simulateMotion)
-    {
-        this.simulateMotion = simulateMotion;
+        
     }
 
 
@@ -180,14 +196,17 @@ public class SoaActor : MonoBehaviour
 
     private void publishBeliefsOfType(Belief.BeliefType type)
     {
-        ulong currentTime = 2222222222222222;//  timeManager.getCurrentTime();
-        SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
-        foreach(KeyValuePair<int, Belief> entry in typeDict)
+        ulong currentTime = (ulong)(System.DateTime.UtcNow - epoch).Milliseconds;
+        if (beliefDictionary.ContainsKey(type))
         {
-            //only publish new data
-            if (entry.Value.getTime() < currentTime - 5000)
+            SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
+            foreach (KeyValuePair<int, Belief> entry in typeDict)
             {
-                dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+                //only publish new data
+                if (entry.Value.getTime() < currentTime - 5000)
+                {
+                    dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+                }
             }
         }
     }

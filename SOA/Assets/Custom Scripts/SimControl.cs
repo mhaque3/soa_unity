@@ -15,15 +15,16 @@ public class SimControl : MonoBehaviour
     public bool BroadcastOn;
     public OverheadMouseCamera omcScript;
     public float updateRateS;
-    public bool simulateLocalPlatformMotion;
-    public bool simulateActors;
     private bool showTruePositions = true;
 
     //only access this when you have the DataManager lock
     protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayBeliefDictionary;
 	// Use this for initialization
 
-    DataManager dataManager;
+    DataManager redDataManager;
+    DataManager blueDataManager;
+
+    enum Affiliation { BLUE = 0, RED = 1, NEUTURAL = 2 };
 
 	void Start () 
     {
@@ -32,8 +33,9 @@ public class SimControl : MonoBehaviour
         //if (BroadcastOn)
         //{
             // Create manager
-            DataManager dm = new DataManager();
-            displayBeliefDictionary = dm.getGodsEyeView();
+            redDataManager = new DataManager("soa-apl-red");
+            blueDataManager = new DataManager("soa-apl-blue");
+            displayBeliefDictionary = blueDataManager.getGodsEyeView();
 
         //}
 
@@ -44,40 +46,119 @@ public class SimControl : MonoBehaviour
             omcScript.AddPlatform(platform);
 
             SoaActor actor = platform.GetComponent<SoaActor>();
-            actor.unique_id = i;
+            actor.unique_id = 200 + i;
+            actor.simulateMotion = true;
 
             if (platform.name.Contains("Blue"))
             {
-                actor.affiliation = 0;
+                actor.affiliation = (int)Affiliation.BLUE;
+                actor.dataManager = blueDataManager;
+                blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("HeavyLift"))
             {
                 actor.affiliation = 0;
                 actor.type = 2;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = true;
             }
-            if (platform.name.Contains("SmallUAV"))
+            if (platform.name.Contains("SmallUav"))
             {
                 actor.affiliation = 0;
                 actor.type = 3;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = true;
             }
             if(platform.name.Contains("Red"))
             {
                 actor.affiliation = 1;
+                actor.useExternalWaypoint = false;
+                actor.dataManager = redDataManager;
+                redDataManager.addNewActor(actor);
             }
 
             if (platform.name.Contains("Truck"))
             {
                 actor.type = 0;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = false;
             }
             if (platform.name.Contains("Dismount"))
             {
                 actor.type = 1;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = false;
             }
             if (platform.name.Contains("Police"))
             {
                 actor.type = 4;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = false;
             }
-            
+
+        }
+
+        Debug.Log("Adding remote platforms");
+        for (int i = 0; i < RemotePlatforms.Count; i++)
+        {
+            GameObject platform = RemotePlatforms[i];
+            omcScript.AddPlatform(platform);
+
+            SoaActor actor = platform.GetComponent<SoaActor>();
+            actor.unique_id = 100 + i;
+
+            Debug.Log("Adding platform " + platform.name + " id " + actor.unique_id);
+            actor.simulateMotion = true;
+
+            if (platform.name.Contains("Blue"))
+            {
+                actor.affiliation = (int)Affiliation.BLUE;
+                actor.dataManager = blueDataManager;
+                blueDataManager.addNewActor(actor);
+            }
+            if (platform.name.Contains("HeavyLift"))
+            {
+                actor.affiliation = (int)Affiliation.BLUE;
+                actor.type = 2;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = true;
+                actor.dataManager = blueDataManager;
+            }
+            if (platform.name.Contains("SmallUav"))
+            {
+                actor.affiliation = 0;
+                actor.type = 3;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = true;
+                actor.dataManager = blueDataManager;
+            }
+            if (platform.name.Contains("Red"))
+            {
+                actor.affiliation = 1;
+                actor.dataManager = redDataManager;
+                actor.useExternalWaypoint = false;
+                redDataManager.addNewActor(actor);
+            }
+
+            if (platform.name.Contains("Truck"))
+            {
+                actor.type = 0;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = false;
+            }
+            if (platform.name.Contains("Dismount"))
+            {
+                actor.type = 1;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = false;
+            }
+            if (platform.name.Contains("Police"))
+            {
+                actor.type = 4;
+                actor.commsRange = 5000;
+                actor.useExternalWaypoint = false;
+            }
+
         }
 	}
 	
@@ -95,36 +176,51 @@ public class SimControl : MonoBehaviour
             //TODO get display parameters
 
             //This lock keeps the comms manager from adding data while we are reading
-            lock (dataManager.dataManagerLock)
+            lock (redDataManager.dataManagerLock)
             {
-                //TODO update local platform positions
                 for (int i = 0; i < LocalPlatforms.Count; i++)
                 {
                     GameObject platform = LocalPlatforms[i];
                     SoaActor actor = platform.GetComponent<SoaActor>();
+                    if (actor.affiliation == (int)Affiliation.RED)
+                    {
 
-                    //Tells the actor if it should simulate its own motion
-                    actor.simulateMotion = simulateActors;
-                    
-                    //If showing true position, first arg gets ignored
-                    //Otherwise, the data in the first arg is represented in the display.
-                    //If null the actor is no longer visible.
-                    actor.updateActor((Belief_Actor)displayBeliefDictionary[Belief.BeliefType.ACTOR][actor.unique_id], showTruePositions);
+                        //If showing true position, first arg gets ignored
+                        //Otherwise, the data in the first arg is represented in the display.
+                        //If null the actor is no longer visible.
+                        actor.updateActor();
+                    }
                 }
-
-                //TODO Iterate over remote platform and update their positions
-                for (int i = 0; i < RemotePlatforms.Count; i++)
+            }
+            
+            lock(blueDataManager.dataManagerLock)
+            {
+                displayBeliefDictionary = blueDataManager.getGodsEyeView();
+                for (int i = 0; i < LocalPlatforms.Count; i++)
                 {
                     GameObject platform = LocalPlatforms[i];
                     SoaActor actor = platform.GetComponent<SoaActor>();
+                    if (actor.affiliation == (int)Affiliation.BLUE)
+                    {
 
-                    //Tells the actor if it should simulate its own motion
-                    actor.simulateMotion = simulateActors;
+                        //If showing true position, first arg gets ignored
+                        //Otherwise, the data in the first arg is represented in the display.
+                        //If null the actor is no longer visible.
+                        actor.updateActor();
+                    }
+                }
+
+                //Iterate over remote platform and update their positions.
+                //Assume all remote platforms have blue affilition
+                for (int i = 0; i < RemotePlatforms.Count; i++)
+                {
+                    GameObject platform = RemotePlatforms[i];
+                    SoaActor actor = platform.GetComponent<SoaActor>();
 
                     //If showing true position, first arg gets ignored
                     //Otherwise, the data in the first arg is represented in the display.
                     //If null the actor is no longer visible.
-                    actor.updateActor((Belief_Actor)displayBeliefDictionary[Belief.BeliefType.ACTOR][actor.unique_id], showTruePositions);
+                    actor.updateActor();
                 }
 
                 updateTimer = 0f;
@@ -134,15 +230,15 @@ public class SimControl : MonoBehaviour
         if (BroadcastOn)
         {
             messageTimer += Time.deltaTime;
-            if (messageTimer > updateRateS / 5f)
+            if (messageTimer > updateRateS / 2f)
             {
                 //This lock keeps the comms manager from adding data while we pushing out comms
-                lock (dataManager.dataManagerLock)
+                lock (redDataManager.dataManagerLock)
                 {
                     
 
                     //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
-                    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = dataManager.getGodsEyeView();
+                    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
 
                     //TODO Update local platforms comms
                     for (int i = 0; i < LocalPlatforms.Count; i++)
@@ -235,7 +331,7 @@ public class SimControl : MonoBehaviour
                     }
                      * */
                 }
-                Debug.Log("*** END OUTGOING MESSAGE BLOCK ***");
+                //Debug.Log("*** END OUTGOING MESSAGE BLOCK ***");
             }
         }
 	}
@@ -262,6 +358,7 @@ public class SimControl : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        dataManager.stopPhoton();
+        redDataManager.stopPhoton();
+        blueDataManager.stopPhoton();
     }
 }
