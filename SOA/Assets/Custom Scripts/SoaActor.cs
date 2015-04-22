@@ -156,12 +156,13 @@ public class SoaActor : MonoBehaviour
     // replace old belief with b.
     public void addBelief(Belief b)
     {
-#if(NOT_UNITY)
-            Console.WriteLine("DataManager: Received belief of type "
-                + (int)b.getBeliefType() + "\n" + b);
-#else
+        #if(UNITY_STANDALONE)
         Debug.Log("SoaActor - DataManager: Received belief of type "
             + (int)b.getBeliefType() + "\n" + b);
+        #else
+        Console.WriteLine("SoaActor - DataManager: Received belief of type "
+            + (int)b.getBeliefType() + "\n" + b);
+        #endif
 
         SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
         if (tempTypeDict != null)
@@ -176,7 +177,6 @@ public class SoaActor : MonoBehaviour
         {
             beliefDictionary[b.getBeliefType()][b.getId()] = b;
         }
-#endif
     }
 
     public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getBeliefDictionary()

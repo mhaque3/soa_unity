@@ -1,6 +1,5 @@
 ﻿// Additinonal using statements are needed if we are running in Unity
-#if(NOT_UNITY)
-#else
+#if(UNITY_STANDALONE)
     using UnityEngine; // Uncomment this if running in Unity
     using Hashtable = ExitGames.Client.Photon.Hashtable; // Uncomment this if running in Unity#endif
 #endif
@@ -29,6 +28,9 @@ namespace soa
 
         // Sleep time between Photon server updates
         private int updateSleepTime_ms;
+
+        // Default source ID to send along with Belief to data manager
+        private int defaultSourceID;
 
         // Outgoing messages
         private Queue<Byte[]> outgoingQueue;
@@ -70,7 +72,7 @@ namespace soa
 
         // Constructor
         public PhotonLiteCommManager(DataManager dataManager, Serializer serializer,
-            string ipAddress, string roomName, int updateSleepTime_ms = 10,
+            string ipAddress, string roomName, int defaultSourceID, int updateSleepTime_ms = 10,
             int maxQueueSize = 1000000, bool overwriteWhenQueueFull = true)
         {
             // Copy variables
@@ -78,6 +80,7 @@ namespace soa
             this.serializer = serializer;
             this.ipAddress = ipAddress;
             this.roomName = roomName;
+            this.defaultSourceID = defaultSourceID;
             this.updateSleepTime_ms = updateSleepTime_ms;
             this.maxQueueSize = maxQueueSize;
             this.overwriteWhenQueueFull = overwriteWhenQueueFull;
@@ -131,19 +134,19 @@ namespace soa
 
                     // Wait for it to start up
                     while (!photonUpdateThread.IsAlive) ;
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: Update thread started");                        
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: Update thread started");
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: Update thread started");
                     #endif
                 }
                 else
                 {
                     // Photon update thread already running, no need to do anything else
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: start() has no effect, update thread already running");                       
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: start() has no effect, update thread already running");
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: start() has no effect, update thread already running");
                     #endif
                 }
             } // Unlock
@@ -159,10 +162,10 @@ namespace soa
                 if (!startEligible)
                 {
                     // Request to disconnect has been sent
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: Termination request sent");                    
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: Termination request sent");
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: Termination request sent");
                     #endif
                     terminateRequested = true;
 
@@ -175,10 +178,10 @@ namespace soa
                 else
                 {
                     // Photon update thread already inactive, no need to do anything else
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: terminate() has no effect, update thread already inactive");
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: terminate() has no effect, update thread already inactive");
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: terminate() has no effect, update thread already inactive");
                     #endif
                 }
             } // Unlock
@@ -199,10 +202,10 @@ namespace soa
                 // Print out if any state transitions have been made
                 if (prevState != currState)
                 {
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
                     #endif
                 }
 
@@ -224,10 +227,10 @@ namespace soa
                             {
                                 // Try (re)connecting to the photon server
                                 currState = State.CONNECTING;
-                                #if(NOT_UNITY)
-                                Console.WriteLine("PhotonLiteCommManager: Connecting to Photon server at " + ipAddress);                               
-                                #else
+                                #if(UNITY_STANDALONE)
                                 Debug.Log("PhotonLiteCommManager: Connecting to Photon server at " + ipAddress);
+                                #else
+                                Console.WriteLine("PhotonLiteCommManager: Connecting to Photon server at " + ipAddress);
                                 #endif
                                 peer.Connect(ipAddress, roomName);
                             }
@@ -258,10 +261,10 @@ namespace soa
                             else
                             {
                                 // Connected to Photon server, now join our game
-                                #if(NOT_UNITY)
-                                Console.WriteLine("PhotonLiteCommManager: Joining room \"" + roomName + "\"");                                
-                                #else
+                                #if(UNITY_STANDALONE)
                                 Debug.Log("PhotonLiteCommManager: Joining room \"" + roomName + "\"");
+                                #else
+                                Console.WriteLine("PhotonLiteCommManager: Joining room \"" + roomName + "\"");
                                 #endif
                                 currState = State.JOINING;
                                 Dictionary<byte, object> opParams = new Dictionary<byte, object>();
@@ -311,10 +314,10 @@ namespace soa
                 // Print out if any state transitions have been made
                 if (prevState != currState)
                 {
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
-                    #else
+                    #if(UNTY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: " + getStateString(prevState) + " -> " + getStateString(currState));
                     #endif
                 }
 
@@ -356,10 +359,10 @@ namespace soa
                     // Just successfully joined a room
                     mActorNumber = (int)operationResponse.Parameters[LiteOpKey.ActorNr];
                     currState = State.JOINED;
-                    #if(NOT_UNITY)
-                    Console.WriteLine("PhotonLiteCommManager: Joined room \"" + roomName + "\" as Player " + mActorNumber);
-                    #else
+                    #if(UNITY_STANDALONE)
                     Debug.Log("PhotonLiteCommManager: Joined room \"" + roomName + "\" as Player " + mActorNumber);
+                    #else
+                    Console.WriteLine("PhotonLiteCommManager: Joined room \"" + roomName + "\" as Player " + mActorNumber);
                     #endif
                     break;
                 case LiteOpCode.Leave:
@@ -379,36 +382,53 @@ namespace soa
             {
                 case 0: // Received a Protobuff message
                     {
-                        // Extract serialized message
+                        // Get the byte[] message from protobuf
+                        // Message = 1 byte for length of rest of message, 4 bytes for source ID, rest is serialized belief
                         Hashtable evData = (Hashtable)eventData.Parameters[LiteEventKey.Data];
-                        Byte[] message = (Byte[])evData[(byte)0];
-                        Byte[] serial = new Byte[(int)message[0]];
-                        System.Buffer.BlockCopy(message, 1, serial, 0, serial.Length);
+                        Byte[] packet = (Byte[])evData[(byte)0];
+
+                        // Extract 4-byte message length (convert from network byte order (Big Endian) to native order if necessary)
+                        Byte[] messageLengthBytes = new Byte[4];
+                        System.Buffer.BlockCopy(packet, 0, messageLengthBytes, 0, 4);
+                        if (BitConverter.IsLittleEndian)
+                        {
+                            Array.Reverse(messageLengthBytes);
+                        }
+                        int messageLength = BitConverter.ToInt32(messageLengthBytes, 0);
+
+
+                        // Extract 4-byte source ID (convert from network byte order (Big Endian) to native order if necessary)
+                        Byte[] sourceIDBytes = new Byte[4];
+                        System.Buffer.BlockCopy(packet, 4, sourceIDBytes, 0, 4);
+                        if (BitConverter.IsLittleEndian)
+                        {
+                            Array.Reverse(sourceIDBytes);
+                        }
+                        int sourceID = BitConverter.ToInt32(sourceIDBytes, 0);
+
+                        // Get belief length
+                        int serializedBeliefLength = messageLength - 4;
+
+                        // Extract serialized belief
+                        Byte[] serializedBelief = new Byte[serializedBeliefLength];
+                        System.Buffer.BlockCopy(packet, 8, serializedBelief, 0, serializedBeliefLength);
 
                         // Extract the belief
-                        Belief b = serializer.generateBelief(serial);
+                        Belief b = serializer.generateBelief(serializedBelief);
 
                         // If deserialization was successful
                         if (b != null)
                         {
-                            #if(NOT_UNITY)
-                            // Filter the belief
-                            if (dataManager.filterBelief(b))
-                            {
-                            #endif
-                                // Add the belief to the data manager if it passed filter
-                                dataManager.addBelief(b,0);
-                            #if(NOT_UNITY)
-                            }
-                            #endif
+                            // Add the belief to the data manager if it passed filter
+                            dataManager.addBelief(b, sourceID);
                         }
                         else
                         {
                             // Something went wrong with deserialization
-                            #if(NOT_UNITY)
-                            Console.Error.WriteLine("PhotonLiteCommManager: Belief deserialization failed");
-                            #else
+                            #if(UNITY_STANDALONE)
                             Debug.Log("PhotonLiteCommManager: Belief deserialization failed");
+                            #else
+                            Console.Error.WriteLine("PhotonLiteCommManager: Belief deserialization failed");
                             #endif
                         }
                         break;
@@ -419,10 +439,10 @@ namespace soa
                         int actorNrJoined = (int)eventData.Parameters[LiteEventKey.ActorNr];
                         if (actorNrJoined != mActorNumber)
                         {
-                            #if(NOT_UNITY)
-                            Console.WriteLine("PhotonLiteCommManager: Player " + actorNrJoined + " joined the room");                            
-                            #else
+                            #if(UNITY_STANDALONE)
                             Debug.Log("PhotonLiteCommManager: Player " + actorNrJoined + " joined the room");
+                            #else
+                            Console.WriteLine("PhotonLiteCommManager: Player " + actorNrJoined + " joined the room");
                             #endif
                         }
 
@@ -436,10 +456,10 @@ namespace soa
                                 statusMessage += (", " + actorList[i]);
                             }
                             statusMessage += "}";
-                            #if(NOT_UNITY)
-                            Console.WriteLine(statusMessage);                            
-                            #else
+                            #if(UNITY_STANDALONE)
                             Debug.Log(statusMessage);
+                            #else
+                            Console.WriteLine(statusMessage);
                             #endif
                         }
                         break;
@@ -448,10 +468,10 @@ namespace soa
                     {
                         // Exiting player just left, print status
                         int actorNrJoined = (int)eventData.Parameters[LiteEventKey.ActorNr];
-                        #if(NOT_UNITY)
-                        Console.WriteLine("PhotonLiteCommManager: Player " + actorNrJoined + " left the room");
-                        #else
+                        #if(UNITY_STANDALONE)
                         Debug.Log("PhotonLiteCommManager: Player " + actorNrJoined + " left the room");
+                        #else
+                        Console.WriteLine("PhotonLiteCommManager: Player " + actorNrJoined + " left the room");
                         #endif
 
                         // Provide update on all players in room
@@ -464,10 +484,10 @@ namespace soa
                                 statusMessage += (", " + actorList[i]);
                             }
                             statusMessage += "}";
-                            #if(NOT_UNITY)
-                            Console.WriteLine(statusMessage);                            
-                            #else
+                            #if(UNITY_STANDALONE)
                             Debug.Log(statusMessage);
+                            #else
+                            Console.WriteLine(statusMessage);
                             #endif
                         }
                         break;
@@ -478,29 +498,49 @@ namespace soa
             }
         }
 
-        // Adds information from data manager to outgoing queue
+        /// <summary>
+        /// Adds information from data manager to outgoing queue using default source ID
+        /// </summary>
         public void addOutgoing(Belief b)
         {
+            addOutgoing(b, defaultSourceID);
+        }
+
+        // Adds information from data manager to outgoing queue
+        public void addOutgoing(Belief b, int sourceID)
+        {
+            // Serialize the 4-byte source ID, network byte order (Big Endian)
+            Byte[] sourceIDBytes = BitConverter.GetBytes(sourceID);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(sourceIDBytes);
+            }
+
             // Serialize the belief
-            Byte[] serial = serializer.serializeBelief(b);
+            Byte[] beliefBytes = serializer.serializeBelief(b);
 
             // Enqueue the serialized message if serialization was
             // successful (if serial is nonempty)
-            if (serial.Length > 0)
+            if (beliefBytes.Length > 0)
             {
+                // Combine the serialized source ID and belief into one message
+                Byte[] message = new Byte[4 + beliefBytes.Length];
+                System.Buffer.BlockCopy(sourceIDBytes, 0, message, 0, 4);
+                System.Buffer.BlockCopy(beliefBytes, 0, message, 4, beliefBytes.Length);
+                
                 lock (outgoingQueue)
                 {
                     if (outgoingQueue.Count < maxQueueSize)
                     {
                         // There is still space in queue, go ahead and enqueue
-                        outgoingQueue.Enqueue(serial);
+                        outgoingQueue.Enqueue(message);
                     }
                     else if (outgoingQueue.Count == maxQueueSize && overwriteWhenQueueFull)
                     {
                         // No more space left and our policy is to overwrite old data
                         // Dequeue the oldest entry before enqueuing the new data
                         outgoingQueue.Dequeue();
-                        outgoingQueue.Enqueue(serial);
+                        outgoingQueue.Enqueue(message);
                     }
                     else
                     {
@@ -511,10 +551,10 @@ namespace soa
             else
             {
                 // Something went wrong with serialization
-                #if(NOT_UNITY)
-                Console.Error.WriteLine("PhotonLiteCommManager: Belief serialization failed");
-                #else
+                #if(UNITY_STANDALONE)
                 Debug.Log("PhotonLiteCommManager: Belief serialization failed");
+                #else
+                Console.Error.WriteLine("PhotonLiteCommManager: Belief serialization failed");
                 #endif
             }
         }
@@ -522,9 +562,9 @@ namespace soa
         // Sends any outgoing messages that are on the queue
         private void sendOutgoing()
         {
-            // Protobuf message
-            Byte[] serial;
+            // Buffers
             Byte[] message;
+            Byte[] packet;
 
             // Acquire lock
             lock (outgoingQueue)
@@ -535,10 +575,10 @@ namespace soa
                 while (outgoingQueue.Count > 0)
                 {
                     // Pop out first element in queue
-                    serial = outgoingQueue.Dequeue();
+                    message = outgoingQueue.Dequeue();
 
                     // Push into local queue
-                    localQueue.Enqueue(serial);
+                    localQueue.Enqueue(message);
                 }
             } // Unlock
 
@@ -546,18 +586,26 @@ namespace soa
             while (localQueue.Count > 0)
             {
                 // Pop out first element in queue
-                serial = localQueue.Dequeue();
+                message = localQueue.Dequeue();
 
-                // Create message by appending own size header
-                message = new Byte[serial.Length + 1];
-                message[0] = (byte)serial.Length;
-                System.Buffer.BlockCopy(serial, 0, message, 1, serial.Length);
+                // Header is serialized 4-byte message length, network byte order (Big Endian)
+                Byte[] headerBytes = BitConverter.GetBytes(message.Length);
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(headerBytes);
+                }
 
-                // Send it out over Photon to everyone else
+                // Create packet by appending header to message
+                int packetLength = message.Length + 4;
+                packet = new Byte[packetLength];
+                System.Buffer.BlockCopy(headerBytes, 0, packet, 0, 4);
+                System.Buffer.BlockCopy(message, 0, packet, 4, message.Length);
+
+                // Send packet out over Photon to everyone else
                 Dictionary<byte, object> opParams = new Dictionary<byte, object>();
                 opParams[LiteOpKey.Code] = (byte)0;
                 Hashtable evData = new Hashtable();
-                evData[(byte)0] = message;
+                evData[(byte)0] = packet;
                 opParams[LiteOpKey.Data] = evData;
                 peer.OpCustom((byte)LiteOpCode.RaiseEvent, opParams, true);
             }
@@ -565,10 +613,10 @@ namespace soa
 
         public void DebugReturn(DebugLevel level, string message)
         {
-            #if(NOT_UNITY)
-            //Console.WriteLine("PhotonLiteCommManager: DebugReturn() " + message);             
-            #else
+            #if(UNITY_STANDALONE)
             //Debug.Log("PhotonLiteCommManager: DebugReturn() " + message); 
+            #else
+            //Console.WriteLine("PhotonLiteCommManager: DebugReturn() " + message);             
             #endif
         }
 

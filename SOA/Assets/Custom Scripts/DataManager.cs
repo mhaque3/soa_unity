@@ -1,6 +1,5 @@
 ﻿// Additinonal using statements are needed if we are running in Unity
-#if(NOT_UNITY)
-#else
+#if(UNITY_STANDALONE)
 using UnityEngine;
 #endif
 
@@ -52,15 +51,6 @@ namespace soa
             beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
         }
 
-        #if(NOT_UNITY)
-        // Dummy functions for filtering
-        public bool filterBelief(Belief b)
-        {
-            // Everything passes for now
-            return true;
-        }
-        #endif
-
         public void addAndBroadcastBelief(Belief b, int sourceId)
         {
             cm.addOutgoing(b, sourceId);
@@ -108,7 +98,6 @@ namespace soa
                     }
                 }
             }
-            #endif
         }
 
         /*
