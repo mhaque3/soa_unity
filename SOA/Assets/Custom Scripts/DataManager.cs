@@ -69,7 +69,7 @@ namespace soa
                 + (int)b.getBeliefType() + "\n" + b);
 #else
                 //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
-
+#endif
                 SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
                 if (tempTypeDict != null)
                 {
