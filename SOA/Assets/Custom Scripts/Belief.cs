@@ -29,7 +29,7 @@ namespace soa
         public Belief(int id)
         {
             this.id = id;
-            time = (UInt64)(System.DateTime.UtcNow - epoch).Milliseconds;
+            beliefTime = (UInt64)(System.DateTime.UtcNow - epoch).Milliseconds;
         }
 
         // Each belief must be able to give its type
@@ -38,18 +38,20 @@ namespace soa
             return BeliefType.INVALID;
         }
 
-
         public int getId()
         {
             return id;
         }
-        public UInt64 getTime()
+        public UInt64 getBeliefTime()
         {
-            return time;
+            return beliefTime;
+        }
+        public void setBeliefTime(UInt64 beliefTime)
+        {
+            this.beliefTime = beliefTime;
         }
 
-        private UInt64 time;
+        private UInt64 beliefTime;
         private int id;
-
     }
 }

@@ -66,6 +66,8 @@ namespace soa
                         {
                             proto.SetVelocityZ(b.getVelocity_z());
                         }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.ACTOR;
                         body = proto.Build().ToByteArray();
@@ -85,6 +87,8 @@ namespace soa
                             g.SetCol(cells[i].getCol());
                             proto.AddCells(g.Build());
                         }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.BASE;
                         body = proto.Build().ToByteArray();
@@ -96,6 +100,11 @@ namespace soa
                         Belief_GridSpec b = (Belief_GridSpec)belief;
                         proto.SetWidth(b.getWidth());
                         proto.SetHeight(b.getHeight());
+                        proto.SetGridToUnityScale(b.getGridToUnityScale());
+                        proto.SetGridOriginX(b.getGridOrigin_x());
+                        proto.SetGridOriginZ(b.getGridOrigin_z());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.GRIDSPEC;
                         body = proto.Build().ToByteArray();
@@ -108,6 +117,8 @@ namespace soa
                         proto.SetRequestTime(b.getRequest_time());
                         proto.SetActorId(b.getActor_id());
                         proto.SetModeId(b.getMode_id());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.MODE_COMMAND;
                         body = proto.Build().ToByteArray();
@@ -127,6 +138,8 @@ namespace soa
                             g.SetCol(cells[i].getCol());
                             proto.AddCells(g.Build());
                         }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.NGOSITE;
                         body = proto.Build().ToByteArray();
@@ -143,6 +156,8 @@ namespace soa
                         g.SetRow(cell.getRow());
                         g.SetCol(cell.getCol());
                         proto.SetCell(g.Build());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.ROADCELL;
                         body = proto.Build().ToByteArray();
@@ -156,6 +171,8 @@ namespace soa
                         proto.SetActorId(b.getActor_id());
                         proto.SetPosX(b.getPos_x());
                         proto.SetPosY(b.getPos_y());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.SPOI;
                         body = proto.Build().ToByteArray();
@@ -175,6 +192,8 @@ namespace soa
                             g.SetCol(cells[i].getCol());
                             proto.AddCells(g.Build());
                         }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.TERRAIN;
                         body = proto.Build().ToByteArray();
@@ -185,6 +204,8 @@ namespace soa
                         Gpb_Time.Builder proto = Gpb_Time.CreateBuilder();
                         Belief_Time b = (Belief_Time)belief;
                         proto.SetTime(b.getTime());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.TIME;
                         body = proto.Build().ToByteArray();
@@ -204,6 +225,8 @@ namespace soa
                             g.SetCol(cells[i].getCol());
                             proto.AddCells(g.Build());
                         }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.VILLAGE;
                         body = proto.Build().ToByteArray();
@@ -218,6 +241,8 @@ namespace soa
                         proto.SetPosX(b.getPos_x());
                         proto.SetPosY(b.getPos_y());
                         proto.SetPosZ(b.getPos_z());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.WAYPOINT;
                         body = proto.Build().ToByteArray();
@@ -232,6 +257,8 @@ namespace soa
                         proto.SetPosX(b.getPos_x());
                         proto.SetPosY(b.getPos_y());
                         proto.SetPosZ(b.getPos_z());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.WAYPOINT_OVERRIDE;
                         body = proto.Build().ToByteArray();
@@ -285,6 +312,8 @@ namespace soa
                             proto.VelocityY,
                             proto.HasVelocityZ,
                             proto.VelocityZ);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.BASE:
@@ -298,6 +327,8 @@ namespace soa
                         b = new Belief_Base(
                             proto.Id,
                             cells);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.GRIDSPEC:
@@ -305,7 +336,12 @@ namespace soa
                         Gpb_GridSpec proto = Gpb_GridSpec.CreateBuilder().MergeFrom(body).Build();
                         b = new Belief_GridSpec(
                             proto.Width,
-                            proto.Height);
+                            proto.Height,
+                            proto.GridToUnityScale,
+                            proto.GridOriginX,
+                            proto.GridOriginZ);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.MODE_COMMAND:
@@ -315,6 +351,8 @@ namespace soa
                             proto.RequestTime,
                             proto.ActorId,
                             proto.ModeId);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.NGOSITE:
@@ -328,6 +366,8 @@ namespace soa
                         b = new Belief_NGOSite(
                             proto.Id,
                             cells);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.ROADCELL:
@@ -336,6 +376,8 @@ namespace soa
                         b = new Belief_RoadCell(
                             proto.IsRoadEnd,
                             new GridCell(proto.Cell.Row, proto.Cell.Col));
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.SPOI:
@@ -346,6 +388,8 @@ namespace soa
                             proto.ActorId,
                             proto.PosX,
                             proto.PosY);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.TERRAIN:
@@ -359,6 +403,8 @@ namespace soa
                         b = new Belief_Terrain(
                             proto.Type,
                             cells);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.TIME:
@@ -366,6 +412,8 @@ namespace soa
                         Gpb_Time proto = Gpb_Time.CreateBuilder().MergeFrom(body).Build();
                         b = new Belief_Time(
                             proto.Time);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.VILLAGE:
@@ -379,6 +427,8 @@ namespace soa
                         b = new Belief_Village(
                             proto.Id,
                             cells);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.WAYPOINT:
@@ -390,6 +440,8 @@ namespace soa
                             proto.PosX,
                             proto.PosY,
                             proto.PosZ);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 case MessageType.WAYPOINT_OVERRIDE:
@@ -401,6 +453,8 @@ namespace soa
                             proto.PosX,
                             proto.PosY,
                             proto.PosZ);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
                 default:
