@@ -396,7 +396,6 @@ namespace soa
                         }
                         int messageLength = BitConverter.ToInt32(messageLengthBytes, 0);
 
-
                         // Extract 4-byte source ID (convert from network byte order (Big Endian) to native order if necessary)
                         Byte[] sourceIDBytes = new Byte[4];
                         System.Buffer.BlockCopy(packet, 4, sourceIDBytes, 0, 4);

@@ -51,52 +51,59 @@ namespace autonomy_msg {
     
     static Autonomy() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
-          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIi0KDEdwYl9HcmlkU3Bl" + 
-          "YxIOCgZoZWlnaHQYASACKAUSDQoFd2lkdGgYAiACKAUiRAoLR3BiX05HT1Np" + 
-          "dGUSCgoCaWQYASACKAUSKQoFY2VsbHMYAiADKAsyGi5hdXRvbm9teV9tc2cu" + 
-          "R3BiX0dyaWRDZWxsIlAKCEdwYl9TUE9JEhQKDHJlcXVlc3RfdGltZRgBIAIo" + 
-          "BBIQCghhY3Rvcl9pZBgCIAIoBRINCgVwb3NfeBgDIAIoAhINCgVwb3NfeRgE" + 
-          "IAIoAiJsChVHcGJfV2F5cG9pbnRfT3ZlcnJpZGUSFAoMcmVxdWVzdF90aW1l" + 
-          "GAEgAigEEhAKCGFjdG9yX2lkGAIgAigFEg0KBXBvc194GAMgAigCEg0KBXBv" + 
-          "c195GAQgAigCEg0KBXBvc196GAUgAigCIkQKC0dwYl9WaWxsYWdlEgoKAmlk" + 
-          "GAEgAigFEikKBWNlbGxzGAIgAygLMhouYXV0b25vbXlfbXNnLkdwYl9Hcmlk" + 
-          "Q2VsbCIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgCIAIo" + 
-          "BSKqAQoJR3BiX0FjdG9yEhEKCXVuaXF1ZV9pZBgBIAIoBRITCgthZmZpbGlh" + 
-          "dGlvbhgCIAIoBRIMCgR0eXBlGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBv" + 
-          "c195GAUgAigCEg0KBXBvc196GAYgAigCEhIKCnZlbG9jaXR5X3gYByABKAIS" + 
-          "EgoKdmVsb2NpdHlfeRgIIAEoAhISCgp2ZWxvY2l0eV96GAkgASgCIkEKCEdw" + 
-          "Yl9CYXNlEgoKAmlkGAEgAigFEikKBWNlbGxzGAIgAygLMhouYXV0b25vbXlf" + 
-          "bXNnLkdwYl9HcmlkQ2VsbCJGCgtHcGJfVGVycmFpbhIMCgR0eXBlGAEgAigF" + 
-          "EikKBWNlbGxzGAIgAygLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbCJL" + 
-          "ChBHcGJfTW9kZV9Db21tYW5kEhQKDHJlcXVlc3RfdGltZRgBIAIoBBIQCghh" + 
-          "Y3Rvcl9pZBgCIAIoBRIPCgdtb2RlX2lkGAMgAigFImMKDEdwYl9XYXlwb2lu" + 
-          "dBIUCgxyZXF1ZXN0X3RpbWUYASACKAQSEAoIYWN0b3JfaWQYAiACKAUSDQoF" + 
-          "cG9zX3gYAyACKAISDQoFcG9zX3kYBCACKAISDQoFcG9zX3oYBSACKAIiGAoI" + 
-          "R3BiX1RpbWUSDAoEdGltZRgBIAIoBCJLCgxHcGJfUm9hZENlbGwSEQoJaXNS" + 
-          "b2FkRW5kGAEgAigIEigKBGNlbGwYAiACKAsyGi5hdXRvbm9teV9tc2cuR3Bi" + 
-          "X0dyaWRDZWxs");
+          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIogBCgxHcGJfR3JpZFNw" + 
+          "ZWMSEwoLYmVsaWVmX3RpbWUYASACKAQSDgoGaGVpZ2h0GAIgAigFEg0KBXdp" + 
+          "ZHRoGAMgAigFEhgKEGdyaWRUb1VuaXR5U2NhbGUYBCACKAISFAoMZ3JpZE9y" + 
+          "aWdpbl94GAUgAigCEhQKDGdyaWRPcmlnaW5fehgGIAIoAiJZCgtHcGJfTkdP" + 
+          "U2l0ZRITCgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxs" + 
+          "cxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiZQoIR3BiX1NQ" + 
+          "T0kSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigE" + 
+          "EhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBvc195GAUg" + 
+          "AigCIoEBChVHcGJfV2F5cG9pbnRfT3ZlcnJpZGUSEwoLYmVsaWVmX3RpbWUY" + 
+          "ASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigF" + 
+          "Eg0KBXBvc194GAQgAigCEg0KBXBvc195GAUgAigCEg0KBXBvc196GAYgAigC" + 
+          "IlkKC0dwYl9WaWxsYWdlEhMKC2JlbGllZl90aW1lGAEgAigEEgoKAmlkGAIg" + 
+          "AigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2Vs" + 
+          "bCIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgCIAIoBSK/" + 
+          "AQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCXVuaXF1ZV9p" + 
+          "ZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIoBRIMCgR0eXBlGAQgAigFEg0K" + 
+          "BXBvc194GAUgAigCEg0KBXBvc195GAYgAigCEg0KBXBvc196GAcgAigCEhIK" + 
+          "CnZlbG9jaXR5X3gYCCABKAISEgoKdmVsb2NpdHlfeRgJIAEoAhISCgp2ZWxv" + 
+          "Y2l0eV96GAogASgCIlYKCEdwYl9CYXNlEhMKC2JlbGllZl90aW1lGAEgAigE" + 
+          "EgoKAmlkGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdw" + 
+          "Yl9HcmlkQ2VsbCJbCgtHcGJfVGVycmFpbhITCgtiZWxpZWZfdGltZRgBIAIo" + 
+          "BBIMCgR0eXBlGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNn" + 
+          "LkdwYl9HcmlkQ2VsbCJgChBHcGJfTW9kZV9Db21tYW5kEhMKC2JlbGllZl90" + 
+          "aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgD" + 
+          "IAIoBRIPCgdtb2RlX2lkGAQgAigFIngKDEdwYl9XYXlwb2ludBITCgtiZWxp" + 
+          "ZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQSEAoIYWN0b3Jf" + 
+          "aWQYAyACKAUSDQoFcG9zX3gYBCACKAISDQoFcG9zX3kYBSACKAISDQoFcG9z" + 
+          "X3oYBiACKAIiLQoIR3BiX1RpbWUSEwoLYmVsaWVmX3RpbWUYASACKAQSDAoE" + 
+          "dGltZRgCIAIoBCJgCgxHcGJfUm9hZENlbGwSEwoLYmVsaWVmX3RpbWUYASAC" + 
+          "KAQSEQoJaXNSb2FkRW5kGAIgAigIEigKBGNlbGwYAyACKAsyGi5hdXRvbm9t" + 
+          "eV9tc2cuR3BiX0dyaWRDZWxs");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
         internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridSpec, global::autonomy_msg.Gpb_GridSpec.Builder>(internal__static_autonomy_msg_Gpb_GridSpec__Descriptor,
-                new string[] { "Height", "Width", });
+                new string[] { "BeliefTime", "Height", "Width", "GridToUnityScale", "GridOriginX", "GridOriginZ", });
         internal__static_autonomy_msg_Gpb_NGOSite__Descriptor = Descriptor.MessageTypes[1];
         internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSite, global::autonomy_msg.Gpb_NGOSite.Builder>(internal__static_autonomy_msg_Gpb_NGOSite__Descriptor,
-                new string[] { "Id", "Cells", });
+                new string[] { "BeliefTime", "Id", "Cells", });
         internal__static_autonomy_msg_Gpb_SPOI__Descriptor = Descriptor.MessageTypes[2];
         internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder>(internal__static_autonomy_msg_Gpb_SPOI__Descriptor,
-                new string[] { "RequestTime", "ActorId", "PosX", "PosY", });
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", });
         internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor = Descriptor.MessageTypes[3];
         internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder>(internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor,
-                new string[] { "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
         internal__static_autonomy_msg_Gpb_Village__Descriptor = Descriptor.MessageTypes[4];
         internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Village, global::autonomy_msg.Gpb_Village.Builder>(internal__static_autonomy_msg_Gpb_Village__Descriptor,
-                new string[] { "Id", "Cells", });
+                new string[] { "BeliefTime", "Id", "Cells", });
         internal__static_autonomy_msg_Gpb_GridCell__Descriptor = Descriptor.MessageTypes[5];
         internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridCell, global::autonomy_msg.Gpb_GridCell.Builder>(internal__static_autonomy_msg_Gpb_GridCell__Descriptor,
@@ -104,31 +111,31 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[6];
         internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
-                new string[] { "UniqueId", "Affiliation", "Type", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
+                new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
         internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[7];
         internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder>(internal__static_autonomy_msg_Gpb_Base__Descriptor,
-                new string[] { "Id", "Cells", });
+                new string[] { "BeliefTime", "Id", "Cells", });
         internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[8];
         internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Terrain, global::autonomy_msg.Gpb_Terrain.Builder>(internal__static_autonomy_msg_Gpb_Terrain__Descriptor,
-                new string[] { "Type", "Cells", });
+                new string[] { "BeliefTime", "Type", "Cells", });
         internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[9];
         internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder>(internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor,
-                new string[] { "RequestTime", "ActorId", "ModeId", });
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "ModeId", });
         internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[10];
         internal__static_autonomy_msg_Gpb_Waypoint__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint, global::autonomy_msg.Gpb_Waypoint.Builder>(internal__static_autonomy_msg_Gpb_Waypoint__Descriptor,
-                new string[] { "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
         internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[11];
         internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder>(internal__static_autonomy_msg_Gpb_Time__Descriptor,
-                new string[] { "Time", });
+                new string[] { "BeliefTime", "Time", });
         internal__static_autonomy_msg_Gpb_RoadCell__Descriptor = Descriptor.MessageTypes[12];
         internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder>(internal__static_autonomy_msg_Gpb_RoadCell__Descriptor,
-                new string[] { "IsRoadEnd", "Cell", });
+                new string[] { "BeliefTime", "IsRoadEnd", "Cell", });
         return null;
       };
       pbd::FileDescriptor.InternalBuildGeneratedFileFrom(descriptorData,
@@ -143,8 +150,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_GridSpec : pb::GeneratedMessage<Gpb_GridSpec, Gpb_GridSpec.Builder> {
     private Gpb_GridSpec() { }
     private static readonly Gpb_GridSpec defaultInstance = new Gpb_GridSpec().MakeReadOnly();
-    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "height", "width" };
-    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 16 };
+    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "gridToUnityScale", "height", "width" };
+    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 45, 53, 37, 16, 24 };
     public static Gpb_GridSpec DefaultInstance {
       get { return defaultInstance; }
     }
@@ -165,7 +172,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable; }
     }
     
-    public const int HeightFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int HeightFieldNumber = 2;
     private bool hasHeight;
     private int height_;
     public bool HasHeight {
@@ -175,7 +193,7 @@ namespace autonomy_msg {
       get { return height_; }
     }
     
-    public const int WidthFieldNumber = 2;
+    public const int WidthFieldNumber = 3;
     private bool hasWidth;
     private int width_;
     public bool HasWidth {
@@ -185,10 +203,44 @@ namespace autonomy_msg {
       get { return width_; }
     }
     
+    public const int GridToUnityScaleFieldNumber = 4;
+    private bool hasGridToUnityScale;
+    private float gridToUnityScale_;
+    public bool HasGridToUnityScale {
+      get { return hasGridToUnityScale; }
+    }
+    public float GridToUnityScale {
+      get { return gridToUnityScale_; }
+    }
+    
+    public const int GridOriginXFieldNumber = 5;
+    private bool hasGridOriginX;
+    private float gridOriginX_;
+    public bool HasGridOriginX {
+      get { return hasGridOriginX; }
+    }
+    public float GridOriginX {
+      get { return gridOriginX_; }
+    }
+    
+    public const int GridOriginZFieldNumber = 6;
+    private bool hasGridOriginZ;
+    private float gridOriginZ_;
+    public bool HasGridOriginZ {
+      get { return hasGridOriginZ; }
+    }
+    public float GridOriginZ {
+      get { return gridOriginZ_; }
+    }
+    
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasHeight) return false;
         if (!hasWidth) return false;
+        if (!hasGridToUnityScale) return false;
+        if (!hasGridOriginX) return false;
+        if (!hasGridOriginZ) return false;
         return true;
       }
     }
@@ -196,11 +248,23 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbGridSpecFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasHeight) {
-        output.WriteInt32(1, field_names[0], Height);
+        output.WriteInt32(2, field_names[4], Height);
       }
       if (hasWidth) {
-        output.WriteInt32(2, field_names[1], Width);
+        output.WriteInt32(3, field_names[5], Width);
+      }
+      if (hasGridToUnityScale) {
+        output.WriteFloat(4, field_names[3], GridToUnityScale);
+      }
+      if (hasGridOriginX) {
+        output.WriteFloat(5, field_names[1], GridOriginX);
+      }
+      if (hasGridOriginZ) {
+        output.WriteFloat(6, field_names[2], GridOriginZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -212,11 +276,23 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasHeight) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Height);
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Height);
         }
         if (hasWidth) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, Width);
+          size += pb::CodedOutputStream.ComputeInt32Size(3, Width);
+        }
+        if (hasGridToUnityScale) {
+          size += pb::CodedOutputStream.ComputeFloatSize(4, GridToUnityScale);
+        }
+        if (hasGridOriginX) {
+          size += pb::CodedOutputStream.ComputeFloatSize(5, GridOriginX);
+        }
+        if (hasGridOriginZ) {
+          size += pb::CodedOutputStream.ComputeFloatSize(6, GridOriginZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -342,11 +418,23 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_GridSpec other) {
         if (other == global::autonomy_msg.Gpb_GridSpec.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasHeight) {
           Height = other.Height;
         }
         if (other.HasWidth) {
           Width = other.Width;
+        }
+        if (other.HasGridToUnityScale) {
+          GridToUnityScale = other.GridToUnityScale;
+        }
+        if (other.HasGridOriginX) {
+          GridOriginX = other.GridOriginX;
+        }
+        if (other.HasGridOriginZ) {
+          GridOriginZ = other.GridOriginZ;
         }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
@@ -392,11 +480,27 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasHeight = input.ReadInt32(ref result.height_);
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
             case 16: {
+              result.hasHeight = input.ReadInt32(ref result.height_);
+              break;
+            }
+            case 24: {
               result.hasWidth = input.ReadInt32(ref result.width_);
+              break;
+            }
+            case 37: {
+              result.hasGridToUnityScale = input.ReadFloat(ref result.gridToUnityScale_);
+              break;
+            }
+            case 45: {
+              result.hasGridOriginX = input.ReadFloat(ref result.gridOriginX_);
+              break;
+            }
+            case 53: {
+              result.hasGridOriginZ = input.ReadFloat(ref result.gridOriginZ_);
               break;
             }
           }
@@ -408,6 +512,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasHeight {
         get { return result.hasHeight; }
@@ -448,6 +574,66 @@ namespace autonomy_msg {
         result.width_ = 0;
         return this;
       }
+      
+      public bool HasGridToUnityScale {
+        get { return result.hasGridToUnityScale; }
+      }
+      public float GridToUnityScale {
+        get { return result.GridToUnityScale; }
+        set { SetGridToUnityScale(value); }
+      }
+      public Builder SetGridToUnityScale(float value) {
+        PrepareBuilder();
+        result.hasGridToUnityScale = true;
+        result.gridToUnityScale_ = value;
+        return this;
+      }
+      public Builder ClearGridToUnityScale() {
+        PrepareBuilder();
+        result.hasGridToUnityScale = false;
+        result.gridToUnityScale_ = 0F;
+        return this;
+      }
+      
+      public bool HasGridOriginX {
+        get { return result.hasGridOriginX; }
+      }
+      public float GridOriginX {
+        get { return result.GridOriginX; }
+        set { SetGridOriginX(value); }
+      }
+      public Builder SetGridOriginX(float value) {
+        PrepareBuilder();
+        result.hasGridOriginX = true;
+        result.gridOriginX_ = value;
+        return this;
+      }
+      public Builder ClearGridOriginX() {
+        PrepareBuilder();
+        result.hasGridOriginX = false;
+        result.gridOriginX_ = 0F;
+        return this;
+      }
+      
+      public bool HasGridOriginZ {
+        get { return result.hasGridOriginZ; }
+      }
+      public float GridOriginZ {
+        get { return result.GridOriginZ; }
+        set { SetGridOriginZ(value); }
+      }
+      public Builder SetGridOriginZ(float value) {
+        PrepareBuilder();
+        result.hasGridOriginZ = true;
+        result.gridOriginZ_ = value;
+        return this;
+      }
+      public Builder ClearGridOriginZ() {
+        PrepareBuilder();
+        result.hasGridOriginZ = false;
+        result.gridOriginZ_ = 0F;
+        return this;
+      }
     }
     static Gpb_GridSpec() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
@@ -458,8 +644,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_NGOSite : pb::GeneratedMessage<Gpb_NGOSite, Gpb_NGOSite.Builder> {
     private Gpb_NGOSite() { }
     private static readonly Gpb_NGOSite defaultInstance = new Gpb_NGOSite().MakeReadOnly();
-    private static readonly string[] _gpbNGOSiteFieldNames = new string[] { "cells", "id" };
-    private static readonly uint[] _gpbNGOSiteFieldTags = new uint[] { 18, 8 };
+    private static readonly string[] _gpbNGOSiteFieldNames = new string[] { "belief_time", "cells", "id" };
+    private static readonly uint[] _gpbNGOSiteFieldTags = new uint[] { 8, 26, 16 };
     public static Gpb_NGOSite DefaultInstance {
       get { return defaultInstance; }
     }
@@ -480,7 +666,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable; }
     }
     
-    public const int IdFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int IdFieldNumber = 2;
     private bool hasId;
     private int id_;
     public bool HasId {
@@ -490,7 +687,7 @@ namespace autonomy_msg {
       get { return id_; }
     }
     
-    public const int CellsFieldNumber = 2;
+    public const int CellsFieldNumber = 3;
     private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
     public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
       get { return cells_; }
@@ -504,6 +701,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasId) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
@@ -515,11 +713,14 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbNGOSiteFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasId) {
-        output.WriteInt32(1, field_names[1], Id);
+        output.WriteInt32(2, field_names[2], Id);
       }
       if (cells_.Count > 0) {
-        output.WriteMessageArray(2, field_names[0], cells_);
+        output.WriteMessageArray(3, field_names[1], cells_);
       }
       UnknownFields.WriteTo(output);
     }
@@ -531,11 +732,14 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Id);
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
-          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+          size += pb::CodedOutputStream.ComputeMessageSize(3, element);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -662,6 +866,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_NGOSite other) {
         if (other == global::autonomy_msg.Gpb_NGOSite.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasId) {
           Id = other.Id;
         }
@@ -712,10 +919,14 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
               result.hasId = input.ReadInt32(ref result.id_);
               break;
             }
-            case 18: {
+            case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
               break;
             }
@@ -728,6 +939,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasId {
         get { return result.hasId; }
@@ -802,8 +1035,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_SPOI : pb::GeneratedMessage<Gpb_SPOI, Gpb_SPOI.Builder> {
     private Gpb_SPOI() { }
     private static readonly Gpb_SPOI defaultInstance = new Gpb_SPOI().MakeReadOnly();
-    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "pos_x", "pos_y", "request_time" };
-    private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 16, 29, 37, 8 };
+    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_y", "request_time" };
+    private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 24, 8, 37, 45, 16 };
     public static Gpb_SPOI DefaultInstance {
       get { return defaultInstance; }
     }
@@ -824,7 +1057,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable; }
     }
     
-    public const int RequestTimeFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int RequestTimeFieldNumber = 2;
     private bool hasRequestTime;
     private ulong requestTime_;
     public bool HasRequestTime {
@@ -835,7 +1079,7 @@ namespace autonomy_msg {
       get { return requestTime_; }
     }
     
-    public const int ActorIdFieldNumber = 2;
+    public const int ActorIdFieldNumber = 3;
     private bool hasActorId;
     private int actorId_;
     public bool HasActorId {
@@ -845,7 +1089,7 @@ namespace autonomy_msg {
       get { return actorId_; }
     }
     
-    public const int PosXFieldNumber = 3;
+    public const int PosXFieldNumber = 4;
     private bool hasPosX;
     private float posX_;
     public bool HasPosX {
@@ -855,7 +1099,7 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 4;
+    public const int PosYFieldNumber = 5;
     private bool hasPosY;
     private float posY_;
     public bool HasPosY {
@@ -867,6 +1111,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasRequestTime) return false;
         if (!hasActorId) return false;
         if (!hasPosX) return false;
@@ -878,17 +1123,20 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbSPOIFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
       if (hasRequestTime) {
-        output.WriteUInt64(1, field_names[3], RequestTime);
+        output.WriteUInt64(2, field_names[4], RequestTime);
       }
       if (hasActorId) {
-        output.WriteInt32(2, field_names[0], ActorId);
+        output.WriteInt32(3, field_names[0], ActorId);
       }
       if (hasPosX) {
-        output.WriteFloat(3, field_names[1], PosX);
+        output.WriteFloat(4, field_names[2], PosX);
       }
       if (hasPosY) {
-        output.WriteFloat(4, field_names[2], PosY);
+        output.WriteFloat(5, field_names[3], PosY);
       }
       UnknownFields.WriteTo(output);
     }
@@ -900,17 +1148,20 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasRequestTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, RequestTime);
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, RequestTime);
         }
         if (hasActorId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
+          size += pb::CodedOutputStream.ComputeInt32Size(3, ActorId);
         }
         if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosX);
+          size += pb::CodedOutputStream.ComputeFloatSize(4, PosX);
         }
         if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(4, PosY);
+          size += pb::CodedOutputStream.ComputeFloatSize(5, PosY);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -1036,6 +1287,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_SPOI other) {
         if (other == global::autonomy_msg.Gpb_SPOI.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasRequestTime) {
           RequestTime = other.RequestTime;
         }
@@ -1092,18 +1346,22 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
             case 16: {
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              break;
+            }
+            case 24: {
               result.hasActorId = input.ReadInt32(ref result.actorId_);
               break;
             }
-            case 29: {
+            case 37: {
               result.hasPosX = input.ReadFloat(ref result.posX_);
               break;
             }
-            case 37: {
+            case 45: {
               result.hasPosY = input.ReadFloat(ref result.posY_);
               break;
             }
@@ -1116,6 +1374,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasRequestTime {
         get { return result.hasRequestTime; }
@@ -1208,8 +1488,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Waypoint_Override : pb::GeneratedMessage<Gpb_Waypoint_Override, Gpb_Waypoint_Override.Builder> {
     private Gpb_Waypoint_Override() { }
     private static readonly Gpb_Waypoint_Override defaultInstance = new Gpb_Waypoint_Override().MakeReadOnly();
-    private static readonly string[] _gpbWaypointOverrideFieldNames = new string[] { "actor_id", "pos_x", "pos_y", "pos_z", "request_time" };
-    private static readonly uint[] _gpbWaypointOverrideFieldTags = new uint[] { 16, 29, 37, 45, 8 };
+    private static readonly string[] _gpbWaypointOverrideFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_y", "pos_z", "request_time" };
+    private static readonly uint[] _gpbWaypointOverrideFieldTags = new uint[] { 24, 8, 37, 45, 53, 16 };
     public static Gpb_Waypoint_Override DefaultInstance {
       get { return defaultInstance; }
     }
@@ -1230,7 +1510,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable; }
     }
     
-    public const int RequestTimeFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int RequestTimeFieldNumber = 2;
     private bool hasRequestTime;
     private ulong requestTime_;
     public bool HasRequestTime {
@@ -1241,7 +1532,7 @@ namespace autonomy_msg {
       get { return requestTime_; }
     }
     
-    public const int ActorIdFieldNumber = 2;
+    public const int ActorIdFieldNumber = 3;
     private bool hasActorId;
     private int actorId_;
     public bool HasActorId {
@@ -1251,7 +1542,7 @@ namespace autonomy_msg {
       get { return actorId_; }
     }
     
-    public const int PosXFieldNumber = 3;
+    public const int PosXFieldNumber = 4;
     private bool hasPosX;
     private float posX_;
     public bool HasPosX {
@@ -1261,7 +1552,7 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 4;
+    public const int PosYFieldNumber = 5;
     private bool hasPosY;
     private float posY_;
     public bool HasPosY {
@@ -1271,7 +1562,7 @@ namespace autonomy_msg {
       get { return posY_; }
     }
     
-    public const int PosZFieldNumber = 5;
+    public const int PosZFieldNumber = 6;
     private bool hasPosZ;
     private float posZ_;
     public bool HasPosZ {
@@ -1283,6 +1574,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasRequestTime) return false;
         if (!hasActorId) return false;
         if (!hasPosX) return false;
@@ -1295,20 +1587,23 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbWaypointOverrideFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
       if (hasRequestTime) {
-        output.WriteUInt64(1, field_names[4], RequestTime);
+        output.WriteUInt64(2, field_names[5], RequestTime);
       }
       if (hasActorId) {
-        output.WriteInt32(2, field_names[0], ActorId);
+        output.WriteInt32(3, field_names[0], ActorId);
       }
       if (hasPosX) {
-        output.WriteFloat(3, field_names[1], PosX);
+        output.WriteFloat(4, field_names[2], PosX);
       }
       if (hasPosY) {
-        output.WriteFloat(4, field_names[2], PosY);
+        output.WriteFloat(5, field_names[3], PosY);
       }
       if (hasPosZ) {
-        output.WriteFloat(5, field_names[3], PosZ);
+        output.WriteFloat(6, field_names[4], PosZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -1320,20 +1615,23 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasRequestTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, RequestTime);
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, RequestTime);
         }
         if (hasActorId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
+          size += pb::CodedOutputStream.ComputeInt32Size(3, ActorId);
         }
         if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosX);
+          size += pb::CodedOutputStream.ComputeFloatSize(4, PosX);
         }
         if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(4, PosY);
+          size += pb::CodedOutputStream.ComputeFloatSize(5, PosY);
         }
         if (hasPosZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, PosZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(6, PosZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -1459,6 +1757,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Waypoint_Override other) {
         if (other == global::autonomy_msg.Gpb_Waypoint_Override.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasRequestTime) {
           RequestTime = other.RequestTime;
         }
@@ -1518,22 +1819,26 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
             case 16: {
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              break;
+            }
+            case 24: {
               result.hasActorId = input.ReadInt32(ref result.actorId_);
               break;
             }
-            case 29: {
+            case 37: {
               result.hasPosX = input.ReadFloat(ref result.posX_);
               break;
             }
-            case 37: {
+            case 45: {
               result.hasPosY = input.ReadFloat(ref result.posY_);
               break;
             }
-            case 45: {
+            case 53: {
               result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
@@ -1546,6 +1851,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasRequestTime {
         get { return result.hasRequestTime; }
@@ -1658,8 +1985,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Village : pb::GeneratedMessage<Gpb_Village, Gpb_Village.Builder> {
     private Gpb_Village() { }
     private static readonly Gpb_Village defaultInstance = new Gpb_Village().MakeReadOnly();
-    private static readonly string[] _gpbVillageFieldNames = new string[] { "cells", "id" };
-    private static readonly uint[] _gpbVillageFieldTags = new uint[] { 18, 8 };
+    private static readonly string[] _gpbVillageFieldNames = new string[] { "belief_time", "cells", "id" };
+    private static readonly uint[] _gpbVillageFieldTags = new uint[] { 8, 26, 16 };
     public static Gpb_Village DefaultInstance {
       get { return defaultInstance; }
     }
@@ -1680,7 +2007,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable; }
     }
     
-    public const int IdFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int IdFieldNumber = 2;
     private bool hasId;
     private int id_;
     public bool HasId {
@@ -1690,7 +2028,7 @@ namespace autonomy_msg {
       get { return id_; }
     }
     
-    public const int CellsFieldNumber = 2;
+    public const int CellsFieldNumber = 3;
     private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
     public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
       get { return cells_; }
@@ -1704,6 +2042,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasId) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
@@ -1715,11 +2054,14 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbVillageFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasId) {
-        output.WriteInt32(1, field_names[1], Id);
+        output.WriteInt32(2, field_names[2], Id);
       }
       if (cells_.Count > 0) {
-        output.WriteMessageArray(2, field_names[0], cells_);
+        output.WriteMessageArray(3, field_names[1], cells_);
       }
       UnknownFields.WriteTo(output);
     }
@@ -1731,11 +2073,14 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Id);
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
-          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+          size += pb::CodedOutputStream.ComputeMessageSize(3, element);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -1862,6 +2207,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Village other) {
         if (other == global::autonomy_msg.Gpb_Village.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasId) {
           Id = other.Id;
         }
@@ -1912,10 +2260,14 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
               result.hasId = input.ReadInt32(ref result.id_);
               break;
             }
-            case 18: {
+            case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
               break;
             }
@@ -1928,6 +2280,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasId {
         get { return result.hasId; }
@@ -2317,8 +2691,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Actor : pb::GeneratedMessage<Gpb_Actor, Gpb_Actor.Builder> {
     private Gpb_Actor() { }
     private static readonly Gpb_Actor defaultInstance = new Gpb_Actor().MakeReadOnly();
-    private static readonly string[] _gpbActorFieldNames = new string[] { "affiliation", "pos_x", "pos_y", "pos_z", "type", "unique_id", "velocity_x", "velocity_y", "velocity_z" };
-    private static readonly uint[] _gpbActorFieldTags = new uint[] { 16, 37, 45, 53, 24, 8, 61, 69, 77 };
+    private static readonly string[] _gpbActorFieldNames = new string[] { "affiliation", "belief_time", "pos_x", "pos_y", "pos_z", "type", "unique_id", "velocity_x", "velocity_y", "velocity_z" };
+    private static readonly uint[] _gpbActorFieldTags = new uint[] { 24, 8, 45, 53, 61, 32, 16, 69, 77, 85 };
     public static Gpb_Actor DefaultInstance {
       get { return defaultInstance; }
     }
@@ -2339,7 +2713,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable; }
     }
     
-    public const int UniqueIdFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int UniqueIdFieldNumber = 2;
     private bool hasUniqueId;
     private int uniqueId_;
     public bool HasUniqueId {
@@ -2349,7 +2734,7 @@ namespace autonomy_msg {
       get { return uniqueId_; }
     }
     
-    public const int AffiliationFieldNumber = 2;
+    public const int AffiliationFieldNumber = 3;
     private bool hasAffiliation;
     private int affiliation_;
     public bool HasAffiliation {
@@ -2359,7 +2744,7 @@ namespace autonomy_msg {
       get { return affiliation_; }
     }
     
-    public const int TypeFieldNumber = 3;
+    public const int TypeFieldNumber = 4;
     private bool hasType;
     private int type_;
     public bool HasType {
@@ -2369,7 +2754,7 @@ namespace autonomy_msg {
       get { return type_; }
     }
     
-    public const int PosXFieldNumber = 4;
+    public const int PosXFieldNumber = 5;
     private bool hasPosX;
     private float posX_;
     public bool HasPosX {
@@ -2379,7 +2764,7 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 5;
+    public const int PosYFieldNumber = 6;
     private bool hasPosY;
     private float posY_;
     public bool HasPosY {
@@ -2389,7 +2774,7 @@ namespace autonomy_msg {
       get { return posY_; }
     }
     
-    public const int PosZFieldNumber = 6;
+    public const int PosZFieldNumber = 7;
     private bool hasPosZ;
     private float posZ_;
     public bool HasPosZ {
@@ -2399,7 +2784,7 @@ namespace autonomy_msg {
       get { return posZ_; }
     }
     
-    public const int VelocityXFieldNumber = 7;
+    public const int VelocityXFieldNumber = 8;
     private bool hasVelocityX;
     private float velocityX_;
     public bool HasVelocityX {
@@ -2409,7 +2794,7 @@ namespace autonomy_msg {
       get { return velocityX_; }
     }
     
-    public const int VelocityYFieldNumber = 8;
+    public const int VelocityYFieldNumber = 9;
     private bool hasVelocityY;
     private float velocityY_;
     public bool HasVelocityY {
@@ -2419,7 +2804,7 @@ namespace autonomy_msg {
       get { return velocityY_; }
     }
     
-    public const int VelocityZFieldNumber = 9;
+    public const int VelocityZFieldNumber = 10;
     private bool hasVelocityZ;
     private float velocityZ_;
     public bool HasVelocityZ {
@@ -2431,6 +2816,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasUniqueId) return false;
         if (!hasAffiliation) return false;
         if (!hasType) return false;
@@ -2444,32 +2830,35 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbActorFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
       if (hasUniqueId) {
-        output.WriteInt32(1, field_names[5], UniqueId);
+        output.WriteInt32(2, field_names[6], UniqueId);
       }
       if (hasAffiliation) {
-        output.WriteInt32(2, field_names[0], Affiliation);
+        output.WriteInt32(3, field_names[0], Affiliation);
       }
       if (hasType) {
-        output.WriteInt32(3, field_names[4], Type);
+        output.WriteInt32(4, field_names[5], Type);
       }
       if (hasPosX) {
-        output.WriteFloat(4, field_names[1], PosX);
+        output.WriteFloat(5, field_names[2], PosX);
       }
       if (hasPosY) {
-        output.WriteFloat(5, field_names[2], PosY);
+        output.WriteFloat(6, field_names[3], PosY);
       }
       if (hasPosZ) {
-        output.WriteFloat(6, field_names[3], PosZ);
+        output.WriteFloat(7, field_names[4], PosZ);
       }
       if (hasVelocityX) {
-        output.WriteFloat(7, field_names[6], VelocityX);
+        output.WriteFloat(8, field_names[7], VelocityX);
       }
       if (hasVelocityY) {
-        output.WriteFloat(8, field_names[7], VelocityY);
+        output.WriteFloat(9, field_names[8], VelocityY);
       }
       if (hasVelocityZ) {
-        output.WriteFloat(9, field_names[8], VelocityZ);
+        output.WriteFloat(10, field_names[9], VelocityZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -2481,32 +2870,35 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasUniqueId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, UniqueId);
+          size += pb::CodedOutputStream.ComputeInt32Size(2, UniqueId);
         }
         if (hasAffiliation) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, Affiliation);
+          size += pb::CodedOutputStream.ComputeInt32Size(3, Affiliation);
         }
         if (hasType) {
-          size += pb::CodedOutputStream.ComputeInt32Size(3, Type);
+          size += pb::CodedOutputStream.ComputeInt32Size(4, Type);
         }
         if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(4, PosX);
+          size += pb::CodedOutputStream.ComputeFloatSize(5, PosX);
         }
         if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, PosY);
+          size += pb::CodedOutputStream.ComputeFloatSize(6, PosY);
         }
         if (hasPosZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(6, PosZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(7, PosZ);
         }
         if (hasVelocityX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(7, VelocityX);
+          size += pb::CodedOutputStream.ComputeFloatSize(8, VelocityX);
         }
         if (hasVelocityY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(8, VelocityY);
+          size += pb::CodedOutputStream.ComputeFloatSize(9, VelocityY);
         }
         if (hasVelocityZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(9, VelocityZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(10, VelocityZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -2632,6 +3024,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Actor other) {
         if (other == global::autonomy_msg.Gpb_Actor.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasUniqueId) {
           UniqueId = other.UniqueId;
         }
@@ -2703,38 +3098,42 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasUniqueId = input.ReadInt32(ref result.uniqueId_);
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
             case 16: {
-              result.hasAffiliation = input.ReadInt32(ref result.affiliation_);
+              result.hasUniqueId = input.ReadInt32(ref result.uniqueId_);
               break;
             }
             case 24: {
+              result.hasAffiliation = input.ReadInt32(ref result.affiliation_);
+              break;
+            }
+            case 32: {
               result.hasType = input.ReadInt32(ref result.type_);
               break;
             }
-            case 37: {
+            case 45: {
               result.hasPosX = input.ReadFloat(ref result.posX_);
               break;
             }
-            case 45: {
+            case 53: {
               result.hasPosY = input.ReadFloat(ref result.posY_);
               break;
             }
-            case 53: {
+            case 61: {
               result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
-            case 61: {
+            case 69: {
               result.hasVelocityX = input.ReadFloat(ref result.velocityX_);
               break;
             }
-            case 69: {
+            case 77: {
               result.hasVelocityY = input.ReadFloat(ref result.velocityY_);
               break;
             }
-            case 77: {
+            case 85: {
               result.hasVelocityZ = input.ReadFloat(ref result.velocityZ_);
               break;
             }
@@ -2747,6 +3146,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasUniqueId {
         get { return result.hasUniqueId; }
@@ -2937,8 +3358,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Base : pb::GeneratedMessage<Gpb_Base, Gpb_Base.Builder> {
     private Gpb_Base() { }
     private static readonly Gpb_Base defaultInstance = new Gpb_Base().MakeReadOnly();
-    private static readonly string[] _gpbBaseFieldNames = new string[] { "cells", "id" };
-    private static readonly uint[] _gpbBaseFieldTags = new uint[] { 18, 8 };
+    private static readonly string[] _gpbBaseFieldNames = new string[] { "belief_time", "cells", "id" };
+    private static readonly uint[] _gpbBaseFieldTags = new uint[] { 8, 26, 16 };
     public static Gpb_Base DefaultInstance {
       get { return defaultInstance; }
     }
@@ -2959,7 +3380,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable; }
     }
     
-    public const int IdFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int IdFieldNumber = 2;
     private bool hasId;
     private int id_;
     public bool HasId {
@@ -2969,7 +3401,7 @@ namespace autonomy_msg {
       get { return id_; }
     }
     
-    public const int CellsFieldNumber = 2;
+    public const int CellsFieldNumber = 3;
     private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
     public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
       get { return cells_; }
@@ -2983,6 +3415,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasId) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
@@ -2994,11 +3427,14 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbBaseFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasId) {
-        output.WriteInt32(1, field_names[1], Id);
+        output.WriteInt32(2, field_names[2], Id);
       }
       if (cells_.Count > 0) {
-        output.WriteMessageArray(2, field_names[0], cells_);
+        output.WriteMessageArray(3, field_names[1], cells_);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3010,11 +3446,14 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Id);
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Id);
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
-          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+          size += pb::CodedOutputStream.ComputeMessageSize(3, element);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3141,6 +3580,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Base other) {
         if (other == global::autonomy_msg.Gpb_Base.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasId) {
           Id = other.Id;
         }
@@ -3191,10 +3633,14 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
               result.hasId = input.ReadInt32(ref result.id_);
               break;
             }
-            case 18: {
+            case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
               break;
             }
@@ -3207,6 +3653,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasId {
         get { return result.hasId; }
@@ -3281,8 +3749,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Terrain : pb::GeneratedMessage<Gpb_Terrain, Gpb_Terrain.Builder> {
     private Gpb_Terrain() { }
     private static readonly Gpb_Terrain defaultInstance = new Gpb_Terrain().MakeReadOnly();
-    private static readonly string[] _gpbTerrainFieldNames = new string[] { "cells", "type" };
-    private static readonly uint[] _gpbTerrainFieldTags = new uint[] { 18, 8 };
+    private static readonly string[] _gpbTerrainFieldNames = new string[] { "belief_time", "cells", "type" };
+    private static readonly uint[] _gpbTerrainFieldTags = new uint[] { 8, 26, 16 };
     public static Gpb_Terrain DefaultInstance {
       get { return defaultInstance; }
     }
@@ -3303,7 +3771,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable; }
     }
     
-    public const int TypeFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int TypeFieldNumber = 2;
     private bool hasType;
     private int type_;
     public bool HasType {
@@ -3313,7 +3792,7 @@ namespace autonomy_msg {
       get { return type_; }
     }
     
-    public const int CellsFieldNumber = 2;
+    public const int CellsFieldNumber = 3;
     private pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell> cells_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_GridCell>();
     public scg::IList<global::autonomy_msg.Gpb_GridCell> CellsList {
       get { return cells_; }
@@ -3327,6 +3806,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasType) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
@@ -3338,11 +3818,14 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbTerrainFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasType) {
-        output.WriteInt32(1, field_names[1], Type);
+        output.WriteInt32(2, field_names[2], Type);
       }
       if (cells_.Count > 0) {
-        output.WriteMessageArray(2, field_names[0], cells_);
+        output.WriteMessageArray(3, field_names[1], cells_);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3354,11 +3837,14 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasType) {
-          size += pb::CodedOutputStream.ComputeInt32Size(1, Type);
+          size += pb::CodedOutputStream.ComputeInt32Size(2, Type);
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
-          size += pb::CodedOutputStream.ComputeMessageSize(2, element);
+          size += pb::CodedOutputStream.ComputeMessageSize(3, element);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3485,6 +3971,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Terrain other) {
         if (other == global::autonomy_msg.Gpb_Terrain.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasType) {
           Type = other.Type;
         }
@@ -3535,10 +4024,14 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
               result.hasType = input.ReadInt32(ref result.type_);
               break;
             }
-            case 18: {
+            case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
               break;
             }
@@ -3551,6 +4044,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasType {
         get { return result.hasType; }
@@ -3625,8 +4140,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Mode_Command : pb::GeneratedMessage<Gpb_Mode_Command, Gpb_Mode_Command.Builder> {
     private Gpb_Mode_Command() { }
     private static readonly Gpb_Mode_Command defaultInstance = new Gpb_Mode_Command().MakeReadOnly();
-    private static readonly string[] _gpbModeCommandFieldNames = new string[] { "actor_id", "mode_id", "request_time" };
-    private static readonly uint[] _gpbModeCommandFieldTags = new uint[] { 16, 24, 8 };
+    private static readonly string[] _gpbModeCommandFieldNames = new string[] { "actor_id", "belief_time", "mode_id", "request_time" };
+    private static readonly uint[] _gpbModeCommandFieldTags = new uint[] { 24, 8, 32, 16 };
     public static Gpb_Mode_Command DefaultInstance {
       get { return defaultInstance; }
     }
@@ -3647,7 +4162,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable; }
     }
     
-    public const int RequestTimeFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int RequestTimeFieldNumber = 2;
     private bool hasRequestTime;
     private ulong requestTime_;
     public bool HasRequestTime {
@@ -3658,7 +4184,7 @@ namespace autonomy_msg {
       get { return requestTime_; }
     }
     
-    public const int ActorIdFieldNumber = 2;
+    public const int ActorIdFieldNumber = 3;
     private bool hasActorId;
     private int actorId_;
     public bool HasActorId {
@@ -3668,7 +4194,7 @@ namespace autonomy_msg {
       get { return actorId_; }
     }
     
-    public const int ModeIdFieldNumber = 3;
+    public const int ModeIdFieldNumber = 4;
     private bool hasModeId;
     private int modeId_;
     public bool HasModeId {
@@ -3680,6 +4206,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasRequestTime) return false;
         if (!hasActorId) return false;
         if (!hasModeId) return false;
@@ -3690,14 +4217,17 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbModeCommandFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
       if (hasRequestTime) {
-        output.WriteUInt64(1, field_names[2], RequestTime);
+        output.WriteUInt64(2, field_names[3], RequestTime);
       }
       if (hasActorId) {
-        output.WriteInt32(2, field_names[0], ActorId);
+        output.WriteInt32(3, field_names[0], ActorId);
       }
       if (hasModeId) {
-        output.WriteInt32(3, field_names[1], ModeId);
+        output.WriteInt32(4, field_names[2], ModeId);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3709,14 +4239,17 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasRequestTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, RequestTime);
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, RequestTime);
         }
         if (hasActorId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
+          size += pb::CodedOutputStream.ComputeInt32Size(3, ActorId);
         }
         if (hasModeId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(3, ModeId);
+          size += pb::CodedOutputStream.ComputeInt32Size(4, ModeId);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3842,6 +4375,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Mode_Command other) {
         if (other == global::autonomy_msg.Gpb_Mode_Command.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasRequestTime) {
           RequestTime = other.RequestTime;
         }
@@ -3895,14 +4431,18 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
             case 16: {
-              result.hasActorId = input.ReadInt32(ref result.actorId_);
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
               break;
             }
             case 24: {
+              result.hasActorId = input.ReadInt32(ref result.actorId_);
+              break;
+            }
+            case 32: {
               result.hasModeId = input.ReadInt32(ref result.modeId_);
               break;
             }
@@ -3915,6 +4455,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasRequestTime {
         get { return result.hasRequestTime; }
@@ -3987,8 +4549,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Waypoint : pb::GeneratedMessage<Gpb_Waypoint, Gpb_Waypoint.Builder> {
     private Gpb_Waypoint() { }
     private static readonly Gpb_Waypoint defaultInstance = new Gpb_Waypoint().MakeReadOnly();
-    private static readonly string[] _gpbWaypointFieldNames = new string[] { "actor_id", "pos_x", "pos_y", "pos_z", "request_time" };
-    private static readonly uint[] _gpbWaypointFieldTags = new uint[] { 16, 29, 37, 45, 8 };
+    private static readonly string[] _gpbWaypointFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_y", "pos_z", "request_time" };
+    private static readonly uint[] _gpbWaypointFieldTags = new uint[] { 24, 8, 37, 45, 53, 16 };
     public static Gpb_Waypoint DefaultInstance {
       get { return defaultInstance; }
     }
@@ -4009,7 +4571,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Waypoint__FieldAccessorTable; }
     }
     
-    public const int RequestTimeFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int RequestTimeFieldNumber = 2;
     private bool hasRequestTime;
     private ulong requestTime_;
     public bool HasRequestTime {
@@ -4020,7 +4593,7 @@ namespace autonomy_msg {
       get { return requestTime_; }
     }
     
-    public const int ActorIdFieldNumber = 2;
+    public const int ActorIdFieldNumber = 3;
     private bool hasActorId;
     private int actorId_;
     public bool HasActorId {
@@ -4030,7 +4603,7 @@ namespace autonomy_msg {
       get { return actorId_; }
     }
     
-    public const int PosXFieldNumber = 3;
+    public const int PosXFieldNumber = 4;
     private bool hasPosX;
     private float posX_;
     public bool HasPosX {
@@ -4040,7 +4613,7 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 4;
+    public const int PosYFieldNumber = 5;
     private bool hasPosY;
     private float posY_;
     public bool HasPosY {
@@ -4050,7 +4623,7 @@ namespace autonomy_msg {
       get { return posY_; }
     }
     
-    public const int PosZFieldNumber = 5;
+    public const int PosZFieldNumber = 6;
     private bool hasPosZ;
     private float posZ_;
     public bool HasPosZ {
@@ -4062,6 +4635,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasRequestTime) return false;
         if (!hasActorId) return false;
         if (!hasPosX) return false;
@@ -4074,20 +4648,23 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbWaypointFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
       if (hasRequestTime) {
-        output.WriteUInt64(1, field_names[4], RequestTime);
+        output.WriteUInt64(2, field_names[5], RequestTime);
       }
       if (hasActorId) {
-        output.WriteInt32(2, field_names[0], ActorId);
+        output.WriteInt32(3, field_names[0], ActorId);
       }
       if (hasPosX) {
-        output.WriteFloat(3, field_names[1], PosX);
+        output.WriteFloat(4, field_names[2], PosX);
       }
       if (hasPosY) {
-        output.WriteFloat(4, field_names[2], PosY);
+        output.WriteFloat(5, field_names[3], PosY);
       }
       if (hasPosZ) {
-        output.WriteFloat(5, field_names[3], PosZ);
+        output.WriteFloat(6, field_names[4], PosZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -4099,20 +4676,23 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasRequestTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, RequestTime);
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, RequestTime);
         }
         if (hasActorId) {
-          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
+          size += pb::CodedOutputStream.ComputeInt32Size(3, ActorId);
         }
         if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(3, PosX);
+          size += pb::CodedOutputStream.ComputeFloatSize(4, PosX);
         }
         if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(4, PosY);
+          size += pb::CodedOutputStream.ComputeFloatSize(5, PosY);
         }
         if (hasPosZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, PosZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(6, PosZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -4238,6 +4818,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Waypoint other) {
         if (other == global::autonomy_msg.Gpb_Waypoint.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasRequestTime) {
           RequestTime = other.RequestTime;
         }
@@ -4297,22 +4880,26 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
-              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
             case 16: {
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              break;
+            }
+            case 24: {
               result.hasActorId = input.ReadInt32(ref result.actorId_);
               break;
             }
-            case 29: {
+            case 37: {
               result.hasPosX = input.ReadFloat(ref result.posX_);
               break;
             }
-            case 37: {
+            case 45: {
               result.hasPosY = input.ReadFloat(ref result.posY_);
               break;
             }
-            case 45: {
+            case 53: {
               result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
@@ -4325,6 +4912,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasRequestTime {
         get { return result.hasRequestTime; }
@@ -4437,8 +5046,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Time : pb::GeneratedMessage<Gpb_Time, Gpb_Time.Builder> {
     private Gpb_Time() { }
     private static readonly Gpb_Time defaultInstance = new Gpb_Time().MakeReadOnly();
-    private static readonly string[] _gpbTimeFieldNames = new string[] { "time" };
-    private static readonly uint[] _gpbTimeFieldTags = new uint[] { 8 };
+    private static readonly string[] _gpbTimeFieldNames = new string[] { "belief_time", "time" };
+    private static readonly uint[] _gpbTimeFieldTags = new uint[] { 8, 16 };
     public static Gpb_Time DefaultInstance {
       get { return defaultInstance; }
     }
@@ -4459,7 +5068,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable; }
     }
     
-    public const int TimeFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int TimeFieldNumber = 2;
     private bool hasTime;
     private ulong time_;
     public bool HasTime {
@@ -4472,6 +5092,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasTime) return false;
         return true;
       }
@@ -4480,8 +5101,11 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbTimeFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasTime) {
-        output.WriteUInt64(1, field_names[0], Time);
+        output.WriteUInt64(2, field_names[1], Time);
       }
       UnknownFields.WriteTo(output);
     }
@@ -4493,8 +5117,11 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, Time);
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, Time);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -4620,6 +5247,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Time other) {
         if (other == global::autonomy_msg.Gpb_Time.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasTime) {
           Time = other.Time;
         }
@@ -4667,6 +5297,10 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
               result.hasTime = input.ReadUInt64(ref result.time_);
               break;
             }
@@ -4679,6 +5313,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasTime {
         get { return result.hasTime; }
@@ -4711,8 +5367,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_RoadCell : pb::GeneratedMessage<Gpb_RoadCell, Gpb_RoadCell.Builder> {
     private Gpb_RoadCell() { }
     private static readonly Gpb_RoadCell defaultInstance = new Gpb_RoadCell().MakeReadOnly();
-    private static readonly string[] _gpbRoadCellFieldNames = new string[] { "cell", "isRoadEnd" };
-    private static readonly uint[] _gpbRoadCellFieldTags = new uint[] { 18, 8 };
+    private static readonly string[] _gpbRoadCellFieldNames = new string[] { "belief_time", "cell", "isRoadEnd" };
+    private static readonly uint[] _gpbRoadCellFieldTags = new uint[] { 8, 26, 16 };
     public static Gpb_RoadCell DefaultInstance {
       get { return defaultInstance; }
     }
@@ -4733,7 +5389,18 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable; }
     }
     
-    public const int IsRoadEndFieldNumber = 1;
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int IsRoadEndFieldNumber = 2;
     private bool hasIsRoadEnd;
     private bool isRoadEnd_;
     public bool HasIsRoadEnd {
@@ -4743,7 +5410,7 @@ namespace autonomy_msg {
       get { return isRoadEnd_; }
     }
     
-    public const int CellFieldNumber = 2;
+    public const int CellFieldNumber = 3;
     private bool hasCell;
     private global::autonomy_msg.Gpb_GridCell cell_;
     public bool HasCell {
@@ -4755,6 +5422,7 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasBeliefTime) return false;
         if (!hasIsRoadEnd) return false;
         if (!hasCell) return false;
         if (!Cell.IsInitialized) return false;
@@ -4765,11 +5433,14 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbRoadCellFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
       if (hasIsRoadEnd) {
-        output.WriteBool(1, field_names[1], IsRoadEnd);
+        output.WriteBool(2, field_names[2], IsRoadEnd);
       }
       if (hasCell) {
-        output.WriteMessage(2, field_names[0], Cell);
+        output.WriteMessage(3, field_names[1], Cell);
       }
       UnknownFields.WriteTo(output);
     }
@@ -4781,11 +5452,14 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
         if (hasIsRoadEnd) {
-          size += pb::CodedOutputStream.ComputeBoolSize(1, IsRoadEnd);
+          size += pb::CodedOutputStream.ComputeBoolSize(2, IsRoadEnd);
         }
         if (hasCell) {
-          size += pb::CodedOutputStream.ComputeMessageSize(2, Cell);
+          size += pb::CodedOutputStream.ComputeMessageSize(3, Cell);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -4911,6 +5585,9 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_RoadCell other) {
         if (other == global::autonomy_msg.Gpb_RoadCell.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
         if (other.HasIsRoadEnd) {
           IsRoadEnd = other.IsRoadEnd;
         }
@@ -4961,10 +5638,14 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
               result.hasIsRoadEnd = input.ReadBool(ref result.isRoadEnd_);
               break;
             }
-            case 18: {
+            case 26: {
               global::autonomy_msg.Gpb_GridCell.Builder subBuilder = global::autonomy_msg.Gpb_GridCell.CreateBuilder();
               if (result.hasCell) {
                 subBuilder.MergeFrom(Cell);
@@ -4982,6 +5663,28 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
       
       public bool HasIsRoadEnd {
         get { return result.hasIsRoadEnd; }
