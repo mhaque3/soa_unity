@@ -20,7 +20,7 @@ public class SoaSensor : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        
+        soaActor = gameObject.GetComponentInParent<SoaActor>();
 	}
 
 	void Update () 
@@ -90,7 +90,10 @@ public class SoaSensor : MonoBehaviour
 
     void LogDetection(GameObject detectedObject)
     {
-        if(soaActor.Detections.IndexOf(detectedObject) == -1)
+        if (soaActor.Detections.IndexOf(detectedObject) == -1)
+        {
+            Debug.Log("Adding detection to soa actor list " + soaActor.unique_id);
             soaActor.Detections.Add(detectedObject);
+        }
     }
 }

@@ -42,7 +42,7 @@ public class SoaActor : MonoBehaviour
 
         foreach (SoaSensor sensor in Sensors)
         {
-            sensor.soaActor = this;
+            //sensor.soaActor = this;
         }
 
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
@@ -155,6 +155,7 @@ public class SoaActor : MonoBehaviour
                     gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
                 beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 dataManager.addAndBroadcastBelief(detectedActor, soaActor.unique_id);
+                Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
             }
 
             // Finished processing Detections list, clear it
