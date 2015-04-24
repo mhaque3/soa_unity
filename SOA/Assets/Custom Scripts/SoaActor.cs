@@ -147,6 +147,19 @@ public class SoaActor : MonoBehaviour
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             dataManager.addAndBroadcastBelief(newActorData, unique_id);
             
+            // Go through each detected object's Soa Actor, get unique ID, affiliation, and pos.  Broadcast belief out to everyone
+            foreach (GameObject gameObject in Detections)
+            {
+                SoaActor soaActor = gameObject.GetComponent<SoaActor>();
+                Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, soaActor.affiliation, soaActor.type, 
+                    gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+                beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
+                dataManager.addAndBroadcastBelief(detectedActor, soaActor.unique_id);
+            }
+
+            // Finished processing Detections list, clear it
+            Detections.Clear();
+
             useGhostModel = false;
             
         }
