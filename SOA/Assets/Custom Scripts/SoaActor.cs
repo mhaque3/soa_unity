@@ -120,6 +120,7 @@ public class SoaActor : MonoBehaviour
             if (useExternalWaypoint)
             {
                 Belief newBelief;
+                //Debug.Log(name);
                 motionScript.On = false;
                 if (beliefDictionary[Belief.BeliefType.WAYPOINT].TryGetValue(unique_id, out newBelief))
                 {

@@ -6,14 +6,20 @@ using soa;
 
 public class SimControl : MonoBehaviour 
 {
+    static public float KmToUnity;
 
+    public string RedRoom = "soa-apl-red";
+    public string BlueRoom = "soa-apl-blue";
     public List<GameObject> LocalPlatforms;
     public List<GameObject> RemotePlatforms;
     public List<GameObject> NgoSites;
     public List<GameObject> Villages;
     public List<GameObject> RedBases;
     public bool BroadcastOn;
+    
     public OverheadMouseCamera omcScript;
+    public SoaHexWorld hexGrid;
+
     public float updateRateS;
     private bool showTruePositions = true;
 
@@ -28,13 +34,16 @@ public class SimControl : MonoBehaviour
 
 	void Start () 
     {
+        KmToUnity = hexGrid.KmToUnity();
+        Debug.Log("Km to Unity = " + KmToUnity);
+
         NavMesh.pathfindingIterationsPerFrame = 50;
 
         //if (BroadcastOn)
         //{
             // Create manager
-            redDataManager = new DataManager("soa-apl-red");
-            blueDataManager = new DataManager("soa-apl-blue");
+            redDataManager = new DataManager(RedRoom);
+            blueDataManager = new DataManager(BlueRoom);
             displayBeliefDictionary = blueDataManager.getGodsEyeView();
 
         //}
@@ -171,9 +180,32 @@ public class SimControl : MonoBehaviour
     Belief b;
     float messageTimer = 0f;
     float updateTimer = 0f;
+
+    float sensorClock = 0f;
+    public float sensorUpdatePeriod;
+
 	void Update () 
     {
-        updateTimer += Time.deltaTime;
+        float dt = Time.deltaTime;
+
+        sensorClock += dt;
+        if (sensorClock > sensorUpdatePeriod)
+        {
+            sensorClock = 0f;
+
+            foreach (GameObject seeker in LocalPlatforms)
+            {
+                seeker.BroadcastMessage("CheckDetections", LocalPlatforms, SendMessageOptions.DontRequireReceiver);
+                seeker.BroadcastMessage("CheckDetections", RemotePlatforms, SendMessageOptions.DontRequireReceiver);
+            }
+            foreach (GameObject seeker in RemotePlatforms)
+            {
+                seeker.BroadcastMessage("CheckDetections", LocalPlatforms, SendMessageOptions.DontRequireReceiver);
+                seeker.BroadcastMessage("CheckDetections", RemotePlatforms, SendMessageOptions.DontRequireReceiver);
+            }
+        }
+
+        updateTimer += dt;
         if (updateTimer > updateRateS)
         {
             blueDataManager.calcualteDistances();
