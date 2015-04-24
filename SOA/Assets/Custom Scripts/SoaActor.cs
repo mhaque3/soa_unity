@@ -126,7 +126,7 @@ public class SoaActor : MonoBehaviour
                 {
                     Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
                     navAgent.SetDestination(new Vector3(newWaypoint.getPos_x(), newWaypoint.getPos_y(), newWaypoint.getPos_z()));
-                    Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
+                    //Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
                 }
                 else
                 {

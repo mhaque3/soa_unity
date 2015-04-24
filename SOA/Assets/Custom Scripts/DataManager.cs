@@ -113,7 +113,7 @@ namespace soa
             {
 
                 
-                Debug.Log("looking up actor  " + soaActor.unique_id);
+                //Debug.Log("looking up actor  " + soaActor.unique_id);
                 Belief b;
                 if (actorDictionary.TryGetValue(soaActor.unique_id, out b))
                 {
@@ -122,7 +122,7 @@ namespace soa
 
                     foreach (SoaActor neighborActor in actors)
                     {
-                        Debug.Log("looking up actor " + soaActor.unique_id);
+                        //Debug.Log("looking up actor " + soaActor.unique_id);
                         Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
                         Vector3 neighborPos = new Vector3((float)neighbor.getPos_x(), (float)neighbor.getPos_y(), (float)neighbor.getPos_z());
 
