@@ -82,6 +82,14 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
 		}
 	}
 
+    public float KmToUnity()
+    {
+        FlatHexPoint p0 = new FlatHexPoint(0, 0);
+        FlatHexPoint p1 = new FlatHexPoint(0, 1);
+
+        return (Map[p1] - Map[p0]).magnitude;
+    }
+
     public void HighlightCell(FlatHexPoint point)
     {
         Block thisBlock = (Block)Grid[point];

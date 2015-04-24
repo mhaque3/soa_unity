@@ -16,58 +16,54 @@ public class SoaSensor : MonoBehaviour
     public Modality[] modes;
     public SoaActor soaActor;
     public List<GameObject> possibleDetections;
-    public float UpdateRate = 1f;
+    //public float UpdateRate = 1f;
 	// Use this for initialization
 	void Start () 
     {
+        
 	}
-	
-	// Update is called once per frame
-    float updateClock = 0f;
+
 	void Update () 
     {
-        float dt = Time.deltaTime;
-        updateClock += dt;
-        if (updateClock > UpdateRate)
-        {
-            foreach (GameObject possible in possibleDetections)
-            {
-                foreach (Modality mode in modes)
-                {
-                    if (mode.tagString == possible.tag)
-                    {
-                        Vector3 delta = transform.position - possible.transform.position;
-                        float slantRange = delta.magnitude;
-
-                        if (slantRange < mode.RangeMax)
-                        {
-                            if (slantRange < mode.RangeP1)
-                            {
-                                LogDetection(possible);
-                            }
-                        }
-                        else if (slantRange < mode.RangeMax)
-                        {
-                            if (((slantRange - mode.RangeP1) / (mode.RangeMax - mode.RangeP1)) < Random.value)
-                            {
-                                Debug.Log("Opportunity by " + transform.parent.name + " "
-                                    + (slantRange - mode.RangeP1) / (mode.RangeMax - mode.RangeP1));
-                                LogDetection(possible);
-                            }
-                        }
-
-                    }
-                }
-            }
-            possibleDetections.Clear();
-            updateClock = 0f;
-        }
 	}
 
-    void OnTriggerEnter(Collider other)
+    public void CheckDetections(List<GameObject> targets)
     {
+        foreach (GameObject target in targets)
+        {
+            foreach (Modality mode in modes)
+            {
+                Vector3 delta = transform.position - target.transform.position;
+                float slantRange = delta.magnitude * SimControl.KmToUnity;
+
+                if (mode.tagString == target.tag)
+                {
+                    if (slantRange < mode.RangeMax)
+                    {
+                        if (slantRange < mode.RangeP1)
+                        {
+                            Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
+                            LogDetection(target.gameObject);
+                        }
+                        else
+                        {
+                            if (Random.value < (mode.RangeMax - slantRange) / (mode.RangeMax - mode.RangeP1))
+                            {
+                                Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
+                                LogDetection(target.gameObject);
+                            }
+                            else
+                            {
+                                Debug.Log(soaActor.name + " failed detect of " + target.name + " at " + slantRange + "km");
+                            }
+                        }
+                    }                  
+                }
+            }
+        }
     }
 
+    /*
     void OnTriggerStay(Collider other)
     {
         foreach(Modality mode in modes)
@@ -90,19 +86,7 @@ public class SoaSensor : MonoBehaviour
                 }
             }
         }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        soaActor.Detections.Remove(other.gameObject);
-        possibleDetections.Remove(other.gameObject);
-    }
-
-    void LogPossibleDetection(GameObject detectedObject)
-    {
-        if (possibleDetections.IndexOf(detectedObject) == -1)
-            possibleDetections.Add(detectedObject);
-    }
+    }*/
 
     void LogDetection(GameObject detectedObject)
     {
