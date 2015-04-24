@@ -53,7 +53,6 @@ public class SimControl : MonoBehaviour
             {
                 actor.affiliation = (int)Affiliation.BLUE;
                 actor.dataManager = blueDataManager;
-                blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("HeavyLift"))
             {
@@ -91,9 +90,11 @@ public class SimControl : MonoBehaviour
             }
             if (platform.name.Contains("Police"))
             {
+                actor.unique_id = 200-i;
                 actor.type = 4;
                 actor.commsRange = 5000;
                 actor.useExternalWaypoint = false;
+                blueDataManager.addNewActor(actor);
             }
 
         }
@@ -123,6 +124,7 @@ public class SimControl : MonoBehaviour
                 actor.commsRange = 5000;
                 actor.useExternalWaypoint = true;
                 actor.dataManager = blueDataManager;
+                blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("SmallUav"))
             {
@@ -131,6 +133,7 @@ public class SimControl : MonoBehaviour
                 actor.commsRange = 5000;
                 actor.useExternalWaypoint = true;
                 actor.dataManager = blueDataManager;
+                blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("Red"))
             {
@@ -173,6 +176,8 @@ public class SimControl : MonoBehaviour
         updateTimer += Time.deltaTime;
         if (updateTimer > updateRateS)
         {
+            blueDataManager.calcualteDistances();
+            redDataManager.calcualteDistances();
             //TODO get display parameters
 
             //This lock keeps the comms manager from adding data while we are reading

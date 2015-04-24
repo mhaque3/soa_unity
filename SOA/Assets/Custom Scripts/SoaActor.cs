@@ -125,6 +125,7 @@ public class SoaActor : MonoBehaviour
                 {
                     Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
                     navAgent.SetDestination(new Vector3(newWaypoint.getPos_x(), newWaypoint.getPos_y(), newWaypoint.getPos_z()));
+                    Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
                 }
                 else
                 {
@@ -157,8 +158,7 @@ public class SoaActor : MonoBehaviour
     public void addBelief(Belief b)
     {
         #if(UNITY_STANDALONE)
-        Debug.Log("SoaActor - DataManager: Received belief of type "
-            + (int)b.getBeliefType() + "\n" + b);
+            //Debug.Log("SoaActor - DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
         #else
         Console.WriteLine("SoaActor - DataManager: Received belief of type "
             + (int)b.getBeliefType() + "\n" + b);
@@ -167,8 +167,8 @@ public class SoaActor : MonoBehaviour
         SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
         if (tempTypeDict != null)
         {
-            Belief oldBelief = beliefDictionary[b.getBeliefType()][b.getId()];
-            if (oldBelief == null || oldBelief.getBeliefTime() < b.getBeliefTime())
+            Belief oldBelief;
+            if (!beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief) || oldBelief.getBeliefTime() < b.getBeliefTime())
             {
                 beliefDictionary[b.getBeliefType()][b.getId()] = b;
             }

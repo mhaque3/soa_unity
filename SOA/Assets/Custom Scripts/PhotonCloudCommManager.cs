@@ -162,6 +162,13 @@ namespace soa
 
                     // Since thread has terminated, can now start another
                     startEligible = true;
+
+                    // Notify that comm manager has been terminated
+                    #if(UNITY_STANDALONE)
+                    Debug.Log("PhotonCloudCommManager: Termination successful");
+                    #else
+                    Console.WriteLine("PhotonCloudCommManager: Termination successful");
+                    #endif
                 }
                 else
                 {

@@ -119,7 +119,7 @@ public class RedTruckSim : MonoBehaviour
                 n.Casualties += 1f;
                 n.Supply -= 1f;
 
-                Debug.Log(transform.name + " attacks " + other.name);
+                //Debug.Log(transform.name + " attacks " + other.name);
             }
         }
 
@@ -131,7 +131,7 @@ public class RedTruckSim : MonoBehaviour
                  v.Casualties += 1f;
                  v.Supply -= 1f;
 
-                 Debug.Log(transform.name + " attacks " + other.name);
+                 //Debug.Log(transform.name + " attacks " + other.name);
             }
         }
     }

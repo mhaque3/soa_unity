@@ -24,10 +24,12 @@ namespace soa
         public System.Object dataManagerLock = new System.Object();
         private PhotonCloudCommManager cm;
 
+        private string room;
 
         // Constructor
         public DataManager(string roomName)
         {
+            room = roomName;
             Serializer ps = new ProtobufSerializer();
             cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
@@ -68,7 +70,7 @@ namespace soa
             Console.WriteLine("DataManager: Received belief of type "
                 + (int)b.getBeliefType() + "\n" + b);
 #else
-                //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
+                //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b.ToString());
 #endif
                 SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
                 if (tempTypeDict != null)
@@ -85,12 +87,12 @@ namespace soa
                 }
 
                 SortedDictionary<int, bool> sourceDistanceDictionary;
+                
                 if (actorDistanceDictionary.TryGetValue(sourceId, out sourceDistanceDictionary))
                 {
                     foreach (KeyValuePair<int, bool> entry in sourceDistanceDictionary)
                     {
                         SoaActor destActor = soaActorDictionary[entry.Key];
-                        double commsRange = destActor.commsRange;
                         if (entry.Value)
                         {
                             destActor.addBelief(b);
@@ -110,19 +112,29 @@ namespace soa
             foreach (SoaActor soaActor in actors)
             {
 
-                Belief_Actor actor = (Belief_Actor)actorDictionary[soaActor.unique_id];
-                Vector3 actorPos = new Vector3((float)actor.getPos_x(), (float)actor.getPos_y(), (float)actor.getPos_z());
-
-                foreach (SoaActor neighborActor in actors)
+                
+                Debug.Log("looking up actor  " + soaActor.unique_id);
+                Belief b;
+                if (actorDictionary.TryGetValue(soaActor.unique_id, out b))
                 {
-                    Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
-                    Vector3 neighborPos = new Vector3((float)neighbor.getPos_x(), (float)neighbor.getPos_y(), (float)neighbor.getPos_z());
+                    Belief_Actor actor = (Belief_Actor)b;
+                    Vector3 actorPos = new Vector3((float)actor.getPos_x(), (float)actor.getPos_y(), (float)actor.getPos_z());
 
-                    actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = Math.Sqrt(Math.Pow(actorPos.x - neighborPos.x, 2)
-                        + Math.Pow(actorPos.y - neighborPos.y, 2)
-                        + Math.Pow(actorPos.z - neighborPos.z, 2)) < neighborActor.commsRange;
+                    foreach (SoaActor neighborActor in actors)
+                    {
+                        Debug.Log("looking up actor " + soaActor.unique_id);
+                        Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
+                        Vector3 neighborPos = new Vector3((float)neighbor.getPos_x(), (float)neighbor.getPos_y(), (float)neighbor.getPos_z());
+
+                        actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = Math.Sqrt(Math.Pow(actorPos.x - neighborPos.x, 2)
+                            + Math.Pow(actorPos.y - neighborPos.y, 2)
+                            + Math.Pow(actorPos.z - neighborPos.z, 2)) < neighborActor.commsRange;
+                    }
                 }
-
+                else
+                {
+                    Debug.LogError("Could not find actor " + soaActor.unique_id + " in " + room);
+                }
             }
         }
 
@@ -134,7 +146,8 @@ namespace soa
             if (!actors.Contains(actor))
             {
                 actors.Add(actor);
-                soaActorDictionary.Add(actor.unique_id, actor);
+                Debug.Log("Adding actor to actor dictionary " + actor.unique_id);
+                soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
             }
             else
