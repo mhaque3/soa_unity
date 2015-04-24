@@ -168,7 +168,7 @@ public class SoaActor : MonoBehaviour
         if (tempTypeDict != null)
         {
             Belief oldBelief = beliefDictionary[b.getBeliefType()][b.getId()];
-            if (oldBelief == null || oldBelief.getTime() < b.getTime())
+            if (oldBelief == null || oldBelief.getBeliefTime() < b.getBeliefTime())
             {
                 beliefDictionary[b.getBeliefType()][b.getId()] = b;
             }
@@ -203,7 +203,7 @@ public class SoaActor : MonoBehaviour
             foreach (KeyValuePair<int, Belief> entry in typeDict)
             {
                 //only publish new data
-                if (entry.Value.getTime() < currentTime - 5000)
+                if (entry.Value.getBeliefTime() < currentTime - 5000)
                 {
                     dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
                 }

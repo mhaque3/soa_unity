@@ -74,7 +74,7 @@ namespace soa
                 if (tempTypeDict != null)
                 {
                     Belief oldBelief;
-                    if (!beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(),out oldBelief) || oldBelief.getTime() < b.getTime())
+                    if (!beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief) || oldBelief.getBeliefTime() < b.getBeliefTime())
                     {
                         beliefDictionary[b.getBeliefType()][b.getId()] = b;
                     }
