@@ -20,7 +20,7 @@ public class SoaActor : MonoBehaviour
     public bool useExternalWaypoint;
     public bool displayTruePosition = true;
 
-    private Vector3 displayPosition;
+    public Vector3 displayPosition;
     private Quaternion displayOrientation;
 
     private bool useGhostModel = false;
@@ -161,8 +161,7 @@ public class SoaActor : MonoBehaviour
             // Finished processing Detections list, clear it
             Detections.Clear();
 
-            useGhostModel = false;
-            
+            useGhostModel = false;           
         }
         
     }

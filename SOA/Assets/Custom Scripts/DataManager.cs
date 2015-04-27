@@ -149,6 +149,8 @@ namespace soa
                 Debug.Log("Adding actor to actor dictionary " + actor.unique_id);
                 soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
+                addBelief(new Belief_Actor(actor.unique_id, actor.affiliation, actor.type,
+                    actor.displayPosition.x, actor.displayPosition.y, actor.displayPosition.z), actor.unique_id);
             }
             else
             {
