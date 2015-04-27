@@ -12,6 +12,7 @@ namespace soa
             INVALID = 0,
             ACTOR, 
             BASE, 
+            CUSTOM,
             GRIDSPEC,
             MODE_COMMAND,
             NGOSITE, 

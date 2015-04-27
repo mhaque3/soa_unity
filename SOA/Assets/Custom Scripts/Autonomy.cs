@@ -30,6 +30,8 @@ namespace autonomy_msg {
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridCell, global::autonomy_msg.Gpb_GridCell.Builder> internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Actor__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder> internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Custom__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Custom, global::autonomy_msg.Gpb_Custom.Builder> internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Base__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder> internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Terrain__Descriptor;
@@ -69,19 +71,20 @@ namespace autonomy_msg {
           "ZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIoBRIMCgR0eXBlGAQgAigFEg0K" + 
           "BXBvc194GAUgAigCEg0KBXBvc195GAYgAigCEg0KBXBvc196GAcgAigCEhIK" + 
           "CnZlbG9jaXR5X3gYCCABKAISEgoKdmVsb2NpdHlfeRgJIAEoAhISCgp2ZWxv" + 
-          "Y2l0eV96GAogASgCIlYKCEdwYl9CYXNlEhMKC2JlbGllZl90aW1lGAEgAigE" + 
-          "EgoKAmlkGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdw" + 
-          "Yl9HcmlkQ2VsbCJbCgtHcGJfVGVycmFpbhITCgtiZWxpZWZfdGltZRgBIAIo" + 
-          "BBIMCgR0eXBlGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNn" + 
-          "LkdwYl9HcmlkQ2VsbCJgChBHcGJfTW9kZV9Db21tYW5kEhMKC2JlbGllZl90" + 
-          "aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgD" + 
-          "IAIoBRIPCgdtb2RlX2lkGAQgAigFIngKDEdwYl9XYXlwb2ludBITCgtiZWxp" + 
+          "Y2l0eV96GAogASgCIi8KCkdwYl9DdXN0b20SEwoLYmVsaWVmX3RpbWUYASAC" + 
+          "KAQSDAoEZGF0YRgCIAIoDCJWCghHcGJfQmFzZRITCgtiZWxpZWZfdGltZRgB" + 
+          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
+          "Zy5HcGJfR3JpZENlbGwiWwoLR3BiX1RlcnJhaW4SEwoLYmVsaWVmX3RpbWUY" + 
+          "ASACKAQSDAoEdHlwZRgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215" + 
+          "X21zZy5HcGJfR3JpZENlbGwiYAoQR3BiX01vZGVfQ29tbWFuZBITCgtiZWxp" + 
           "ZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQSEAoIYWN0b3Jf" + 
-          "aWQYAyACKAUSDQoFcG9zX3gYBCACKAISDQoFcG9zX3kYBSACKAISDQoFcG9z" + 
-          "X3oYBiACKAIiLQoIR3BiX1RpbWUSEwoLYmVsaWVmX3RpbWUYASACKAQSDAoE" + 
-          "dGltZRgCIAIoBCJgCgxHcGJfUm9hZENlbGwSEwoLYmVsaWVmX3RpbWUYASAC" + 
-          "KAQSEQoJaXNSb2FkRW5kGAIgAigIEigKBGNlbGwYAyACKAsyGi5hdXRvbm9t" + 
-          "eV9tc2cuR3BiX0dyaWRDZWxs");
+          "aWQYAyACKAUSDwoHbW9kZV9pZBgEIAIoBSJ4CgxHcGJfV2F5cG9pbnQSEwoL" + 
+          "YmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigEEhAKCGFj" + 
+          "dG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBvc195GAUgAigCEg0K" + 
+          "BXBvc196GAYgAigCIi0KCEdwYl9UaW1lEhMKC2JlbGllZl90aW1lGAEgAigE" + 
+          "EgwKBHRpbWUYAiACKAQiYAoMR3BiX1JvYWRDZWxsEhMKC2JlbGllZl90aW1l" + 
+          "GAEgAigEEhEKCWlzUm9hZEVuZBgCIAIoCBIoCgRjZWxsGAMgAigLMhouYXV0" + 
+          "b25vbXlfbXNnLkdwYl9HcmlkQ2VsbA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
@@ -112,27 +115,31 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
                 new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
-        internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_autonomy_msg_Gpb_Custom__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Custom, global::autonomy_msg.Gpb_Custom.Builder>(internal__static_autonomy_msg_Gpb_Custom__Descriptor,
+                new string[] { "BeliefTime", "Data", });
+        internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[8];
         internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder>(internal__static_autonomy_msg_Gpb_Base__Descriptor,
                 new string[] { "BeliefTime", "Id", "Cells", });
-        internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[8];
+        internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[9];
         internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Terrain, global::autonomy_msg.Gpb_Terrain.Builder>(internal__static_autonomy_msg_Gpb_Terrain__Descriptor,
                 new string[] { "BeliefTime", "Type", "Cells", });
-        internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[9];
+        internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[10];
         internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder>(internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "ModeId", });
-        internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[10];
+        internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[11];
         internal__static_autonomy_msg_Gpb_Waypoint__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint, global::autonomy_msg.Gpb_Waypoint.Builder>(internal__static_autonomy_msg_Gpb_Waypoint__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
-        internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[11];
+        internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[12];
         internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder>(internal__static_autonomy_msg_Gpb_Time__Descriptor,
                 new string[] { "BeliefTime", "Time", });
-        internal__static_autonomy_msg_Gpb_RoadCell__Descriptor = Descriptor.MessageTypes[12];
+        internal__static_autonomy_msg_Gpb_RoadCell__Descriptor = Descriptor.MessageTypes[13];
         internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder>(internal__static_autonomy_msg_Gpb_RoadCell__Descriptor,
                 new string[] { "BeliefTime", "IsRoadEnd", "Cell", });
@@ -3350,6 +3357,325 @@ namespace autonomy_msg {
       }
     }
     static Gpb_Actor() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_Custom : pb::GeneratedMessage<Gpb_Custom, Gpb_Custom.Builder> {
+    private Gpb_Custom() { }
+    private static readonly Gpb_Custom defaultInstance = new Gpb_Custom().MakeReadOnly();
+    private static readonly string[] _gpbCustomFieldNames = new string[] { "belief_time", "data" };
+    private static readonly uint[] _gpbCustomFieldTags = new uint[] { 8, 18 };
+    public static Gpb_Custom DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_Custom DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_Custom ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Custom__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_Custom, Gpb_Custom.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable; }
+    }
+    
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int DataFieldNumber = 2;
+    private bool hasData;
+    private pb::ByteString data_ = pb::ByteString.Empty;
+    public bool HasData {
+      get { return hasData; }
+    }
+    public pb::ByteString Data {
+      get { return data_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasBeliefTime) return false;
+        if (!hasData) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbCustomFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[0], BeliefTime);
+      }
+      if (hasData) {
+        output.WriteBytes(2, field_names[1], Data);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
+        if (hasData) {
+          size += pb::CodedOutputStream.ComputeBytesSize(2, Data);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_Custom ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_Custom ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_Custom ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_Custom ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_Custom MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_Custom prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_Custom, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_Custom cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_Custom result;
+      
+      private Gpb_Custom PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_Custom original = result;
+          result = new Gpb_Custom();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_Custom MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_Custom.Descriptor; }
+      }
+      
+      public override Gpb_Custom DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_Custom.DefaultInstance; }
+      }
+      
+      public override Gpb_Custom BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_Custom) {
+          return MergeFrom((Gpb_Custom) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_Custom other) {
+        if (other == global::autonomy_msg.Gpb_Custom.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
+        if (other.HasData) {
+          Data = other.Data;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbCustomFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbCustomFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 18: {
+              result.hasData = input.ReadBytes(ref result.data_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
+      
+      public bool HasData {
+        get { return result.hasData; }
+      }
+      public pb::ByteString Data {
+        get { return result.Data; }
+        set { SetData(value); }
+      }
+      public Builder SetData(pb::ByteString value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasData = true;
+        result.data_ = value;
+        return this;
+      }
+      public Builder ClearData() {
+        PrepareBuilder();
+        result.hasData = false;
+        result.data_ = pb::ByteString.Empty;
+        return this;
+      }
+    }
+    static Gpb_Custom() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }
