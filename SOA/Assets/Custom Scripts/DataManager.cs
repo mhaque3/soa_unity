@@ -30,10 +30,13 @@ namespace soa
         public DataManager(string roomName)
         {
             room = roomName;
+            
+            //Initialze belief manager with all environment data, the comms manager will broadcast this
+            //data on cm.start()
+            
             Serializer ps = new ProtobufSerializer();
             cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
-
             // Start them
             cm.start();
 
@@ -55,7 +58,7 @@ namespace soa
 
         public void addAndBroadcastBelief(Belief b, int sourceId)
         {
-            cm.addOutgoing(b, sourceId);
+            cm.addOutgoing(b, sourceId, null);
             addBelief(b, sourceId);
             
         }
