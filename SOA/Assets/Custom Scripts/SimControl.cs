@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 using soa;
+using Gamelogic.Grids;
 
 public class SimControl : MonoBehaviour 
 {
@@ -15,6 +17,9 @@ public class SimControl : MonoBehaviour
     public List<GameObject> NgoSites;
     public List<GameObject> Villages;
     public List<GameObject> RedBases;
+    public List<GameObject> BlueBases;
+    public List<GridCell> MountainCells;
+    public List<GridCell> WaterCells;
     public bool BroadcastOn;
     
     public OverheadMouseCamera omcScript;
@@ -36,6 +41,19 @@ public class SimControl : MonoBehaviour
     {
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
+
+        WaterCells = new List<GridCell>();
+        MountainCells = new List<GridCell>();
+
+        Debug.Log(hexGrid.WaterHexes.Count + " water hexes to copy");
+        foreach (FlatHexPoint point in hexGrid.WaterHexes)
+            WaterCells.Add(new GridCell(point.Y, point.X));
+
+        Debug.Log(hexGrid.MountainHexes.Count + " mountain hexes to copy");
+        foreach (FlatHexPoint point in hexGrid.MountainHexes)
+            MountainCells.Add(new GridCell(point.Y, point.X));
+
+        LoadConfigFile();
 
         NavMesh.pathfindingIterationsPerFrame = 50;
 
@@ -170,8 +188,9 @@ public class SimControl : MonoBehaviour
                 actor.commsRange = 5000;
                 actor.useExternalWaypoint = false;
             }
-
         }
+
+        PushMapBeliefs();
 	}
 	
 	// Update is called once per frame
@@ -372,6 +391,78 @@ public class SimControl : MonoBehaviour
             }
         }
 	}
+
+    string ConfigFileName = "SoaSimConfig.xml";
+    void LoadConfigFile()
+    {
+        Debug.Log("Loading from " + ConfigFileName);
+
+        XmlTextReader reader = new XmlTextReader(ConfigFileName);
+
+        reader.ReadToDescendant("RedRoom");
+        Debug.Log(reader.Name);
+        RedRoom = reader.ReadElementContentAsString();
+        Debug.Log(RedRoom);
+        reader.ReadToFollowing("BlueRoom");
+        Debug.Log(reader.Name);
+        BlueRoom = reader.ReadElementContentAsString();
+        Debug.Log(BlueRoom);
+
+        reader.Close();
+    }
+
+    void PushMapBeliefs()
+    {
+        GameObject g;
+        FlatHexPoint currentCell;
+
+        currentCell = new FlatHexPoint(0, 0);
+
+        b = new Belief_GridSpec(64, 36, KmToUnity, hexGrid.Map[currentCell].x, hexGrid.Map[currentCell].z);
+        blueDataManager.addBelief(b, 0);
+        Debug.Log(b.ToString());
+
+        b = new Belief_Terrain((int)soa.Terrain.MOUNTAIN, MountainCells);
+        blueDataManager.addBelief(b, 0);
+        Debug.Log(MountainCells.Count + " mountain hexes.");
+
+        b = new Belief_Terrain((int)soa.Terrain.WATER, WaterCells);
+        blueDataManager.addBelief(b, 0);
+        Debug.Log(WaterCells.Count + " water hexes.");
+
+        for (int i = 0; i < BlueBases.Count; i++ )
+        {
+            g = BlueBases[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            b = new Belief_Base(i, theseCells);
+            blueDataManager.addBelief(b, 0);
+            Debug.Log(b.ToString());
+        }
+
+        for (int i = 0; i < NgoSites.Count; i++)
+        {
+            g = NgoSites[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            b = new Belief_NGOSite(i, theseCells);
+            blueDataManager.addBelief(b, 0);
+            Debug.Log(b.ToString());
+        }
+
+        for (int i = 0; i < Villages.Count; i++)
+        {
+            g = Villages[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            b = new Belief_Village(i, theseCells);
+            blueDataManager.addBelief(b, 0);
+            Debug.Log(b.ToString());
+        }
+    }
 
     public void AddLocalPlatform(GameObject newPlatform)
     {

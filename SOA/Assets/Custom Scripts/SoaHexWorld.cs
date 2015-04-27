@@ -6,6 +6,7 @@ using Gamelogic.Grids;
 // Copyright (c) 2013 Gamelogic (Pty) Ltd       //
 //----------------------------------------------//
 using UnityEngine;
+using System.Collections.Generic;
 
 /**
 	This example shows how you can use a grid in 3D.
@@ -29,6 +30,9 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
     public float BaseHeight = 1.0f;
     public float MountainHeight = 2.0f;
 
+    public List<FlatHexPoint> WaterHexes;
+    public List<FlatHexPoint> MountainHexes;
+
 	override public void InitGrid()
 	{
 		var imageRectHeight = new Rect(0, 0, heightMap.width, heightMap.height);
@@ -36,6 +40,9 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
 		var map = new FlatHexMap(new Vector2(80, 69));
         var mapHeight = new ImageMap<FlatHexPoint>(imageRectHeight, Grid, map);
         var mapPolitical = new ImageMap<FlatHexPoint>(imageRectPolitical, Grid, map);
+
+        WaterHexes = new List<FlatHexPoint>();
+        MountainHexes = new List<FlatHexPoint>();
 
 		foreach (var point in Grid)
 		{
@@ -62,6 +69,7 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
                     block.GetComponent<Renderer>().material = baseWater;
                     block.transform.localScale = new Vector3(1, WaterHeight, 1);
                     //block.transform.position += new Vector3(0f, (BaseHeight + WaterHeight) / 4f, 0f);
+                    WaterHexes.Add(point);
                 }
                 if (height > HeightScale * 0.6f && height < HeightScale * 0.7f)
                 {
@@ -74,9 +82,8 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
                     thisHex.GetComponent<Renderer>().material = baseRocky;
                     block.transform.localScale = new Vector3(1, MountainHeight, 1);
+                    MountainHexes.Add(point);
                 }
-
-                
 
 			}
 		}

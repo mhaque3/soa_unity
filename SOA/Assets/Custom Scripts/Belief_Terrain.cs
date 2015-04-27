@@ -5,6 +5,7 @@ using System.Text;
 
 namespace soa
 {
+    enum Terrain { MOUNTAIN = 1, WATER = 2 };
     public class Belief_Terrain : Belief
     {
         // Members
@@ -13,7 +14,7 @@ namespace soa
 
         // Constructor
         public Belief_Terrain(int type, List<GridCell> cells)
-            : base(0)
+            : base(type)
         {
             this.type = type;
             this.cells = GridCell.cloneList(cells);
