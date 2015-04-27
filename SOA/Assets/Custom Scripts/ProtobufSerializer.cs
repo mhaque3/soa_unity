@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿// Additinonal using statements are needed if we are running in Unity
+#if(UNITY_STANDALONE)
+using UnityEngine;
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

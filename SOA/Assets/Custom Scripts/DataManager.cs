@@ -183,5 +183,24 @@ namespace soa
             if (cm != null)
                 cm.terminate();
         }
+
+        // This method returns all Beliefs that a new player needs to initialize itself
+        // such as map/terrain description, etc.  These beliefs do not change over time.
+        public List<Belief> getInitializationBeliefs()
+        {
+            // Beliefs will be stored in a list
+            List<Belief> l = new List<Belief>();
+
+            // Add in initialization beliefs
+            l.AddRange(beliefDictionary[Belief.BeliefType.BASE].Values);
+            l.AddRange(beliefDictionary[Belief.BeliefType.GRIDSPEC].Values);
+            l.AddRange(beliefDictionary[Belief.BeliefType.NGOSITE].Values);
+            l.AddRange(beliefDictionary[Belief.BeliefType.ROADCELL].Values);
+            l.AddRange(beliefDictionary[Belief.BeliefType.TERRAIN].Values);
+            l.AddRange(beliefDictionary[Belief.BeliefType.VILLAGE].Values);
+
+            // Return to caller
+            return l;
+        }
     }
 }

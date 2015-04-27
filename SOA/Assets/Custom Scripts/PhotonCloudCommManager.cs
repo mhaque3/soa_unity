@@ -36,7 +36,9 @@ namespace soa
 
         // Outgoing messages
         private Queue<Byte[]> outgoingQueue;
+        private Queue<int[]> outgoingTargetQueue;
         private Queue<Byte[]> localQueue;
+        private Queue<int[]> localTargetQueue;
 
         // Photon
         private Thread photonUpdateThread;
@@ -75,7 +77,9 @@ namespace soa
 
             // Initialize queue
             outgoingQueue = new Queue<Byte[]>();
+            outgoingTargetQueue = new Queue<int[]>();
             localQueue = new Queue<Byte[]>();
+            localTargetQueue = new Queue<int[]>();
 
             // Initialize prev states
             prevState = State;
@@ -237,16 +241,40 @@ namespace soa
 
         /// <summary>
         /// Adds information from data manager to outgoing queue using default source ID
+        /// and broadcasts message to everyone
         /// </summary>
         public void addOutgoing(Belief b)
         {
-            addOutgoing(b, defaultSourceID);
+            addOutgoing(b, defaultSourceID, null);
+        }
+
+        /// <summary>
+        /// Adds multiple beliefs from data manager to outgoing queue using default source ID
+        /// for broadcast to everyone
+        /// </summary>
+        public void addOutgoing(List<Belief> l)
+        {
+            addOutgoing(l, null);
+        }
+
+        /// <summary>
+        /// Adds multiple beliefs from data manager to outgoing queue using default source ID
+        /// directed for specified actor
+        /// Use null for targetActorIDs if broadcast
+        /// </summary>
+        public void addOutgoing(List<Belief> l, int[] targetActorIDs)
+        {
+            foreach (Belief b in l)
+            {
+                addOutgoing(b, defaultSourceID, targetActorIDs); 
+            }
         }
 
         /// <summary>
         /// Adds information from data manager to outgoing queue using specified source ID
+        /// Use null for targetActorIDs if broadcast
         /// </summary>
-        public void addOutgoing(Belief b, int sourceID)
+        public void addOutgoing(Belief b, int sourceID, int[] targetActorIDs)
         {
             // Serialize the 4-byte source ID, network byte order (Big Endian)
             Byte[] sourceIDBytes = BitConverter.GetBytes(sourceID);
@@ -273,13 +301,16 @@ namespace soa
                     {
                         // There is still space in queue, go ahead and enqueue
                         outgoingQueue.Enqueue(message);
+                        outgoingTargetQueue.Enqueue(targetActorIDs);
                     }
                     else if (outgoingQueue.Count == maxQueueSize && overwriteWhenQueueFull)
                     {
                         // No more space left and our policy is to overwrite old data
                         // Dequeue the oldest entry before enqueuing the new data
                         outgoingQueue.Dequeue();
+                        outgoingTargetQueue.Dequeue();
                         outgoingQueue.Enqueue(message);
+                        outgoingTargetQueue.Enqueue(targetActorIDs);
                     }
                     else
                     {
@@ -303,6 +334,9 @@ namespace soa
         /// </summary>
         private void sendOutgoing()
         {
+            // Target player
+            int[] targetPlayerIDs;
+
             // Buffers
             Byte[] message;
             Byte[] packet;
@@ -317,9 +351,11 @@ namespace soa
                 {
                     // Pop out first element in queue
                     message = outgoingQueue.Dequeue();
+                    targetPlayerIDs = outgoingTargetQueue.Dequeue();
 
                     // Push into local queue
                     localQueue.Enqueue(message);
+                    localTargetQueue.Enqueue(targetPlayerIDs);
                 }
             } // Unlock
 
@@ -328,6 +364,7 @@ namespace soa
             {
                 // Pop out first element in queue
                 message = localQueue.Dequeue();
+                targetPlayerIDs = localTargetQueue.Dequeue();
 
                 // Header is serialized 4-byte message length, network byte order (Big Endian)
                 Byte[] headerBytes = BitConverter.GetBytes(message.Length);
@@ -342,11 +379,24 @@ namespace soa
                 System.Buffer.BlockCopy(headerBytes, 0, packet, 0, 4);
                 System.Buffer.BlockCopy(message, 0, packet, 4, message.Length);
 
-                // Send it out over Photon to everyone else
+                // Create data to be sent
                 Dictionary<byte, object> opParams = new Dictionary<byte, object>();
                 Hashtable evData = new Hashtable();
                 evData[(byte)0] = packet;
-                OpRaiseEvent(0, evData, true, null);
+
+                // Either broadcast or send to select players based on targetPlayerIDs
+                if (targetPlayerIDs == null || targetPlayerIDs.Length == 0)
+                {
+                    // No target player IDs specified, broadcast to all
+                    OpRaiseEvent(0, evData, true, null);
+                }
+                else
+                {
+                    // Specific player IDs specified, only send to them
+                    RaiseEventOptions ro = new RaiseEventOptions();
+                    ro.TargetActors = targetPlayerIDs;
+                    OpRaiseEvent(0, evData, true, ro);
+                }                
             }
         }
 
@@ -411,6 +461,41 @@ namespace soa
                             #else
                             Console.Error.WriteLine("PhotonCloudCommManager: Belief deserialization failed");
                             #endif
+                        }
+                        break;
+                    }
+                case EventCode.Join: // Someone joined the game
+                    {
+                        // Get ID of actor that joined
+                        int actorNrJoined = (int)photonEvent.Parameters[ParameterCode.ActorNr];
+
+                        // Determine if the player that joined is myself
+                        bool isLocal = (this.LocalPlayer.ID == actorNrJoined);
+
+                        // Get initialization beliefs
+                        List<Belief> initializationBeliefs = dataManager.getInitializationBeliefs();
+
+                        // Only send if not null or empty list
+                        bool sendInitializationBeliefs = (initializationBeliefs != null ) && (initializationBeliefs.Count > 0);
+
+                        if (isLocal)
+                        {
+                            // I just joined the room, broadcast initialization beliefs to everyone
+                            if(sendInitializationBeliefs){
+                                addOutgoing(initializationBeliefs);
+                            }
+                        }else{
+                            // Someone else just joined the room, print status message
+                            #if(UNITY_STANDALONE)
+                            Debug.Log("PhotonCloudCommManager: Player " + actorNrJoined + " just joined");
+                            #else
+                            Console.WriteLine("PhotonCloudCommManager: Player " + actorNrJoined + " just joined");
+                            #endif
+
+                            // Get initialization beliefs and only send to that player
+                            if(sendInitializationBeliefs){
+                                addOutgoing(initializationBeliefs, new int[] {actorNrJoined});
+                            }
                         }
                         break;
                     }
