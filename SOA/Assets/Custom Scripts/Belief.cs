@@ -12,7 +12,6 @@ namespace soa
             INVALID = 0,
             ACTOR, 
             BASE, 
-            CUSTOM,
             GRIDSPEC,
             MODE_COMMAND,
             NGOSITE, 
@@ -22,7 +21,8 @@ namespace soa
             TIME,
             VILLAGE, 
             WAYPOINT, 
-            WAYPOINT_OVERRIDE
+            WAYPOINT_OVERRIDE,
+            CUSTOM
         };
 
         private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
