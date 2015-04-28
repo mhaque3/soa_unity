@@ -28,7 +28,8 @@ namespace soa
             TIME,
             VILLAGE, 
             WAYPOINT, 
-            WAYPOINT_OVERRIDE
+            WAYPOINT_OVERRIDE,
+            CUSTOM
         };
 
         // Constructor
@@ -268,7 +269,18 @@ namespace soa
                         body = proto.Build().ToByteArray();
                         break;
                     }
-
+                case Belief.BeliefType.CUSTOM:
+                    { // Custom
+                        Gpb_Custom.Builder proto = Gpb_Custom.CreateBuilder();
+                        Belief_Custom b = (Belief_Custom)belief;
+                        proto.SetData(Google.ProtocolBuffers.ByteString.CopyFrom(b.getData()));
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
+                        // Form header + serialized message
+                        header = (byte)MessageType.CUSTOM;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
                 default:
                     // Unrecognized type, return empty array
                     #if(UNITY_STANDALONE)
@@ -457,6 +469,15 @@ namespace soa
                             proto.PosX,
                             proto.PosY,
                             proto.PosZ);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
+                        break;
+                    }
+                case MessageType.CUSTOM:
+                    { // Time
+                        Gpb_Custom proto = Gpb_Custom.CreateBuilder().MergeFrom(body).Build();
+                        b = new Belief_Custom(
+                            proto.Data.ToByteArray());
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;
