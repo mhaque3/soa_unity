@@ -140,12 +140,14 @@ public class SoaActor : MonoBehaviour
                 float targetZ = motionScript.targetPosition.z;
                 Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id, targetX, targetY, targetZ);
                 beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
-                dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
+                if(dataManager != null)
+                    dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
             }
 
             Belief_Actor newActorData = new Belief_Actor(unique_id, affiliation, type, transform.position.x, transform.position.y, transform.position.z);
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
-            dataManager.addAndBroadcastBelief(newActorData, unique_id);
+            if(dataManager != null)
+                dataManager.addAndBroadcastBelief(newActorData, unique_id);
             
             // Go through each detected object's Soa Actor, get unique ID, affiliation, and pos.  Broadcast belief out to everyone
             foreach (GameObject gameObject in Detections)
@@ -154,8 +156,11 @@ public class SoaActor : MonoBehaviour
                 Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, soaActor.affiliation, soaActor.type, 
                     gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
                 beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
-                dataManager.addAndBroadcastBelief(detectedActor, soaActor.unique_id);
-                Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
+                if (dataManager != null)
+                {
+                    dataManager.addAndBroadcastBelief(detectedActor, soaActor.unique_id);
+                    Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
+                }
             }
 
             // Finished processing Detections list, clear it
@@ -219,7 +224,8 @@ public class SoaActor : MonoBehaviour
                 //only publish new data
                 if (entry.Value.getBeliefTime() < currentTime - 5000)
                 {
-                    dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+                    if(dataManager != null)
+                        dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
                 }
             }
         }

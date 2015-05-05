@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class VillageSim : MonoBehaviour 
@@ -7,10 +8,25 @@ public class VillageSim : MonoBehaviour
     public float Casualties;
     public float SupplyRate;
     public float Supply;
+
+    public Canvas uiCanvas;
+    public Camera uiCamera;
+    public GameObject labelUI;
+    GameObject labelInstance;
+    RectTransform labelTransform;
+    public Vector3 labelPosition;
+    Text[] labels;
+
     // Use this for initialization
 	void Start () 
     {
-	
+        uiCanvas = (Canvas)Object.FindObjectOfType<Canvas>();
+        GameObject MainCamera = GameObject.Find("Main Camera");
+        uiCamera = MainCamera.GetComponent<Camera>();
+        labelInstance = labelUI;
+        labelInstance.transform.SetParent(uiCanvas.transform, false);
+        labelTransform = labelInstance.transform as RectTransform;
+        labels = labelInstance.GetComponentsInChildren<Text>();
 	}
 
     float simTimer;
@@ -29,5 +45,9 @@ public class VillageSim : MonoBehaviour
 
             simTimer = 0f;
         }
+
+        labelPosition = uiCamera.WorldToScreenPoint(transform.position + new Vector3(0, 0, -1f)) - uiCanvas.transform.position;
+        labelTransform.anchoredPosition = new Vector2(labelPosition.x, labelPosition.y);
+        labels[0].text = Casualties.ToString("n1");
 	}
 }
