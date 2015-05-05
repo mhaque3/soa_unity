@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3322172}
   - 136: {fileID: 13657682}
   - 23: {fileID: 2397308}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,16 +96,17 @@ GameObject:
   - 195: {fileID: 19506878}
   - 114: {fileID: 11462278}
   - 114: {fileID: 11492882}
-  - 54: {fileID: 5421798}
   - 135: {fileID: 13541808}
-  - 114: {fileID: 11459788}
+  - 54: {fileID: 5450032}
+  - 135: {fileID: 13522810}
+  - 114: {fileID: 11489222}
   m_Layer: 0
   m_Name: SmallUav
   m_TagString: BlueUnmanned
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &136970
 GameObject:
   m_ObjectHideFlags: 1
@@ -176,7 +177,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .0500000007, y: 2.5, z: -13.4700003}
+  m_LocalPosition: {x: -9.19499969, y: 1.5, z: -6.5539999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 426844}
@@ -431,7 +432,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132706}
   m_Mesh: {fileID: 4300000, guid: 518af37909985954d8f1a9df8a85ac4b, type: 3}
---- !u!54 &5421798
+--- !u!54 &5450032
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -466,7 +467,19 @@ MonoBehaviour:
     RangeMax: 7
   soaActor: {fileID: 0}
   possibleDetections: []
---- !u!114 &11459788
+--- !u!114 &11462278
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a952d73bf76d041ad759e8b50f7e1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hexGrid: {fileID: 0}
+--- !u!114 &11489222
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -490,18 +503,6 @@ MonoBehaviour:
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
   navAgent: {fileID: 0}
---- !u!114 &11462278
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0a952d73bf76d041ad759e8b50f7e1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hexGrid: {fileID: 0}
 --- !u!114 &11492882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -513,14 +514,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd46d399b999e947b573551314997a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  On: 1
+  On: 0
   RoadCost: 1
   waypointEpsilon: 1
   PATROL: 0
   waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   waypointIndex: 0
@@ -537,6 +535,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DegreesPerFrame: 471
+--- !u!135 &13522810
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: .5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &13541808
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -28,7 +28,6 @@ GameObject:
   - 195: {fileID: 19521986}
   - 96: {fileID: 9615482}
   - 114: {fileID: 11475668}
-  - 54: {fileID: 5410322}
   - 136: {fileID: 13657242}
   - 114: {fileID: 11459744}
   - 114: {fileID: 11479566}
@@ -101,7 +100,7 @@ GameObject:
   - 33: {fileID: 3362854}
   - 23: {fileID: 2314996}
   - 136: {fileID: 13619546}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,6 +177,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &194514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 435992}
+  - 33: {fileID: 3390180}
+  - 23: {fileID: 2376068}
+  m_Layer: 0
+  m_Name: CivilianMarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &402480
 Transform:
   m_ObjectHideFlags: 1
@@ -220,6 +236,18 @@ Transform:
   - {fileID: 409404}
   m_Father: {fileID: 481630}
   m_RootOrder: 1
+--- !u!4 &435992
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194514}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .400000006, y: .25, z: -.400000006}
+  m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
+  m_Children: []
+  m_Father: {fileID: 481630}
+  m_RootOrder: 3
 --- !u!4 &437986
 Transform:
   m_ObjectHideFlags: 1
@@ -281,6 +309,7 @@ Transform:
   - {fileID: 402480}
   - {fileID: 430100}
   - {fileID: 468702}
+  - {fileID: 435992}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &482350
@@ -451,6 +480,30 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!23 &2376068
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194514}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 0da4f9e8c127a644b83c1dc7ba33a881, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_ImportantGI: 0
+  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!23 &2388466
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -534,6 +587,13 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 131376}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &3390180
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194514}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &3393550
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -555,21 +615,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149386}
   m_Mesh: {fileID: 4300046, guid: ed47c5a28308f4d73a626dd8c00027b9, type: 3}
---- !u!54 &5410322
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 107882}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!96 &9615482
 TrailRenderer:
   m_ObjectHideFlags: 1
@@ -653,6 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Civilian: 0
+  CivilianIcon: {fileID: 194514}
 --- !u!114 &11475668
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -665,7 +711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   On: 1
-  RoadCost: .300000012
+  RoadCost: 1
   waypointEpsilon: 1
   PATROL: 0
   waypoints:
@@ -759,16 +805,16 @@ NavMeshAgent:
   m_Radius: .100000001
   m_Speed: .479999989
   m_Acceleration: 8
-  avoidancePriority: 20
+  avoidancePriority: 22
   m_AngularSpeed: 120
   m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
-  m_AutoRepath: 1
+  m_AutoRepath: 0
   m_Height: .100000001
   m_BaseOffset: 0
   m_WalkableMask: 65
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

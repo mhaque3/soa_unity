@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 480234}
   m_Layer: 0
-  m_Name: Tent Compund
+  m_Name: Tent Compound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,8 @@ GameObject:
   - 4: {fileID: 467602}
   - 33: {fileID: 3320594}
   - 23: {fileID: 2322394}
-  m_Layer: 0
+  - 135: {fileID: 13544432}
+  m_Layer: 10
   m_Name: RedHexBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +101,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 173382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -22.1520004, y: .730000019, z: 17.1539993}
+  m_LocalPosition: {x: -.549000025, y: .741999984, z: 15.9130001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 467602}
@@ -219,6 +220,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Civilians: 0
+--- !u!135 &13544432
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 120336}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: .720472395
+  m_Center: {x: 0, y: .360236198, z: 0}
 --- !u!136 &13616166
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -25,7 +25,8 @@ GameObject:
   - 4: {fileID: 429764}
   - 33: {fileID: 3347302}
   - 23: {fileID: 2354576}
-  m_Layer: 0
+  - 135: {fileID: 13512120}
+  m_Layer: 10
   m_Name: BlueHexBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,9 +211,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 457068}
   - 114: {fileID: 11412626}
+  - 136: {fileID: 13699590}
+  - 114: {fileID: 11410232}
   m_Layer: 0
   m_Name: Blue Base
-  m_TagString: Untagged
+  m_TagString: BlueBase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,7 +309,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109834}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: -1.62920685e-07}
-  m_LocalPosition: {x: 0, y: -.057, z: 0}
+  m_LocalPosition: {x: 0, y: -.0331999995, z: 0}
   m_LocalScale: {x: 1, y: .100000001, z: 1}
   m_Children: []
   m_Father: {fileID: 457068}
@@ -547,6 +550,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109834}
   m_Mesh: {fileID: 4300000, guid: caacfa635af78e34399e8769c2a6b41c, type: 3}
+--- !u!114 &11410232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995a496ca1c3c8b4387404d57ebaa0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11412626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -562,6 +576,31 @@ MonoBehaviour:
   SupplyRate: .5
   Supply: 0
   simInterval: 1
+--- !u!135 &13512120
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109834}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: .720472395
+  m_Center: {x: 0, y: .360236198, z: 0}
+--- !u!136 &13699590
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188808}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: .699999988
+  m_Height: 5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
