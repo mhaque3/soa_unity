@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using soa;
@@ -217,7 +218,7 @@ public class SoaActor : MonoBehaviour
             foreach (KeyValuePair<int, Belief> entry in typeDict)
             {
                 //only publish new data
-                if (entry.Value.getBeliefTime() < currentTime - 5000)
+                if (entry.Value.getBeliefTime() < (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
                 {
                     dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
                 }

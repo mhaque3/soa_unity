@@ -47,6 +47,7 @@ namespace soa
         {
             return beliefTime;
         }
+
         public void setBeliefTime(UInt64 beliefTime)
         {
             this.beliefTime = beliefTime;
