@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -37,6 +38,14 @@ public class SimControl : MonoBehaviour
 
     enum Affiliation { BLUE = 0, RED = 1, NEUTURAL = 2 };
 
+    public Canvas uiCanvas;
+    public GameObject labelUI;
+    GameObject labelInstance;
+    RectTransform labelTransform;
+    Vector3 labelPosition;
+    Text[] labels;
+    Camera thisCamera;
+
 	void Start () 
     {
         KmToUnity = hexGrid.KmToUnity();
@@ -54,6 +63,8 @@ public class SimControl : MonoBehaviour
             MountainCells.Add(new GridCell(point.Y, point.X));
 
         LoadConfigFile();
+
+        thisCamera = omcScript.GetComponent<Camera>();
 
         NavMesh.pathfindingIterationsPerFrame = 50;
 
@@ -85,15 +96,15 @@ public class SimControl : MonoBehaviour
             {
                 actor.affiliation = 0;
                 actor.type = 2;
-                actor.commsRange = 5000;
-                actor.useExternalWaypoint = true;
+                //actor.commsRange = 5000;
+                //actor.useExternalWaypoint = true;
             }
             if (platform.name.Contains("SmallUav"))
             {
                 actor.affiliation = 0;
                 actor.type = 3;
-                actor.commsRange = 5000;
-                actor.useExternalWaypoint = true;
+                //actor.commsRange = 5000;
+                //actor.useExternalWaypoint = true;
             }
             if(platform.name.Contains("Red"))
             {
@@ -105,23 +116,23 @@ public class SimControl : MonoBehaviour
 
             if (platform.name.Contains("Truck"))
             {
-                actor.type = 0;
-                actor.commsRange = 5000;
-                actor.useExternalWaypoint = false;
+                //actor.type = 0;
+                //actor.commsRange = 5000;
+                //actor.useExternalWaypoint = false;
             }
             if (platform.name.Contains("Dismount"))
             {
-                actor.type = 1;
-                actor.commsRange = 5000;
-                actor.useExternalWaypoint = false;
+                //actor.type = 1;
+                //actor.commsRange = 5000;
+                //actor.useExternalWaypoint = false;
             }
             if (platform.name.Contains("Police"))
             {
-                actor.unique_id = 200-i;
-                actor.type = 4;
-                actor.commsRange = 5000;
-                actor.useExternalWaypoint = false;
-                blueDataManager.addNewActor(actor);
+                //actor.unique_id = 200-i;
+                //actor.type = 4;
+                //actor.commsRange = 5000;
+                //actor.useExternalWaypoint = false;
+                //blueDataManager.addNewActor(actor);
             }
 
         }
@@ -202,10 +213,11 @@ public class SimControl : MonoBehaviour
 
     float sensorClock = 0f;
     public float sensorUpdatePeriod;
-
 	void Update () 
     {
         float dt = Time.deltaTime;
+
+        UpdateMouseOver();
 
         sensorClock += dt;
         if (sensorClock > sensorUpdatePeriod)
@@ -223,6 +235,8 @@ public class SimControl : MonoBehaviour
                 seeker.BroadcastMessage("CheckDetections", RemotePlatforms, SendMessageOptions.DontRequireReceiver);
             }
         }
+
+
 
         updateTimer += dt;
         if (updateTimer > updateRateS)
@@ -304,93 +318,89 @@ public class SimControl : MonoBehaviour
                         actor.broadcastComms();
                     }
                     
-                    /*for (int i = 0; i < LocalPlatforms.Count; i++)
-                    {
-                        GameObject platform = LocalPlatforms[i];
-                        SoldierWaypointMotion motion = platform.GetComponent<SoldierWaypointMotion>();
-                        Vector3 velocity = platform.transform.forward * motion.GetSpeed();
-                        SoaActor actor = platform.GetComponent<SoaActor>();
-                        b = new Belief_Actor(actor.unique_id, actor.affiliation, actor.type,
-                                platform.transform.position.x, platform.transform.position.y, platform.transform.position.z,
-                                true, velocity.x, true, velocity.y, true, velocity.z);
-                        Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType() + "\n" + b);
-                        cm.addOutgoing(b);
-                    }
-                    */
                     messageTimer = 0f;
-
-                    /*
-                    // Create 64 bit time field
-                    ulong randTime = (ulong)Random.Range(ulong.MinValue, ulong.MaxValue);
-
-                    // Create and send beliefs		
-                    randDraw = Random.Range(0, 10);
-                    switch (randDraw)
-                    {
-                        case 0:
-                            b = new Belief_Actor((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)),
-                                (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), true, (int)(Random.Range(int.MinValue, int.MaxValue)),
-                                false, (int)(Random.Range(int.MinValue, int.MaxValue)), true, (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 1:
-                            b = new Belief_BaseCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 2:
-                            b = new Belief_Mode_Command(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 3:
-                            b = new Belief_NGOSiteCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 4:
-                            b = new Belief_Nogo((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 5:
-                            b = new Belief_Road(true, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 6:
-                            b = new Belief_SPOI(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 7:
-                            b = new Belief_Time(randTime);
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 8:
-                            b = new Belief_VillageCell((int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 9:
-                            b = new Belief_Waypoint(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                        case 10:
-                            b = new Belief_Waypoint_Override(randTime, (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)), (int)(Random.Range(int.MinValue, int.MaxValue)));
-                            Debug.Log("Test: Enqueueing belief type " + (int)b.getBeliefType());
-                            cm.addOutgoing(b);
-                            break;
-                    }
-                     * */
                 }
                 //Debug.Log("*** END OUTGOING MESSAGE BLOCK ***");
             }
         }
 	}
+
+    public Vector3 mouseVector;
+    void UpdateMouseOver()
+    {
+        mouseVector = thisCamera.ScreenToViewportPoint(Input.mousePosition);
+        float mx = mouseVector.x;
+        float my = mouseVector.y;
+        // Don't bother with any of the checks unless mouse is over the display area...
+        if (mx > 0f && mx <= 1f && my > 0f && my <= 1f)
+        {
+            RaycastHit hit;
+            Ray ray;
+            //Debug.Log(mx + ":" + my);
+            // Mouse over Highlight object actions...
+            int layerMask = 1 << 10;
+            ray = thisCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                Vector3 mouseWorldPoint = hit.point;
+                Vector3 viewPortPos = thisCamera.WorldToViewportPoint(mouseWorldPoint);
+                Vector3 screenPos = thisCamera.ViewportToScreenPoint(viewPortPos);
+
+                if (labelInstance == null)
+                {
+                    //Debug.Log("ping");
+                    labelInstance = (GameObject)GameObject.Instantiate(labelUI);
+                    labelTransform = labelInstance.transform as RectTransform;
+                    labelTransform.SetParent(uiCanvas.transform, false);
+                    labels = labelInstance.GetComponentsInChildren<Text>();
+                }
+
+                if (hit.collider.transform.parent != null)
+                {
+                    GameObject thisGameObject = hit.collider.transform.parent.gameObject;
+                    string thisObjectName = hit.collider.transform.parent.name;
+                    if (thisObjectName != null)
+                    {
+                        labels[0].text = thisObjectName;
+                        
+                        SoaActor thisActor = thisGameObject.GetComponent<SoaActor>();
+                        NavMeshAgent thisNavAgent = thisGameObject.GetComponentInChildren<NavMeshAgent>();
+                        if (thisNavAgent)
+                        {
+                            labels[1].enabled = true;
+                            //labels[1].text = (thisNavAgent.remainingDistance / KmToUnity).ToString("n2") + " km path:" + thisNavAgent.hasPath;
+                            labels[1].text = thisActor.motionScript.waypoints[thisActor.motionScript.waypointIndex].name;
+                        }
+                        else
+                        {
+                            labels[1].enabled = false;
+                        }
+
+                        labelPosition = screenPos - uiCanvas.transform.position;
+                        labelTransform.anchoredPosition = new Vector2(labelPosition.x, labelPosition.y + labelTransform.sizeDelta.y);
+                    }
+                    else
+                    {
+                        
+                    }
+
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        //SelectPlatform(thisGameObject); 
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                if (labelInstance != null)
+                    Object.Destroy(labelInstance);
+            }
+        }
+    }
 
     string ConfigFileName = "SoaSimConfig.xml";
     void LoadConfigFile()

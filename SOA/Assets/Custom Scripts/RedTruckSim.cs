@@ -7,6 +7,7 @@ public class RedTruckSim : MonoBehaviour
     SoldierWaypointMotion waypointScript;
     NavMeshAgent thisNavAgent;
     public bool Civilian;
+    public GameObject CivilianIcon;
 
 	// Use this for initialization
 	void Start () 
@@ -19,7 +20,7 @@ public class RedTruckSim : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-	
+        CivilianIcon.SetActive(Civilian);
 	}
 
     float PathLength(NavMeshPath path)

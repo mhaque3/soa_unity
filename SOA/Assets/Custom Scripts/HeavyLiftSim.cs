@@ -5,6 +5,8 @@ public class HeavyLiftSim : MonoBehaviour
 {
     public bool Casuality;
     public bool Supply;
+    public GameObject SupplyIcon;
+    public GameObject CasualtyIcon;
 
 	// Use this for initialization
 	void Start () 
@@ -15,7 +17,8 @@ public class HeavyLiftSim : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-	
+        SupplyIcon.SetActive(Supply);
+        CasualtyIcon.SetActive(Casuality);
 	}
 
     void OnTriggerEnter(Collider other)
