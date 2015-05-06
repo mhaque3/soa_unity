@@ -48,6 +48,6 @@ public class VillageSim : MonoBehaviour
 
         labelPosition = uiCamera.WorldToScreenPoint(transform.position + new Vector3(0, 0, -1f)) - uiCanvas.transform.position;
         labelTransform.anchoredPosition = new Vector2(labelPosition.x, labelPosition.y);
-        labels[0].text = Casualties.ToString("n1");
+        labels[0].text = Casualties.ToString("n0");
 	}
 }

@@ -519,11 +519,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24cc6bfa7b2b8545adf871b9e094964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CasualtyRate: .00999999978
+  CasualtyRate: 0
   Casualties: 0
-  CivilianRate: .100000001
+  CivilianRate: 0
   Civilians: 0
-  SupplyRate: .00999999978
+  SupplyRate: .00100000005
   Supply: 0
   uiCanvas: {fileID: 0}
   uiCamera: {fileID: 0}

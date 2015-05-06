@@ -74,6 +74,7 @@ public class RedTruckSim : MonoBehaviour
             if (b != null)
             {
                 waypointScript.On = false;
+                thisNavAgent.ResetPath();
                 waypointScript.waypointIndex = 0;
                 waypointScript.waypoints.Clear();
                 waypointScript.waypoints.Add(GetRetreatRedBase(b));
@@ -110,13 +111,9 @@ public class RedTruckSim : MonoBehaviour
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                if (n.Civilians >= 1f)
-                {
-                    {
-                        n.Civilians -= 1f;
-                        Civilian = true;
-                    }
-                }
+                n.Civilians += 1f;
+                Civilian = true;
+
                 n.Casualties += 1f;
                 n.Supply -= 1f;
 

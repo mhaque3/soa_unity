@@ -52,6 +52,13 @@ public class OverheadMouseCamera : MonoBehaviour
     {
         if (Input.GetKeyDown("t"))
             trackingOn = !trackingOn;
+        if (Input.GetKeyDown("r"))
+        {
+            trackingOn = true;
+            GetComponent<Camera>().orthographicSize = 20.0f;
+            trackedPlatformIndex = 0;
+            transform.eulerAngles = new Vector3(70f, transform.eulerAngles.y, transform.eulerAngles.z);
+        }
         if (Input.GetKeyDown("y"))
         {
             if(trackedPlatformIndex < Platforms.Count-1)

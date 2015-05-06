@@ -7,6 +7,7 @@ using System.Xml;
 using soa;
 using Gamelogic.Grids;
 
+public enum Affiliation { BLUE = 0, RED = 1, NEUTURAL = 2 };
 public class SimControl : MonoBehaviour 
 {
     static public float KmToUnity;
@@ -35,8 +36,6 @@ public class SimControl : MonoBehaviour
 
     DataManager redDataManager;
     DataManager blueDataManager;
-
-    enum Affiliation { BLUE = 0, RED = 1, NEUTURAL = 2 };
 
     public Canvas uiCanvas;
     public GameObject labelUI;
@@ -85,30 +84,30 @@ public class SimControl : MonoBehaviour
 
             SoaActor actor = platform.GetComponent<SoaActor>();
             actor.unique_id = 200 + i;
-            actor.simulateMotion = true;
+            //actor.simulateMotion = true;
 
             if (platform.name.Contains("Blue"))
             {
-                actor.affiliation = (int)Affiliation.BLUE;
+                //actor.affiliation = (int)Affiliation.BLUE;
                 actor.dataManager = blueDataManager;
             }
             if (platform.name.Contains("HeavyLift"))
             {
-                actor.affiliation = 0;
-                actor.type = 2;
+                //actor.affiliation = 0;
+                //actor.type = 2;
                 //actor.commsRange = 5000;
                 //actor.useExternalWaypoint = true;
             }
             if (platform.name.Contains("SmallUav"))
             {
-                actor.affiliation = 0;
-                actor.type = 3;
+                //actor.affiliation = 0;
+                //actor.type = 3;
                 //actor.commsRange = 5000;
                 //actor.useExternalWaypoint = true;
             }
             if(platform.name.Contains("Red"))
             {
-                actor.affiliation = 1;
+                //actor.affiliation = 1;
                 actor.useExternalWaypoint = false;
                 actor.dataManager = redDataManager;
                 redDataManager.addNewActor(actor);
@@ -151,31 +150,31 @@ public class SimControl : MonoBehaviour
 
             if (platform.name.Contains("Blue"))
             {
-                actor.affiliation = (int)Affiliation.BLUE;
+                //actor.affiliation = (int)Affiliation.BLUE;
                 actor.dataManager = blueDataManager;
                 blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("HeavyLift"))
             {
-                actor.affiliation = (int)Affiliation.BLUE;
-                actor.type = 2;
-                actor.commsRange = 5000;
+                //actor.affiliation = (int)Affiliation.BLUE;
+                //actor.type = 2;
+                //actor.commsRange = 5000;
                 actor.useExternalWaypoint = true;
                 actor.dataManager = blueDataManager;
                 blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("SmallUav"))
             {
-                actor.affiliation = 0;
-                actor.type = 3;
-                actor.commsRange = 5000;
+                //actor.affiliation = 0;
+                //actor.type = 3;
+                //actor.commsRange = 5000;
                 actor.useExternalWaypoint = true;
                 actor.dataManager = blueDataManager;
                 blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("Red"))
             {
-                actor.affiliation = 1;
+                //actor.affiliation = 1;
                 actor.dataManager = redDataManager;
                 actor.useExternalWaypoint = false;
                 redDataManager.addNewActor(actor);
@@ -183,20 +182,20 @@ public class SimControl : MonoBehaviour
 
             if (platform.name.Contains("Truck"))
             {
-                actor.type = 0;
-                actor.commsRange = 5000;
+                //actor.type = 0;
+                //actor.commsRange = 5000;
                 actor.useExternalWaypoint = false;
             }
             if (platform.name.Contains("Dismount"))
             {
-                actor.type = 1;
-                actor.commsRange = 5000;
+                //actor.type = 1;
+                //actor.commsRange = 5000;
                 actor.useExternalWaypoint = false;
             }
             if (platform.name.Contains("Police"))
             {
-                actor.type = 4;
-                actor.commsRange = 5000;
+                //actor.type = 4;
+                //actor.commsRange = 5000;
                 actor.useExternalWaypoint = false;
             }
         }
@@ -252,7 +251,7 @@ public class SimControl : MonoBehaviour
                 {
                     GameObject platform = LocalPlatforms[i];
                     SoaActor actor = platform.GetComponent<SoaActor>();
-                    if (actor.affiliation == (int)Affiliation.RED)
+                    if (actor.affiliation == Affiliation.RED)
                     {
 
                         //If showing true position, first arg gets ignored
@@ -270,7 +269,7 @@ public class SimControl : MonoBehaviour
                 {
                     GameObject platform = LocalPlatforms[i];
                     SoaActor actor = platform.GetComponent<SoaActor>();
-                    if (actor.affiliation == (int)Affiliation.BLUE)
+                    if (actor.affiliation == Affiliation.BLUE)
                     {
 
                         //If showing true position, first arg gets ignored

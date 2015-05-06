@@ -7,7 +7,7 @@ using soa;
 public class SoaActor : MonoBehaviour 
 {
     public int unique_id;
-    public int affiliation;
+    public Affiliation affiliation;
     public int type;
 
     public double commsRange;
@@ -145,7 +145,7 @@ public class SoaActor : MonoBehaviour
                     dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
             }
 
-            Belief_Actor newActorData = new Belief_Actor(unique_id, affiliation, type, transform.position.x, transform.position.y, transform.position.z);
+            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, transform.position.x, transform.position.y, transform.position.z);
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if(dataManager != null)
                 dataManager.addAndBroadcastBelief(newActorData, unique_id);
@@ -154,13 +154,14 @@ public class SoaActor : MonoBehaviour
             foreach (GameObject gameObject in Detections)
             {
                 SoaActor soaActor = gameObject.GetComponent<SoaActor>();
-                Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, soaActor.affiliation, soaActor.type, 
+                Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation, soaActor.type, 
                     gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
                 beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 if (dataManager != null)
                 {
-                    dataManager.addAndBroadcastBelief(detectedActor, soaActor.unique_id);
+                    dataManager.addAndBroadcastBelief(detectedActor, unique_id);
                     Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
+                    Debug.Log("Broadcasting detection of actor affiliation " + soaActor.affiliation);
                 }
             }
 

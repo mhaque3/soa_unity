@@ -7,6 +7,7 @@ public class RedDismountSim : MonoBehaviour
     SoldierWaypointMotion waypointScript;
     NavMeshAgent thisNavAgent;
     public bool Civilian;
+    public GameObject CivilianIcon;
 
     // Use this for initialization
     void Start()
@@ -19,7 +20,7 @@ public class RedDismountSim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        CivilianIcon.SetActive(Civilian);
     }
 
     float PathLength(NavMeshPath path)
@@ -77,7 +78,7 @@ public class RedDismountSim : MonoBehaviour
                     Civilian = false;
                 }
 
-                transform.position = GetRetreatRedBase(b).transform.position;
+                thisNavAgent.Warp(GetRetreatRedBase(b).transform.position);
             }
         }
 
@@ -92,11 +93,15 @@ public class RedDismountSim : MonoBehaviour
                     rb.Civilians++;
                 }
                 waypointScript.On = false;
+
+                thisNavAgent.ResetPath();
+
                 waypointScript.waypointIndex = 0;
                 waypointScript.waypoints.Clear();
                 waypointScript.waypoints.Add(rb.AssignTarget());
                 waypointScript.waypoints.Add(other.gameObject);
                 waypointScript.On = true;
+
             }
         }
 
@@ -105,13 +110,9 @@ public class RedDismountSim : MonoBehaviour
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                if (n.Civilians >= 1f)
-                {
-                    {
-                        n.Civilians -= 1f;
-                        Civilian = true;
-                    }
-                }
+                n.Civilians += 1f;
+                Civilian = true;
+
                 n.Casualties += 1f;
                 n.Supply -= 1f;
 
