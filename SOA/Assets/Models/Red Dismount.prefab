@@ -5727,6 +5727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Civilian: 0
   CivilianIcon: {fileID: 152492}
+  PathUpdateInterval: 1
 --- !u!135 &13537876
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -6050,14 +6051,14 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 113728}
   m_Enabled: 1
-  m_Radius: .100000001
+  m_Radius: .5
   m_Speed: .0599999987
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 30
-  m_AngularSpeed: 120
+  m_AngularSpeed: 60
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 0
   m_Height: .100000001
   m_BaseOffset: 0

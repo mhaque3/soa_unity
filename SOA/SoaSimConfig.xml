@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Config>
-  <RedRoom>soa-apl-red</RedRoom>
-  <BlueRoom>soa-apl-blue</BlueRoom>
+  <RedRoom>soa-test-red</RedRoom>
+  <BlueRoom>soa-test-blue</BlueRoom>
 </Config>

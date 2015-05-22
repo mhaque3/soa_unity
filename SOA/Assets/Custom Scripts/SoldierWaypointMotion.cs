@@ -35,7 +35,7 @@ public class SoldierWaypointMotion : MonoBehaviour
 
             timeInterval += dt;
 
-            if (timeInterval > .1)
+            if (timeInterval > .5)
             {
                 Vector3 deltaV;
 

@@ -18,9 +18,21 @@ public class RedTruckSim : MonoBehaviour
 	}
 	
 	// Update is called once per frame
+    public float PathUpdateInterval;
+    float PathUpdateClock = 0f;
 	void Update () 
     {
+        float dt = Time.deltaTime;
+
         CivilianIcon.SetActive(Civilian);
+
+        PathUpdateClock += dt;
+        if (PathUpdateClock > PathUpdateInterval)
+        {
+            thisNavAgent.ResetPath();
+            PathUpdateClock = Random.value * PathUpdateInterval * 0.5f;
+            //thisNavAgent.SetDestination(waypointScript.targetPosition);
+        }
 	}
 
     float PathLength(NavMeshPath path)
