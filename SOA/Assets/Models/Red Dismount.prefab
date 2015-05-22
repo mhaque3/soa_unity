@@ -2677,6 +2677,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &191474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 421904}
+  - 114: {fileID: 11486142}
+  m_Layer: 0
+  m_Name: SoaWeapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &192222
 GameObject:
   m_ObjectHideFlags: 1
@@ -3614,6 +3630,18 @@ Transform:
   - {fileID: 449650}
   m_Father: {fileID: 429050}
   m_RootOrder: 0
+--- !u!4 &421904
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191474}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 477638}
+  m_RootOrder: 6
 --- !u!4 &422952
 Transform:
   m_ObjectHideFlags: 1
@@ -4893,6 +4921,7 @@ Transform:
   - {fileID: 472058}
   - {fileID: 431592}
   - {fileID: 427004}
+  - {fileID: 421904}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &478602
@@ -5647,11 +5676,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601527037d1fd97419fdcad7525a3e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unique_id: 0
+  unique_id: 152
   affiliation: 1
   type: 0
+  isAlive: 0
   commsRange: 5
-  Sensors: []
+  Sensors:
+  - {fileID: 11442282}
+  Weapons: []
   Detections: []
   Tracks: []
   simulateMotion: 1
@@ -5727,6 +5759,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Civilian: 0
   CivilianIcon: {fileID: 152492}
+--- !u!114 &11486142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67a82c926bd2ff4b8afcc6b49583e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes:
+  - tagString: HeavyUAV
+    enabled: 1
+    RangeP1: 2.5
+    RangeMax: 2.5
+  - tagString: SmallUAV
+    enabled: 1
+    RangeP1: 2.5
+    RangeMax: 2.5
 --- !u!135 &13537876
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -6050,14 +6102,14 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 113728}
   m_Enabled: 1
-  m_Radius: .100000001
+  m_Radius: .5
   m_Speed: .0599999987
-  m_Acceleration: 8
-  avoidancePriority: 30
-  m_AngularSpeed: 120
+  m_Acceleration: 100
+  avoidancePriority: 32
+  m_AngularSpeed: 60
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 0
   m_Height: .100000001
   m_BaseOffset: 0

@@ -10,9 +10,12 @@ public class SoaActor : MonoBehaviour
     public Affiliation affiliation;
     public int type;
 
+    public bool isAlive;
+
     public double commsRange;
 
     public SoaSensor[] Sensors;
+    public SoaWeapon[] Weapons;
     public List<GameObject> Detections;
     public List<GameObject> Tracks;
 
@@ -36,6 +39,9 @@ public class SoaActor : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        // Alive at the beginning
+        isAlive = true;
+
         displayPosition = transform.position;
         displayOrientation = transform.rotation;
 
@@ -46,9 +52,14 @@ public class SoaActor : MonoBehaviour
             //sensor.soaActor = this;
         }
 
+        // Look at my children and populate list of weapons
+        Weapons = transform.GetComponentsInChildren<SoaWeapon>();
+
+        // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
         navAgent = gameObject.GetComponent<NavMeshAgent>();
 
+        // Initialize the belief dictionary
         beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
         beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
@@ -71,6 +82,25 @@ public class SoaActor : MonoBehaviour
     {
 	}
 
+    // Called when the actor has been killed
+    public void Kill()
+    {
+        // Set that it is no longer alive
+        isAlive = false;
+
+        // Don't move anymore
+        simulateMotion = false;
+        navAgent.ResetPath();
+        navAgent.enabled = false;
+        motionScript.enabled = false;
+
+        // TODO: Make sure dead unit does not act as relay for comms
+
+        // Change appearance to look destroyed
+        Vector3 destroyedPos = transform.position;
+        destroyedPos.y = 0.85f;
+        transform.position = destroyedPos;
+    }
 
     //Set this actors position and orientation
     void LateUpadte()
@@ -160,9 +190,16 @@ public class SoaActor : MonoBehaviour
                 if (dataManager != null)
                 {
                     dataManager.addAndBroadcastBelief(detectedActor, unique_id);
-                    Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
-                    Debug.Log("Broadcasting detection of actor affiliation " + soaActor.affiliation);
+                    // twupy1
+//                  Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
+//                  Debug.Log("Broadcasting detection of actor affiliation " + soaActor.affiliation);
                 }
+            }
+
+            // Having made detections, now go and update each weapon
+            foreach (SoaWeapon w in Weapons)
+            {
+                w.UpdateWeapon(Detections);
             }
 
             // Finished processing Detections list, clear it
@@ -170,9 +207,7 @@ public class SoaActor : MonoBehaviour
 
             useGhostModel = false;           
         }
-        
     }
-
 
     // Check if belief is newer than current belief of matching type and id, if so,
     // replace old belief with b.
@@ -217,20 +252,30 @@ public class SoaActor : MonoBehaviour
 
     private void publishBeliefsOfType(Belief.BeliefType type)
     {
-        ulong currentTime = (ulong)(System.DateTime.UtcNow - epoch).Milliseconds;
-        if (beliefDictionary.ContainsKey(type))
-        {
-            SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
-            foreach (KeyValuePair<int, Belief> entry in typeDict)
+        // Only publish beliefs if still alive
+        if(isAlive){
+            ulong currentTime = (ulong)(System.DateTime.UtcNow - epoch).Milliseconds;
+            if (beliefDictionary.ContainsKey(type))
             {
-                //only publish new data
-                if (entry.Value.getBeliefTime() < (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
+                SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
+                foreach (KeyValuePair<int, Belief> entry in typeDict)
                 {
-                    if(dataManager != null)
-                        dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+                    //only publish new data
+                    if (entry.Value.getBeliefTime() < (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
+                    {
+                        if(dataManager != null)
+                            dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+                    }
                 }
             }
         }
     }
 
+    // Get current time
+    // Note: This is a very large number.  When comparing (subtracting) times, do all math in
+    // ulong and then cast at end to float as needed.  Do NOT cast to float before subtracting.
+    public ulong getCurrentTime_ms()
+    {
+        return (ulong)(System.DateTime.UtcNow - epoch).Ticks / 10000;
+    }
 }

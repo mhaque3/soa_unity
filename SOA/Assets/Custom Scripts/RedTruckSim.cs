@@ -84,6 +84,8 @@ public class RedTruckSim : MonoBehaviour
                 {
                     Civilian = false;
                 }
+
+                thisNavAgent.Warp(GetRetreatRedBase(b).transform.position);
             }
         }
 

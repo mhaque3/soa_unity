@@ -103,11 +103,11 @@ GameObject:
   - 195: {fileID: 19569830}
   - 96: {fileID: 9697610}
   - 114: {fileID: 11430046}
-  - 114: {fileID: 11416002}
   - 54: {fileID: 5405912}
   - 135: {fileID: 13584482}
   - 114: {fileID: 11493752}
   - 114: {fileID: 11422714}
+  - 114: {fileID: 11407504}
   m_Layer: 0
   m_Name: Blue Police
   m_TagString: BluePolice
@@ -3926,7 +3926,7 @@ TrailRenderer:
       rgba: 16777215
   m_MinVertexDistance: .100000001
   m_Autodestruct: 0
---- !u!114 &11416002
+--- !u!114 &11407504
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -3937,15 +3937,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd46d399b999e947b573551314997a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  On: 1
-  RoadCost: .300000012
+  On: 0
+  RoadCost: 1
   waypointEpsilon: 1
   PATROL: 0
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  waypoints: []
   waypointIndex: 0
   targetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11422714
@@ -3959,11 +3955,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601527037d1fd97419fdcad7525a3e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unique_id: 0
+  unique_id: 200
   affiliation: 0
   type: 0
-  commsRange: 0
+  isAlive: 0
+  commsRange: 5
   Sensors: []
+  Weapons: []
   Detections: []
   Tracks: []
   simulateMotion: 1
@@ -3997,11 +3995,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modes:
   - tagString: RedDismount
-    RangeP1: .5
-    RangeMax: .5
+    RangeP1: 50
+    RangeMax: 50
   - tagString: RedTruck
-    RangeP1: .5
-    RangeMax: .5
+    RangeP1: 50
+    RangeMax: 50
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11493752
@@ -4015,6 +4013,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322da35ada3c87940be95370adf26c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  evalPeriod_s: 1
+  beliefTimeout_ms: 2000
+  pursueRadius: 7
+  currTask: 0
+  pursueActorID: 0
+  numVirtualCasualties: 5
 --- !u!135 &13525322
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -4071,7 +4075,7 @@ NavMeshAgent:
   m_Height: .100000001
   m_BaseOffset: 0
   m_WalkableMask: 65
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
