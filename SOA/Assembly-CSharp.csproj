@@ -69,6 +69,7 @@
      <Compile Include="Assets\Custom Scripts\GridCell.cs" />
      <Compile Include="Assets\Custom Scripts\HeavyLiftSim.cs" />
      <Compile Include="Assets\Custom Scripts\HexFieldMesh.cs" />
+     <Compile Include="Assets\Custom Scripts\NeutralUnitSim.cs" />
      <Compile Include="Assets\Custom Scripts\NgoSim.cs" />
      <Compile Include="Assets\Custom Scripts\OverheadMouseCamera.cs" />
      <Compile Include="Assets\Custom Scripts\PhotonCloudCommManager.cs" />
