@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 [System.Serializable]
-public class Modality
+public class SensorModality
 {
     public string tagString;
     public float RangeP1;
@@ -13,7 +13,7 @@ public class Modality
 
 public class SoaSensor : MonoBehaviour 
 {
-    public Modality[] modes;
+    public SensorModality[] modes;
     public SoaActor soaActor;
     public List<GameObject> possibleDetections;
     //public float UpdateRate = 1f;
@@ -31,33 +31,38 @@ public class SoaSensor : MonoBehaviour
     {
         foreach (GameObject target in targets)
         {
-            foreach (Modality mode in modes)
+            // The object being detected must be alive
+            if (target.GetComponent<SoaActor>().isAlive)
             {
-                Vector3 delta = transform.position - target.transform.position;
-                float slantRange = delta.magnitude * SimControl.KmToUnity;
-
-                if (mode.tagString == target.tag)
+                // Loop through all possible detect modes
+                foreach (SensorModality mode in modes)
                 {
-                    if (slantRange < mode.RangeMax)
+                    Vector3 delta = transform.position - target.transform.position;
+                    float slantRange = delta.magnitude / SimControl.KmToUnity;
+
+                    if (mode.tagString == target.tag)
                     {
-                        if (slantRange < mode.RangeP1)
+                        if (slantRange < mode.RangeMax)
                         {
-                            Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
-                            LogDetection(target.gameObject);
-                        }
-                        else
-                        {
-                            if (Random.value < (mode.RangeMax - slantRange) / (mode.RangeMax - mode.RangeP1))
+                            if (slantRange < mode.RangeP1)
                             {
-                                Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
+                                // Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
                                 LogDetection(target.gameObject);
                             }
                             else
                             {
-                                Debug.Log(soaActor.name + " failed detect of " + target.name + " at " + slantRange + "km");
+                                if (Random.value < (mode.RangeMax - slantRange) / (mode.RangeMax - mode.RangeP1))
+                                {
+                                    // Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
+                                    LogDetection(target.gameObject);
+                                }
+                                else
+                                {
+                                    // Debug.Log(soaActor.name + " failed detect of " + target.name + " at " + slantRange + "km");
+                                }
                             }
                         }
-                    }                  
+                    }
                 }
             }
         }
@@ -92,7 +97,8 @@ public class SoaSensor : MonoBehaviour
     {
         if (soaActor.Detections.IndexOf(detectedObject) == -1)
         {
-            Debug.Log("Adding detection to soa actor list " + soaActor.unique_id);
+            // twupy1
+            // Debug.Log("Adding detection to soa actor list " + soaActor.unique_id);
             soaActor.Detections.Add(detectedObject);
         }
     }

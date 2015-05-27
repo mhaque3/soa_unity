@@ -81,6 +81,7 @@
      <Compile Include="Assets\Custom Scripts\RedBaseSim.cs" />
      <Compile Include="Assets\Custom Scripts\RedDismountSim.cs" />
      <Compile Include="Assets\Custom Scripts\RedTruckSim.cs" />
+     <Compile Include="Assets\Custom Scripts\RedUnitInfo.cs" />
      <Compile Include="Assets\Custom Scripts\RotorRotate.cs" />
      <Compile Include="Assets\Custom Scripts\Serializer.cs" />
      <Compile Include="Assets\Custom Scripts\SimControl.cs" />
@@ -88,6 +89,7 @@
      <Compile Include="Assets\Custom Scripts\SoaHexWorld.cs" />
      <Compile Include="Assets\Custom Scripts\SoaHexWorldFlat.cs" />
      <Compile Include="Assets\Custom Scripts\SoaSensor.cs" />
+     <Compile Include="Assets\Custom Scripts\SoaWeapon.cs" />
      <Compile Include="Assets\Custom Scripts\SoldierWaypointMotion.cs" />
      <Compile Include="Assets\Custom Scripts\SomeNewScript.cs" />
      <Compile Include="Assets\Custom Scripts\TrackOnGrid.cs" />

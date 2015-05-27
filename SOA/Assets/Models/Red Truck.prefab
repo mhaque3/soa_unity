@@ -177,6 +177,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &192528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 416962}
+  - 114: {fileID: 11435116}
+  m_Layer: 0
+  m_Name: SoaWeapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &194514
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +234,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 430100}
   m_RootOrder: 5
+--- !u!4 &416962
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192528}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 481630}
+  m_RootOrder: 4
 --- !u!4 &430100
 Transform:
   m_ObjectHideFlags: 1
@@ -310,6 +338,7 @@ Transform:
   - {fileID: 430100}
   - {fileID: 468702}
   - {fileID: 435992}
+  - {fileID: 416962}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &482350
@@ -686,6 +715,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexGrid: {fileID: 0}
+--- !u!114 &11435116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67a82c926bd2ff4b8afcc6b49583e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes:
+  - tagString: HeavyUAV
+    enabled: 1
+    RangeP1: 2.5
+    RangeMax: 2.5
+  - tagString: SmallUAV
+    enabled: 1
+    RangeP1: 2.5
+    RangeMax: 2.5
 --- !u!114 &11459744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -699,7 +748,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Civilian: 0
   CivilianIcon: {fileID: 194514}
-  PathUpdateInterval: 1
 --- !u!114 &11475668
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -731,7 +779,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d7b966b46371e478a366ea6818d96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modes: []
+  modes:
+  - tagString: HeavyUAV
+    RangeP1: 1
+    RangeMax: 5
+  - tagString: SmallUAV
+    RangeP1: 1
+    RangeMax: 4.5
+  - tagString: BluePolice
+    RangeP1: 1
+    RangeMax: 5
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11479566
@@ -745,11 +802,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601527037d1fd97419fdcad7525a3e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unique_id: 0
+  unique_id: 100
   affiliation: 1
   type: 0
+  isAlive: 0
   commsRange: 5
   Sensors: []
+  Weapons: []
   Detections: []
   Tracks: []
   simulateMotion: 1

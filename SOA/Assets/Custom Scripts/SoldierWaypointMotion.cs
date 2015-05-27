@@ -16,6 +16,8 @@ public class SoldierWaypointMotion : MonoBehaviour
     // Use this for initialization
 	void Start () 
     {
+        if (waypoints.Count < 1)
+            waypoints.Add(gameObject);
         waypointIndex = 0;
         navAgent = GetComponent<NavMeshAgent>();
         navAgent.SetAreaCost(NavMesh.GetAreaFromName("Road"), RoadCost);
