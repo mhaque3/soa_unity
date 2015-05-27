@@ -11,6 +11,8 @@ public class BluePoliceSim : MonoBehaviour
     // Oldest allowed actor belief
     public float beliefTimeout_ms;
 
+    public float redBaseKeepoutDist;
+
     // Misc
     int numPursueCandidates;
 
@@ -27,19 +29,20 @@ public class BluePoliceSim : MonoBehaviour
 
     // Time keeping
     float timeSinceLastEval_s;
-    
-    // Parameters
-    public float pursueRadius;
 
     // Variables for keeping track of task
     public enum Task
     {
-        GUARD,
+        NONE,
+        PATROL,
         PURSUE
     };
     public Task currTask;
+    public GameObject patrolTarget;
     public int pursueActorID;
     public int numVirtualCasualties;
+    float clearPatrolRange;
+    float transitionProbability;
 
     // Saving unity game object references
     List<GameObject> redUnits;
@@ -51,10 +54,9 @@ public class BluePoliceSim : MonoBehaviour
     Dictionary<string, float> protectedSiteVirtualCasualties;
     Dictionary<string, float> protectedSiteTotalCasualties;
 
-
     // Use this for initialization
 	void Start () 
-    {   
+    {
         // Initialize databases
         protectedSitePos = new Dictionary<string, Vector3>();
         protectedSiteVirtualCasualties = new Dictionary<string,float>();
@@ -65,8 +67,14 @@ public class BluePoliceSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
+        // Internal parameters
+        clearPatrolRange = 0.50f; // Unity units
+        transitionProbability = 1.0f;
+
         // Initial task
-        currTask = Task.GUARD;
+        currTask = Task.NONE;
+        patrolTarget = null;
+        pursueActorID = 0;
 
         // Red unit database
         redUnitDatabase = new Dictionary<int, RedUnitInfo>();
@@ -76,9 +84,9 @@ public class BluePoliceSim : MonoBehaviour
         redUnits.AddRange(GameObject.FindGameObjectsWithTag("RedTruck"));
         redUnits.AddRange(GameObject.FindGameObjectsWithTag("RedDismount"));
         protectedSites = new List<GameObject>();
-        protectedSites.AddRange(GameObject.FindGameObjectsWithTag("NGO"));
-        protectedSites.AddRange(GameObject.FindGameObjectsWithTag("Village"));
-        redBases = new List<GameObject>(GameObject.FindGameObjectsWithTag("RedBase"));
+        protectedSites.AddRange(simControlScript.NgoSites);
+        protectedSites.AddRange(simControlScript.Villages);
+        redBases = simControlScript.RedBases;
 
         // Initialize protected site weights
         InitProtectedSites();
@@ -175,17 +183,6 @@ public class BluePoliceSim : MonoBehaviour
             // Assign a task
             assignTask();
 
-            // Debug output
-            /*switch (currTask)
-            {
-                case Task.GUARD:
-                    Debug.Log("Police Task = GUARD");
-                    break;
-                case Task.PURSUE:
-                    Debug.Log("Police Task = PURSUE " + pursueActorID);
-                    break;
-            }*/
-
             // Compute control law for that task
             thisNavAgent.SetDestination(computeControl());
 
@@ -273,7 +270,7 @@ public class BluePoliceSim : MonoBehaviour
             }
             else
             {
-                if (redUnitInfo.distToClosestProtectedSite <= pursueRadius)
+                if (redUnitInfo.distToClosestRedBase > redBaseKeepoutDist*SimControl.KmToUnity)
                 {
                     // Guess that it will first go to closest protected site and then to closest base
                     redRoundTripTime = (redUnitInfo.distToClosestProtectedSite +
@@ -297,12 +294,37 @@ public class BluePoliceSim : MonoBehaviour
     {
         if (numPursueCandidates <= 0)
         {
-            // If no one to pursue then get into a guard position
-            currTask = Task.GUARD;
+            // Transition from pursue to patrol
+            if (currTask != Task.PATROL)
+            {
+                // Pick a new patrol target
+                currTask = Task.PATROL;
+                patrolTarget = assignNewProtectedSite(patrolTarget);
+
+            }
+            else if (Vector3.Distance(transform.position, patrolTarget.transform.position) <= clearPatrolRange * SimControl.KmToUnity)
+            {
+                // We are close enough to a target to clear it, choose to stay or leave with some probability
+                if (Random.value <= transitionProbability)
+                {
+                    patrolTarget = assignNewProtectedSite(patrolTarget);
+                }
+                else
+                {
+                    // We choose to stay here for another update, keep the same task
+                }
+            }
+            else
+            {
+                // We are patrolling but have not gotten to target yet, keep the same task
+            }
         }
         else
         {
-            // Pick one agent to pursue
+            // Set intent to pursue
+            currTask = Task.PURSUE;
+
+            // Pick one agent with civilian to pursue
             float minCost = float.PositiveInfinity;
             foreach (int id in redUnitDatabase.Keys)
             {
@@ -310,16 +332,10 @@ public class BluePoliceSim : MonoBehaviour
                 RedUnitInfo redUnitInfo = redUnitDatabase[id];
 
                 // Only consider for pursuit if it has been marked as a candidate
-                if (redUnitInfo.isPursueCandidate)
+                if (redUnitInfo.isPursueCandidate && redUnitInfo.hasCivilian)
                 {
                     // Cost is based on current distance from pursuer
                     float actorCost = GetRangeTo(redUnitInfo.pos);
-
-                    // Those with civilians get a discount
-                    if (redUnitInfo.hasCivilian)
-                    {
-                        actorCost *= 0.50f;
-                    }
 
                     // Found best so far, save its score and actor ID
                     if(actorCost < minCost)
@@ -329,34 +345,86 @@ public class BluePoliceSim : MonoBehaviour
                     }
                 }
             }
-                        
-            // Set intent to pursue
-            currTask = Task.PURSUE;
+
+            // Choose from those without civilians if we didn't find a pursue target
+            if (minCost == float.PositiveInfinity)
+            {
+                foreach (int id in redUnitDatabase.Keys)
+                {
+                    // Get the record
+                    RedUnitInfo redUnitInfo = redUnitDatabase[id];
+
+                    // Only consider for pursuit if it has been marked as a candidate
+                    if (redUnitInfo.isPursueCandidate && !redUnitInfo.hasCivilian)
+                    {
+                        // Cost is based on current distance from pursuer
+                        float actorCost = GetRangeTo(redUnitInfo.pos);
+
+                        // Found best so far, save its score and actor ID
+                        if (actorCost < minCost)
+                        {
+                            minCost = actorCost;
+                            pursueActorID = id;
+                        }
+                    }
+                }
+            }                        
         }
+    }
+
+    public GameObject assignNewProtectedSite(GameObject currPatrolTarget){
+        // Cost vector
+        float[] weight = new float[protectedSites.Count];
+
+        // Assign costs to travel to each
+        float weightAccum = 0.0f;
+        for(int i=0; i<protectedSites.Count; i++)
+        {
+            GameObject p = protectedSites[i];
+            if (currPatrolTarget != null && currPatrolTarget == p)
+            {
+                // Do not go back to myself
+                weight[i] = 0.0f;
+            }
+            else
+            {
+                // Weight
+                weight[i] = protectedSiteVirtualCasualties[p.name] / GetRangeTo(p);
+            }
+            weightAccum += weight[i];
+        }
+
+        // Pick one site at random with weights as the probabilty distribution
+        float randEval = Random.RandomRange(0, weightAccum);
+
+        // Find which one was chosen
+        float accum = 0.0f;
+        GameObject chosenSite = protectedSites[0];
+        for(int i=0; i<protectedSites.Count; i++)
+        {
+            accum += weight[i];
+            if (randEval <= accum)
+            {
+                chosenSite = protectedSites[i];
+                break;
+            }
+        }
+
+        // Return the chosen site
+        return chosenSite;
     }
 
     public Vector3 computeControl()
     {
         switch (currTask)
         {
-            case Task.GUARD:
-                // Guard area
-                // TODO: Implement variant of Cortes/Bullo Coverage Contol Algorithm
-
-                // Find weighted average of all protected sites
-                Vector3 destination = new Vector3(0, 0, 0);
-                float totalWeight = 0.0f;
-                foreach (string s in protectedSitePos.Keys)
-                {
-                    destination += protectedSitePos[s] * protectedSiteTotalCasualties[s];
-                    totalWeight += protectedSiteTotalCasualties[s];
-                }
-                destination /= totalWeight;
-                return destination;
+            case Task.PATROL:
+                // Just naively goto patrol target for now
+                return patrolTarget.transform.position;
 
             case Task.PURSUE:
                 // TODO: Implement motion camouflage or intercept
-                // Classical pursuit for now
+                // Just do classical pursuit for now
                 return redUnitDatabase[pursueActorID].pos;
             
             default:
