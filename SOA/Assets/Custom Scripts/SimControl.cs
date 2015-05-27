@@ -7,7 +7,7 @@ using System.Xml;
 using soa;
 using Gamelogic.Grids;
 
-public enum Affiliation { BLUE = 0, RED = 1, NEUTURAL = 2 };
+public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 };
 public class SimControl : MonoBehaviour 
 {
     static public float KmToUnity;

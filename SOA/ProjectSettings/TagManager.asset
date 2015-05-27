@@ -14,6 +14,8 @@ TagManager:
   - RedDismount
   - SmallUAV
   - HeavyUAV
+  - NeutralTruck
+  - NeutralDismount
   layers:
   - Default
   - TransparentFX
