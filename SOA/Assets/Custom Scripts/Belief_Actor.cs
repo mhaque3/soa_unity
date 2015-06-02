@@ -11,6 +11,8 @@ namespace soa
         private int unique_id;
         private int affiliation;
         private int type;
+        private bool isAlive;
+        private int isCarrying;
         private float pos_x;
         private float pos_y;
         private float pos_z;
@@ -23,6 +25,7 @@ namespace soa
 
         // Constructor
         public Belief_Actor(int unique_id, int affiliation, int type,
+            bool isAlive, int isCarrying,
             float pos_x, float pos_y, float pos_z,
             bool velocity_x_valid = false, float velocity_x = 0.0f,
             bool velocity_y_valid = false, float velocity_y = 0.0f,
@@ -31,6 +34,8 @@ namespace soa
             this.unique_id = unique_id;
             this.affiliation = affiliation;
             this.type = type;
+            this.isAlive = isAlive;
+            this.isCarrying = isCarrying;
             this.pos_x = pos_x;
             this.pos_y = pos_y;
             this.pos_z = pos_z;
@@ -55,6 +60,8 @@ namespace soa
                 + "\n" + "  unique_id: " + unique_id
                 + "\n" + "  affiliation: " + affiliation
                 + "\n" + "  type: " + type
+                + "\n" + "  isAlive: " + isAlive
+                + "\n" + "  isCarrying: " + isCarrying
                 + "\n" + "  pos_x: " + pos_x
                 + "\n" + "  pos_y: " + pos_y
                 + "\n" + "  pos_z: " + pos_z
@@ -72,6 +79,8 @@ namespace soa
         public int getUnique_id() { return unique_id; }
         public int getAffiliation() { return affiliation; }
         public int getType() { return type; }
+        public bool getIsAlive() { return isAlive; }
+        public int getIsCarrying() { return isCarrying; }
         public float getPos_x() { return pos_x; }
         public float getPos_y() { return pos_y; }
         public float getPos_z() { return pos_z; }
