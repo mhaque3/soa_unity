@@ -22,9 +22,15 @@ public class RedUnitInfo
         // Get ID
         id = ba.getUnique_id();
 
-        // Extract 6 state
-        pos = new Vector3(ba.getPos_x(), ba.getPos_y(), ba.getPos_z());
-        vel = new Vector3(ba.getVelocity_x(), ba.getVelocity_y(), ba.getVelocity_z());
+        // Extract 6 state (in Unity space)
+        pos = new Vector3(
+            ba.getPos_x() * SimControl.KmToUnity,
+            ba.getPos_y() * SimControl.KmToUnity,
+            ba.getPos_z() * SimControl.KmToUnity);
+        vel = new Vector3(
+            ba.getVelocity_x() * SimControl.KmToUnity,
+            ba.getVelocity_y() * SimControl.KmToUnity,
+            ba.getVelocity_z() * SimControl.KmToUnity);
         velIsValid = ba.getVelocity_x_valid() && ba.getVelocity_y_valid() && ba.getVelocity_z_valid();
 
         // Not a pursue candidate by default
@@ -55,7 +61,7 @@ public class RedUnitInfo
                         break;
                 }
 
-                // Save max speed
+                // Save max speed (in Unity coordinates)
                 maxSpeed = g.GetComponent<NavMeshAgent>().speed;
             }
         }

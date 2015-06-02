@@ -6,12 +6,14 @@ public class RedDismountSim : MonoBehaviour
     SimControl simControlScript;
     SoldierWaypointMotion waypointScript;
     NavMeshAgent thisNavAgent;
+    SoaActor thisSoaActor;
     public bool Civilian;
     public GameObject CivilianIcon;
 
     // Use this for initialization
     void Start()
     {
+        thisSoaActor = gameObject.GetComponent<SoaActor>();
         simControlScript = GameObject.FindObjectOfType<SimControl>();
         waypointScript = gameObject.GetComponent<SoldierWaypointMotion>();
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
@@ -88,6 +90,7 @@ public class RedDismountSim : MonoBehaviour
                 if (Civilian)
                 {
                     Civilian = false;
+                    thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                 }
 
                 thisNavAgent.Warp(GetRetreatRedBase(b).transform.position);
@@ -102,6 +105,7 @@ public class RedDismountSim : MonoBehaviour
                 if (Civilian)
                 {
                     Civilian = false;
+                    thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     rb.Civilians++;
                 }
                 waypointScript.On = false;
@@ -124,6 +128,7 @@ public class RedDismountSim : MonoBehaviour
             {
                 n.Civilians += 1f;
                 Civilian = true;
+                thisSoaActor.isCarrying = SoaActor.CarriedResource.CIVILIANS;
 
                 n.Casualties += 1f;
                 n.Supply -= 1f;
