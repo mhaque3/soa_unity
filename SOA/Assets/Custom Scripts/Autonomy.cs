@@ -53,44 +53,44 @@ namespace autonomy_msg {
     
     static Autonomy() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
-          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIogBCgxHcGJfR3JpZFNw" + 
-          "ZWMSEwoLYmVsaWVmX3RpbWUYASACKAQSDgoGaGVpZ2h0GAIgAigFEg0KBXdp" + 
-          "ZHRoGAMgAigFEhgKEGdyaWRUb1VuaXR5U2NhbGUYBCACKAISFAoMZ3JpZE9y" + 
-          "aWdpbl94GAUgAigCEhQKDGdyaWRPcmlnaW5fehgGIAIoAiJZCgtHcGJfTkdP" + 
-          "U2l0ZRITCgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxs" + 
-          "cxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiZQoIR3BiX1NQ" + 
-          "T0kSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigE" + 
+          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIm4KDEdwYl9HcmlkU3Bl" + 
+          "YxITCgtiZWxpZWZfdGltZRgBIAIoBBIOCgZoZWlnaHQYAiACKAUSDQoFd2lk" + 
+          "dGgYAyACKAUSFAoMZ3JpZE9yaWdpbl94GAQgAigCEhQKDGdyaWRPcmlnaW5f" + 
+          "ehgFIAIoAiJZCgtHcGJfTkdPU2l0ZRITCgtiZWxpZWZfdGltZRgBIAIoBBIK" + 
+          "CgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJf" + 
+          "R3JpZENlbGwiZQoIR3BiX1NQT0kSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoM" + 
+          "cmVxdWVzdF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194" + 
+          "GAQgAigCEg0KBXBvc195GAUgAigCIoEBChVHcGJfV2F5cG9pbnRfT3ZlcnJp" + 
+          "ZGUSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigE" + 
           "EhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBvc195GAUg" + 
-          "AigCIoEBChVHcGJfV2F5cG9pbnRfT3ZlcnJpZGUSEwoLYmVsaWVmX3RpbWUY" + 
-          "ASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigF" + 
-          "Eg0KBXBvc194GAQgAigCEg0KBXBvc195GAUgAigCEg0KBXBvc196GAYgAigC" + 
-          "IlkKC0dwYl9WaWxsYWdlEhMKC2JlbGllZl90aW1lGAEgAigEEgoKAmlkGAIg" + 
-          "AigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2Vs" + 
-          "bCIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgCIAIoBSK/" + 
-          "AQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCXVuaXF1ZV9p" + 
-          "ZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIoBRIMCgR0eXBlGAQgAigFEg0K" + 
-          "BXBvc194GAUgAigCEg0KBXBvc195GAYgAigCEg0KBXBvc196GAcgAigCEhIK" + 
-          "CnZlbG9jaXR5X3gYCCABKAISEgoKdmVsb2NpdHlfeRgJIAEoAhISCgp2ZWxv" + 
-          "Y2l0eV96GAogASgCIi8KCkdwYl9DdXN0b20SEwoLYmVsaWVmX3RpbWUYASAC" + 
-          "KAQSDAoEZGF0YRgCIAIoDCJWCghHcGJfQmFzZRITCgtiZWxpZWZfdGltZRgB" + 
-          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
-          "Zy5HcGJfR3JpZENlbGwiWwoLR3BiX1RlcnJhaW4SEwoLYmVsaWVmX3RpbWUY" + 
-          "ASACKAQSDAoEdHlwZRgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215" + 
-          "X21zZy5HcGJfR3JpZENlbGwiYAoQR3BiX01vZGVfQ29tbWFuZBITCgtiZWxp" + 
-          "ZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQSEAoIYWN0b3Jf" + 
-          "aWQYAyACKAUSDwoHbW9kZV9pZBgEIAIoBSJ4CgxHcGJfV2F5cG9pbnQSEwoL" + 
-          "YmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigEEhAKCGFj" + 
-          "dG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBvc195GAUgAigCEg0K" + 
-          "BXBvc196GAYgAigCIi0KCEdwYl9UaW1lEhMKC2JlbGllZl90aW1lGAEgAigE" + 
-          "EgwKBHRpbWUYAiACKAQiYAoMR3BiX1JvYWRDZWxsEhMKC2JlbGllZl90aW1l" + 
-          "GAEgAigEEhEKCWlzUm9hZEVuZBgCIAIoCBIoCgRjZWxsGAMgAigLMhouYXV0" + 
-          "b25vbXlfbXNnLkdwYl9HcmlkQ2VsbA==");
+          "AigCEg0KBXBvc196GAYgAigCIlkKC0dwYl9WaWxsYWdlEhMKC2JlbGllZl90" + 
+          "aW1lGAEgAigEEgoKAmlkGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25v" + 
+          "bXlfbXNnLkdwYl9HcmlkQ2VsbCIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEg" + 
+          "AigFEgsKA2NvbBgCIAIoBSLmAQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1l" + 
+          "GAEgAigEEhEKCXVuaXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIo" + 
+          "BRIMCgR0eXBlGAQgAigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2NhcnJ5" + 
+          "aW5nGAYgAigFEg0KBXBvc194GAcgAigCEg0KBXBvc195GAggAigCEg0KBXBv" + 
+          "c196GAkgAigCEhIKCnZlbG9jaXR5X3gYCiABKAISEgoKdmVsb2NpdHlfeRgL" + 
+          "IAEoAhISCgp2ZWxvY2l0eV96GAwgASgCIi8KCkdwYl9DdXN0b20SEwoLYmVs" + 
+          "aWVmX3RpbWUYASACKAQSDAoEZGF0YRgCIAIoDCJWCghHcGJfQmFzZRITCgti" + 
+          "ZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIa" + 
+          "LmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiWwoLR3BiX1RlcnJhaW4SEwoL" + 
+          "YmVsaWVmX3RpbWUYASACKAQSDAoEdHlwZRgCIAIoBRIpCgVjZWxscxgDIAMo" + 
+          "CzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiYAoQR3BiX01vZGVfQ29t" + 
+          "bWFuZBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiAC" + 
+          "KAQSEAoIYWN0b3JfaWQYAyACKAUSDwoHbW9kZV9pZBgEIAIoBSJ4CgxHcGJf" + 
+          "V2F5cG9pbnQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1l" + 
+          "GAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBv" + 
+          "c195GAUgAigCEg0KBXBvc196GAYgAigCIi0KCEdwYl9UaW1lEhMKC2JlbGll" + 
+          "Zl90aW1lGAEgAigEEgwKBHRpbWUYAiACKAQiYAoMR3BiX1JvYWRDZWxsEhMK" + 
+          "C2JlbGllZl90aW1lGAEgAigEEhEKCWlzUm9hZEVuZBgCIAIoCBIoCgRjZWxs" + 
+          "GAMgAigLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
         internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridSpec, global::autonomy_msg.Gpb_GridSpec.Builder>(internal__static_autonomy_msg_Gpb_GridSpec__Descriptor,
-                new string[] { "BeliefTime", "Height", "Width", "GridToUnityScale", "GridOriginX", "GridOriginZ", });
+                new string[] { "BeliefTime", "Height", "Width", "GridOriginX", "GridOriginZ", });
         internal__static_autonomy_msg_Gpb_NGOSite__Descriptor = Descriptor.MessageTypes[1];
         internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSite, global::autonomy_msg.Gpb_NGOSite.Builder>(internal__static_autonomy_msg_Gpb_NGOSite__Descriptor,
@@ -114,7 +114,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[6];
         internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
-                new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
+                new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "IsAlive", "IsCarrying", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
         internal__static_autonomy_msg_Gpb_Custom__Descriptor = Descriptor.MessageTypes[7];
         internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Custom, global::autonomy_msg.Gpb_Custom.Builder>(internal__static_autonomy_msg_Gpb_Custom__Descriptor,
@@ -157,8 +157,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_GridSpec : pb::GeneratedMessage<Gpb_GridSpec, Gpb_GridSpec.Builder> {
     private Gpb_GridSpec() { }
     private static readonly Gpb_GridSpec defaultInstance = new Gpb_GridSpec().MakeReadOnly();
-    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "gridToUnityScale", "height", "width" };
-    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 45, 53, 37, 16, 24 };
+    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "height", "width" };
+    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 37, 45, 16, 24 };
     public static Gpb_GridSpec DefaultInstance {
       get { return defaultInstance; }
     }
@@ -210,17 +210,7 @@ namespace autonomy_msg {
       get { return width_; }
     }
     
-    public const int GridToUnityScaleFieldNumber = 4;
-    private bool hasGridToUnityScale;
-    private float gridToUnityScale_;
-    public bool HasGridToUnityScale {
-      get { return hasGridToUnityScale; }
-    }
-    public float GridToUnityScale {
-      get { return gridToUnityScale_; }
-    }
-    
-    public const int GridOriginXFieldNumber = 5;
+    public const int GridOriginXFieldNumber = 4;
     private bool hasGridOriginX;
     private float gridOriginX_;
     public bool HasGridOriginX {
@@ -230,7 +220,7 @@ namespace autonomy_msg {
       get { return gridOriginX_; }
     }
     
-    public const int GridOriginZFieldNumber = 6;
+    public const int GridOriginZFieldNumber = 5;
     private bool hasGridOriginZ;
     private float gridOriginZ_;
     public bool HasGridOriginZ {
@@ -245,7 +235,6 @@ namespace autonomy_msg {
         if (!hasBeliefTime) return false;
         if (!hasHeight) return false;
         if (!hasWidth) return false;
-        if (!hasGridToUnityScale) return false;
         if (!hasGridOriginX) return false;
         if (!hasGridOriginZ) return false;
         return true;
@@ -259,19 +248,16 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[0], BeliefTime);
       }
       if (hasHeight) {
-        output.WriteInt32(2, field_names[4], Height);
+        output.WriteInt32(2, field_names[3], Height);
       }
       if (hasWidth) {
-        output.WriteInt32(3, field_names[5], Width);
-      }
-      if (hasGridToUnityScale) {
-        output.WriteFloat(4, field_names[3], GridToUnityScale);
+        output.WriteInt32(3, field_names[4], Width);
       }
       if (hasGridOriginX) {
-        output.WriteFloat(5, field_names[1], GridOriginX);
+        output.WriteFloat(4, field_names[1], GridOriginX);
       }
       if (hasGridOriginZ) {
-        output.WriteFloat(6, field_names[2], GridOriginZ);
+        output.WriteFloat(5, field_names[2], GridOriginZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -292,14 +278,11 @@ namespace autonomy_msg {
         if (hasWidth) {
           size += pb::CodedOutputStream.ComputeInt32Size(3, Width);
         }
-        if (hasGridToUnityScale) {
-          size += pb::CodedOutputStream.ComputeFloatSize(4, GridToUnityScale);
-        }
         if (hasGridOriginX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, GridOriginX);
+          size += pb::CodedOutputStream.ComputeFloatSize(4, GridOriginX);
         }
         if (hasGridOriginZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(6, GridOriginZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(5, GridOriginZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -434,9 +417,6 @@ namespace autonomy_msg {
         if (other.HasWidth) {
           Width = other.Width;
         }
-        if (other.HasGridToUnityScale) {
-          GridToUnityScale = other.GridToUnityScale;
-        }
         if (other.HasGridOriginX) {
           GridOriginX = other.GridOriginX;
         }
@@ -499,14 +479,10 @@ namespace autonomy_msg {
               break;
             }
             case 37: {
-              result.hasGridToUnityScale = input.ReadFloat(ref result.gridToUnityScale_);
-              break;
-            }
-            case 45: {
               result.hasGridOriginX = input.ReadFloat(ref result.gridOriginX_);
               break;
             }
-            case 53: {
+            case 45: {
               result.hasGridOriginZ = input.ReadFloat(ref result.gridOriginZ_);
               break;
             }
@@ -579,26 +555,6 @@ namespace autonomy_msg {
         PrepareBuilder();
         result.hasWidth = false;
         result.width_ = 0;
-        return this;
-      }
-      
-      public bool HasGridToUnityScale {
-        get { return result.hasGridToUnityScale; }
-      }
-      public float GridToUnityScale {
-        get { return result.GridToUnityScale; }
-        set { SetGridToUnityScale(value); }
-      }
-      public Builder SetGridToUnityScale(float value) {
-        PrepareBuilder();
-        result.hasGridToUnityScale = true;
-        result.gridToUnityScale_ = value;
-        return this;
-      }
-      public Builder ClearGridToUnityScale() {
-        PrepareBuilder();
-        result.hasGridToUnityScale = false;
-        result.gridToUnityScale_ = 0F;
         return this;
       }
       
@@ -2698,8 +2654,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Actor : pb::GeneratedMessage<Gpb_Actor, Gpb_Actor.Builder> {
     private Gpb_Actor() { }
     private static readonly Gpb_Actor defaultInstance = new Gpb_Actor().MakeReadOnly();
-    private static readonly string[] _gpbActorFieldNames = new string[] { "affiliation", "belief_time", "pos_x", "pos_y", "pos_z", "type", "unique_id", "velocity_x", "velocity_y", "velocity_z" };
-    private static readonly uint[] _gpbActorFieldTags = new uint[] { 24, 8, 45, 53, 61, 32, 16, 69, 77, 85 };
+    private static readonly string[] _gpbActorFieldNames = new string[] { "affiliation", "belief_time", "is_alive", "is_carrying", "pos_x", "pos_y", "pos_z", "type", "unique_id", "velocity_x", "velocity_y", "velocity_z" };
+    private static readonly uint[] _gpbActorFieldTags = new uint[] { 24, 8, 40, 48, 61, 69, 77, 32, 16, 85, 93, 101 };
     public static Gpb_Actor DefaultInstance {
       get { return defaultInstance; }
     }
@@ -2761,7 +2717,27 @@ namespace autonomy_msg {
       get { return type_; }
     }
     
-    public const int PosXFieldNumber = 5;
+    public const int IsAliveFieldNumber = 5;
+    private bool hasIsAlive;
+    private bool isAlive_;
+    public bool HasIsAlive {
+      get { return hasIsAlive; }
+    }
+    public bool IsAlive {
+      get { return isAlive_; }
+    }
+    
+    public const int IsCarryingFieldNumber = 6;
+    private bool hasIsCarrying;
+    private int isCarrying_;
+    public bool HasIsCarrying {
+      get { return hasIsCarrying; }
+    }
+    public int IsCarrying {
+      get { return isCarrying_; }
+    }
+    
+    public const int PosXFieldNumber = 7;
     private bool hasPosX;
     private float posX_;
     public bool HasPosX {
@@ -2771,7 +2747,7 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 6;
+    public const int PosYFieldNumber = 8;
     private bool hasPosY;
     private float posY_;
     public bool HasPosY {
@@ -2781,7 +2757,7 @@ namespace autonomy_msg {
       get { return posY_; }
     }
     
-    public const int PosZFieldNumber = 7;
+    public const int PosZFieldNumber = 9;
     private bool hasPosZ;
     private float posZ_;
     public bool HasPosZ {
@@ -2791,7 +2767,7 @@ namespace autonomy_msg {
       get { return posZ_; }
     }
     
-    public const int VelocityXFieldNumber = 8;
+    public const int VelocityXFieldNumber = 10;
     private bool hasVelocityX;
     private float velocityX_;
     public bool HasVelocityX {
@@ -2801,7 +2777,7 @@ namespace autonomy_msg {
       get { return velocityX_; }
     }
     
-    public const int VelocityYFieldNumber = 9;
+    public const int VelocityYFieldNumber = 11;
     private bool hasVelocityY;
     private float velocityY_;
     public bool HasVelocityY {
@@ -2811,7 +2787,7 @@ namespace autonomy_msg {
       get { return velocityY_; }
     }
     
-    public const int VelocityZFieldNumber = 10;
+    public const int VelocityZFieldNumber = 12;
     private bool hasVelocityZ;
     private float velocityZ_;
     public bool HasVelocityZ {
@@ -2827,6 +2803,8 @@ namespace autonomy_msg {
         if (!hasUniqueId) return false;
         if (!hasAffiliation) return false;
         if (!hasType) return false;
+        if (!hasIsAlive) return false;
+        if (!hasIsCarrying) return false;
         if (!hasPosX) return false;
         if (!hasPosY) return false;
         if (!hasPosZ) return false;
@@ -2841,31 +2819,37 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[1], BeliefTime);
       }
       if (hasUniqueId) {
-        output.WriteInt32(2, field_names[6], UniqueId);
+        output.WriteInt32(2, field_names[8], UniqueId);
       }
       if (hasAffiliation) {
         output.WriteInt32(3, field_names[0], Affiliation);
       }
       if (hasType) {
-        output.WriteInt32(4, field_names[5], Type);
+        output.WriteInt32(4, field_names[7], Type);
+      }
+      if (hasIsAlive) {
+        output.WriteBool(5, field_names[2], IsAlive);
+      }
+      if (hasIsCarrying) {
+        output.WriteInt32(6, field_names[3], IsCarrying);
       }
       if (hasPosX) {
-        output.WriteFloat(5, field_names[2], PosX);
+        output.WriteFloat(7, field_names[4], PosX);
       }
       if (hasPosY) {
-        output.WriteFloat(6, field_names[3], PosY);
+        output.WriteFloat(8, field_names[5], PosY);
       }
       if (hasPosZ) {
-        output.WriteFloat(7, field_names[4], PosZ);
+        output.WriteFloat(9, field_names[6], PosZ);
       }
       if (hasVelocityX) {
-        output.WriteFloat(8, field_names[7], VelocityX);
+        output.WriteFloat(10, field_names[9], VelocityX);
       }
       if (hasVelocityY) {
-        output.WriteFloat(9, field_names[8], VelocityY);
+        output.WriteFloat(11, field_names[10], VelocityY);
       }
       if (hasVelocityZ) {
-        output.WriteFloat(10, field_names[9], VelocityZ);
+        output.WriteFloat(12, field_names[11], VelocityZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -2889,23 +2873,29 @@ namespace autonomy_msg {
         if (hasType) {
           size += pb::CodedOutputStream.ComputeInt32Size(4, Type);
         }
+        if (hasIsAlive) {
+          size += pb::CodedOutputStream.ComputeBoolSize(5, IsAlive);
+        }
+        if (hasIsCarrying) {
+          size += pb::CodedOutputStream.ComputeInt32Size(6, IsCarrying);
+        }
         if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, PosX);
+          size += pb::CodedOutputStream.ComputeFloatSize(7, PosX);
         }
         if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(6, PosY);
+          size += pb::CodedOutputStream.ComputeFloatSize(8, PosY);
         }
         if (hasPosZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(7, PosZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(9, PosZ);
         }
         if (hasVelocityX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(8, VelocityX);
+          size += pb::CodedOutputStream.ComputeFloatSize(10, VelocityX);
         }
         if (hasVelocityY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(9, VelocityY);
+          size += pb::CodedOutputStream.ComputeFloatSize(11, VelocityY);
         }
         if (hasVelocityZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(10, VelocityZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(12, VelocityZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3043,6 +3033,12 @@ namespace autonomy_msg {
         if (other.HasType) {
           Type = other.Type;
         }
+        if (other.HasIsAlive) {
+          IsAlive = other.IsAlive;
+        }
+        if (other.HasIsCarrying) {
+          IsCarrying = other.IsCarrying;
+        }
         if (other.HasPosX) {
           PosX = other.PosX;
         }
@@ -3120,27 +3116,35 @@ namespace autonomy_msg {
               result.hasType = input.ReadInt32(ref result.type_);
               break;
             }
-            case 45: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
+            case 40: {
+              result.hasIsAlive = input.ReadBool(ref result.isAlive_);
               break;
             }
-            case 53: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
+            case 48: {
+              result.hasIsCarrying = input.ReadInt32(ref result.isCarrying_);
               break;
             }
             case 61: {
-              result.hasPosZ = input.ReadFloat(ref result.posZ_);
+              result.hasPosX = input.ReadFloat(ref result.posX_);
               break;
             }
             case 69: {
-              result.hasVelocityX = input.ReadFloat(ref result.velocityX_);
+              result.hasPosY = input.ReadFloat(ref result.posY_);
               break;
             }
             case 77: {
-              result.hasVelocityY = input.ReadFloat(ref result.velocityY_);
+              result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
             case 85: {
+              result.hasVelocityX = input.ReadFloat(ref result.velocityX_);
+              break;
+            }
+            case 93: {
+              result.hasVelocityY = input.ReadFloat(ref result.velocityY_);
+              break;
+            }
+            case 101: {
               result.hasVelocityZ = input.ReadFloat(ref result.velocityZ_);
               break;
             }
@@ -3233,6 +3237,46 @@ namespace autonomy_msg {
         PrepareBuilder();
         result.hasType = false;
         result.type_ = 0;
+        return this;
+      }
+      
+      public bool HasIsAlive {
+        get { return result.hasIsAlive; }
+      }
+      public bool IsAlive {
+        get { return result.IsAlive; }
+        set { SetIsAlive(value); }
+      }
+      public Builder SetIsAlive(bool value) {
+        PrepareBuilder();
+        result.hasIsAlive = true;
+        result.isAlive_ = value;
+        return this;
+      }
+      public Builder ClearIsAlive() {
+        PrepareBuilder();
+        result.hasIsAlive = false;
+        result.isAlive_ = false;
+        return this;
+      }
+      
+      public bool HasIsCarrying {
+        get { return result.hasIsCarrying; }
+      }
+      public int IsCarrying {
+        get { return result.IsCarrying; }
+        set { SetIsCarrying(value); }
+      }
+      public Builder SetIsCarrying(int value) {
+        PrepareBuilder();
+        result.hasIsCarrying = true;
+        result.isCarrying_ = value;
+        return this;
+      }
+      public Builder ClearIsCarrying() {
+        PrepareBuilder();
+        result.hasIsCarrying = false;
+        result.isCarrying_ = 0;
         return this;
       }
       

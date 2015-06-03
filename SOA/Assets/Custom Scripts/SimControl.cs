@@ -430,7 +430,7 @@ public class SimControl : MonoBehaviour
 
         currentCell = new FlatHexPoint(0, 0);
 
-        b = new Belief_GridSpec(64, 36, KmToUnity, hexGrid.Map[currentCell].x, hexGrid.Map[currentCell].z);
+        b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x, hexGrid.Map[currentCell].z);
         blueDataManager.addBelief(b, 0);
         Debug.Log(b.ToString());
 

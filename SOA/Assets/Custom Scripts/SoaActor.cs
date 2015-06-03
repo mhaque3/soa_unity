@@ -10,7 +10,16 @@ public class SoaActor : MonoBehaviour
     public Affiliation affiliation;
     public int type;
 
+    public enum CarriedResource
+    {
+        NONE = 0,
+        SUPPLIES = 1,
+        CIVILIANS = 2,
+        CASUALTIES = 3
+    };
+
     public bool isAlive;
+    public CarriedResource isCarrying;
 
     public double commsRange;
 
@@ -36,11 +45,15 @@ public class SoaActor : MonoBehaviour
 
     public SoldierWaypointMotion motionScript;
     public NavMeshAgent navAgent;
-	// Use this for initialization
+    
+    // Use this for initialization
 	void Start () 
     {
         // Alive at the beginning
         isAlive = true;
+
+        // Initially carrying nothing
+        isCarrying = CarriedResource.NONE;
 
         displayPosition = transform.position;
         displayOrientation = transform.rotation;
@@ -155,8 +168,12 @@ public class SoaActor : MonoBehaviour
                 motionScript.On = false;
                 if (beliefDictionary[Belief.BeliefType.WAYPOINT].TryGetValue(unique_id, out newBelief))
                 {
+                    // Received a waypoint in km, transform to Unity coordinates and then use it to set the nav agent's destination
                     Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
-                    navAgent.SetDestination(new Vector3(newWaypoint.getPos_x(), newWaypoint.getPos_y(), newWaypoint.getPos_z()));
+                    navAgent.SetDestination(new Vector3(
+                        newWaypoint.getPos_x() * SimControl.KmToUnity,
+                        newWaypoint.getPos_y() * SimControl.KmToUnity,
+                        newWaypoint.getPos_z() * SimControl.KmToUnity));
                     //Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
                 }
                 else
@@ -166,16 +183,22 @@ public class SoaActor : MonoBehaviour
             }
             else
             {
-                float targetX = motionScript.targetPosition.x;
-                float targetY = motionScript.targetPosition.y;
-                float targetZ = motionScript.targetPosition.z;
-                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id, targetX, targetY, targetZ);
+                // Convert position coordinates from unity to km before making new belief waypoint
+                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
+                    motionScript.targetPosition.x / SimControl.KmToUnity,
+                    motionScript.targetPosition.y / SimControl.KmToUnity,
+                    motionScript.targetPosition.z / SimControl.KmToUnity);
                 beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
                 if(dataManager != null)
                     dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
             }
 
-            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, transform.position.x, transform.position.y, transform.position.z);
+            // Convert position from Unity to km for Belief_Actor
+            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, 
+                transform.position.x / SimControl.KmToUnity,
+                transform.position.y / SimControl.KmToUnity,
+                transform.position.z / SimControl.KmToUnity);
+
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if(dataManager != null)
                 dataManager.addAndBroadcastBelief(newActorData, unique_id);
@@ -184,8 +207,13 @@ public class SoaActor : MonoBehaviour
             foreach (GameObject gameObject in Detections)
             {
                 SoaActor soaActor = gameObject.GetComponent<SoaActor>();
-                Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation, soaActor.type, 
-                    gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+                
+                // Actor's position must be converted from Unity to km when generating belief
+                Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation, 
+                    soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying,
+                    gameObject.transform.position.x / SimControl.KmToUnity,
+                    gameObject.transform.position.y / SimControl.KmToUnity,
+                    gameObject.transform.position.z / SimControl.KmToUnity);
                 beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 if (dataManager != null)
                 {

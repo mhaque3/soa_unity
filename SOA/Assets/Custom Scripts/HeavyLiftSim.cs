@@ -3,6 +3,7 @@ using System.Collections;
 
 public class HeavyLiftSim : MonoBehaviour 
 {
+    SoaActor thisSoaActor;
     public bool Casuality;
     public bool Supply;
     public GameObject SupplyIcon;
@@ -11,7 +12,7 @@ public class HeavyLiftSim : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-	
+        thisSoaActor = gameObject.GetComponent<SoaActor>();
 	}
 	
 	// Update is called once per frame
@@ -35,6 +36,7 @@ public class HeavyLiftSim : MonoBehaviour
                     {
                         b.Casualties += 1f;
                         Casuality = false;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     }
                 }
                 if (!Supply)
@@ -42,6 +44,7 @@ public class HeavyLiftSim : MonoBehaviour
                     {
                         b.Supply -= 1f;
                         Supply = true;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.SUPPLIES;
                     }
                 }
             }
@@ -57,6 +60,7 @@ public class HeavyLiftSim : MonoBehaviour
                     {
                         n.Casualties -= 1f;
                         Casuality = true;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.CASUALTIES;
                     }
                 }
                 if (Supply)
@@ -64,6 +68,7 @@ public class HeavyLiftSim : MonoBehaviour
                     {
                         n.Supply += 1f;
                         Supply = false;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     }
                 }
             }
@@ -79,6 +84,7 @@ public class HeavyLiftSim : MonoBehaviour
                     {
                         v.Casualties -= 1f;
                         Casuality = true;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.CASUALTIES;
                     }
                 }
                 if (Supply)
@@ -86,6 +92,7 @@ public class HeavyLiftSim : MonoBehaviour
                     {
                         v.Supply += 1f;
                         Supply = false;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     }
                 }
             }

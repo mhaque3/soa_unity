@@ -114,22 +114,30 @@ namespace soa
             SortedDictionary<int, Belief> actorDictionary = beliefDictionary[Belief.BeliefType.ACTOR];
             foreach (SoaActor soaActor in actors)
             {
-
-                
                 //Debug.Log("looking up actor  " + soaActor.unique_id);
                 Belief b;
                 if (actorDictionary.TryGetValue(soaActor.unique_id, out b))
                 {
+                    // Get own position in km
                     Belief_Actor actor = (Belief_Actor)b;
-                    Vector3 actorPos = new Vector3((float)actor.getPos_x(), (float)actor.getPos_y(), (float)actor.getPos_z());
+                    Vector3 actorPos = new Vector3(
+                        (float)actor.getPos_x(),
+                        (float)actor.getPos_y(),
+                        (float)actor.getPos_z());
 
                     foreach (SoaActor neighborActor in actors)
                     {
+                        // Get neighbor position in km
                         //Debug.Log("looking up actor " + soaActor.unique_id);
                         Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
-                        Vector3 neighborPos = new Vector3((float)neighbor.getPos_x(), (float)neighbor.getPos_y(), (float)neighbor.getPos_z());
+                        Vector3 neighborPos = new Vector3(
+                            (float)neighbor.getPos_x(),
+                            (float)neighbor.getPos_y(),
+                            (float)neighbor.getPos_z());
 
-                        actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = Math.Sqrt(Math.Pow(actorPos.x - neighborPos.x, 2)
+                        // Compute distance in km and compare against comms range (also specified in km)
+                        actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = 
+                            Math.Sqrt(Math.Pow(actorPos.x - neighborPos.x, 2)
                             + Math.Pow(actorPos.y - neighborPos.y, 2)
                             + Math.Pow(actorPos.z - neighborPos.z, 2)) < neighborActor.commsRange;
                     }
@@ -152,8 +160,12 @@ namespace soa
                 Debug.Log("Adding actor to actor dictionary " + actor.unique_id);
                 soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
-                addBelief(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type,
-                    actor.displayPosition.x, actor.displayPosition.y, actor.displayPosition.z), actor.unique_id);
+                addBelief(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
+                    actor.isAlive, (int)actor.isCarrying,
+                    actor.displayPosition.x / SimControl.KmToUnity,
+                    actor.displayPosition.y / SimControl.KmToUnity,
+                    actor.displayPosition.z / SimControl.KmToUnity), 
+                    actor.unique_id);
             }
             else
             {

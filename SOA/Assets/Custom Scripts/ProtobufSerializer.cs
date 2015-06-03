@@ -55,6 +55,8 @@ namespace soa
                         proto.SetUniqueId(b.getUnique_id());
                         proto.SetAffiliation(b.getAffiliation());
                         proto.SetType(b.getType());
+                        proto.SetIsAlive(b.getIsAlive());
+                        proto.SetIsCarrying(b.getIsCarrying());
                         proto.SetPosX(b.getPos_x());
                         proto.SetPosY(b.getPos_y());
                         proto.SetPosZ(b.getPos_z());
@@ -105,7 +107,6 @@ namespace soa
                         Belief_GridSpec b = (Belief_GridSpec)belief;
                         proto.SetWidth(b.getWidth());
                         proto.SetHeight(b.getHeight());
-                        proto.SetGridToUnityScale(b.getGridToUnityScale());
                         proto.SetGridOriginX(b.getGridOrigin_x());
                         proto.SetGridOriginZ(b.getGridOrigin_z());
                         // Add on belief time
@@ -319,6 +320,8 @@ namespace soa
                             proto.UniqueId,
                             proto.Affiliation,
                             proto.Type,
+                            proto.IsAlive,
+                            proto.IsCarrying,
                             proto.PosX,
                             proto.PosY,
                             proto.PosZ,
@@ -353,7 +356,6 @@ namespace soa
                         b = new Belief_GridSpec(
                             proto.Width,
                             proto.Height,
-                            proto.GridToUnityScale,
                             proto.GridOriginX,
                             proto.GridOriginZ);
                         // Add on belief time
