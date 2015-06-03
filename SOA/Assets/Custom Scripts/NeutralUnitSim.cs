@@ -26,7 +26,18 @@ public class NeutralUnitSim : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {}
+    public float PathUpdateInterval;
+    float PathUpdateClock = 0f;
+	void Update ()
+    {
+        float dt = Time.deltaTime;
+        PathUpdateClock += dt;
+        if (PathUpdateClock > PathUpdateInterval)
+        {
+            thisNavAgent.ResetPath();
+            PathUpdateClock = Random.value * PathUpdateInterval * 0.5f;
+        }
+    }
 
     GameObject ChooseRandomNeutral()
     {

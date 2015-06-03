@@ -5759,6 +5759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Civilian: 0
   CivilianIcon: {fileID: 152492}
+  PathUpdateInterval: 30
 --- !u!114 &11486142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5767,7 +5768,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 191474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e67a82c926bd2ff4b8afcc6b49583e3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a38477fdde742549b64471581cd8ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   modes:

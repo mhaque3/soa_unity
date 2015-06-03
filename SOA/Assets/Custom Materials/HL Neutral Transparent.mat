@@ -8,9 +8,9 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: HL Neutral Transparent
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -89,7 +89,7 @@ Material:
       data:
         first:
           name: _DstBlend
-        second: 0
+        second: 10
       data:
         first:
           name: _Parallax
@@ -97,7 +97,7 @@ Material:
       data:
         first:
           name: _ZWrite
-        second: 1
+        second: 0
       data:
         first:
           name: _Glossiness
@@ -125,7 +125,7 @@ Material:
       data:
         first:
           name: _Mode
-        second: 0
+        second: 3
       data:
         first:
           name: _Metallic
@@ -138,7 +138,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: .0595804639, g: .279411793, b: .0974824205, a: .192156866}
+        second: {r: .669117689, g: .669117689, b: .669117689, a: .56078434}
       data:
         first:
           name: _EmissionColorUI

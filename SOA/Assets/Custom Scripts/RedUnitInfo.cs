@@ -10,7 +10,7 @@ public class RedUnitInfo
     public Vector3 vel;
     public bool velIsValid;
     public bool hasCivilian;
-    public bool isPursueCandidate;
+    public bool isCatchable;
     public float distToClosestProtectedSite;
     public float maxSpeed;
     public Vector3 closestProtectedSitePos;
@@ -28,7 +28,7 @@ public class RedUnitInfo
         velIsValid = ba.getVelocity_x_valid() && ba.getVelocity_y_valid() && ba.getVelocity_z_valid();
 
         // Not a pursue candidate by default
-        isPursueCandidate = false;
+        isCatchable = false;
 
         // Compute distances
         computeProximityToProtectedSites(protectedSites);

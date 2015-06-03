@@ -90,6 +90,7 @@ public class SimControl : MonoBehaviour
             {
                 //actor.affiliation = (int)Affiliation.BLUE;
                 actor.dataManager = blueDataManager;
+                blueDataManager.addNewActor(actor);
             }
             if (platform.name.Contains("HeavyLift"))
             {
@@ -301,23 +302,25 @@ public class SimControl : MonoBehaviour
             messageTimer += Time.deltaTime;
             if (messageTimer > updateRateS / 2f)
             {
+                //TODO create separate lists for local blue and local red so that we do not need the nested data manager locks
                 //This lock keeps the comms manager from adding data while we pushing out comms
                 lock (redDataManager.dataManagerLock)
                 {
-                    
-
-                    //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
-                    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
-
-                    //TODO Update local platforms comms
-                    for (int i = 0; i < LocalPlatforms.Count; i++)
+                    lock (blueDataManager.dataManagerLock)
                     {
-                        GameObject platform = LocalPlatforms[i];
-                        SoaActor actor = platform.GetComponent<SoaActor>();
-                        actor.broadcastComms();
+
+                        //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
+                        //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
+
+                        for (int i = 0; i < LocalPlatforms.Count; i++)
+                        {
+                            GameObject platform = LocalPlatforms[i];
+                            SoaActor actor = platform.GetComponent<SoaActor>();
+                            actor.broadcastComms();
+                        }
+
+                        messageTimer = 0f;
                     }
-                    
-                    messageTimer = 0f;
                 }
                 //Debug.Log("*** END OUTGOING MESSAGE BLOCK ***");
             }
