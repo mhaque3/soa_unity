@@ -6,6 +6,7 @@ using soa;
 
 public class SoaActor : MonoBehaviour 
 {
+
     public int unique_id;
     public Affiliation affiliation;
     public int type;
@@ -18,6 +19,16 @@ public class SoaActor : MonoBehaviour
         CASUALTIES = 3
     };
 
+    public enum ActorType
+    {
+        BASE = 0,
+        SMALL_UAV = 1,
+        HEAVY_LIFT = 2,
+        DISMOUNT = 3,
+        TRUCK = 4,
+        POLICE = 5
+    };
+
     public bool isAlive;
     public CarriedResource isCarrying;
 
@@ -27,6 +38,8 @@ public class SoaActor : MonoBehaviour
     public SoaWeapon[] Weapons;
     public List<GameObject> Detections;
     public List<GameObject> Tracks;
+
+    public List<Belief_Actor> killDetections = new List<Belief_Actor>();
 
     public DataManager dataManager;
     public bool simulateMotion;
@@ -98,6 +111,20 @@ public class SoaActor : MonoBehaviour
     // Called when the actor has been killed
     public void Kill()
     {
+        // If remote platform (uses external waypoint), send a final message
+        if (this.useExternalWaypoint)
+        {
+            // Convert position from Unity to km for Belief_Actor
+            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying,
+                transform.position.x / SimControl.KmToUnity,
+                transform.position.y / SimControl.KmToUnity,
+                transform.position.z / SimControl.KmToUnity);
+
+            beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+            if (dataManager != null)
+                dataManager.addAndBroadcastBelief(newActorData, unique_id);
+        }
+
         // Set that it is no longer alive
         isAlive = false;
 
@@ -148,6 +175,11 @@ public class SoaActor : MonoBehaviour
      */ 
     public void updateActor()
     {
+        if (!isAlive)
+        {
+            return;
+        }
+
         Belief myActor = null;
         displayTruePosition = true;
 
@@ -223,6 +255,18 @@ public class SoaActor : MonoBehaviour
 //                  Debug.Log("Broadcasting detection of actor affiliation " + soaActor.affiliation);
                 }
             }
+
+
+            //TODO make this thread safe since collisions are done by collider in a separate thread????
+            foreach (Belief_Actor belief_actor in killDetections)
+            {
+                dataManager.addAndBroadcastBelief(new soa.Belief_Actor(
+            belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 0,
+            belief_actor.getPos_x(),
+            belief_actor.getPos_y(),
+            belief_actor.getPos_z()), unique_id);
+            }
+            killDetections.Clear();
 
             // Having made detections, now go and update each weapon
             foreach (SoaWeapon w in Weapons)

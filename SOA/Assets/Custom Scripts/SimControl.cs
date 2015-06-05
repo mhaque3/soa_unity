@@ -114,27 +114,6 @@ public class SimControl : MonoBehaviour
                 redDataManager.addNewActor(actor);
             }
 
-            if (platform.name.Contains("Truck"))
-            {
-                //actor.type = 0;
-                //actor.commsRange = 5000;
-                //actor.useExternalWaypoint = false;
-            }
-            if (platform.name.Contains("Dismount"))
-            {
-                //actor.type = 1;
-                //actor.commsRange = 5000;
-                //actor.useExternalWaypoint = false;
-            }
-            if (platform.name.Contains("Police"))
-            {
-                //actor.unique_id = 200-i;
-                //actor.type = 4;
-                //actor.commsRange = 5000;
-                //actor.useExternalWaypoint = false;
-                //blueDataManager.addNewActor(actor);
-            }
-
         }
 
         Debug.Log("Adding remote platforms");
