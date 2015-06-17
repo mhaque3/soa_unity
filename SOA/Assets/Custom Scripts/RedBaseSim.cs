@@ -5,6 +5,7 @@ using System.Collections;
 public class RedBaseSim : MonoBehaviour 
 {
     public float Civilians;
+    public float weaponProbability;
     SimControl simControlScript;
 
     public Canvas uiCanvas;
@@ -51,5 +52,10 @@ public class RedBaseSim : MonoBehaviour
         {
             return simControlScript.Villages[targetIndex - simControlScript.NgoSites.Count];
         }
+    }
+
+    public bool EnableWeapon()
+    {
+        return (Random.value < weaponProbability);
     }
 }

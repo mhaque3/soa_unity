@@ -459,14 +459,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modes:
   - tagString: RedDismount
-    RangeP1: 1
-    RangeMax: 5
-  - tagString: RedTruck
-    RangeP1: 2
-    RangeMax: 7
-  - tagString: SmallUav
     RangeP1: 4
-    RangeMax: 5
+    RangeMax: 6
+  - tagString: RedTruck
+    RangeP1: 4
+    RangeMax: 8
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11462278
@@ -494,12 +491,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unique_id: 400
   affiliation: 0
-  type: 0
+  type: 1
   isAlive: 0
   isCarrying: 0
   commsRange: 10
-  Sensors:
-  - {fileID: 11436636}
+  Sensors: []
   Weapons: []
   Detections: []
   Tracks: []

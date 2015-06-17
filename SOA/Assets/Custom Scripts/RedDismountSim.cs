@@ -84,6 +84,12 @@ public class RedDismountSim : MonoBehaviour
     {
         if (other.CompareTag("BluePolice"))
         {
+            SoaSensor s = other.gameObject.GetComponentInChildren<SoaSensor>();
+            if (s != null)
+            {
+                s.logKill(thisSoaActor);
+            }
+
             BluePoliceSim b = other.gameObject.GetComponent<BluePoliceSim>();
             if (b != null)
             {
@@ -117,6 +123,12 @@ public class RedDismountSim : MonoBehaviour
                 waypointScript.waypoints.Add(rb.AssignTarget());
                 waypointScript.waypoints.Add(other.gameObject);
                 waypointScript.On = true;
+
+                foreach (SoaWeapon weapon in thisSoaActor.Weapons)
+                {
+                    weapon.enabled = rb.EnableWeapon();
+                }
+
 
             }
         }
