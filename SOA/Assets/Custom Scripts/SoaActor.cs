@@ -21,7 +21,7 @@ public class SoaActor : MonoBehaviour
 
     public enum ActorType
     {
-        BASE = 0,
+        //BASE = 0, // Blue base is no longer a SoaActor, it is now a SoaSite
         SMALL_UAV = 1,
         HEAVY_LIFT = 2,
         DISMOUNT = 3,
@@ -100,7 +100,6 @@ public class SoaActor : MonoBehaviour
         beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
-
 	}
 
     // Update is called once per frame
@@ -314,12 +313,15 @@ public class SoaActor : MonoBehaviour
 
     public void broadcastComms()
     {
-        //Broadcast types ACTOR, MODE_COMMAND, SPOI, WAYPOINT, WAYPOINT_OVERRIDE
+        //Broadcast types ACTOR, MODE_COMMAND, SPOI, WAYPOINT, WAYPOINT_OVERRIDE, BASE, NGOSITE, VILLAGE
         publishBeliefsOfType(Belief.BeliefType.ACTOR);
         publishBeliefsOfType(Belief.BeliefType.MODE_COMMAND);
         publishBeliefsOfType(Belief.BeliefType.SPOI);
         publishBeliefsOfType(Belief.BeliefType.WAYPOINT);
         publishBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE);
+        publishBeliefsOfType(Belief.BeliefType.BASE);
+        publishBeliefsOfType(Belief.BeliefType.NGOSITE);
+        publishBeliefsOfType(Belief.BeliefType.VILLAGE);
     }
 
     private void publishBeliefsOfType(Belief.BeliefType type)

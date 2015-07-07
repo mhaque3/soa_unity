@@ -180,6 +180,28 @@ public class SimControl : MonoBehaviour
             }
         }
 
+        Debug.Log("Adding sites");
+        for (int i = 0; i < BlueBases.Count; i++)
+        {
+            GameObject blueBase = BlueBases[i];
+            SoaSite site = blueBase.GetComponent<SoaSite>();
+            site.unique_id = 1000 + i;
+            Debug.Log("Adding site " + site.name + " id " + site.unique_id);
+        }
+        for (int i = 0; i < NgoSites.Count; i++)
+        {
+            GameObject ngoSite = NgoSites[i];
+            SoaSite site = ngoSite.GetComponent<SoaSite>();
+            site.unique_id = 1100 + i;
+            Debug.Log("Adding site " + site.name + " id " + site.unique_id);
+        } 
+        for (int i = 0; i < Villages.Count; i++)
+        {
+            GameObject village = Villages[i];
+            SoaSite site = village.GetComponent<SoaSite>();
+            site.unique_id = 1200 + i;
+            Debug.Log("Adding site " + site.name + " id " + site.unique_id);
+        }
         PushMapBeliefs();
 	}
 	
@@ -214,8 +236,6 @@ public class SimControl : MonoBehaviour
                 seeker.BroadcastMessage("CheckDetections", RemotePlatforms, SendMessageOptions.DontRequireReceiver);
             }
         }
-
-
 
         updateTimer += dt;
         if (updateTimer > updateRateS)
@@ -296,6 +316,27 @@ public class SimControl : MonoBehaviour
                             GameObject platform = LocalPlatforms[i];
                             SoaActor actor = platform.GetComponent<SoaActor>();
                             actor.broadcastComms();
+                        }
+
+                        for (int i = 0; i < BlueBases.Count; i++)
+                        {
+                            GameObject blueBase = BlueBases[i];
+                            SoaSite site = blueBase.GetComponent<SoaSite>();
+                            site.broadcastComms();
+                        }
+
+                        for (int i = 0; i < NgoSites.Count; i++)
+                        {
+                            GameObject ngoSite = NgoSites[i];
+                            SoaSite site = ngoSite.GetComponent<SoaSite>();
+                            site.broadcastComms();
+                        }
+
+                        for (int i = 0; i < Villages.Count; i++)
+                        {
+                            GameObject village = Villages[i];
+                            SoaSite site = village.GetComponent<SoaSite>();
+                            site.broadcastComms();
                         }
 
                         messageTimer = 0f;
@@ -427,8 +468,11 @@ public class SimControl : MonoBehaviour
             List<GridCell> theseCells = new List<GridCell>();
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            b = new Belief_Base(i, theseCells);
+            BlueBaseSim s = g.GetComponent<BlueBaseSim>();
+            SoaSite t = g.GetComponent<SoaSite>();
+            b = new Belief_Base(t.unique_id, theseCells, s.Supply);
             blueDataManager.addBelief(b, 0);
+            t.addBelief(b);
             Debug.Log(b.ToString());
         }
 
@@ -438,8 +482,11 @@ public class SimControl : MonoBehaviour
             List<GridCell> theseCells = new List<GridCell>();
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            b = new Belief_NGOSite(i, theseCells);
+            NgoSim s = g.GetComponent<NgoSim>();
+            SoaSite t = g.GetComponent<SoaSite>();
+            b = new Belief_NGOSite(t.unique_id, theseCells, s.Supply, s.Casualties, s.Civilians);
             blueDataManager.addBelief(b, 0);
+            t.addBelief(b);
             Debug.Log(b.ToString());
         }
 
@@ -449,8 +496,11 @@ public class SimControl : MonoBehaviour
             List<GridCell> theseCells = new List<GridCell>();
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            b = new Belief_Village(i, theseCells);
+            VillageSim s = g.GetComponent<VillageSim>();
+            SoaSite t = g.GetComponent<SoaSite>();
+            b = new Belief_Village(t.unique_id, theseCells, s.Supply, s.Casualties);
             blueDataManager.addBelief(b, 0);
+            t.addBelief(b);
             Debug.Log(b.ToString());
         }
     }

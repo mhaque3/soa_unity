@@ -80,6 +80,7 @@ GameObject:
   - 114: {fileID: 11484364}
   - 136: {fileID: 13632034}
   - 54: {fileID: 5452478}
+  - 114: {fileID: 11496876}
   m_Layer: 0
   m_Name: Village
   m_TagString: Village
@@ -610,6 +611,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &11496876
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 148630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075d1109d9881e84e9ead10976974963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unique_id: 0
+  commsRange: 10
 --- !u!135 &13598690
 SphereCollider:
   m_ObjectHideFlags: 1
