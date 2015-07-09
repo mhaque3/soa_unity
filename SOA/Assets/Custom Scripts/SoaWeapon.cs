@@ -72,7 +72,7 @@ public class SoaWeapon : MonoBehaviour
         // Tell the corresponding SoaActor that it has been killed so it no longer
         // sends out info or moves
         target.GetComponent<SoaActor>().Kill();
-        Debug.Log(target.name + " was killed by " + thisSoaActor.name);
+        Debug.Log(target.name + " was killed by Actor " + thisSoaActor.unique_id);
     }
 
     // Update is called once per frame
