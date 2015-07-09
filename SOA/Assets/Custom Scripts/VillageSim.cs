@@ -6,9 +6,6 @@ using soa;
 
 public class VillageSim : MonoBehaviour 
 {
-    SoaSite thisSoaSite;
-    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> beliefDictionary;
-
     public float CasualtyRate;
     public float Casualties;
     public float SupplyRate;
@@ -32,7 +29,6 @@ public class VillageSim : MonoBehaviour
         labelInstance.transform.SetParent(uiCanvas.transform, false);
         labelTransform = labelInstance.transform as RectTransform;
         labels = labelInstance.GetComponentsInChildren<Text>();
-        thisSoaSite = gameObject.GetComponent<SoaSite>();
 	}
 
     float simTimer;
@@ -51,15 +47,6 @@ public class VillageSim : MonoBehaviour
                 Supply = 0f;
 
             simTimer = 0f;
-
-            // Broadcast status
-            beliefDictionary = thisSoaSite.getBeliefDictionary();
-            Belief_Village b = (Belief_Village)beliefDictionary[Belief.BeliefType.VILLAGE][thisSoaSite.unique_id];
-            if (b != null)
-            {
-                // Add the same belief but just update the supply, casualties, and civilians fields
-                thisSoaSite.addBelief(new Belief_Village(b.getId(), b.getCells(), Supply, Casualties));
-            }
         }
 
         labelPosition = uiCamera.WorldToScreenPoint(transform.position + new Vector3(0, 0, -1f)) - uiCanvas.transform.position;

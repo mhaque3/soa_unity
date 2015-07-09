@@ -6,9 +6,6 @@ using soa;
 
 public class NgoSim : MonoBehaviour 
 {
-    SoaSite thisSoaSite;
-    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> beliefDictionary;
-
     public float CasualtyRate;
     public float Casualties;
     public float CivilianRate;
@@ -34,7 +31,6 @@ public class NgoSim : MonoBehaviour
         labelInstance.transform.SetParent(uiCanvas.transform, false);
         labelTransform = labelInstance.transform as RectTransform;
         labels = labelInstance.GetComponentsInChildren<Text>();
-        thisSoaSite = gameObject.GetComponent<SoaSite>();
     }
 
     float simTimer;
@@ -54,15 +50,6 @@ public class NgoSim : MonoBehaviour
                 Supply = 0f;
 
             simTimer = 0f;
-
-            // Broadcast status
-            beliefDictionary = thisSoaSite.getBeliefDictionary();
-            Belief_NGOSite b = (Belief_NGOSite)beliefDictionary[Belief.BeliefType.NGOSITE][thisSoaSite.unique_id];
-            if (b != null)
-            {
-                // Add the same belief but just update the supply, casualties, and civilians fields
-                thisSoaSite.addBelief(new Belief_NGOSite(b.getId(), b.getCells(), Supply, Casualties, Civilians));
-            }
         }
 
         labelPosition = uiCamera.WorldToScreenPoint(transform.position + new Vector3(0, 0, -1f)) - uiCanvas.transform.position;

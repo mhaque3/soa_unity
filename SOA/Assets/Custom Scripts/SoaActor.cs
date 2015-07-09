@@ -60,7 +60,7 @@ public class SoaActor : MonoBehaviour
     public NavMeshAgent navAgent;
     
     // Use this for initialization
-	void Start () 
+	public virtual void Start () 
     {
         // Alive at the beginning
         isAlive = true;
@@ -108,7 +108,7 @@ public class SoaActor : MonoBehaviour
 	}
 
     // Called when the actor has been killed
-    public void Kill()
+    public virtual void Kill()
     {
         // If remote platform (uses external waypoint), send a final message
         if (this.useExternalWaypoint)
@@ -142,7 +142,7 @@ public class SoaActor : MonoBehaviour
     }
 
     //Set this actors position and orientation
-    void LateUpadte()
+    public virtual void LateUpadte()
     {
         if (displayActor)
         {
@@ -172,7 +172,7 @@ public class SoaActor : MonoBehaviour
      * 
      * TODO create functions for when in client mode and only reading position data
      */ 
-    public void updateActor()
+    public virtual void updateActor()
     {
         if (!isAlive)
         {
@@ -249,9 +249,6 @@ public class SoaActor : MonoBehaviour
                 if (dataManager != null)
                 {
                     dataManager.addAndBroadcastBelief(detectedActor, unique_id);
-                    // twupy1
-//                  Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
-//                  Debug.Log("Broadcasting detection of actor affiliation " + soaActor.affiliation);
                 }
             }
 
@@ -282,7 +279,7 @@ public class SoaActor : MonoBehaviour
 
     // Check if belief is newer than current belief of matching type and id, if so,
     // replace old belief with b.
-    public void addBelief(Belief b)
+    public virtual void addBelief(Belief b)
     {
         #if(UNITY_STANDALONE)
             //Debug.Log("SoaActor - DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);

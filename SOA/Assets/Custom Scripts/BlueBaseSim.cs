@@ -28,15 +28,6 @@ public class BlueBaseSim : MonoBehaviour
             // Update resource count
             Supply += SupplyRate;
             simTimer = 0f;
-
-            // Broadcast status
-            beliefDictionary = thisSoaSite.getBeliefDictionary();
-            Belief_Base b = (Belief_Base) beliefDictionary[Belief.BeliefType.BASE][thisSoaSite.unique_id];
-            if (b != null)
-            {
-                // Add the same belief but just update the supply field
-                thisSoaSite.addBelief(new Belief_Base(b.getId(), b.getCells(), Supply));
-            }
         }
     }
 }

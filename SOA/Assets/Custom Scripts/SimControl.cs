@@ -180,29 +180,7 @@ public class SimControl : MonoBehaviour
             }
         }
 
-        Debug.Log("Adding sites");
-        for (int i = 0; i < BlueBases.Count; i++)
-        {
-            GameObject blueBase = BlueBases[i];
-            SoaSite site = blueBase.GetComponent<SoaSite>();
-            site.unique_id = 1000 + i;
-            Debug.Log("Adding site " + site.name + " id " + site.unique_id);
-        }
-        for (int i = 0; i < NgoSites.Count; i++)
-        {
-            GameObject ngoSite = NgoSites[i];
-            SoaSite site = ngoSite.GetComponent<SoaSite>();
-            site.unique_id = 1100 + i;
-            Debug.Log("Adding site " + site.name + " id " + site.unique_id);
-        } 
-        for (int i = 0; i < Villages.Count; i++)
-        {
-            GameObject village = Villages[i];
-            SoaSite site = village.GetComponent<SoaSite>();
-            site.unique_id = 1200 + i;
-            Debug.Log("Adding site " + site.name + " id " + site.unique_id);
-        }
-        PushMapBeliefs();
+        PushInitialMapBeliefs();
 	}
 	
 	// Update is called once per frame
@@ -292,6 +270,10 @@ public class SimControl : MonoBehaviour
                     actor.updateActor();
                 }
 
+                // Push new site beliefs into each blue base
+                UpdateSiteBeliefs();
+
+                // Clear timer
                 updateTimer = 0f;
             }
         }
@@ -316,27 +298,6 @@ public class SimControl : MonoBehaviour
                             GameObject platform = LocalPlatforms[i];
                             SoaActor actor = platform.GetComponent<SoaActor>();
                             actor.broadcastComms();
-                        }
-
-                        for (int i = 0; i < BlueBases.Count; i++)
-                        {
-                            GameObject blueBase = BlueBases[i];
-                            SoaSite site = blueBase.GetComponent<SoaSite>();
-                            site.broadcastComms();
-                        }
-
-                        for (int i = 0; i < NgoSites.Count; i++)
-                        {
-                            GameObject ngoSite = NgoSites[i];
-                            SoaSite site = ngoSite.GetComponent<SoaSite>();
-                            site.broadcastComms();
-                        }
-
-                        for (int i = 0; i < Villages.Count; i++)
-                        {
-                            GameObject village = Villages[i];
-                            SoaSite site = village.GetComponent<SoaSite>();
-                            site.broadcastComms();
                         }
 
                         messageTimer = 0f;
@@ -443,7 +404,7 @@ public class SimControl : MonoBehaviour
         reader.Close();
     }
 
-    void PushMapBeliefs()
+    void PushInitialMapBeliefs()
     {
         GameObject g;
         FlatHexPoint currentCell;
@@ -451,15 +412,15 @@ public class SimControl : MonoBehaviour
         currentCell = new FlatHexPoint(0, 0);
 
         b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x, hexGrid.Map[currentCell].z);
-        blueDataManager.addBelief(b, 0);
+        blueDataManager.addAndBroadcastBelief(b, -1);
         Debug.Log(b.ToString());
 
         b = new Belief_Terrain((int)soa.Terrain.MOUNTAIN, MountainCells);
-        blueDataManager.addBelief(b, 0);
+        blueDataManager.addAndBroadcastBelief(b, -1);
         Debug.Log(MountainCells.Count + " mountain hexes.");
 
         b = new Belief_Terrain((int)soa.Terrain.WATER, WaterCells);
-        blueDataManager.addBelief(b, 0);
+        blueDataManager.addAndBroadcastBelief(b, -1);
         Debug.Log(WaterCells.Count + " water hexes.");
 
         for (int i = 0; i < BlueBases.Count; i++ )
@@ -469,10 +430,8 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             BlueBaseSim s = g.GetComponent<BlueBaseSim>();
-            SoaSite t = g.GetComponent<SoaSite>();
-            b = new Belief_Base(t.unique_id, theseCells, s.Supply);
-            blueDataManager.addBelief(b, 0);
-            t.addBelief(b);
+            b = new Belief_Base(i, theseCells, s.Supply);
+            blueDataManager.addAndBroadcastBelief(b, -1);
             Debug.Log(b.ToString());
         }
 
@@ -483,10 +442,8 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             NgoSim s = g.GetComponent<NgoSim>();
-            SoaSite t = g.GetComponent<SoaSite>();
-            b = new Belief_NGOSite(t.unique_id, theseCells, s.Supply, s.Casualties, s.Civilians);
-            blueDataManager.addBelief(b, 0);
-            t.addBelief(b);
+            b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
+            blueDataManager.addAndBroadcastBelief(b, -1);
             Debug.Log(b.ToString());
         }
 
@@ -497,11 +454,64 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             VillageSim s = g.GetComponent<VillageSim>();
-            SoaSite t = g.GetComponent<SoaSite>();
-            b = new Belief_Village(t.unique_id, theseCells, s.Supply, s.Casualties);
-            blueDataManager.addBelief(b, 0);
-            t.addBelief(b);
+            b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
+            blueDataManager.addAndBroadcastBelief(b, -1);
             Debug.Log(b.ToString());
+        }
+    }
+
+    void UpdateSiteBeliefs()
+    {
+        GameObject g;
+        FlatHexPoint currentCell;
+
+        currentCell = new FlatHexPoint(0, 0);
+
+        for (int i = 0; i < BlueBases.Count; i++)
+        {
+            g = BlueBases[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            BlueBaseSim s = g.GetComponent<BlueBaseSim>();
+            b = new Belief_Base(i, theseCells, s.Supply);
+            AddBeliefToBlueBases(b);
+            Debug.Log(b.ToString());
+        }
+
+        for (int i = 0; i < NgoSites.Count; i++)
+        {
+            g = NgoSites[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            NgoSim s = g.GetComponent<NgoSim>();
+            b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
+            AddBeliefToBlueBases(b);
+            Debug.Log(b.ToString());
+        }
+
+        for (int i = 0; i < Villages.Count; i++)
+        {
+            g = Villages[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            VillageSim s = g.GetComponent<VillageSim>();
+            b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
+            AddBeliefToBlueBases(b);
+            Debug.Log(b.ToString());
+        }
+    }
+
+    void AddBeliefToBlueBases(Belief b)
+    {
+        GameObject g;
+        for (int i = 0; i < BlueBases.Count; i++)
+        {
+            g = BlueBases[i];
+            SoaSite s = g.GetComponent<SoaSite>();
+            s.addBelief(b);
         }
     }
 
