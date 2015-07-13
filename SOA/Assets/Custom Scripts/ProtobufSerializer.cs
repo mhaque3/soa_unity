@@ -110,6 +110,7 @@ namespace soa
                         proto.SetHeight(b.getHeight());
                         proto.SetGridOriginX(b.getGridOrigin_x());
                         proto.SetGridOriginZ(b.getGridOrigin_z());
+                        proto.SetGridToWorldScale(b.getGridToWorldScale());
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
@@ -364,7 +365,8 @@ namespace soa
                             proto.Width,
                             proto.Height,
                             proto.GridOriginX,
-                            proto.GridOriginZ);
+                            proto.GridOriginZ,
+                            proto.GridToWorldScale);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;

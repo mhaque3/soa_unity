@@ -53,47 +53,47 @@ namespace autonomy_msg {
     
     static Autonomy() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
-          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIm4KDEdwYl9HcmlkU3Bl" + 
-          "YxITCgtiZWxpZWZfdGltZRgBIAIoBBIOCgZoZWlnaHQYAiACKAUSDQoFd2lk" + 
-          "dGgYAyACKAUSFAoMZ3JpZE9yaWdpbl94GAQgAigCEhQKDGdyaWRPcmlnaW5f" + 
-          "ehgFIAIoAiKSAQoLR3BiX05HT1NpdGUSEwoLYmVsaWVmX3RpbWUYASACKAQS" + 
-          "CgoCaWQYAiACKAUSKQoFY2VsbHMYAyADKAsyGi5hdXRvbm9teV9tc2cuR3Bi" + 
-          "X0dyaWRDZWxsEhAKCHN1cHBsaWVzGAQgAigCEhIKCmNhc3VhbHRpZXMYBSAC" + 
-          "KAISEQoJY2l2aWxpYW5zGAYgAigCImUKCEdwYl9TUE9JEhMKC2JlbGllZl90" + 
-          "aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgD" + 
-          "IAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3NfeRgFIAIoAiKBAQoVR3BiX1dh" + 
-          "eXBvaW50X092ZXJyaWRlEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVl" + 
+          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIogBCgxHcGJfR3JpZFNw" + 
+          "ZWMSEwoLYmVsaWVmX3RpbWUYASACKAQSDgoGaGVpZ2h0GAIgAigFEg0KBXdp" + 
+          "ZHRoGAMgAigFEhQKDGdyaWRPcmlnaW5feBgEIAIoAhIUCgxncmlkT3JpZ2lu" + 
+          "X3oYBSACKAISGAoQZ3JpZFRvV29ybGRTY2FsZRgGIAIoAiKSAQoLR3BiX05H" + 
+          "T1NpdGUSEwoLYmVsaWVmX3RpbWUYASACKAQSCgoCaWQYAiACKAUSKQoFY2Vs" + 
+          "bHMYAyADKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxsEhAKCHN1cHBs" + 
+          "aWVzGAQgAigCEhIKCmNhc3VhbHRpZXMYBSACKAISEQoJY2l2aWxpYW5zGAYg" + 
+          "AigCImUKCEdwYl9TUE9JEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVl" + 
           "c3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIo" + 
-          "AhINCgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFn" + 
-          "ZRITCgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgD" + 
-          "IAMoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMY" + 
-          "BCACKAISEgoKY2FzdWFsdGllcxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoD" + 
-          "cm93GAEgAigFEgsKA2NvbBgCIAIoBSLmAQoJR3BiX0FjdG9yEhMKC2JlbGll" + 
-          "Zl90aW1lGAEgAigEEhEKCXVuaXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlv" + 
-          "bhgDIAIoBRIMCgR0eXBlGAQgAigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lz" + 
-          "X2NhcnJ5aW5nGAYgAigFEg0KBXBvc194GAcgAigCEg0KBXBvc195GAggAigC" + 
-          "Eg0KBXBvc196GAkgAigCEhIKCnZlbG9jaXR5X3gYCiABKAISEgoKdmVsb2Np" + 
-          "dHlfeRgLIAEoAhISCgp2ZWxvY2l0eV96GAwgASgCIi8KCkdwYl9DdXN0b20S" + 
-          "EwoLYmVsaWVmX3RpbWUYASACKAQSDAoEZGF0YRgCIAIoDCJoCghHcGJfQmFz" + 
-          "ZRITCgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgD" + 
-          "IAMoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMY" + 
-          "BCACKAIiWwoLR3BiX1RlcnJhaW4SEwoLYmVsaWVmX3RpbWUYASACKAQSDAoE" + 
-          "dHlwZRgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJf" + 
-          "R3JpZENlbGwiYAoQR3BiX01vZGVfQ29tbWFuZBITCgtiZWxpZWZfdGltZRgB" + 
-          "IAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQSEAoIYWN0b3JfaWQYAyACKAUS" + 
-          "DwoHbW9kZV9pZBgEIAIoBSJ4CgxHcGJfV2F5cG9pbnQSEwoLYmVsaWVmX3Rp" + 
-          "bWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMg" + 
-          "AigFEg0KBXBvc194GAQgAigCEg0KBXBvc195GAUgAigCEg0KBXBvc196GAYg" + 
-          "AigCIi0KCEdwYl9UaW1lEhMKC2JlbGllZl90aW1lGAEgAigEEgwKBHRpbWUY" + 
-          "AiACKAQiYAoMR3BiX1JvYWRDZWxsEhMKC2JlbGllZl90aW1lGAEgAigEEhEK" + 
-          "CWlzUm9hZEVuZBgCIAIoCBIoCgRjZWxsGAMgAigLMhouYXV0b25vbXlfbXNn" + 
-          "LkdwYl9HcmlkQ2VsbA==");
+          "AhINCgVwb3NfeRgFIAIoAiKBAQoVR3BiX1dheXBvaW50X092ZXJyaWRlEhMK" + 
+          "C2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghh" + 
+          "Y3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3NfeRgFIAIoAhIN" + 
+          "CgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFnZRITCgtiZWxpZWZfdGltZRgB" + 
+          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
+          "Zy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCACKAISEgoKY2FzdWFsdGll" + 
+          "cxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgC" + 
+          "IAIoBSLmAQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCXVu" + 
+          "aXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIoBRIMCgR0eXBlGAQg" + 
+          "AigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2NhcnJ5aW5nGAYgAigFEg0K" + 
+          "BXBvc194GAcgAigCEg0KBXBvc195GAggAigCEg0KBXBvc196GAkgAigCEhIK" + 
+          "CnZlbG9jaXR5X3gYCiABKAISEgoKdmVsb2NpdHlfeRgLIAEoAhISCgp2ZWxv" + 
+          "Y2l0eV96GAwgASgCIi8KCkdwYl9DdXN0b20SEwoLYmVsaWVmX3RpbWUYASAC" + 
+          "KAQSDAoEZGF0YRgCIAIoDCJoCghHcGJfQmFzZRITCgtiZWxpZWZfdGltZRgB" + 
+          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
+          "Zy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCACKAIiWwoLR3BiX1RlcnJh" + 
+          "aW4SEwoLYmVsaWVmX3RpbWUYASACKAQSDAoEdHlwZRgCIAIoBRIpCgVjZWxs" + 
+          "cxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiYAoQR3BiX01v" + 
+          "ZGVfQ29tbWFuZBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3Rp" + 
+          "bWUYAiACKAQSEAoIYWN0b3JfaWQYAyACKAUSDwoHbW9kZV9pZBgEIAIoBSJ4" + 
+          "CgxHcGJfV2F5cG9pbnQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVz" + 
+          "dF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigC" + 
+          "Eg0KBXBvc195GAUgAigCEg0KBXBvc196GAYgAigCIi0KCEdwYl9UaW1lEhMK" + 
+          "C2JlbGllZl90aW1lGAEgAigEEgwKBHRpbWUYAiACKAQiYAoMR3BiX1JvYWRD" + 
+          "ZWxsEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCWlzUm9hZEVuZBgCIAIoCBIo" + 
+          "CgRjZWxsGAMgAigLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
         internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridSpec, global::autonomy_msg.Gpb_GridSpec.Builder>(internal__static_autonomy_msg_Gpb_GridSpec__Descriptor,
-                new string[] { "BeliefTime", "Height", "Width", "GridOriginX", "GridOriginZ", });
+                new string[] { "BeliefTime", "Height", "Width", "GridOriginX", "GridOriginZ", "GridToWorldScale", });
         internal__static_autonomy_msg_Gpb_NGOSite__Descriptor = Descriptor.MessageTypes[1];
         internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSite, global::autonomy_msg.Gpb_NGOSite.Builder>(internal__static_autonomy_msg_Gpb_NGOSite__Descriptor,
@@ -160,8 +160,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_GridSpec : pb::GeneratedMessage<Gpb_GridSpec, Gpb_GridSpec.Builder> {
     private Gpb_GridSpec() { }
     private static readonly Gpb_GridSpec defaultInstance = new Gpb_GridSpec().MakeReadOnly();
-    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "height", "width" };
-    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 37, 45, 16, 24 };
+    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "gridToWorldScale", "height", "width" };
+    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 37, 45, 53, 16, 24 };
     public static Gpb_GridSpec DefaultInstance {
       get { return defaultInstance; }
     }
@@ -233,6 +233,16 @@ namespace autonomy_msg {
       get { return gridOriginZ_; }
     }
     
+    public const int GridToWorldScaleFieldNumber = 6;
+    private bool hasGridToWorldScale;
+    private float gridToWorldScale_;
+    public bool HasGridToWorldScale {
+      get { return hasGridToWorldScale; }
+    }
+    public float GridToWorldScale {
+      get { return gridToWorldScale_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasBeliefTime) return false;
@@ -240,6 +250,7 @@ namespace autonomy_msg {
         if (!hasWidth) return false;
         if (!hasGridOriginX) return false;
         if (!hasGridOriginZ) return false;
+        if (!hasGridToWorldScale) return false;
         return true;
       }
     }
@@ -251,16 +262,19 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[0], BeliefTime);
       }
       if (hasHeight) {
-        output.WriteInt32(2, field_names[3], Height);
+        output.WriteInt32(2, field_names[4], Height);
       }
       if (hasWidth) {
-        output.WriteInt32(3, field_names[4], Width);
+        output.WriteInt32(3, field_names[5], Width);
       }
       if (hasGridOriginX) {
         output.WriteFloat(4, field_names[1], GridOriginX);
       }
       if (hasGridOriginZ) {
         output.WriteFloat(5, field_names[2], GridOriginZ);
+      }
+      if (hasGridToWorldScale) {
+        output.WriteFloat(6, field_names[3], GridToWorldScale);
       }
       UnknownFields.WriteTo(output);
     }
@@ -286,6 +300,9 @@ namespace autonomy_msg {
         }
         if (hasGridOriginZ) {
           size += pb::CodedOutputStream.ComputeFloatSize(5, GridOriginZ);
+        }
+        if (hasGridToWorldScale) {
+          size += pb::CodedOutputStream.ComputeFloatSize(6, GridToWorldScale);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -426,6 +443,9 @@ namespace autonomy_msg {
         if (other.HasGridOriginZ) {
           GridOriginZ = other.GridOriginZ;
         }
+        if (other.HasGridToWorldScale) {
+          GridToWorldScale = other.GridToWorldScale;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -487,6 +507,10 @@ namespace autonomy_msg {
             }
             case 45: {
               result.hasGridOriginZ = input.ReadFloat(ref result.gridOriginZ_);
+              break;
+            }
+            case 53: {
+              result.hasGridToWorldScale = input.ReadFloat(ref result.gridToWorldScale_);
               break;
             }
           }
@@ -598,6 +622,26 @@ namespace autonomy_msg {
         PrepareBuilder();
         result.hasGridOriginZ = false;
         result.gridOriginZ_ = 0F;
+        return this;
+      }
+      
+      public bool HasGridToWorldScale {
+        get { return result.hasGridToWorldScale; }
+      }
+      public float GridToWorldScale {
+        get { return result.GridToWorldScale; }
+        set { SetGridToWorldScale(value); }
+      }
+      public Builder SetGridToWorldScale(float value) {
+        PrepareBuilder();
+        result.hasGridToWorldScale = true;
+        result.gridToWorldScale_ = value;
+        return this;
+      }
+      public Builder ClearGridToWorldScale() {
+        PrepareBuilder();
+        result.hasGridToWorldScale = false;
+        result.gridToWorldScale_ = 0F;
         return this;
       }
     }
