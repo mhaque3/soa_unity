@@ -264,9 +264,19 @@ namespace soa
         /// </summary>
         public void addOutgoing(List<Belief> l, int[] targetActorIDs)
         {
+            addOutgoing(l, defaultSourceID, targetActorIDs);
+        }
+
+        /// <summary>
+        /// Adds multiple beliefs from data manager to outgoing queue using specified source ID
+        /// directed for specified actor
+        /// Use null for targetActorIDs if broadcast
+        /// </summary>
+        public void addOutgoing(List<Belief> l, int sourceID, int[] targetActorIDs)
+        {
             foreach (Belief b in l)
             {
-                addOutgoing(b, defaultSourceID, targetActorIDs); 
+                addOutgoing(b, sourceID, targetActorIDs);
             }
         }
 
@@ -481,8 +491,10 @@ namespace soa
                         if (isLocal)
                         {
                             // I just joined the room, broadcast initialization beliefs to everyone
-                            if(sendInitializationBeliefs){
-                                addOutgoing(initializationBeliefs);
+                            // Use -1 source ID to override comms distances constraints
+                            if (sendInitializationBeliefs)
+                            {
+                                addOutgoing(initializationBeliefs, -1, null);
                             }
                         }else{
                             // Someone else just joined the room, print status message
@@ -493,8 +505,9 @@ namespace soa
                             #endif
 
                             // Get initialization beliefs and only send to that player
+                            // Use -1 source ID to override comms distances constraints
                             if(sendInitializationBeliefs){
-                                addOutgoing(initializationBeliefs, new int[] {actorNrJoined});
+                                addOutgoing(initializationBeliefs, -1, new int[] {actorNrJoined});
                             }
                         }
                         break;
