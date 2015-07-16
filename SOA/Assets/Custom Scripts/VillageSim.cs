@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using soa;
 
 public class VillageSim : MonoBehaviour 
 {
@@ -37,6 +39,7 @@ public class VillageSim : MonoBehaviour
         simTimer += Time.deltaTime;
         if (simTimer > simInterval)
         {
+            // Update resource counts
             Casualties += CasualtyRate;
 
             Supply -= SupplyRate;

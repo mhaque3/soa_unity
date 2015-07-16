@@ -12,16 +12,18 @@ namespace soa
         private int height;
         private float gridOrigin_x;
         private float gridOrigin_z;
+        private float gridToWorldScale;
 
         // Constructor
         public Belief_GridSpec(int width, int height,
-            float gridOrigin_x, float gridOrigin_z)
+            float gridOrigin_x, float gridOrigin_z, float gridToWorldScale)
             : base(0)
         {
             this.width = width;
             this.height = height;
             this.gridOrigin_x = gridOrigin_x;
             this.gridOrigin_z = gridOrigin_z;
+            this.gridToWorldScale = gridToWorldScale;
         }
 
         // Type information
@@ -38,6 +40,7 @@ namespace soa
                 + "\n" + "  height: " + height
                 + "\n" + "  gridOrigin_x: " + gridOrigin_x
                 + "\n" + "  gridOrigin_z: " + gridOrigin_z
+                + "\n" + "  gridToWorldScale: " + gridToWorldScale
                 + "\n" + "}";
             return s;
         }
@@ -47,5 +50,6 @@ namespace soa
         public int getHeight() { return height; }
         public float getGridOrigin_x() { return gridOrigin_x; }
         public float getGridOrigin_z() { return gridOrigin_z; }
+        public float getGridToWorldScale() { return gridToWorldScale; }
     }
 }

@@ -53,48 +53,51 @@ namespace autonomy_msg {
     
     static Autonomy() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
-          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIm4KDEdwYl9HcmlkU3Bl" + 
-          "YxITCgtiZWxpZWZfdGltZRgBIAIoBBIOCgZoZWlnaHQYAiACKAUSDQoFd2lk" + 
-          "dGgYAyACKAUSFAoMZ3JpZE9yaWdpbl94GAQgAigCEhQKDGdyaWRPcmlnaW5f" + 
-          "ehgFIAIoAiJZCgtHcGJfTkdPU2l0ZRITCgtiZWxpZWZfdGltZRgBIAIoBBIK" + 
-          "CgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJf" + 
-          "R3JpZENlbGwiZQoIR3BiX1NQT0kSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoM" + 
-          "cmVxdWVzdF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194" + 
-          "GAQgAigCEg0KBXBvc195GAUgAigCIoEBChVHcGJfV2F5cG9pbnRfT3ZlcnJp" + 
-          "ZGUSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigE" + 
-          "EhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBvc195GAUg" + 
-          "AigCEg0KBXBvc196GAYgAigCIlkKC0dwYl9WaWxsYWdlEhMKC2JlbGllZl90" + 
-          "aW1lGAEgAigEEgoKAmlkGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25v" + 
-          "bXlfbXNnLkdwYl9HcmlkQ2VsbCIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEg" + 
-          "AigFEgsKA2NvbBgCIAIoBSLmAQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1l" + 
-          "GAEgAigEEhEKCXVuaXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIo" + 
-          "BRIMCgR0eXBlGAQgAigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2NhcnJ5" + 
-          "aW5nGAYgAigFEg0KBXBvc194GAcgAigCEg0KBXBvc195GAggAigCEg0KBXBv" + 
-          "c196GAkgAigCEhIKCnZlbG9jaXR5X3gYCiABKAISEgoKdmVsb2NpdHlfeRgL" + 
-          "IAEoAhISCgp2ZWxvY2l0eV96GAwgASgCIi8KCkdwYl9DdXN0b20SEwoLYmVs" + 
-          "aWVmX3RpbWUYASACKAQSDAoEZGF0YRgCIAIoDCJWCghHcGJfQmFzZRITCgti" + 
-          "ZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIa" + 
-          "LmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiWwoLR3BiX1RlcnJhaW4SEwoL" + 
-          "YmVsaWVmX3RpbWUYASACKAQSDAoEdHlwZRgCIAIoBRIpCgVjZWxscxgDIAMo" + 
-          "CzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiYAoQR3BiX01vZGVfQ29t" + 
-          "bWFuZBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiAC" + 
-          "KAQSEAoIYWN0b3JfaWQYAyACKAUSDwoHbW9kZV9pZBgEIAIoBSJ4CgxHcGJf" + 
-          "V2F5cG9pbnQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1l" + 
-          "GAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigCEg0KBXBv" + 
-          "c195GAUgAigCEg0KBXBvc196GAYgAigCIi0KCEdwYl9UaW1lEhMKC2JlbGll" + 
-          "Zl90aW1lGAEgAigEEgwKBHRpbWUYAiACKAQiYAoMR3BiX1JvYWRDZWxsEhMK" + 
-          "C2JlbGllZl90aW1lGAEgAigEEhEKCWlzUm9hZEVuZBgCIAIoCBIoCgRjZWxs" + 
-          "GAMgAigLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbA==");
+          "Cg5hdXRvbm9teS5wcm90bxIMYXV0b25vbXlfbXNnIogBCgxHcGJfR3JpZFNw" + 
+          "ZWMSEwoLYmVsaWVmX3RpbWUYASACKAQSDgoGaGVpZ2h0GAIgAigFEg0KBXdp" + 
+          "ZHRoGAMgAigFEhQKDGdyaWRPcmlnaW5feBgEIAIoAhIUCgxncmlkT3JpZ2lu" + 
+          "X3oYBSACKAISGAoQZ3JpZFRvV29ybGRTY2FsZRgGIAIoAiKSAQoLR3BiX05H" + 
+          "T1NpdGUSEwoLYmVsaWVmX3RpbWUYASACKAQSCgoCaWQYAiACKAUSKQoFY2Vs" + 
+          "bHMYAyADKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxsEhAKCHN1cHBs" + 
+          "aWVzGAQgAigCEhIKCmNhc3VhbHRpZXMYBSACKAISEQoJY2l2aWxpYW5zGAYg" + 
+          "AigCImUKCEdwYl9TUE9JEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVl" + 
+          "c3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIo" + 
+          "AhINCgVwb3NfeRgFIAIoAiKBAQoVR3BiX1dheXBvaW50X092ZXJyaWRlEhMK" + 
+          "C2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghh" + 
+          "Y3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3NfeRgFIAIoAhIN" + 
+          "CgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFnZRITCgtiZWxpZWZfdGltZRgB" + 
+          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
+          "Zy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCACKAISEgoKY2FzdWFsdGll" + 
+          "cxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgC" + 
+          "IAIoBSLmAQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCXVu" + 
+          "aXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIoBRIMCgR0eXBlGAQg" + 
+          "AigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2NhcnJ5aW5nGAYgAigFEg0K" + 
+          "BXBvc194GAcgAigCEg0KBXBvc195GAggAigCEg0KBXBvc196GAkgAigCEhIK" + 
+          "CnZlbG9jaXR5X3gYCiABKAISEgoKdmVsb2NpdHlfeRgLIAEoAhISCgp2ZWxv" + 
+          "Y2l0eV96GAwgASgCIi8KCkdwYl9DdXN0b20SEwoLYmVsaWVmX3RpbWUYASAC" + 
+          "KAQSDAoEZGF0YRgCIAIoDCJoCghHcGJfQmFzZRITCgtiZWxpZWZfdGltZRgB" + 
+          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
+          "Zy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCACKAIiWwoLR3BiX1RlcnJh" + 
+          "aW4SEwoLYmVsaWVmX3RpbWUYASACKAQSDAoEdHlwZRgCIAIoBRIpCgVjZWxs" + 
+          "cxgDIAMoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiYAoQR3BiX01v" + 
+          "ZGVfQ29tbWFuZBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3Rp" + 
+          "bWUYAiACKAQSEAoIYWN0b3JfaWQYAyACKAUSDwoHbW9kZV9pZBgEIAIoBSJ4" + 
+          "CgxHcGJfV2F5cG9pbnQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVz" + 
+          "dF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg0KBXBvc194GAQgAigC" + 
+          "Eg0KBXBvc195GAUgAigCEg0KBXBvc196GAYgAigCIi0KCEdwYl9UaW1lEhMK" + 
+          "C2JlbGllZl90aW1lGAEgAigEEgwKBHRpbWUYAiACKAQiYAoMR3BiX1JvYWRD" + 
+          "ZWxsEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCWlzUm9hZEVuZBgCIAIoCBIo" + 
+          "CgRjZWxsGAMgAigLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
         internal__static_autonomy_msg_Gpb_GridSpec__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridSpec, global::autonomy_msg.Gpb_GridSpec.Builder>(internal__static_autonomy_msg_Gpb_GridSpec__Descriptor,
-                new string[] { "BeliefTime", "Height", "Width", "GridOriginX", "GridOriginZ", });
+                new string[] { "BeliefTime", "Height", "Width", "GridOriginX", "GridOriginZ", "GridToWorldScale", });
         internal__static_autonomy_msg_Gpb_NGOSite__Descriptor = Descriptor.MessageTypes[1];
         internal__static_autonomy_msg_Gpb_NGOSite__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_NGOSite, global::autonomy_msg.Gpb_NGOSite.Builder>(internal__static_autonomy_msg_Gpb_NGOSite__Descriptor,
-                new string[] { "BeliefTime", "Id", "Cells", });
+                new string[] { "BeliefTime", "Id", "Cells", "Supplies", "Casualties", "Civilians", });
         internal__static_autonomy_msg_Gpb_SPOI__Descriptor = Descriptor.MessageTypes[2];
         internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder>(internal__static_autonomy_msg_Gpb_SPOI__Descriptor,
@@ -106,7 +109,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Village__Descriptor = Descriptor.MessageTypes[4];
         internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Village, global::autonomy_msg.Gpb_Village.Builder>(internal__static_autonomy_msg_Gpb_Village__Descriptor,
-                new string[] { "BeliefTime", "Id", "Cells", });
+                new string[] { "BeliefTime", "Id", "Cells", "Supplies", "Casualties", });
         internal__static_autonomy_msg_Gpb_GridCell__Descriptor = Descriptor.MessageTypes[5];
         internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridCell, global::autonomy_msg.Gpb_GridCell.Builder>(internal__static_autonomy_msg_Gpb_GridCell__Descriptor,
@@ -122,7 +125,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[8];
         internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder>(internal__static_autonomy_msg_Gpb_Base__Descriptor,
-                new string[] { "BeliefTime", "Id", "Cells", });
+                new string[] { "BeliefTime", "Id", "Cells", "Supplies", });
         internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[9];
         internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Terrain, global::autonomy_msg.Gpb_Terrain.Builder>(internal__static_autonomy_msg_Gpb_Terrain__Descriptor,
@@ -157,8 +160,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_GridSpec : pb::GeneratedMessage<Gpb_GridSpec, Gpb_GridSpec.Builder> {
     private Gpb_GridSpec() { }
     private static readonly Gpb_GridSpec defaultInstance = new Gpb_GridSpec().MakeReadOnly();
-    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "height", "width" };
-    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 37, 45, 16, 24 };
+    private static readonly string[] _gpbGridSpecFieldNames = new string[] { "belief_time", "gridOrigin_x", "gridOrigin_z", "gridToWorldScale", "height", "width" };
+    private static readonly uint[] _gpbGridSpecFieldTags = new uint[] { 8, 37, 45, 53, 16, 24 };
     public static Gpb_GridSpec DefaultInstance {
       get { return defaultInstance; }
     }
@@ -230,6 +233,16 @@ namespace autonomy_msg {
       get { return gridOriginZ_; }
     }
     
+    public const int GridToWorldScaleFieldNumber = 6;
+    private bool hasGridToWorldScale;
+    private float gridToWorldScale_;
+    public bool HasGridToWorldScale {
+      get { return hasGridToWorldScale; }
+    }
+    public float GridToWorldScale {
+      get { return gridToWorldScale_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasBeliefTime) return false;
@@ -237,6 +250,7 @@ namespace autonomy_msg {
         if (!hasWidth) return false;
         if (!hasGridOriginX) return false;
         if (!hasGridOriginZ) return false;
+        if (!hasGridToWorldScale) return false;
         return true;
       }
     }
@@ -248,16 +262,19 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[0], BeliefTime);
       }
       if (hasHeight) {
-        output.WriteInt32(2, field_names[3], Height);
+        output.WriteInt32(2, field_names[4], Height);
       }
       if (hasWidth) {
-        output.WriteInt32(3, field_names[4], Width);
+        output.WriteInt32(3, field_names[5], Width);
       }
       if (hasGridOriginX) {
         output.WriteFloat(4, field_names[1], GridOriginX);
       }
       if (hasGridOriginZ) {
         output.WriteFloat(5, field_names[2], GridOriginZ);
+      }
+      if (hasGridToWorldScale) {
+        output.WriteFloat(6, field_names[3], GridToWorldScale);
       }
       UnknownFields.WriteTo(output);
     }
@@ -283,6 +300,9 @@ namespace autonomy_msg {
         }
         if (hasGridOriginZ) {
           size += pb::CodedOutputStream.ComputeFloatSize(5, GridOriginZ);
+        }
+        if (hasGridToWorldScale) {
+          size += pb::CodedOutputStream.ComputeFloatSize(6, GridToWorldScale);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -423,6 +443,9 @@ namespace autonomy_msg {
         if (other.HasGridOriginZ) {
           GridOriginZ = other.GridOriginZ;
         }
+        if (other.HasGridToWorldScale) {
+          GridToWorldScale = other.GridToWorldScale;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -484,6 +507,10 @@ namespace autonomy_msg {
             }
             case 45: {
               result.hasGridOriginZ = input.ReadFloat(ref result.gridOriginZ_);
+              break;
+            }
+            case 53: {
+              result.hasGridToWorldScale = input.ReadFloat(ref result.gridToWorldScale_);
               break;
             }
           }
@@ -597,6 +624,26 @@ namespace autonomy_msg {
         result.gridOriginZ_ = 0F;
         return this;
       }
+      
+      public bool HasGridToWorldScale {
+        get { return result.hasGridToWorldScale; }
+      }
+      public float GridToWorldScale {
+        get { return result.GridToWorldScale; }
+        set { SetGridToWorldScale(value); }
+      }
+      public Builder SetGridToWorldScale(float value) {
+        PrepareBuilder();
+        result.hasGridToWorldScale = true;
+        result.gridToWorldScale_ = value;
+        return this;
+      }
+      public Builder ClearGridToWorldScale() {
+        PrepareBuilder();
+        result.hasGridToWorldScale = false;
+        result.gridToWorldScale_ = 0F;
+        return this;
+      }
     }
     static Gpb_GridSpec() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
@@ -607,8 +654,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_NGOSite : pb::GeneratedMessage<Gpb_NGOSite, Gpb_NGOSite.Builder> {
     private Gpb_NGOSite() { }
     private static readonly Gpb_NGOSite defaultInstance = new Gpb_NGOSite().MakeReadOnly();
-    private static readonly string[] _gpbNGOSiteFieldNames = new string[] { "belief_time", "cells", "id" };
-    private static readonly uint[] _gpbNGOSiteFieldTags = new uint[] { 8, 26, 16 };
+    private static readonly string[] _gpbNGOSiteFieldNames = new string[] { "belief_time", "casualties", "cells", "civilians", "id", "supplies" };
+    private static readonly uint[] _gpbNGOSiteFieldTags = new uint[] { 8, 45, 26, 53, 16, 37 };
     public static Gpb_NGOSite DefaultInstance {
       get { return defaultInstance; }
     }
@@ -662,10 +709,43 @@ namespace autonomy_msg {
       return cells_[index];
     }
     
+    public const int SuppliesFieldNumber = 4;
+    private bool hasSupplies;
+    private float supplies_;
+    public bool HasSupplies {
+      get { return hasSupplies; }
+    }
+    public float Supplies {
+      get { return supplies_; }
+    }
+    
+    public const int CasualtiesFieldNumber = 5;
+    private bool hasCasualties;
+    private float casualties_;
+    public bool HasCasualties {
+      get { return hasCasualties; }
+    }
+    public float Casualties {
+      get { return casualties_; }
+    }
+    
+    public const int CiviliansFieldNumber = 6;
+    private bool hasCivilians;
+    private float civilians_;
+    public bool HasCivilians {
+      get { return hasCivilians; }
+    }
+    public float Civilians {
+      get { return civilians_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasBeliefTime) return false;
         if (!hasId) return false;
+        if (!hasSupplies) return false;
+        if (!hasCasualties) return false;
+        if (!hasCivilians) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
         }
@@ -680,10 +760,19 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[0], BeliefTime);
       }
       if (hasId) {
-        output.WriteInt32(2, field_names[2], Id);
+        output.WriteInt32(2, field_names[4], Id);
       }
       if (cells_.Count > 0) {
-        output.WriteMessageArray(3, field_names[1], cells_);
+        output.WriteMessageArray(3, field_names[2], cells_);
+      }
+      if (hasSupplies) {
+        output.WriteFloat(4, field_names[5], Supplies);
+      }
+      if (hasCasualties) {
+        output.WriteFloat(5, field_names[1], Casualties);
+      }
+      if (hasCivilians) {
+        output.WriteFloat(6, field_names[3], Civilians);
       }
       UnknownFields.WriteTo(output);
     }
@@ -703,6 +792,15 @@ namespace autonomy_msg {
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           size += pb::CodedOutputStream.ComputeMessageSize(3, element);
+        }
+        if (hasSupplies) {
+          size += pb::CodedOutputStream.ComputeFloatSize(4, Supplies);
+        }
+        if (hasCasualties) {
+          size += pb::CodedOutputStream.ComputeFloatSize(5, Casualties);
+        }
+        if (hasCivilians) {
+          size += pb::CodedOutputStream.ComputeFloatSize(6, Civilians);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -838,6 +936,15 @@ namespace autonomy_msg {
         if (other.cells_.Count != 0) {
           result.cells_.Add(other.cells_);
         }
+        if (other.HasSupplies) {
+          Supplies = other.Supplies;
+        }
+        if (other.HasCasualties) {
+          Casualties = other.Casualties;
+        }
+        if (other.HasCivilians) {
+          Civilians = other.Civilians;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -891,6 +998,18 @@ namespace autonomy_msg {
             }
             case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+            case 37: {
+              result.hasSupplies = input.ReadFloat(ref result.supplies_);
+              break;
+            }
+            case 45: {
+              result.hasCasualties = input.ReadFloat(ref result.casualties_);
+              break;
+            }
+            case 53: {
+              result.hasCivilians = input.ReadFloat(ref result.civilians_);
               break;
             }
           }
@@ -986,6 +1105,66 @@ namespace autonomy_msg {
       public Builder ClearCells() {
         PrepareBuilder();
         result.cells_.Clear();
+        return this;
+      }
+      
+      public bool HasSupplies {
+        get { return result.hasSupplies; }
+      }
+      public float Supplies {
+        get { return result.Supplies; }
+        set { SetSupplies(value); }
+      }
+      public Builder SetSupplies(float value) {
+        PrepareBuilder();
+        result.hasSupplies = true;
+        result.supplies_ = value;
+        return this;
+      }
+      public Builder ClearSupplies() {
+        PrepareBuilder();
+        result.hasSupplies = false;
+        result.supplies_ = 0F;
+        return this;
+      }
+      
+      public bool HasCasualties {
+        get { return result.hasCasualties; }
+      }
+      public float Casualties {
+        get { return result.Casualties; }
+        set { SetCasualties(value); }
+      }
+      public Builder SetCasualties(float value) {
+        PrepareBuilder();
+        result.hasCasualties = true;
+        result.casualties_ = value;
+        return this;
+      }
+      public Builder ClearCasualties() {
+        PrepareBuilder();
+        result.hasCasualties = false;
+        result.casualties_ = 0F;
+        return this;
+      }
+      
+      public bool HasCivilians {
+        get { return result.hasCivilians; }
+      }
+      public float Civilians {
+        get { return result.Civilians; }
+        set { SetCivilians(value); }
+      }
+      public Builder SetCivilians(float value) {
+        PrepareBuilder();
+        result.hasCivilians = true;
+        result.civilians_ = value;
+        return this;
+      }
+      public Builder ClearCivilians() {
+        PrepareBuilder();
+        result.hasCivilians = false;
+        result.civilians_ = 0F;
         return this;
       }
     }
@@ -1948,8 +2127,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Village : pb::GeneratedMessage<Gpb_Village, Gpb_Village.Builder> {
     private Gpb_Village() { }
     private static readonly Gpb_Village defaultInstance = new Gpb_Village().MakeReadOnly();
-    private static readonly string[] _gpbVillageFieldNames = new string[] { "belief_time", "cells", "id" };
-    private static readonly uint[] _gpbVillageFieldTags = new uint[] { 8, 26, 16 };
+    private static readonly string[] _gpbVillageFieldNames = new string[] { "belief_time", "casualties", "cells", "id", "supplies" };
+    private static readonly uint[] _gpbVillageFieldTags = new uint[] { 8, 45, 26, 16, 37 };
     public static Gpb_Village DefaultInstance {
       get { return defaultInstance; }
     }
@@ -2003,10 +2182,32 @@ namespace autonomy_msg {
       return cells_[index];
     }
     
+    public const int SuppliesFieldNumber = 4;
+    private bool hasSupplies;
+    private float supplies_;
+    public bool HasSupplies {
+      get { return hasSupplies; }
+    }
+    public float Supplies {
+      get { return supplies_; }
+    }
+    
+    public const int CasualtiesFieldNumber = 5;
+    private bool hasCasualties;
+    private float casualties_;
+    public bool HasCasualties {
+      get { return hasCasualties; }
+    }
+    public float Casualties {
+      get { return casualties_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasBeliefTime) return false;
         if (!hasId) return false;
+        if (!hasSupplies) return false;
+        if (!hasCasualties) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
         }
@@ -2021,10 +2222,16 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[0], BeliefTime);
       }
       if (hasId) {
-        output.WriteInt32(2, field_names[2], Id);
+        output.WriteInt32(2, field_names[3], Id);
       }
       if (cells_.Count > 0) {
-        output.WriteMessageArray(3, field_names[1], cells_);
+        output.WriteMessageArray(3, field_names[2], cells_);
+      }
+      if (hasSupplies) {
+        output.WriteFloat(4, field_names[4], Supplies);
+      }
+      if (hasCasualties) {
+        output.WriteFloat(5, field_names[1], Casualties);
       }
       UnknownFields.WriteTo(output);
     }
@@ -2044,6 +2251,12 @@ namespace autonomy_msg {
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           size += pb::CodedOutputStream.ComputeMessageSize(3, element);
+        }
+        if (hasSupplies) {
+          size += pb::CodedOutputStream.ComputeFloatSize(4, Supplies);
+        }
+        if (hasCasualties) {
+          size += pb::CodedOutputStream.ComputeFloatSize(5, Casualties);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -2179,6 +2392,12 @@ namespace autonomy_msg {
         if (other.cells_.Count != 0) {
           result.cells_.Add(other.cells_);
         }
+        if (other.HasSupplies) {
+          Supplies = other.Supplies;
+        }
+        if (other.HasCasualties) {
+          Casualties = other.Casualties;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -2232,6 +2451,14 @@ namespace autonomy_msg {
             }
             case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+            case 37: {
+              result.hasSupplies = input.ReadFloat(ref result.supplies_);
+              break;
+            }
+            case 45: {
+              result.hasCasualties = input.ReadFloat(ref result.casualties_);
               break;
             }
           }
@@ -2327,6 +2554,46 @@ namespace autonomy_msg {
       public Builder ClearCells() {
         PrepareBuilder();
         result.cells_.Clear();
+        return this;
+      }
+      
+      public bool HasSupplies {
+        get { return result.hasSupplies; }
+      }
+      public float Supplies {
+        get { return result.Supplies; }
+        set { SetSupplies(value); }
+      }
+      public Builder SetSupplies(float value) {
+        PrepareBuilder();
+        result.hasSupplies = true;
+        result.supplies_ = value;
+        return this;
+      }
+      public Builder ClearSupplies() {
+        PrepareBuilder();
+        result.hasSupplies = false;
+        result.supplies_ = 0F;
+        return this;
+      }
+      
+      public bool HasCasualties {
+        get { return result.hasCasualties; }
+      }
+      public float Casualties {
+        get { return result.Casualties; }
+        set { SetCasualties(value); }
+      }
+      public Builder SetCasualties(float value) {
+        PrepareBuilder();
+        result.hasCasualties = true;
+        result.casualties_ = value;
+        return this;
+      }
+      public Builder ClearCasualties() {
+        PrepareBuilder();
+        result.hasCasualties = false;
+        result.casualties_ = 0F;
         return this;
       }
     }
@@ -3728,8 +3995,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Base : pb::GeneratedMessage<Gpb_Base, Gpb_Base.Builder> {
     private Gpb_Base() { }
     private static readonly Gpb_Base defaultInstance = new Gpb_Base().MakeReadOnly();
-    private static readonly string[] _gpbBaseFieldNames = new string[] { "belief_time", "cells", "id" };
-    private static readonly uint[] _gpbBaseFieldTags = new uint[] { 8, 26, 16 };
+    private static readonly string[] _gpbBaseFieldNames = new string[] { "belief_time", "cells", "id", "supplies" };
+    private static readonly uint[] _gpbBaseFieldTags = new uint[] { 8, 26, 16, 37 };
     public static Gpb_Base DefaultInstance {
       get { return defaultInstance; }
     }
@@ -3783,10 +4050,21 @@ namespace autonomy_msg {
       return cells_[index];
     }
     
+    public const int SuppliesFieldNumber = 4;
+    private bool hasSupplies;
+    private float supplies_;
+    public bool HasSupplies {
+      get { return hasSupplies; }
+    }
+    public float Supplies {
+      get { return supplies_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasBeliefTime) return false;
         if (!hasId) return false;
+        if (!hasSupplies) return false;
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           if (!element.IsInitialized) return false;
         }
@@ -3806,6 +4084,9 @@ namespace autonomy_msg {
       if (cells_.Count > 0) {
         output.WriteMessageArray(3, field_names[1], cells_);
       }
+      if (hasSupplies) {
+        output.WriteFloat(4, field_names[3], Supplies);
+      }
       UnknownFields.WriteTo(output);
     }
     
@@ -3824,6 +4105,9 @@ namespace autonomy_msg {
         }
         foreach (global::autonomy_msg.Gpb_GridCell element in CellsList) {
           size += pb::CodedOutputStream.ComputeMessageSize(3, element);
+        }
+        if (hasSupplies) {
+          size += pb::CodedOutputStream.ComputeFloatSize(4, Supplies);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3959,6 +4243,9 @@ namespace autonomy_msg {
         if (other.cells_.Count != 0) {
           result.cells_.Add(other.cells_);
         }
+        if (other.HasSupplies) {
+          Supplies = other.Supplies;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -4012,6 +4299,10 @@ namespace autonomy_msg {
             }
             case 26: {
               input.ReadMessageArray(tag, field_name, result.cells_, global::autonomy_msg.Gpb_GridCell.DefaultInstance, extensionRegistry);
+              break;
+            }
+            case 37: {
+              result.hasSupplies = input.ReadFloat(ref result.supplies_);
               break;
             }
           }
@@ -4107,6 +4398,26 @@ namespace autonomy_msg {
       public Builder ClearCells() {
         PrepareBuilder();
         result.cells_.Clear();
+        return this;
+      }
+      
+      public bool HasSupplies {
+        get { return result.hasSupplies; }
+      }
+      public float Supplies {
+        get { return result.Supplies; }
+        set { SetSupplies(value); }
+      }
+      public Builder SetSupplies(float value) {
+        PrepareBuilder();
+        result.hasSupplies = true;
+        result.supplies_ = value;
+        return this;
+      }
+      public Builder ClearSupplies() {
+        PrepareBuilder();
+        result.hasSupplies = false;
+        result.supplies_ = 0F;
         return this;
       }
     }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using soa;
 
 public class NgoSim : MonoBehaviour 
 {
@@ -39,6 +41,7 @@ public class NgoSim : MonoBehaviour
         simTimer += Time.deltaTime;
         if (simTimer > simInterval)
         {
+            // Update resource counts
             Civilians += CivilianRate;
             Casualties += CasualtyRate;
 

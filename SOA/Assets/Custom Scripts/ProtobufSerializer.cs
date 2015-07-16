@@ -85,6 +85,7 @@ namespace soa
                         Gpb_Base.Builder proto = Gpb_Base.CreateBuilder();
                         Belief_Base b = (Belief_Base)belief;
                         proto.SetId(b.getId());
+                        proto.SetSupplies(b.getSupplies());
                         // Copy contents of cell list
                         List<GridCell> cells = b.getCells();
                         for (int i = 0; i < cells.Count; i++)
@@ -109,6 +110,7 @@ namespace soa
                         proto.SetHeight(b.getHeight());
                         proto.SetGridOriginX(b.getGridOrigin_x());
                         proto.SetGridOriginZ(b.getGridOrigin_z());
+                        proto.SetGridToWorldScale(b.getGridToWorldScale());
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
@@ -135,6 +137,9 @@ namespace soa
                         Gpb_NGOSite.Builder proto = Gpb_NGOSite.CreateBuilder();
                         Belief_NGOSite b = (Belief_NGOSite)belief;
                         proto.SetId(b.getId());
+                        proto.SetSupplies(b.getSupplies());
+                        proto.SetCasualties(b.getCasualties());
+                        proto.SetCivilians(b.getCivilians());
                         // Copy contents of cell list
                         List<GridCell> cells = b.getCells();
                         for (int i = 0; i < cells.Count; i++)
@@ -222,6 +227,8 @@ namespace soa
                         Gpb_Village.Builder proto = Gpb_Village.CreateBuilder();
                         Belief_Village b = (Belief_Village)belief;
                         proto.SetId(b.getId());
+                        proto.SetSupplies(b.getSupplies());
+                        proto.SetCasualties(b.getCasualties());
                         // Copy contents of cell list
                         List<GridCell> cells = b.getCells();
                         for (int i = 0; i < cells.Count; i++)
@@ -345,7 +352,8 @@ namespace soa
                         }
                         b = new Belief_Base(
                             proto.Id,
-                            cells);
+                            cells,
+                            proto.Supplies);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;
@@ -357,7 +365,8 @@ namespace soa
                             proto.Width,
                             proto.Height,
                             proto.GridOriginX,
-                            proto.GridOriginZ);
+                            proto.GridOriginZ,
+                            proto.GridToWorldScale);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;
@@ -383,7 +392,10 @@ namespace soa
                         }
                         b = new Belief_NGOSite(
                             proto.Id,
-                            cells);
+                            cells,
+                            proto.Supplies,
+                            proto.Casualties,
+                            proto.Civilians);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;
@@ -444,7 +456,9 @@ namespace soa
                         }
                         b = new Belief_Village(
                             proto.Id,
-                            cells);
+                            cells,
+                            proto.Supplies,
+                            proto.Casualties);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;

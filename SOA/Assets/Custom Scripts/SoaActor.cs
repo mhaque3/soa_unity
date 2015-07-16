@@ -21,7 +21,7 @@ public class SoaActor : MonoBehaviour
 
     public enum ActorType
     {
-        BASE = 0,
+        //BASE = 0, // Blue base is no longer a SoaActor, it is now a SoaSite
         SMALL_UAV = 1,
         HEAVY_LIFT = 2,
         DISMOUNT = 3,
@@ -60,7 +60,7 @@ public class SoaActor : MonoBehaviour
     public NavMeshAgent navAgent;
     
     // Use this for initialization
-	void Start () 
+	public virtual void Start () 
     {
         // Alive at the beginning
         isAlive = true;
@@ -100,7 +100,6 @@ public class SoaActor : MonoBehaviour
         beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
-
 	}
 
     // Update is called once per frame
@@ -109,7 +108,7 @@ public class SoaActor : MonoBehaviour
 	}
 
     // Called when the actor has been killed
-    public void Kill()
+    public virtual void Kill()
     {
         // If remote platform (uses external waypoint), send a final message
         if (this.useExternalWaypoint)
@@ -143,7 +142,7 @@ public class SoaActor : MonoBehaviour
     }
 
     //Set this actors position and orientation
-    void LateUpadte()
+    public virtual void LateUpadte()
     {
         if (displayActor)
         {
@@ -173,7 +172,7 @@ public class SoaActor : MonoBehaviour
      * 
      * TODO create functions for when in client mode and only reading position data
      */ 
-    public void updateActor()
+    public virtual void updateActor()
     {
         if (!isAlive)
         {
@@ -250,9 +249,6 @@ public class SoaActor : MonoBehaviour
                 if (dataManager != null)
                 {
                     dataManager.addAndBroadcastBelief(detectedActor, unique_id);
-                    // twupy1
-//                  Debug.Log("Broadcasting detection of actor " + soaActor.unique_id);
-//                  Debug.Log("Broadcasting detection of actor affiliation " + soaActor.affiliation);
                 }
             }
 
@@ -283,7 +279,7 @@ public class SoaActor : MonoBehaviour
 
     // Check if belief is newer than current belief of matching type and id, if so,
     // replace old belief with b.
-    public void addBelief(Belief b)
+    public virtual void addBelief(Belief b)
     {
         #if(UNITY_STANDALONE)
             //Debug.Log("SoaActor - DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
@@ -314,12 +310,15 @@ public class SoaActor : MonoBehaviour
 
     public void broadcastComms()
     {
-        //Broadcast types ACTOR, MODE_COMMAND, SPOI, WAYPOINT, WAYPOINT_OVERRIDE
+        //Broadcast types ACTOR, MODE_COMMAND, SPOI, WAYPOINT, WAYPOINT_OVERRIDE, BASE, NGOSITE, VILLAGE
         publishBeliefsOfType(Belief.BeliefType.ACTOR);
         publishBeliefsOfType(Belief.BeliefType.MODE_COMMAND);
         publishBeliefsOfType(Belief.BeliefType.SPOI);
         publishBeliefsOfType(Belief.BeliefType.WAYPOINT);
         publishBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE);
+        publishBeliefsOfType(Belief.BeliefType.BASE);
+        publishBeliefsOfType(Belief.BeliefType.NGOSITE);
+        publishBeliefsOfType(Belief.BeliefType.VILLAGE);
     }
 
     private void publishBeliefsOfType(Belief.BeliefType type)

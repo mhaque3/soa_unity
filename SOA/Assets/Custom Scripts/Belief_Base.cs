@@ -10,13 +10,15 @@ namespace soa
         // Members
         private int id;
         private List<GridCell> cells;
+        private float supplies;
 
         // Constructor
-        public Belief_Base(int id, List<GridCell> cells)
+        public Belief_Base(int id, List<GridCell> cells, float supplies)
             : base(id)
         {
             this.id = id;
             this.cells = GridCell.cloneList(cells);
+            this.supplies = supplies;
         }
 
         // Type information
@@ -34,12 +36,14 @@ namespace soa
             {
                 s += "\n  " + cells[i];
             }
-            s+= "\n" + "}";
+            s += "\n" + "  supplies: " + supplies;
+            s += "\n" + "}";
             return s;
         }
 
         // Get methods
 	    public int getId(){ return id; }
         public List<GridCell> getCells() { return GridCell.cloneList(cells); }
+        public float getSupplies() { return supplies; }
     }
 }

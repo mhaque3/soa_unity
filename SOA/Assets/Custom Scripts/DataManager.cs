@@ -15,6 +15,7 @@ namespace soa
         //public float updateRateMs;
         //List of all actors in this scenario
         public List<SoaActor> actors = new List<SoaActor>();
+        public List<Belief> initializationBeliefs = new List<Belief>();
         protected SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
 
         protected SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int,SortedDictionary<int,bool>>();
@@ -37,8 +38,6 @@ namespace soa
             Serializer ps = new ProtobufSerializer();
             cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
-            // Start them
-            cm.start();
 
             beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
             beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
@@ -54,6 +53,13 @@ namespace soa
             beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
+
+            // Note: Comms manager must be started manually after all initial belief processing is done
+        }
+
+        public void startComms()
+        {
+            cm.start();
         }
 
         public void addAndBroadcastBelief(Belief b, int sourceId)
@@ -199,23 +205,18 @@ namespace soa
                 cm.terminate();
         }
 
+        // Initialization beliefs are kept separately from actual belief manager beliefs
+        // in case a player joins mid game
+        public void addInitializationBelief(Belief b)
+        {
+            initializationBeliefs.Add(b);
+        }
+
         // This method returns all Beliefs that a new player needs to initialize itself
         // such as map/terrain description, etc.  These beliefs do not change over time.
         public List<Belief> getInitializationBeliefs()
         {
-            // Beliefs will be stored in a list
-            List<Belief> l = new List<Belief>();
-
-            // Add in initialization beliefs
-            l.AddRange(beliefDictionary[Belief.BeliefType.BASE].Values);
-            l.AddRange(beliefDictionary[Belief.BeliefType.GRIDSPEC].Values);
-            l.AddRange(beliefDictionary[Belief.BeliefType.NGOSITE].Values);
-            l.AddRange(beliefDictionary[Belief.BeliefType.ROADCELL].Values);
-            l.AddRange(beliefDictionary[Belief.BeliefType.TERRAIN].Values);
-            l.AddRange(beliefDictionary[Belief.BeliefType.VILLAGE].Values);
-
-            // Return to caller
-            return l;
+            return initializationBeliefs;
         }
     }
 }

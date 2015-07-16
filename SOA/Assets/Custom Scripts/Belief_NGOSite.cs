@@ -10,13 +10,19 @@ namespace soa
         // Members
         private int id;
         private List<GridCell> cells;
+        private float supplies;
+        private float casualties;
+        private float civilians;
 
         // Constructor
-        public Belief_NGOSite(int id, List<GridCell> cells)
+        public Belief_NGOSite(int id, List<GridCell> cells, float supplies, float casualties, float civilians)
             : base(id)
         {
             this.id = id;
             this.cells = GridCell.cloneList(cells);
+            this.supplies = supplies;
+            this.casualties = casualties;
+            this.civilians = civilians;
         }
 
         // Type information
@@ -34,6 +40,9 @@ namespace soa
             {
                 s += "\n  " + cells[i];
             }
+            s += "\n" + "  supplies: " + supplies;
+            s += "\n" + "  casualties: " + casualties;
+            s += "\n" + "  civilians: " + civilians;
             s += "\n" + "}";
             return s;
         }
@@ -41,5 +50,8 @@ namespace soa
         // Get methods
 	    public int getId(){ return id; }
         public List<GridCell> getCells() { return GridCell.cloneList(cells); }
+        public float getSupplies() { return supplies; }
+        public float getCasualties() { return casualties; }
+        public float getCivilians() { return civilians; }
     }
 }
