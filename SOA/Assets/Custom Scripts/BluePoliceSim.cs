@@ -227,8 +227,10 @@ public class BluePoliceSim : MonoBehaviour
 
             if (ba.getAffiliation().Equals((int)Affiliation.RED))
             {
-                // Save the info depending on how old the belief is
-                if ((float)(thisSoaActor.getCurrentTime_ms() - ba.getBeliefTime()) <= beliefTimeout_ms)
+                // Save the info if the belief is new enough
+                // Note: Watch out for the difference of two unsigned numbers!
+                if (thisSoaActor.getCurrentTime_ms() <= ba.getBeliefTime() || 
+                    (float)(thisSoaActor.getCurrentTime_ms() - ba.getBeliefTime()) <= beliefTimeout_ms)
                 {
                     redUnitDatabase.Add(ba.getId(), new RedUnitInfo(ba, redUnits, redBases, protectedSites));
                 }
