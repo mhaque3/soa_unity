@@ -331,8 +331,8 @@ public class SoaActor : MonoBehaviour
                 SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
                 foreach (KeyValuePair<int, Belief> entry in typeDict)
                 {
-                    //only publish new data
-                    if (entry.Value.getBeliefTime() < (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
+                    // only publish new data (beliefs created within last 5 seconds)
+                    if (entry.Value.getBeliefTime() >= (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
                     {
                         if(dataManager != null)
                             dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
