@@ -86,6 +86,12 @@ public class SimControl : MonoBehaviour
             actor.unique_id = 200 + i;
             //actor.simulateMotion = true;
 
+            if (platform.name.Contains("Blue Base"))
+            {
+                actor.unique_id = 0;
+            }
+
+
             if (platform.name.Contains("Blue"))
             {
                 //actor.affiliation = (int)Affiliation.BLUE;
@@ -305,6 +311,13 @@ public class SimControl : MonoBehaviour
                             actor.broadcastComms();
                         }
 
+                        for (int i = 0; i < BlueBases.Count; i++)
+                        {
+                            GameObject platform = BlueBases[i];
+                            SoaSite site = platform.GetComponent<SoaSite>();
+                            site.broadcastComms();
+                        }
+
                         messageTimer = 0f;
                     }
                 }
@@ -486,7 +499,7 @@ public class SimControl : MonoBehaviour
             BlueBaseSim s = g.GetComponent<BlueBaseSim>();
             b = new Belief_Base(i, theseCells, s.Supply);
             AddBeliefToBlueBases(b);
-            Debug.Log(b.ToString());
+            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < NgoSites.Count; i++)
@@ -498,7 +511,7 @@ public class SimControl : MonoBehaviour
             NgoSim s = g.GetComponent<NgoSim>();
             b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
             AddBeliefToBlueBases(b);
-            Debug.Log(b.ToString());
+            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < Villages.Count; i++)
@@ -510,7 +523,7 @@ public class SimControl : MonoBehaviour
             VillageSim s = g.GetComponent<VillageSim>();
             b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
             AddBeliefToBlueBases(b);
-            Debug.Log(b.ToString());
+            //Debug.Log(b.ToString());
         }
     }
 

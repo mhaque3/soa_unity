@@ -39,7 +39,7 @@ public class HeavyLiftSim : MonoBehaviour
                         thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     }
                 }
-                if (!Supply)
+                if (!Supply && b.Supply >=1f)
                 {
                     {
                         b.Supply -= 1f;

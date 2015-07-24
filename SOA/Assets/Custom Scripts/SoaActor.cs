@@ -195,7 +195,7 @@ public class SoaActor : MonoBehaviour
             if (useExternalWaypoint)
             {
                 Belief newBelief;
-                Debug.Log(name);
+                //Debug.Log(name);
                 motionScript.On = false;
                 if (beliefDictionary[Belief.BeliefType.WAYPOINT].TryGetValue(unique_id, out newBelief))
                 {
@@ -331,11 +331,22 @@ public class SoaActor : MonoBehaviour
                 SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
                 foreach (KeyValuePair<int, Belief> entry in typeDict)
                 {
+                    /*if (type == Belief.BeliefType.NGOSITE)
+                    {
+                        Debug.Log("NGO " + entry.Value.getId() + "!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Debug.Log("Belief Time " + entry.Value.getBeliefTime() + " " + entry.Value.ToString());
+                    }*/
+
                     // only publish new data (beliefs created within last 5 seconds)
                     if (entry.Value.getBeliefTime() >= (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
                     {
+                        /*if (type == Belief.BeliefType.NGOSITE)
+                        {
+                            Debug.Log("In!");
+                        }*/
+
                         if(dataManager != null)
-                            dataManager.addAndBroadcastBelief(entry.Value, entry.Key);
+                            dataManager.addAndBroadcastBelief(entry.Value, unique_id);
                     }
                 }
             }
