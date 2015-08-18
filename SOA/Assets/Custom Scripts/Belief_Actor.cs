@@ -13,6 +13,7 @@ namespace soa
         private int type;
         private bool isAlive;
         private int isCarrying;
+        private bool isWeaponized;
         private float pos_x;
         private float pos_y;
         private float pos_z;
@@ -25,7 +26,7 @@ namespace soa
 
         // Constructor
         public Belief_Actor(int unique_id, int affiliation, int type,
-            bool isAlive, int isCarrying,
+            bool isAlive, int isCarrying, bool isWeaponized,
             float pos_x, float pos_y, float pos_z,
             bool velocity_x_valid = false, float velocity_x = 0.0f,
             bool velocity_y_valid = false, float velocity_y = 0.0f,
@@ -36,6 +37,7 @@ namespace soa
             this.type = type;
             this.isAlive = isAlive;
             this.isCarrying = isCarrying;
+            this.isWeaponized = isWeaponized;
             this.pos_x = pos_x;
             this.pos_y = pos_y;
             this.pos_z = pos_z;
@@ -62,6 +64,7 @@ namespace soa
                 + "\n" + "  type: " + type
                 + "\n" + "  isAlive: " + isAlive
                 + "\n" + "  isCarrying: " + isCarrying
+                + "\n" + "  isWeaponized: " + isWeaponized
                 + "\n" + "  pos_x: " + pos_x
                 + "\n" + "  pos_y: " + pos_y
                 + "\n" + "  pos_z: " + pos_z
@@ -81,6 +84,7 @@ namespace soa
         public int getType() { return type; }
         public bool getIsAlive() { return isAlive; }
         public int getIsCarrying() { return isCarrying; }
+        public bool getIsWeaponized() { return isWeaponized; }
         public float getPos_x() { return pos_x; }
         public float getPos_y() { return pos_y; }
         public float getPos_z() { return pos_z; }
