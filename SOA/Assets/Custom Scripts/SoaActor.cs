@@ -26,11 +26,13 @@ public class SoaActor : MonoBehaviour
         HEAVY_LIFT = 2,
         DISMOUNT = 3,
         TRUCK = 4,
-        POLICE = 5
+        POLICE = 5,
+        BALLOON = 6
     };
 
     public bool isAlive;
     public CarriedResource isCarrying;
+    public bool isWeaponized;
 
     public double commsRange;
 
@@ -51,6 +53,8 @@ public class SoaActor : MonoBehaviour
 
     private bool useGhostModel = false;
     private bool displayActor = true;
+
+    public Dictionary<int, bool> classificationDictionary;
 
     protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
 
@@ -80,6 +84,7 @@ public class SoaActor : MonoBehaviour
 
         // Look at my children and populate list of weapons
         Weapons = transform.GetComponentsInChildren<SoaWeapon>();
+        isWeaponized = Weapons.Length > 0;
 
         // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
@@ -114,7 +119,7 @@ public class SoaActor : MonoBehaviour
         if (this.useExternalWaypoint)
         {
             // Convert position from Unity to km for Belief_Actor
-            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying,
+            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, isWeaponized,
                 transform.position.x / SimControl.KmToUnity,
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
@@ -225,7 +230,7 @@ public class SoaActor : MonoBehaviour
             }
 
             // Convert position from Unity to km for Belief_Actor
-            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, 
+            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, isWeaponized,
                 transform.position.x / SimControl.KmToUnity,
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
@@ -240,11 +245,25 @@ public class SoaActor : MonoBehaviour
                 SoaActor soaActor = gameObject.GetComponent<SoaActor>();
                 
                 // Actor's position must be converted from Unity to km when generating belief
-                Belief_Actor detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation, 
-                    soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying,
-                    gameObject.transform.position.x / SimControl.KmToUnity,
-                    gameObject.transform.position.y / SimControl.KmToUnity,
-                    gameObject.transform.position.z / SimControl.KmToUnity);
+                Belief_Actor detectedActor;
+                if (classificationDictionary.ContainsKey(soaActor.unique_id) && classificationDictionary[soaActor.unique_id])
+                {
+                    // I have classified this actor before, provide actual affiliation and isWeaponized info
+                    detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized,
+                        gameObject.transform.position.x / SimControl.KmToUnity,
+                        gameObject.transform.position.y / SimControl.KmToUnity,
+                        gameObject.transform.position.z / SimControl.KmToUnity);
+                }
+                else
+                {
+                    // I have never classified this actor before, set as unclassified and give default isWeaponized info
+                    detectedActor = new Belief_Actor(soaActor.unique_id, (int)Affiliation.UNCLASSIFIED,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false,
+                        gameObject.transform.position.x / SimControl.KmToUnity,
+                        gameObject.transform.position.y / SimControl.KmToUnity,
+                        gameObject.transform.position.z / SimControl.KmToUnity);
+                }
                 beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 if (dataManager != null)
                 {
@@ -252,12 +271,11 @@ public class SoaActor : MonoBehaviour
                 }
             }
 
-
             //TODO make this thread safe since collisions are done by collider in a separate thread????
             foreach (Belief_Actor belief_actor in killDetections)
             {
                 dataManager.addAndBroadcastBelief(new soa.Belief_Actor(
-            belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 0,
+            belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 0, belief_actor.getIsWeaponized(),
             belief_actor.getPos_x(),
             belief_actor.getPos_y(),
             belief_actor.getPos_z()), unique_id);
@@ -274,6 +292,20 @@ public class SoaActor : MonoBehaviour
             Detections.Clear();
 
             useGhostModel = false;           
+        }
+    }
+
+    public bool checkClassified(int uniqueId)
+    {
+        return classificationDictionary.ContainsKey(uniqueId) && classificationDictionary[uniqueId];
+    }
+
+    public void setClassified(int uniqueId)
+    {
+        // Set classification dictionary value to true if not already
+        if (!checkClassified(uniqueId))
+        {
+            classificationDictionary[uniqueId] = true;
         }
     }
 

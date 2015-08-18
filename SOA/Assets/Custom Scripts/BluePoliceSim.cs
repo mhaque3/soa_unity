@@ -13,9 +13,6 @@ public class BluePoliceSim : MonoBehaviour
 
     public float redBaseKeepoutDist;
 
-    // Misc
-    int numPursueCandidates;
-
     // Pointer to blue base to get task assignment
     NavMeshAgent thisNavAgent;
     SimControl simControlScript;
@@ -232,7 +229,11 @@ public class BluePoliceSim : MonoBehaviour
                 if (thisSoaActor.getCurrentTime_ms() <= ba.getBeliefTime() || 
                     (float)(thisSoaActor.getCurrentTime_ms() - ba.getBeliefTime()) <= beliefTimeout_ms)
                 {
-                    redUnitDatabase.Add(ba.getId(), new RedUnitInfo(ba, redUnits, redBases, protectedSites));
+                    RedUnitInfo redUnitInfo = new RedUnitInfo(ba, redUnits, redBases, protectedSites);
+                    if (redUnitInfo.distToClosestRedBase > redBaseKeepoutDist * SimControl.KmToUnity)
+                    {
+                        redUnitDatabase.Add(ba.getId(), new RedUnitInfo(ba, redUnits, redBases, protectedSites));
+                    }
                 }
             }
         }
@@ -243,9 +244,6 @@ public class BluePoliceSim : MonoBehaviour
     // updated distance to closest base
     void markPursueCandidates()
     {
-        // Clear the number of pursue candidates
-        numPursueCandidates = 0;
-
         // Look at each red unit in the database and determine if it should be a candidate to be pursued
         foreach (int id in redUnitDatabase.Keys)
         {
