@@ -12386,7 +12386,7 @@ GameObject:
   - 114: {fileID: 11420548}
   m_Layer: 0
   m_Name: HeavyLift
-  m_TagString: BlueUnmanned
+  m_TagString: HeavyUAV
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23964,7 +23964,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.2163219, y: 1, z: -9.06782722}
+  m_LocalPosition: {x: 10.2163219, y: 1.5, z: -9.06782722}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 407684}
@@ -27116,7 +27116,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187476}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -27192,7 +27192,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168166}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33183,7 +33183,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168950}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33579,7 +33579,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165692}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -61018,7 +61018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd46d399b999e947b573551314997a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  On: 0
+  On: 1
   RoadCost: 1
   waypointEpsilon: 1
   PATROL: 0
@@ -61044,19 +61044,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601527037d1fd97419fdcad7525a3e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unique_id: 0
+  unique_id: 300
   affiliation: 0
-  type: 0
-  commsRange: 0
+  type: 2
+  isAlive: 0
+  isCarrying: 0
+  isWeaponized: 0
+  commsRange: 10
   Sensors: []
+  Weapons: []
   Detections: []
   Tracks: []
   simulateMotion: 1
-  useExternalWaypoint: 0
+  useExternalWaypoint: 1
   displayTruePosition: 1
   displayPosition: {x: 0, y: 0, z: 0}
-  motionScript: {fileID: 0}
-  navAgent: {fileID: 0}
+  motionScript: {fileID: 11404066}
+  navAgent: {fileID: 19584162}
 --- !u!114 &11446526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -61087,6 +61091,12 @@ MonoBehaviour:
   - tagString: RedTruck
     RangeP1: .5
     RangeMax: .5
+  - tagString: NeutralDismount
+    RangeP1: .5
+    RangeMax: .5
+  - tagString: NeutralTruck
+    RangeP1: .5
+    RangeMax: .5
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11472772
@@ -61114,8 +61124,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Casuality: 0
   Supply: 0
-  SupplyIcon: {fileID: 0}
-  CasualtyIcon: {fileID: 0}
+  SupplyIcon: {fileID: 135610}
+  CasualtyIcon: {fileID: 160444}
 --- !u!114 &11484364
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -61184,7 +61194,7 @@ NavMeshAgent:
   m_Height: .200000003
   m_BaseOffset: .25
   m_WalkableMask: 73
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

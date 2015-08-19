@@ -459,11 +459,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modes:
   - tagString: RedDismount
-    RangeP1: 4
-    RangeMax: 6
+    RangeP1: 1
+    RangeMax: 5
   - tagString: RedTruck
-    RangeP1: 4
-    RangeMax: 8
+    RangeP1: 2
+    RangeMax: 7
+  - tagString: NeutralDismount
+    RangeP1: 1
+    RangeMax: 5
+  - tagString: NeutralTruck
+    RangeP1: 2
+    RangeMax: 7
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11462278
@@ -494,13 +500,14 @@ MonoBehaviour:
   type: 1
   isAlive: 0
   isCarrying: 0
+  isWeaponized: 0
   commsRange: 10
   Sensors: []
   Weapons: []
   Detections: []
   Tracks: []
   simulateMotion: 1
-  useExternalWaypoint: 0
+  useExternalWaypoint: 1
   displayTruePosition: 1
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}

@@ -213,7 +213,7 @@ GameObject:
   - 114: {fileID: 11412626}
   - 136: {fileID: 13699590}
   - 114: {fileID: 11410232}
-  - 114: {fileID: 11467922}
+  - 114: {fileID: 11491110}
   m_Layer: 0
   m_Name: Blue Base
   m_TagString: BlueBase
@@ -577,7 +577,7 @@ MonoBehaviour:
   SupplyRate: .5
   Supply: 0
   simInterval: 1
---- !u!114 &11467922
+--- !u!114 &11491110
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -585,7 +585,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 188808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 075d1109d9881e84e9ead10976974963, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a26bb35d82f9244cba1dcc7b08d0451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unique_id: 0
@@ -593,6 +593,7 @@ MonoBehaviour:
   type: 0
   isAlive: 0
   isCarrying: 0
+  isWeaponized: 0
   commsRange: 10
   Sensors: []
   Weapons: []

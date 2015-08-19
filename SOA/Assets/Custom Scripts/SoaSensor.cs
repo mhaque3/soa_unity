@@ -145,14 +145,14 @@ public class SoaSensor : MonoBehaviour
                         // Blue small UAV probability of classification varies by range
                         Vector3 delta = transform.position - targetObject.transform.position;
                         float slantRange = delta.magnitude / SimControl.KmToUnity;
-                        if (slantRange < 500)
+                        if (slantRange < 0.5)
                         {
                             // Always can classify within 500 m
                             classificationSuccessful = true;
                         }
-                        else if(Random.value <= 1000.0f/(slantRange + 500.0f))
+                        else if(Random.value <= 1.0f/(slantRange + 0.5f))
                         {
-                            // Falls off as 1000/(r+500) after 500 m
+                            // Falls off as 1000m/(r+500m) after 500 m
                             classificationSuccessful = true;
                         }
                         break;

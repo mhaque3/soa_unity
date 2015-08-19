@@ -3957,9 +3957,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unique_id: 200
   affiliation: 0
-  type: 0
+  type: 5
   isAlive: 0
-  commsRange: 5
+  isCarrying: 0
+  isWeaponized: 0
+  commsRange: 10
   Sensors: []
   Weapons: []
   Detections: []
@@ -3995,11 +3997,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modes:
   - tagString: RedDismount
-    RangeP1: 50
-    RangeMax: 50
+    RangeP1: .5
+    RangeMax: .5
   - tagString: RedTruck
-    RangeP1: 50
-    RangeMax: 50
+    RangeP1: .5
+    RangeMax: .5
+  - tagString: NeutralDismount
+    RangeP1: .5
+    RangeMax: .5
+  - tagString: NeutralTruck
+    RangeP1: .5
+    RangeMax: .5
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11493752
@@ -4013,10 +4021,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322da35ada3c87940be95370adf26c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  evalPeriod_s: 1
-  beliefTimeout_ms: 2000
-  pursueRadius: 7
+  evalPeriod_s: .5
+  beliefTimeout_ms: 3000
+  redBaseKeepoutDist: 5
   currTask: 0
+  patrolTarget: {fileID: 0}
   pursueActorID: 0
   numVirtualCasualties: 5
 --- !u!135 &13525322

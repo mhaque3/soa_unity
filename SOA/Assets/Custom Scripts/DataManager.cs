@@ -81,22 +81,119 @@ namespace soa
 #else
                 //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b.ToString());
 #endif
+                // Get the dictionary for that belief type
                 SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
-                if (tempTypeDict != null)
+                bool updateDictionary;
+                Belief oldBelief;
+                if (tempTypeDict != null && beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief))
                 {
-                    Belief oldBelief;
-                    if (!beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief) || oldBelief.getBeliefTime() < b.getBeliefTime())
+                    // We are in here if a previous belief already exists and we have to merge
+                    if (b.getBeliefType() == Belief.BeliefType.ACTOR)
                     {
-                        beliefDictionary[b.getBeliefType()][b.getId()] = b;
+                        // Convert to belief actors
+                        Belief_Actor oldActorBelief = (Belief_Actor) oldBelief;
+                        Belief_Actor incomingActorBelief = (Belief_Actor) b;
+
+                        // To keep track of what to merge
+                        bool useIncomingClassification = false;
+                        bool useIncomingData = false;
+
+                        // Check which classification to use
+                        if(oldActorBelief.getAffiliation() == (int)Affiliation.UNCLASSIFIED && 
+                            incomingActorBelief.getAffiliation() != (int)Affiliation.UNCLASSIFIED){
+                                // Incoming belief has new classification information
+                                useIncomingClassification = true;
+                        }
+
+                        // Check which data to use
+                        if(incomingActorBelief.getBeliefTime() > oldActorBelief.getBeliefTime()){
+                            // Incoming belief has new data information
+                            useIncomingData = true;
+                        }
+
+                        // Merge based on what was new
+                        if (!useIncomingClassification && !useIncomingData)
+                        {
+                            // No new classification or new data, just ignore the incoming belief
+                            updateDictionary = false;
+                        }
+                        else if (!useIncomingClassification && useIncomingData)
+                        {
+                            // Keep existing classification and just take incoming data
+                            updateDictionary = true;
+                            b = new Belief_Actor(
+                                incomingActorBelief.getUnique_id(),
+                                oldActorBelief.getAffiliation(),
+                                incomingActorBelief.getType(),
+                                incomingActorBelief.getIsAlive(),
+                                incomingActorBelief.getIsCarrying(),
+                                oldActorBelief.getIsWeaponized(),
+                                incomingActorBelief.getPos_x(),
+                                incomingActorBelief.getPos_y(),
+                                incomingActorBelief.getPos_z(),
+                                incomingActorBelief.getVelocity_x_valid(),
+                                incomingActorBelief.getVelocity_x(),
+                                incomingActorBelief.getVelocity_y_valid(),
+                                incomingActorBelief.getVelocity_y(),
+                                incomingActorBelief.getVelocity_z_valid(),
+                                incomingActorBelief.getVelocity_z());
+                            b.setBeliefTime(incomingActorBelief.getBeliefTime());
+                        }
+                        else if (useIncomingClassification && !useIncomingData)
+                        {
+                            // Use incoming classification but keep existing data
+                            updateDictionary = true;
+                            b = new Belief_Actor(
+                                oldActorBelief.getUnique_id(),
+                                incomingActorBelief.getAffiliation(),
+                                oldActorBelief.getType(),
+                                oldActorBelief.getIsAlive(),
+                                oldActorBelief.getIsCarrying(),
+                                incomingActorBelief.getIsWeaponized(),
+                                oldActorBelief.getPos_x(),
+                                oldActorBelief.getPos_y(),
+                                oldActorBelief.getPos_z(),
+                                oldActorBelief.getVelocity_x_valid(),
+                                oldActorBelief.getVelocity_x(),
+                                oldActorBelief.getVelocity_y_valid(),
+                                oldActorBelief.getVelocity_y(),
+                                oldActorBelief.getVelocity_z_valid(),
+                                oldActorBelief.getVelocity_z());
+                            b.setBeliefTime(oldActorBelief.getBeliefTime());
+                        }
+                        else
+                        {
+                            // Use all of the incoming belief
+                            updateDictionary = true;
+                            b = incomingActorBelief;
+                        }
+                    }
+                    else
+                    {
+                        // General merge policy (take newest belief) for every belief except actor  
+                        if (oldBelief.getBeliefTime() < b.getBeliefTime())
+                        {
+                            updateDictionary = true;
+                        }
+                        else
+                        {
+                            updateDictionary = false;
+                        }
                     }
                 }
                 else
+                {
+                    // Nothing in the dictionary for this belief type, put new entry in
+                    updateDictionary = true;
+                }
+
+                // Update the dictionary entry if necessary
+                if (updateDictionary)
                 {
                     beliefDictionary[b.getBeliefType()][b.getId()] = b;
                 }
 
                 SortedDictionary<int, bool> sourceDistanceDictionary;
-                
                 if (actorDistanceDictionary.TryGetValue(sourceId, out sourceDistanceDictionary))
                 {
                     foreach (KeyValuePair<int, bool> entry in sourceDistanceDictionary)

@@ -84,7 +84,22 @@ public class SoaActor : MonoBehaviour
 
         // Look at my children and populate list of weapons
         Weapons = transform.GetComponentsInChildren<SoaWeapon>();
-        isWeaponized = Weapons.Length > 0;
+
+        // An actor is weaponized if it has a weapon with at least one enabled mode
+        foreach(SoaWeapon tempWeapon in Weapons){
+            foreach (WeaponModality tempModality in tempWeapon.modes)
+            {
+                if (tempModality.enabled)
+                {
+                    isWeaponized = true;
+                    break;
+                }
+            }
+            if (isWeaponized)
+            {
+                break;
+            }
+        }
 
         // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
@@ -105,6 +120,9 @@ public class SoaActor : MonoBehaviour
         beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
+
+        // Initialize a new classification dictionary
+        classificationDictionary = new Dictionary<int, bool>();
 	}
 
     // Update is called once per frame
