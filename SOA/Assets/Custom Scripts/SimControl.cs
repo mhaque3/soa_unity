@@ -45,8 +45,14 @@ public class SimControl : MonoBehaviour
     Text[] labels;
     Camera thisCamera;
 
+    int availableLocalUniqueID;
+    int availableRemoteUniqueID;
+
 	void Start () 
     {
+        availableRemoteUniqueID = 100;
+        availableLocalUniqueID = 200;
+
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
 
@@ -83,7 +89,7 @@ public class SimControl : MonoBehaviour
             omcScript.AddPlatform(platform);
 
             SoaActor actor = platform.GetComponent<SoaActor>();
-            actor.unique_id = 200 + i;
+            actor.unique_id = requestNewLocalUniqueID();
             //actor.simulateMotion = true;
 
             if (platform.name.Contains("Blue Base"))
@@ -129,7 +135,7 @@ public class SimControl : MonoBehaviour
             omcScript.AddPlatform(platform);
 
             SoaActor actor = platform.GetComponent<SoaActor>();
-            actor.unique_id = 100 + i;
+            actor.unique_id = requestNewRemoteUniqueID();
 
             Debug.Log("Adding platform " + platform.name + " id " + actor.unique_id);
             actor.simulateMotion = true;
@@ -325,6 +331,44 @@ public class SimControl : MonoBehaviour
             }
         }
 	}
+
+    public void relabelLocalRedActor(int unique_id)
+    {
+        SoaActor actor;
+        GameObject platform;
+
+        // Go through each of the local platforms
+        for (int i = 0; i < LocalPlatforms.Count; i++)
+        {
+            platform = LocalPlatforms[i];
+            actor = platform.GetComponent<SoaActor>();
+
+            // Find the red actor we want by unique id
+            if (platform.name.Contains("Red") && actor.unique_id == unique_id)
+            {
+                // Remove current red actor from all lists
+                redDataManager.removeActor(actor);
+
+                // Change its unique ID
+                actor.unique_id = requestNewLocalUniqueID();
+
+                // Add relabeled red actor to all lists
+                redDataManager.addNewActor(actor);
+
+                break;
+            }
+        }
+    }
+
+    public int requestNewRemoteUniqueID()
+    {
+        return availableRemoteUniqueID++;
+    }
+
+    public int requestNewLocalUniqueID()
+    {
+        return availableLocalUniqueID++;
+    }
 
     public Vector3 mouseVector;
     void UpdateMouseOver()

@@ -128,6 +128,18 @@ public class SoaActor : MonoBehaviour
     // Update is called once per frame
     void Update() 
     {
+        /*
+        // Debug output 
+        if (unique_id == 100)
+        {
+            Debug.Log("**************************************");
+            foreach (Belief b in beliefDictionary[Belief.BeliefType.ACTOR].Values)
+            {
+                Belief_Actor a = (Belief_Actor)b;
+                Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive());
+            }
+        }
+        */
 	}
 
     // Called when the actor has been killed

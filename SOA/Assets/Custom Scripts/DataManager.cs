@@ -260,7 +260,7 @@ namespace soa
             if (!actors.Contains(actor))
             {
                 actors.Add(actor);
-                Debug.Log("Adding actor to actor dictionary " + actor.unique_id);
+                Debug.Log("Adding actor " + actor.unique_id + " to actor dictionary");
                 soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
                 addBelief(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
@@ -273,6 +273,30 @@ namespace soa
             else
             {
                 Debug.LogError("TRIED TO ADD ACTOR TO DATA MANAGER THAT ALREADY EXISTS: " + actor.unique_id);
+            }
+        }
+
+        /*
+         * Remove an existing actor from data manager list of actors
+         */
+        public void removeActor(SoaActor actor)
+        {
+            if (actors.Contains(actor))
+            {
+                actors.Remove(actor);
+                Debug.Log("Removing actor " + actor.unique_id + " from actor dictionary");
+                soaActorDictionary.Remove(actor.unique_id);
+
+                // Remove from both source and destination of distance dictionary
+                actorDistanceDictionary.Remove(actor.unique_id);
+                foreach (SortedDictionary<int,bool> d in actorDistanceDictionary.Values)
+                {
+                    d.Remove(actor.unique_id);
+                }
+            }
+            else
+            {
+                Debug.LogError("TRIED TO REMOVE ACTOR FROM DATA MANAGER THAT DOESN'T EXIST: " + actor.unique_id);
             }
         }
 

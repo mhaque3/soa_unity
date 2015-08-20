@@ -100,6 +100,7 @@ public class RedDismountSim : MonoBehaviour
                 }
 
                 thisNavAgent.Warp(GetRetreatRedBase(b).transform.position);
+                simControlScript.relabelLocalRedActor(thisSoaActor.unique_id);
             }
         }
 

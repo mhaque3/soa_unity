@@ -77,9 +77,6 @@ public class BluePoliceSim : MonoBehaviour
         redUnitDatabase = new Dictionary<int, RedUnitInfo>();
 
         // Save references to Unity game objects for quick lookup of properties
-        redUnits = new List<GameObject>();
-        redUnits.AddRange(GameObject.FindGameObjectsWithTag("RedTruck"));
-        redUnits.AddRange(GameObject.FindGameObjectsWithTag("RedDismount"));
         protectedSites = new List<GameObject>();
         protectedSites.AddRange(simControlScript.NgoSites);
         protectedSites.AddRange(simControlScript.Villages);
@@ -215,6 +212,11 @@ public class BluePoliceSim : MonoBehaviour
     {
         // Clear
         redUnitDatabase.Clear();
+
+        // Get all red units
+        redUnits = new List<GameObject>();
+        redUnits.AddRange(GameObject.FindGameObjectsWithTag("RedTruck"));
+        redUnits.AddRange(GameObject.FindGameObjectsWithTag("RedDismount"));
 
         // Loop through all actor beliefs and update the database
         foreach (Belief b in beliefDictionary[Belief.BeliefType.ACTOR].Values)
