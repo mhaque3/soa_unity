@@ -182,7 +182,7 @@ namespace soa
                         proto.SetRequestTime(b.getRequest_time());
                         proto.SetActorId(b.getActor_id());
                         proto.SetPosX(b.getPos_x());
-                        proto.SetPosY(b.getPos_y());
+                        proto.SetPosZ(b.getPos_z());
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
@@ -419,7 +419,7 @@ namespace soa
                             proto.RequestTime,
                             proto.ActorId,
                             proto.PosX,
-                            proto.PosY);
+                            proto.PosZ);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;

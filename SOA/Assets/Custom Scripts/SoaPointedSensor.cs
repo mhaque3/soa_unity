@@ -25,7 +25,7 @@ public class SoaPointedSensor : SoaSensor {
                 Vector3 unitySpoi = new Vector3(
                     ((Belief_SPOI)belief).getPos_x() * SimControl.KmToUnity,
                     0,
-                    ((Belief_SPOI)belief).getPos_y() * SimControl.KmToUnity);
+                    ((Belief_SPOI)belief).getPos_z() * SimControl.KmToUnity);
 
                 // Change sensor boresight vector
                 boresightUnitVector = (unitySpoi - transform.position).normalized;

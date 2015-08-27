@@ -62,7 +62,7 @@ namespace autonomy_msg {
           "aWVzGAQgAigCEhIKCmNhc3VhbHRpZXMYBSACKAISEQoJY2l2aWxpYW5zGAYg" + 
           "AigCImUKCEdwYl9TUE9JEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVl" + 
           "c3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIo" + 
-          "AhINCgVwb3NfeRgFIAIoAiKBAQoVR3BiX1dheXBvaW50X092ZXJyaWRlEhMK" + 
+          "AhINCgVwb3NfehgFIAIoAiKBAQoVR3BiX1dheXBvaW50X092ZXJyaWRlEhMK" + 
           "C2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghh" + 
           "Y3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3NfeRgFIAIoAhIN" + 
           "CgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFnZRITCgtiZWxpZWZfdGltZRgB" + 
@@ -102,7 +102,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_SPOI__Descriptor = Descriptor.MessageTypes[2];
         internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder>(internal__static_autonomy_msg_Gpb_SPOI__Descriptor,
-                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", });
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosZ", });
         internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor = Descriptor.MessageTypes[3];
         internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder>(internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor,
@@ -1178,7 +1178,7 @@ namespace autonomy_msg {
   public sealed partial class Gpb_SPOI : pb::GeneratedMessage<Gpb_SPOI, Gpb_SPOI.Builder> {
     private Gpb_SPOI() { }
     private static readonly Gpb_SPOI defaultInstance = new Gpb_SPOI().MakeReadOnly();
-    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_y", "request_time" };
+    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_z", "request_time" };
     private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 24, 8, 37, 45, 16 };
     public static Gpb_SPOI DefaultInstance {
       get { return defaultInstance; }
@@ -1242,14 +1242,14 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 5;
-    private bool hasPosY;
-    private float posY_;
-    public bool HasPosY {
-      get { return hasPosY; }
+    public const int PosZFieldNumber = 5;
+    private bool hasPosZ;
+    private float posZ_;
+    public bool HasPosZ {
+      get { return hasPosZ; }
     }
-    public float PosY {
-      get { return posY_; }
+    public float PosZ {
+      get { return posZ_; }
     }
     
     public override bool IsInitialized {
@@ -1258,7 +1258,7 @@ namespace autonomy_msg {
         if (!hasRequestTime) return false;
         if (!hasActorId) return false;
         if (!hasPosX) return false;
-        if (!hasPosY) return false;
+        if (!hasPosZ) return false;
         return true;
       }
     }
@@ -1278,8 +1278,8 @@ namespace autonomy_msg {
       if (hasPosX) {
         output.WriteFloat(4, field_names[2], PosX);
       }
-      if (hasPosY) {
-        output.WriteFloat(5, field_names[3], PosY);
+      if (hasPosZ) {
+        output.WriteFloat(5, field_names[3], PosZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -1303,8 +1303,8 @@ namespace autonomy_msg {
         if (hasPosX) {
           size += pb::CodedOutputStream.ComputeFloatSize(4, PosX);
         }
-        if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, PosY);
+        if (hasPosZ) {
+          size += pb::CodedOutputStream.ComputeFloatSize(5, PosZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -1442,8 +1442,8 @@ namespace autonomy_msg {
         if (other.HasPosX) {
           PosX = other.PosX;
         }
-        if (other.HasPosY) {
-          PosY = other.PosY;
+        if (other.HasPosZ) {
+          PosZ = other.PosZ;
         }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
@@ -1505,7 +1505,7 @@ namespace autonomy_msg {
               break;
             }
             case 45: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
+              result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
           }
@@ -1602,23 +1602,23 @@ namespace autonomy_msg {
         return this;
       }
       
-      public bool HasPosY {
-        get { return result.hasPosY; }
+      public bool HasPosZ {
+        get { return result.hasPosZ; }
       }
-      public float PosY {
-        get { return result.PosY; }
-        set { SetPosY(value); }
+      public float PosZ {
+        get { return result.PosZ; }
+        set { SetPosZ(value); }
       }
-      public Builder SetPosY(float value) {
+      public Builder SetPosZ(float value) {
         PrepareBuilder();
-        result.hasPosY = true;
-        result.posY_ = value;
+        result.hasPosZ = true;
+        result.posZ_ = value;
         return this;
       }
-      public Builder ClearPosY() {
+      public Builder ClearPosZ() {
         PrepareBuilder();
-        result.hasPosY = false;
-        result.posY_ = 0F;
+        result.hasPosZ = false;
+        result.posZ_ = 0F;
         return this;
       }
     }
