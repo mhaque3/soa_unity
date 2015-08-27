@@ -32,7 +32,7 @@ namespace soa
         // String representation
         public override string ToString()
         {
-            string s = "Belief_BaseCell {"
+            string s = "Belief_SPOI {"
                 + "\n" + "  request_time: " + request_time
                 + "\n" + "  actor_id: " + actor_id
                 + "\n" + "  pos_x: " + pos_x
