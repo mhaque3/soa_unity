@@ -132,7 +132,7 @@ public class SoaActor : MonoBehaviour
     // Update is called once per frame
     void Update() 
     {
-        
+        /*
         // Debug output 
         if (unique_id == 100)
         {
@@ -143,7 +143,7 @@ public class SoaActor : MonoBehaviour
                 Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive());
             }
         }
-        
+        */
 	}
 
     // Called when the actor has been killed

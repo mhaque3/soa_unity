@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 [System.Serializable]
 public class SensorModality
 {
@@ -11,7 +10,7 @@ public class SensorModality
     public float RangeMax;
 }
 
-public class SoaSensor : MonoBehaviour 
+abstract public class SoaSensor : MonoBehaviour 
 {
     public SensorModality[] modes;
     public SoaActor soaActor;
@@ -27,12 +26,15 @@ public class SoaSensor : MonoBehaviour
     {
 	}
 
+    abstract public bool CheckSensorFootprint(GameObject target);
+
     public void CheckDetections(List<GameObject> targets)
     {
         foreach (GameObject target in targets)
         {
-            // The object being detected must be alive
-            if (target.GetComponent<SoaActor>().isAlive)
+            // The object being detected must be alive and within the sensor's footprint
+            if (target.GetComponent<SoaActor>().isAlive && 
+                CheckSensorFootprint(target))
             {
                 // Loop through all possible detect modes
                 foreach (SensorModality mode in modes)
