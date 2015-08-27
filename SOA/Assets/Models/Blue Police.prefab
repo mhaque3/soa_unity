@@ -1261,6 +1261,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &183882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 405256}
+  - 114: {fileID: 11432692}
+  m_Layer: 0
+  m_Name: SoaClassifier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &184358
 GameObject:
   m_ObjectHideFlags: 1
@@ -1638,6 +1654,18 @@ Transform:
   - {fileID: 416650}
   m_Father: {fileID: 457172}
   m_RootOrder: 1
+--- !u!4 &405256
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183882}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 457904}
+  m_RootOrder: 3
 --- !u!4 &406858
 Transform:
   m_ObjectHideFlags: 1
@@ -2372,6 +2400,7 @@ Transform:
   - {fileID: 451222}
   - {fileID: 492784}
   - {fileID: 478428}
+  - {fileID: 405256}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &457960
@@ -3964,6 +3993,7 @@ MonoBehaviour:
   commsRange: 10
   Sensors: []
   Weapons: []
+  Classifiers: []
   Detections: []
   Tracks: []
   simulateMotion: 1
@@ -3984,6 +4014,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexGrid: {fileID: 0}
+--- !u!114 &11432692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes:
+  - tagString: RedDismount
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: RedTruck
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: NeutralDismount
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: NeutralTruck
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
 --- !u!114 &11460086
 MonoBehaviour:
   m_ObjectHideFlags: 1

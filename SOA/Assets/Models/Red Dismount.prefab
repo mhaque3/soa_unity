@@ -1849,6 +1849,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &163714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412276}
+  - 114: {fileID: 11468540}
+  m_Layer: 0
+  m_Name: SoaClassifier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &164508
 GameObject:
   m_ObjectHideFlags: 1
@@ -3259,6 +3275,18 @@ Transform:
   - {fileID: 433288}
   m_Father: {fileID: 438960}
   m_RootOrder: 0
+--- !u!4 &412276
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 477638}
+  m_RootOrder: 7
 --- !u!4 &412478
 Transform:
   m_ObjectHideFlags: 1
@@ -4922,6 +4950,7 @@ Transform:
   - {fileID: 431592}
   - {fileID: 427004}
   - {fileID: 421904}
+  - {fileID: 412276}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &478602
@@ -5685,6 +5714,7 @@ MonoBehaviour:
   commsRange: 5
   Sensors: []
   Weapons: []
+  Classifiers: []
   Detections: []
   Tracks: []
   simulateMotion: 1
@@ -5761,6 +5791,42 @@ MonoBehaviour:
   Civilian: 0
   CivilianIcon: {fileID: 152492}
   PathUpdateInterval: 30
+--- !u!114 &11468540
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes:
+  - tagString: HeavyUAV
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: SmallUAV
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: Balloon
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: BluePolice
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: NeutralDismount
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: NeutralTruck
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
 --- !u!114 &11486142
 MonoBehaviour:
   m_ObjectHideFlags: 1

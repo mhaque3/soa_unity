@@ -107,6 +107,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &147038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 499352}
+  - 114: {fileID: 11453932}
+  m_Layer: 0
+  m_Name: SoaClassifier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &149386
 GameObject:
   m_ObjectHideFlags: 1
@@ -331,7 +347,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 107882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.4619999, y: .75, z: 14.04}
+  m_LocalPosition: {x: -22.1760006, y: .75, z: 15.9209995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 402480}
@@ -339,6 +355,7 @@ Transform:
   - {fileID: 468702}
   - {fileID: 435992}
   - {fileID: 416962}
+  - {fileID: 499352}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &482350
@@ -365,6 +382,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 430100}
   m_RootOrder: 0
+--- !u!4 &499352
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 481630}
+  m_RootOrder: 5
 --- !u!23 &2300844
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -735,6 +764,42 @@ MonoBehaviour:
     enabled: 0
     RangeP1: 2.5
     RangeMax: 2.5
+--- !u!114 &11453932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes:
+  - tagString: HeavyUAV
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: SmallUAV
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: Balloon
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: BluePolice
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: NeutralDismount
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
+  - tagString: NeutralTruck
+    enabled: 1
+    RangeP1: 1.00000002e+20
+    RangeMax: 1.00000002e+20
 --- !u!114 &11459744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -811,6 +876,7 @@ MonoBehaviour:
   commsRange: 5
   Sensors: []
   Weapons: []
+  Classifiers: []
   Detections: []
   Tracks: []
   simulateMotion: 1

@@ -97,8 +97,8 @@ GameObject:
   - 114: {fileID: 11462278}
   - 114: {fileID: 11492882}
   - 135: {fileID: 13541808}
-  - 54: {fileID: 5450032}
   - 114: {fileID: 11489222}
+  - 54: {fileID: 5454706}
   m_Layer: 0
   m_Name: SmallUav
   m_TagString: SmallUAV
@@ -118,6 +118,22 @@ GameObject:
   - 23: {fileID: 2307644}
   m_Layer: 0
   m_Name: aileron-2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &137176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 462184}
+  - 114: {fileID: 11406904}
+  m_Layer: 0
+  m_Name: SoaClassifier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,12 +192,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.43000007, y: 2.5, z: -9.35000038}
+  m_LocalPosition: {x: -5.94000006, y: 2.5, z: -12.3400002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 426844}
   - {fileID: 453958}
   - {fileID: 451746}
+  - {fileID: 462184}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &451746
@@ -220,6 +237,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 483278}
   m_RootOrder: 0
+--- !u!4 &462184
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137176}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 445622}
+  m_RootOrder: 3
 --- !u!4 &483278
 Transform:
   m_ObjectHideFlags: 1
@@ -431,7 +460,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132706}
   m_Mesh: {fileID: 4300000, guid: 518af37909985954d8f1a9df8a85ac4b, type: 3}
---- !u!54 &5450032
+--- !u!54 &5454706
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -446,6 +475,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &11406904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes:
+  - tagString: RedDismount
+    enabled: 1
+    RangeP1: .5
+    RangeMax: 5
+  - tagString: RedTruck
+    enabled: 1
+    RangeP1: .5
+    RangeMax: 7
+  - tagString: NeutralDismount
+    enabled: 1
+    RangeP1: .5
+    RangeMax: 5
+  - tagString: NeutralTruck
+    enabled: 1
+    RangeP1: .5
+    RangeMax: 7
 --- !u!114 &11436636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -495,7 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601527037d1fd97419fdcad7525a3e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unique_id: 400
+  unique_id: 401
   affiliation: 0
   type: 1
   isAlive: 0
@@ -504,6 +561,7 @@ MonoBehaviour:
   commsRange: 10
   Sensors: []
   Weapons: []
+  Classifiers: []
   Detections: []
   Tracks: []
   simulateMotion: 1
@@ -528,6 +586,9 @@ MonoBehaviour:
   waypointEpsilon: 1
   PATROL: 0
   waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   waypointIndex: 0

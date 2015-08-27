@@ -48,7 +48,6 @@ public class SoaSensor : MonoBehaviour
                             {
                                 // Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
                                 LogDetection(target.gameObject);
-                                ClassifyTarget(target.gameObject);
                             }
                             else
                             {
@@ -56,7 +55,6 @@ public class SoaSensor : MonoBehaviour
                                 {
                                     // Debug.Log(soaActor.name + " detects " + target.name + " at " + slantRange + "km");
                                     LogDetection(target.gameObject);
-                                    ClassifyTarget(target.gameObject);
                                 }
                                 else
                                 {
@@ -111,71 +109,6 @@ public class SoaSensor : MonoBehaviour
             // twupy1
             // Debug.Log("Adding detection to soa actor list " + soaActor.unique_id);
             soaActor.Detections.Add(detectedObject);
-        }
-    }
-
-    void ClassifyTarget(GameObject targetObject)
-    {
-        // Save pointer to target's AoaActor
-        SoaActor targetActor = targetObject.GetComponent<SoaActor>();
-
-        // Save the target's unique ID
-        int targetUniqueId = targetActor.unique_id;
-
-        // Check if target has been classified already
-        if(!soaActor.checkClassified(targetUniqueId)){
-            // We are in here because the target has not been classified yet, let's see what we can do
-            bool classificationSuccessful = false;
-
-            if (soaActor.affiliation == targetActor.affiliation)
-            {
-                // People on the same team always know one another
-                classificationSuccessful = true;
-            }
-            else if(soaActor.affiliation == Affiliation.BLUE)
-            {
-                // Target is either red or neutral
-                switch (soaActor.type)
-                {
-                    case (int)SoaActor.ActorType.HEAVY_LIFT:
-                        // Blue heavy lift can immediately classify anything it sees
-                        classificationSuccessful = true;
-                        break;
-                    case (int)SoaActor.ActorType.SMALL_UAV:
-                        // Blue small UAV probability of classification varies by range
-                        Vector3 delta = transform.position - targetObject.transform.position;
-                        float slantRange = delta.magnitude / SimControl.KmToUnity;
-                        if (slantRange < 0.5)
-                        {
-                            // Always can classify within 500 m
-                            classificationSuccessful = true;
-                        }
-                        else if(Random.value <= 1.0f/(slantRange + 0.5f))
-                        {
-                            // Falls off as 1000m/(r+500m) after 500 m
-                            classificationSuccessful = true;
-                        }
-                        break;
-                    case (int)SoaActor.ActorType.BALLOON:
-                        // Balloon cannot classify
-                        classificationSuccessful = false;
-                        break;
-                    case (int)SoaActor.ActorType.POLICE:
-                        // Police can immediately classify anything it sees
-                        classificationSuccessful = true;
-                        break;
-                }
-            }else if(soaActor.affiliation == Affiliation.RED)
-            {
-                // Red can classify anything it sees immediately
-                classificationSuccessful = true;
-            }
-
-            // Set target as classified if it passed the checks
-            if (classificationSuccessful)
-            {
-                soaActor.setClassified(targetUniqueId);
-            }
         }
     }
 }
