@@ -9,6 +9,7 @@ public class NeutralUnitSim : MonoBehaviour
     NavMeshAgent thisNavAgent;
     GameObject currDestination;
     List<GameObject> choices;
+    SoaActor thisSoaActor;
 
 	// Use this for initialization
 	void Start () 
@@ -17,12 +18,14 @@ public class NeutralUnitSim : MonoBehaviour
         simControlScript = GameObject.FindObjectOfType<SimControl>();
         waypointScript = gameObject.GetComponent<SoldierWaypointMotion>();
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
+        thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // To hold source/destination choices during random selection
         choices = new List<GameObject>();
 
-        // Randomly assign an initial source/destination
-        SetSourceDestinationPair();
+        // Randomly assign a destination
+        currDestination = ChooseRandomNeutralSite();
+        OverrideWaypoint(currDestination);
 	}
 	
 	// Update is called once per frame
@@ -39,7 +42,7 @@ public class NeutralUnitSim : MonoBehaviour
         }
     }
 
-    GameObject ChooseRandomNeutral()
+    GameObject ChooseRandomNeutralSite()
     {
         // Count the number of places to choose from
         choices.Clear();
@@ -72,7 +75,19 @@ public class NeutralUnitSim : MonoBehaviour
         // If so, then randomly choose a pair where the source and destination are not the same
         if (chooseNewSourceDestination)
         {
-            SetSourceDestinationPair();
+            // Warp agent to new location
+            GameObject warpLocation = WarpNewLocation();
+
+            // Assign a new destination that is different from where we warped
+            currDestination = warpLocation;
+            while (currDestination.name.Equals(warpLocation.name))
+            {
+                currDestination = ChooseRandomNeutralSite();
+                OverrideWaypoint(currDestination);
+            }
+
+            // Give the agent a new ID
+            simControlScript.relabelLocalNeutralActor(thisSoaActor.unique_id);
         }
     }
 
@@ -86,20 +101,15 @@ public class NeutralUnitSim : MonoBehaviour
         waypointScript.On = true;
     }
 
-    void SetSourceDestinationPair()
+    GameObject WarpNewLocation()
     {
-        // Find the pair
-        GameObject source = ChooseRandomNeutral();
-        currDestination = source;
-        while (source.name.Equals(currDestination.name))
-        {
-            currDestination = ChooseRandomNeutral();
-        }
+        // Choose a new location
+        GameObject g = ChooseRandomNeutralSite();
 
-        // Set the new waypoint destination
-        OverrideWaypoint(currDestination);
+        // Warp there
+        thisNavAgent.Warp(g.transform.position);
 
-        // Teleport unit to the new source
-        thisNavAgent.Warp(source.transform.position);
+        // Return place where we warped
+        return g;
     }
 }

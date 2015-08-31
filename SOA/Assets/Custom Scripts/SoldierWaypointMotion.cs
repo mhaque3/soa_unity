@@ -16,16 +16,26 @@ public class SoldierWaypointMotion : MonoBehaviour
     // Use this for initialization
 	void Start () 
     {
-        if (waypoints.Count < 1)
-            waypoints.Add(gameObject);
         waypointIndex = 0;
         navAgent = GetComponent<NavMeshAgent>();
         navAgent.SetAreaCost(NavMesh.GetAreaFromName("Road"), RoadCost);
 
-        targetPosition = waypoints[waypointIndex].transform.position;
-        navAgent.SetDestination(targetPosition);
-    }
+        if (waypoints.Count < 1)
+        {
+            // Add current location as waypoint
+            waypoints.Add(gameObject);
 
+            // Perturb a tiny bit to get vehicles oscillating
+            targetPosition = waypoints[waypointIndex].transform.position + new Vector3(1e-6f, 0.0f, 1e-6f);
+            navAgent.SetDestination(targetPosition);
+        }
+        else
+        {
+            // Set target to be exactly at waypoint
+            targetPosition = waypoints[waypointIndex].transform.position;
+            navAgent.SetDestination(targetPosition);
+        }
+    }
 
  	// Update is called once per frame
     float timeInterval = 0;

@@ -1,5 +1,64 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Config>
-  <RedRoom>soa-test-red</RedRoom>
-  <BlueRoom>soa-test-blue2</BlueRoom>
+  <!-- Network Configuration Settings -->
+  <Network redRoom="soa-test-red" blueRoom="soa-test-blue2" />
+ 
+  <!-- Local Platform Descriptions -->
+  <Local>
+    <!-- Red Dismounts -->
+    <RedDismount     x="-21.080"   y="0.750"   z="15.316"
+       hasWeapon="false" initialWaypoint="Red Base 0" />
+    
+    <RedDismount     x="-23.259"   y="0.750"   z="15.307"
+       hasWeapon="false" initialWaypoint="Red Base 0" />
+
+    <RedDismount     x="-2.733"    y="0.750"   z="14.656"
+       hasWeapon="false" initialWaypoint="Red Base 1" />
+
+    <RedDismount     x="-2.650"    y="0.750"   z="15.890"
+       hasWeapon="false" initialWaypoint="Red Base 1" />
+
+    <RedDismount     x="26.430"    y="0.750"   z="11.530"
+       hasWeapon="false" initialWaypoint="Red Base 2" />
+
+    <RedDismount     x="27.550"    y="0.750"   z="12.170"
+       hasWeapon="false" initialWaypoint="Red Base 2" />
+
+    <!-- Red Trucks -->
+    <RedTruck        x="-22.176"   y="0.750"   z="15.921"
+       hasWeapon="false" initialWaypoint="Red Base 0" />
+
+    <RedTruck        x="-1.623"    y="0.750"   z="15.280"
+       hasWeapon="false" initialWaypoint="Red Base 1" />
+
+    <RedTruck        x="26.462"    y="0.750"   z="14.040"
+       hasWeapon="false" initialWaypoint="Red Base 2" />
+
+    <!-- Neutral Dismounts -->
+    <NeutralDismount x="29.570"    y="0.750"   z="-8.230" />
+    <NeutralDismount x="-13.710"   y="0.750"   z="-8.230" />
+    <NeutralDismount x="1.510"     y="0.750"   z="2.590"  />
+
+    <!-- Neutral Trucks -->
+    <NeutralTruck    x="-24.140"   y="0.750"   z="-0.060" />
+    <NeutralTruck    x="13.410"    y="0.750"   z="2.740"  />
+
+    <!-- Blue Police -->
+    <BluePolice      x="-11.350"   y="0.750"   z="-18.940" />
+  </Local>
+
+  <!-- Remote Platform Descriptions -->
+  <Remote>
+    <!-- Heavy UAVs -->
+    <HeavyUAV        x="0.600"     y="1.500"   z="-12.100"   id="200"/>
+    <HeavyUAV        x="6.470"     y="1.500"   z="-9.070"    id="201"/>
+    
+    <!-- Small UAVs -->
+    <SmallUAV        x="-1.700"    y="2.500"   z="-13.260"   id="202"/>
+    <SmallUAV        x="-5.940"    y="2.500"   z="-12.340"   id="203"/>
+    <SmallUAV        x="1.470"     y="2.500"   z="-14.510"   id="204"/>
+    
+    <!-- Balloons -->
+    <Balloon         x="10.266"    y="15.000"  z="-17.782"   id="205"/>
+  </Remote>
 </Config>

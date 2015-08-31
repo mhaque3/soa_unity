@@ -30,7 +30,7 @@ public class SoaActor : MonoBehaviour
         BALLOON = 6
     };
 
-    public bool isAlive;
+    public bool isAlive = false;
     public CarriedResource isCarrying;
     public bool isWeaponized;
 
@@ -63,13 +63,10 @@ public class SoaActor : MonoBehaviour
 
     public SoldierWaypointMotion motionScript;
     public NavMeshAgent navAgent;
-    
-    // Use this for initialization
-	public virtual void Start () 
-    {
-        // Alive at the beginning
-        isAlive = true;
 
+    // Use this for initialization
+    void Start()
+    {
         // Initially carrying nothing
         isCarrying = CarriedResource.NONE;
 
@@ -77,11 +74,6 @@ public class SoaActor : MonoBehaviour
         displayOrientation = transform.rotation;
 
         Sensors = transform.GetComponentsInChildren<SoaSensor>();
-
-        foreach (SoaSensor sensor in Sensors)
-        {
-            //sensor.soaActor = this;
-        }
 
         // Look at my children and populate list of classifiers
         Classifiers = transform.GetComponentsInChildren<SoaClassifier>();
@@ -127,6 +119,9 @@ public class SoaActor : MonoBehaviour
 
         // Initialize a new classification dictionary
         classificationDictionary = new Dictionary<int, bool>();
+
+        // Set to alive now, must be last thing done
+        isAlive = true;
 	}
 
     // Update is called once per frame
@@ -359,6 +354,15 @@ public class SoaActor : MonoBehaviour
         #endif
 
         // Get the dictionary for that belief type
+        Belief.BeliefType bt = b.getBeliefType();
+        try
+        {
+            int i = beliefDictionary.Count;
+        }
+        catch (Exception)
+        {
+            Debug.LogWarning("SoaActor: Exception from beliefDictionary for " + gameObject.name);
+        }
         SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
         bool updateDictionary;
         Belief oldBelief;
@@ -495,7 +499,6 @@ public class SoaActor : MonoBehaviour
     {
         // Only publish beliefs if still alive
         if(isAlive){
-            ulong currentTime = (ulong)(System.DateTime.UtcNow - epoch).Milliseconds;
             if (beliefDictionary.ContainsKey(type))
             {
                 SortedDictionary<int, Belief> typeDict = beliefDictionary[type];

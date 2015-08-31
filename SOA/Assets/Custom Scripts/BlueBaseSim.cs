@@ -5,8 +5,6 @@ using soa;
 
 public class BlueBaseSim : MonoBehaviour 
 {
-    SoaSite thisSoaSite;
-    SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> beliefDictionary;
     public float Casualties;
     public float SupplyRate;
     public float Supply;
@@ -14,7 +12,6 @@ public class BlueBaseSim : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        thisSoaSite = gameObject.GetComponent<SoaSite>();
     }
 
     float simTimer;
