@@ -24,7 +24,7 @@ public class SoaPointedSensor : SoaSensor {
                 // Extract SPOI (x,z) in sim coordinates and transform to Unity coordinates
                 Vector3 unitySpoi = new Vector3(
                     ((Belief_SPOI)belief).getPos_x() * SimControl.KmToUnity,
-                    0,
+                    ((Belief_SPOI)belief).getPos_y() * SimControl.KmToUnity,
                     ((Belief_SPOI)belief).getPos_z() * SimControl.KmToUnity);
 
                 // Change sensor boresight vector
