@@ -60,35 +60,35 @@ namespace autonomy_msg {
           "T1NpdGUSEwoLYmVsaWVmX3RpbWUYASACKAQSCgoCaWQYAiACKAUSKQoFY2Vs" + 
           "bHMYAyADKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxsEhAKCHN1cHBs" + 
           "aWVzGAQgAigCEhIKCmNhc3VhbHRpZXMYBSACKAISEQoJY2l2aWxpYW5zGAYg" + 
-          "AigCImUKCEdwYl9TUE9JEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVl" + 
+          "AigCInQKCEdwYl9TUE9JEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVl" + 
           "c3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIo" + 
-          "AhINCgVwb3NfehgFIAIoAiKBAQoVR3BiX1dheXBvaW50X092ZXJyaWRlEhMK" + 
-          "C2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghh" + 
-          "Y3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3NfeRgFIAIoAhIN" + 
-          "CgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFnZRITCgtiZWxpZWZfdGltZRgB" + 
-          "IAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMoCzIaLmF1dG9ub215X21z" + 
-          "Zy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCACKAISEgoKY2FzdWFsdGll" + 
-          "cxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoDcm93GAEgAigFEgsKA2NvbBgC" + 
-          "IAIoBSL9AQoJR3BiX0FjdG9yEhMKC2JlbGllZl90aW1lGAEgAigEEhEKCXVu" + 
-          "aXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgDIAIoBRIMCgR0eXBlGAQg" + 
-          "AigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2NhcnJ5aW5nGAYgAigFEhUK" + 
-          "DWlzX3dlYXBvbml6ZWQYByACKAgSDQoFcG9zX3gYCCACKAISDQoFcG9zX3kY" + 
-          "CSACKAISDQoFcG9zX3oYCiACKAISEgoKdmVsb2NpdHlfeBgLIAEoAhISCgp2" + 
-          "ZWxvY2l0eV95GAwgASgCEhIKCnZlbG9jaXR5X3oYDSABKAIiLwoKR3BiX0N1" + 
-          "c3RvbRITCgtiZWxpZWZfdGltZRgBIAIoBBIMCgRkYXRhGAIgAigMImgKCEdw" + 
-          "Yl9CYXNlEhMKC2JlbGllZl90aW1lGAEgAigEEgoKAmlkGAIgAigFEikKBWNl" + 
-          "bGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbBIQCghzdXBw" + 
-          "bGllcxgEIAIoAiJbCgtHcGJfVGVycmFpbhITCgtiZWxpZWZfdGltZRgBIAIo" + 
-          "BBIMCgR0eXBlGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNn" + 
-          "LkdwYl9HcmlkQ2VsbCJgChBHcGJfTW9kZV9Db21tYW5kEhMKC2JlbGllZl90" + 
-          "aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgD" + 
-          "IAIoBRIPCgdtb2RlX2lkGAQgAigFIngKDEdwYl9XYXlwb2ludBITCgtiZWxp" + 
-          "ZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQSEAoIYWN0b3Jf" + 
-          "aWQYAyACKAUSDQoFcG9zX3gYBCACKAISDQoFcG9zX3kYBSACKAISDQoFcG9z" + 
-          "X3oYBiACKAIiLQoIR3BiX1RpbWUSEwoLYmVsaWVmX3RpbWUYASACKAQSDAoE" + 
-          "dGltZRgCIAIoBCJgCgxHcGJfUm9hZENlbGwSEwoLYmVsaWVmX3RpbWUYASAC" + 
-          "KAQSEQoJaXNSb2FkRW5kGAIgAigIEigKBGNlbGwYAyACKAsyGi5hdXRvbm9t" + 
-          "eV9tc2cuR3BiX0dyaWRDZWxs");
+          "AhINCgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiKBAQoVR3BiX1dheXBv" + 
+          "aW50X092ZXJyaWRlEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3Rf" + 
+          "dGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhIN" + 
+          "CgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFnZRIT" + 
+          "CgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMo" + 
+          "CzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCAC" + 
+          "KAISEgoKY2FzdWFsdGllcxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoDcm93" + 
+          "GAEgAigFEgsKA2NvbBgCIAIoBSL9AQoJR3BiX0FjdG9yEhMKC2JlbGllZl90" + 
+          "aW1lGAEgAigEEhEKCXVuaXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgD" + 
+          "IAIoBRIMCgR0eXBlGAQgAigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2Nh" + 
+          "cnJ5aW5nGAYgAigFEhUKDWlzX3dlYXBvbml6ZWQYByACKAgSDQoFcG9zX3gY" + 
+          "CCACKAISDQoFcG9zX3kYCSACKAISDQoFcG9zX3oYCiACKAISEgoKdmVsb2Np" + 
+          "dHlfeBgLIAEoAhISCgp2ZWxvY2l0eV95GAwgASgCEhIKCnZlbG9jaXR5X3oY" + 
+          "DSABKAIiLwoKR3BiX0N1c3RvbRITCgtiZWxpZWZfdGltZRgBIAIoBBIMCgRk" + 
+          "YXRhGAIgAigMImgKCEdwYl9CYXNlEhMKC2JlbGllZl90aW1lGAEgAigEEgoK" + 
+          "AmlkGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdwYl9H" + 
+          "cmlkQ2VsbBIQCghzdXBwbGllcxgEIAIoAiJbCgtHcGJfVGVycmFpbhITCgti" + 
+          "ZWxpZWZfdGltZRgBIAIoBBIMCgR0eXBlGAIgAigFEikKBWNlbGxzGAMgAygL" + 
+          "MhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbCJgChBHcGJfTW9kZV9Db21t" + 
+          "YW5kEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIo" + 
+          "BBIQCghhY3Rvcl9pZBgDIAIoBRIPCgdtb2RlX2lkGAQgAigFIngKDEdwYl9X" + 
+          "YXlwb2ludBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUY" + 
+          "AiACKAQSEAoIYWN0b3JfaWQYAyACKAUSDQoFcG9zX3gYBCACKAISDQoFcG9z" + 
+          "X3kYBSACKAISDQoFcG9zX3oYBiACKAIiLQoIR3BiX1RpbWUSEwoLYmVsaWVm" + 
+          "X3RpbWUYASACKAQSDAoEdGltZRgCIAIoBCJgCgxHcGJfUm9hZENlbGwSEwoL" + 
+          "YmVsaWVmX3RpbWUYASACKAQSEQoJaXNSb2FkRW5kGAIgAigIEigKBGNlbGwY" + 
+          "AyACKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxs");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
@@ -102,7 +102,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_SPOI__Descriptor = Descriptor.MessageTypes[2];
         internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder>(internal__static_autonomy_msg_Gpb_SPOI__Descriptor,
-                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosZ", });
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
         internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor = Descriptor.MessageTypes[3];
         internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder>(internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor,
@@ -1178,8 +1178,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_SPOI : pb::GeneratedMessage<Gpb_SPOI, Gpb_SPOI.Builder> {
     private Gpb_SPOI() { }
     private static readonly Gpb_SPOI defaultInstance = new Gpb_SPOI().MakeReadOnly();
-    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_z", "request_time" };
-    private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 24, 8, 37, 45, 16 };
+    private static readonly string[] _gpbSPOIFieldNames = new string[] { "actor_id", "belief_time", "pos_x", "pos_y", "pos_z", "request_time" };
+    private static readonly uint[] _gpbSPOIFieldTags = new uint[] { 24, 8, 37, 45, 53, 16 };
     public static Gpb_SPOI DefaultInstance {
       get { return defaultInstance; }
     }
@@ -1242,7 +1242,17 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosZFieldNumber = 5;
+    public const int PosYFieldNumber = 5;
+    private bool hasPosY;
+    private float posY_;
+    public bool HasPosY {
+      get { return hasPosY; }
+    }
+    public float PosY {
+      get { return posY_; }
+    }
+    
+    public const int PosZFieldNumber = 6;
     private bool hasPosZ;
     private float posZ_;
     public bool HasPosZ {
@@ -1258,6 +1268,7 @@ namespace autonomy_msg {
         if (!hasRequestTime) return false;
         if (!hasActorId) return false;
         if (!hasPosX) return false;
+        if (!hasPosY) return false;
         if (!hasPosZ) return false;
         return true;
       }
@@ -1270,7 +1281,7 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[1], BeliefTime);
       }
       if (hasRequestTime) {
-        output.WriteUInt64(2, field_names[4], RequestTime);
+        output.WriteUInt64(2, field_names[5], RequestTime);
       }
       if (hasActorId) {
         output.WriteInt32(3, field_names[0], ActorId);
@@ -1278,8 +1289,11 @@ namespace autonomy_msg {
       if (hasPosX) {
         output.WriteFloat(4, field_names[2], PosX);
       }
+      if (hasPosY) {
+        output.WriteFloat(5, field_names[3], PosY);
+      }
       if (hasPosZ) {
-        output.WriteFloat(5, field_names[3], PosZ);
+        output.WriteFloat(6, field_names[4], PosZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -1303,8 +1317,11 @@ namespace autonomy_msg {
         if (hasPosX) {
           size += pb::CodedOutputStream.ComputeFloatSize(4, PosX);
         }
+        if (hasPosY) {
+          size += pb::CodedOutputStream.ComputeFloatSize(5, PosY);
+        }
         if (hasPosZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(5, PosZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(6, PosZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -1442,6 +1459,9 @@ namespace autonomy_msg {
         if (other.HasPosX) {
           PosX = other.PosX;
         }
+        if (other.HasPosY) {
+          PosY = other.PosY;
+        }
         if (other.HasPosZ) {
           PosZ = other.PosZ;
         }
@@ -1505,6 +1525,10 @@ namespace autonomy_msg {
               break;
             }
             case 45: {
+              result.hasPosY = input.ReadFloat(ref result.posY_);
+              break;
+            }
+            case 53: {
               result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
@@ -1599,6 +1623,26 @@ namespace autonomy_msg {
         PrepareBuilder();
         result.hasPosX = false;
         result.posX_ = 0F;
+        return this;
+      }
+      
+      public bool HasPosY {
+        get { return result.hasPosY; }
+      }
+      public float PosY {
+        get { return result.PosY; }
+        set { SetPosY(value); }
+      }
+      public Builder SetPosY(float value) {
+        PrepareBuilder();
+        result.hasPosY = true;
+        result.posY_ = value;
+        return this;
+      }
+      public Builder ClearPosY() {
+        PrepareBuilder();
+        result.hasPosY = false;
+        result.posY_ = 0F;
         return this;
       }
       
