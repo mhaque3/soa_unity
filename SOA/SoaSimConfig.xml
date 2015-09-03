@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config>
   <!-- Network Configuration Settings -->
-  <Network redRoom="soa-test-red" blueRoom="soa-test-blue2" />
+  <Network 
+       redRoom ="soa-test-red" 
+       blueRoom="soa-test-blue2" 
+  />
  
+ <!-- Simulation Configuration Settings -->
+  <Simulation 
+       probRedDismountWeaponized="0.75"
+       probRedTruckWeaponized   ="0.75" 
+  />
+
   <!-- Local Platform Descriptions -->
   <Local>
     <!-- Red Dismounts -->

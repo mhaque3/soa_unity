@@ -12,6 +12,10 @@ namespace soa
         public string networkRedRoom;
         public string networkBlueRoom;
 
+        // Red platform weapon probability
+        public float probRedDismountWeaponized;
+        public float probRedTruckWeaponized;
+
         // Local platforms
         public List<PlatformConfig> localPlatforms;
 

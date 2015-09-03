@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using soa;
 
 public class RedDismountSim : MonoBehaviour 
 {
@@ -82,7 +83,7 @@ public class RedDismountSim : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BluePolice"))
+        if (other.CompareTag("BluePolice")) // Killed by police
         {
             SoaSensor s = other.gameObject.GetComponentInChildren<SoaSensor>();
             if (s != null)
@@ -90,18 +91,24 @@ public class RedDismountSim : MonoBehaviour
                 s.logKill(thisSoaActor);
             }
 
+            // Find out where to retreat to
             BluePoliceSim b = other.gameObject.GetComponent<BluePoliceSim>();
-            if (b != null)
-            {
-                if (Civilian)
-                {
-                    Civilian = false;
-                    thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
-                }
+            Vector3 retreatBasePosition = GetRetreatRedBase(b).transform.position;
 
-                thisNavAgent.Warp(GetRetreatRedBase(b).transform.position);
-                simControlScript.relabelLocalRedActor(thisSoaActor.unique_id);
-            }
+            // Destroy self
+            simControlScript.DestroyRedDismount(gameObject);
+
+            // Configure a replacement agent
+            RedDismountConfig c = new RedDismountConfig(
+                retreatBasePosition.x,
+                retreatBasePosition.y,
+                retreatBasePosition.z,
+                -1,
+                null,
+                Random.value <= simControlScript.probRedDismountWeaponized);
+
+            // Instantiate and activate a replacement
+            simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c));
         }
 
         if (other.CompareTag("RedBase"))

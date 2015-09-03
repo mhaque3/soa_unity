@@ -45,7 +45,7 @@ namespace soa
                 return null;
             }
 
-            // Go through each category in "Config"
+            // Parse network and simulation setup first
             foreach (XmlNode c in configNode.ChildNodes)
             {
                 // Parse differently depending on which category we are in
@@ -55,6 +55,20 @@ namespace soa
                         // Network configuration
                         ParseNetwork(c, soaConfig);
                         break;
+                    case "Simulation":
+                        // Simulation configuration
+                        ParseSimulation(c, soaConfig);
+                        break;
+                }
+            }
+
+            // Then look at local and remote platforms whose defaults may
+            // use information from network or simulation categories
+            foreach (XmlNode c in configNode.ChildNodes)
+            {
+                // Parse differently depending on which category we are in
+                switch (c.Name)
+                {
                     case "Local":
                         // Local platforms
                         ParseLocal(c, soaConfig);
@@ -89,6 +103,21 @@ namespace soa
             }            
         }
 
+        // Simulation configuration category parsing
+        static void ParseSimulation(XmlNode node, SoaConfig soaConfig)
+        {
+            // Pull attributes directly from the node
+            try
+            {
+                soaConfig.probRedDismountWeaponized = GetFloatAttribute(node, "probRedDismountWeaponized", 1.0f);
+                soaConfig.probRedTruckWeaponized = GetFloatAttribute(node, "probRedTruckWeaponized", 1.0f);
+            }
+            catch (Exception)
+            {
+                Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+            }
+        }
+
         // Local platform category parsing
         static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
@@ -108,7 +137,7 @@ namespace soa
                                         GetFloatAttribute(c, "z", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", false)
+                                        GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedDismountWeaponized)
                                     )
                                 );
                             }
@@ -122,7 +151,7 @@ namespace soa
                                         GetFloatAttribute(c, "z", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", false)
+                                        GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedTruckWeaponized)
                                     )
                                 );
                             }

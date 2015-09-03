@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using soa;
 
 public class RedTruckSim : MonoBehaviour 
 {
@@ -82,7 +83,7 @@ public class RedTruckSim : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BluePolice"))
+        if (other.CompareTag("BluePolice")) // Killed by police
         {
             SoaSensor s = other.gameObject.GetComponentInChildren<SoaSensor>();
             if (s != null)
@@ -90,26 +91,24 @@ public class RedTruckSim : MonoBehaviour
                 s.logKill(thisSoaActor);
             }
             
-
+            // Find out where to retreat to
             BluePoliceSim b = other.gameObject.GetComponent<BluePoliceSim>();
-            if (b != null)
-            {
-                waypointScript.On = false;
-                thisNavAgent.ResetPath();
-                waypointScript.waypointIndex = 0;
-                waypointScript.waypoints.Clear();
-                waypointScript.waypoints.Add(GetRetreatRedBase(b));
-                waypointScript.On = true;
+            Vector3 retreatBasePosition = GetRetreatRedBase(b).transform.position;
 
-                if (Civilian)
-                {
-                    Civilian = false;
-                    thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
-                }
+            // Destroy self
+            simControlScript.DestroyRedTruck(gameObject);
 
-                thisNavAgent.Warp(GetRetreatRedBase(b).transform.position);
-                simControlScript.relabelLocalRedActor(thisSoaActor.unique_id);
-            }
+            // Configure a replacement agent
+            RedTruckConfig c = new RedTruckConfig(
+                retreatBasePosition.x,
+                retreatBasePosition.y,
+                retreatBasePosition.z,
+                -1,
+                null,
+                Random.value <= simControlScript.probRedTruckWeaponized);
+
+            // Instantiate and activate a replacement
+            simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c));
         }
 
         if (other.CompareTag("RedBase"))
