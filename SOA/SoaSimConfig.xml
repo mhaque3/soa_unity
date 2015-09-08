@@ -8,66 +8,67 @@
  
  <!-- Simulation Configuration Settings -->
   <Simulation 
-       probRedDismountWeaponized="0.75"
-       probRedTruckWeaponized   ="0.75" 
+       probRedDismountWeaponized="0.0"
+       probRedTruckWeaponized   ="0.0" 
   />
 
   <!-- Local Platform Descriptions -->
   <Local>
     <!-- Red Dismounts -->
-    <RedDismount     x="-21.080"   y="0.750"   z="15.316"
+    <RedDismount     x_km="-16.892"   y_km="0.600"   z_km="12.273"
        hasWeapon="false" initialWaypoint="Red Base 0" />
     
-    <RedDismount     x="-23.259"   y="0.750"   z="15.307"
+    <RedDismount     x_km="-18.638"   y_km="0.600"   z_km="12.267"
        hasWeapon="false" initialWaypoint="Red Base 0" />
 
-    <RedDismount     x="-2.733"    y="0.750"   z="14.656"
+    <RedDismount     x_km="-2.190"    y_km="0.600"   z_km="11.744"
        hasWeapon="false" initialWaypoint="Red Base 1" />
 
-    <RedDismount     x="-2.650"    y="0.750"   z="15.890"
+    <RedDismount     x_km="-2.124"    y_km="0.600"   z_km="12.733"
        hasWeapon="false" initialWaypoint="Red Base 1" />
 
-    <RedDismount     x="26.430"    y="0.750"   z="11.530"
+    <RedDismount     x_km="21.180"    y_km="0.600"   z_km="9.240"
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
-    <RedDismount     x="27.550"    y="0.750"   z="12.170"
+    <RedDismount     x_km="22.077"    y_km="0.600"   z_km="9.752"
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
     <!-- Red Trucks -->
-    <RedTruck        x="-22.176"   y="0.750"   z="15.921"
+    <RedTruck        x_km="-17.770"   y_km="0.600"   z_km="12.758"
        hasWeapon="false" initialWaypoint="Red Base 0" />
 
-    <RedTruck        x="-1.623"    y="0.750"   z="15.280"
+    <RedTruck        x_km="-1.300"    y_km="0.600"   z_km="12.245"
        hasWeapon="false" initialWaypoint="Red Base 1" />
 
-    <RedTruck        x="26.462"    y="0.750"   z="14.040"
+    <RedTruck        x_km="21.205"    y_km="0.600"   z_km="11.251"
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
     <!-- Neutral Dismounts -->
-    <NeutralDismount x="29.570"    y="0.750"   z="-8.230" />
-    <NeutralDismount x="-13.710"   y="0.750"   z="-8.230" />
-    <NeutralDismount x="1.510"     y="0.750"   z="2.590"  />
+    <NeutralDismount x_km="23.696"    y_km="0.600"   z_km="-6.595" />
+    <NeutralDismount x_km="-10.987"   y_km="0.600"   z_km="-6.595" />
+    <NeutralDismount x_km="1.210"     y_km="0.600"   z_km="2.075"  />
 
     <!-- Neutral Trucks -->
-    <NeutralTruck    x="-24.140"   y="0.750"   z="-0.060" />
-    <NeutralTruck    x="13.410"    y="0.750"   z="2.740"  />
+    <NeutralTruck    x_km="-19.345"   y_km="0.600"   z_km="-0.048" />
+    <NeutralTruck    x_km="10.746"    y_km="0.600"   z_km="2.196"  />
 
     <!-- Blue Police -->
-    <BluePolice      x="-11.350"   y="0.750"   z="-18.940" />
+    <BluePolice      x_km="-9.095"    y_km="0.600"   z_km="-15.178" />
   </Local>
 
   <!-- Remote Platform Descriptions -->
   <Remote>
     <!-- Heavy UAVs -->
-    <HeavyUAV        x="0.600"     y="1.500"   z="-12.100"   id="200"/>
-    <HeavyUAV        x="6.470"     y="1.500"   z="-9.070"    id="201"/>
+    <HeavyUAV        x_km="0.481"     y_km="1.200"   z_km="-9.696"    id="200"/>
+    <HeavyUAV        x_km="5.185"     y_km="1.200"   z_km="-7.268"    id="201"/>
     
     <!-- Small UAVs -->
-    <SmallUAV        x="-1.700"    y="2.500"   z="-13.260"   id="202"/>
-    <SmallUAV        x="-5.940"    y="2.500"   z="-12.340"   id="203"/>
-    <SmallUAV        x="1.470"     y="2.500"   z="-14.510"   id="204"/>
+    <SmallUAV        x_km="-1.362"    y_km="2.000"   z_km="-10.626"   id="202"/>
+    <SmallUAV        x_km="-4.760"    y_km="2.000"   z_km="-9.889"    id="203"/>
+    <SmallUAV        x_km="1.178"     y_km="2.000"   z_km="-11.628"   id="204"/>
+    <!--<SmallUAV        x_km="-1.299"    y_km="2.000"   z_km="12.248"    id="999"/>-->
     
-    <!-- Balloons -->
-    <Balloon         x="10.266"    y="15.000"  z="-17.782"   id="205"/>
+    <!-- Balloons --> 
+    <Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="205"/>
   </Remote>
 </Config>

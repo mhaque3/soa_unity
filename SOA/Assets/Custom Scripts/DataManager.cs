@@ -167,9 +167,9 @@ namespace soa
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
                 addBelief(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
                     actor.isAlive, (int)actor.isCarrying, actor.isWeaponized,
-                    actor.displayPosition.x / SimControl.KmToUnity,
-                    actor.displayPosition.y / SimControl.KmToUnity,
-                    actor.displayPosition.z / SimControl.KmToUnity), 
+                    actor.transform.position.x / SimControl.KmToUnity,
+                    actor.transform.position.y / SimControl.KmToUnity,
+                    actor.transform.position.z / SimControl.KmToUnity), 
                     actor.unique_id);
             }
             else

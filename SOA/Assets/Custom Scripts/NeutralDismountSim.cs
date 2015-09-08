@@ -92,9 +92,9 @@ public class NeutralDismountSim : MonoBehaviour
             // Configure a replacement agent
             GameObject startSite = ChooseRandomNeutralSite(false);
             NeutralDismountConfig c = new NeutralDismountConfig(
-                startSite.transform.position.x,
-                startSite.transform.position.y,
-                startSite.transform.position.z,
+                startSite.transform.position.x / SimControl.KmToUnity,
+                startSite.transform.position.y / SimControl.KmToUnity,
+                startSite.transform.position.z / SimControl.KmToUnity,
                 -1);
 
             // Instantiate and activate a replacement

@@ -83,6 +83,10 @@ public class SimControl : MonoBehaviour
     // Initialization function
 	void Start () 
     {
+        // Scale factor (this must be the first thing called)
+        KmToUnity = hexGrid.KmToUnity();
+        Debug.Log("Km to Unity = " + KmToUnity);
+        
         // Reset all existing local and remote configs as having unique id -1
         // Note: This must be called before LoadConfigFile();
         foreach (GameObject g in LocalPlatforms)
@@ -102,10 +106,6 @@ public class SimControl : MonoBehaviour
 
         // Load settings from config file (should be the first thing that's called)
         LoadConfigFile();
-
-        // Scale factor
-        KmToUnity = hexGrid.KmToUnity();
-        Debug.Log("Km to Unity = " + KmToUnity);
 
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
@@ -639,7 +639,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateHeavyUAV(HeavyUAVConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -657,7 +657,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateSmallUAV(SmallUAVConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(SmallUAVPrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(SmallUAVPrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -675,7 +675,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBalloon(BalloonConfig c)
     {
         // Instantiate
-        /*GameObject g = (GameObject)Instantiate(BalloonPrefab, c.pos, Quaternion.identity);
+        /*GameObject g = (GameObject)Instantiate(BalloonPrefab, c.pos_km * KmToUnity, Quaternion.identity);
                         
         // Set grid
         g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
@@ -741,7 +741,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedDismount(RedDismountConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(RedDismountPrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(RedDismountPrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -788,7 +788,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedTruck(RedTruckConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(RedTruckPrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(RedTruckPrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -835,7 +835,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralDismount(NeutralDismountConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -853,7 +853,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralTruck(NeutralTruckConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -871,7 +871,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBluePolice(BluePoliceConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(BluePolicePrefab, c.pos, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(BluePolicePrefab, c.pos_km * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;

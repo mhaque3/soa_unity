@@ -92,9 +92,9 @@ public class NeutralTruckSim : MonoBehaviour
             // Configure a replacement agent
             GameObject startSite = ChooseRandomNeutralSite(false);
             NeutralTruckConfig c = new NeutralTruckConfig(
-                startSite.transform.position.x,
-                startSite.transform.position.y,
-                startSite.transform.position.z,
+                startSite.transform.position.x / SimControl.KmToUnity,
+                startSite.transform.position.y / SimControl.KmToUnity,
+                startSite.transform.position.z / SimControl.KmToUnity,
                 -1);
 
             // Instantiate and activate a replacement

@@ -127,18 +127,20 @@ public class SoaActor : MonoBehaviour
     // Update is called once per frame
     void Update() 
     {
-        /*
         // Debug output 
-        if (unique_id == 100)
+        /*if (unique_id == 200)
         {
             Debug.Log("**************************************");
             foreach (Belief b in beliefDictionary[Belief.BeliefType.ACTOR].Values)
             {
                 Belief_Actor a = (Belief_Actor)b;
-                Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive());
+                if (a.getAffiliation() != 0)
+                {
+                    Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive() + ", TIME: " + a.getBeliefTime());
+                }
             }
-        }
-        */
+        }*/
+        
 	}
 
     // Called when the actor has been killed
@@ -153,7 +155,8 @@ public class SoaActor : MonoBehaviour
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
 
-            beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+            addBelief(newActorData);
+            //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if (dataManager != null)
                 dataManager.addAndBroadcastBelief(newActorData, unique_id);
         }
@@ -254,7 +257,8 @@ public class SoaActor : MonoBehaviour
                     motionScript.targetPosition.x / SimControl.KmToUnity,
                     motionScript.targetPosition.y / SimControl.KmToUnity,
                     motionScript.targetPosition.z / SimControl.KmToUnity);
-                beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
+                addBelief(newWaypoint);
+                //beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
                 if(dataManager != null)
                     dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
             }
@@ -264,7 +268,8 @@ public class SoaActor : MonoBehaviour
                 transform.position.x / SimControl.KmToUnity,
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
-            beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+            addBelief(newActorData);
+            //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if (dataManager != null)
             {
                 dataManager.addAndBroadcastBelief(newActorData, unique_id);
@@ -307,7 +312,8 @@ public class SoaActor : MonoBehaviour
                         gameObject.transform.position.y / SimControl.KmToUnity,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
-                beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
+                addBelief(detectedActor);
+                //beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 if (dataManager != null)
                 {
                     dataManager.addAndBroadcastBelief(detectedActor, unique_id);

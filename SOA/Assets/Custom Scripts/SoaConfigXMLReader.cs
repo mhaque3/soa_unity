@@ -132,9 +132,9 @@ namespace soa
                             {
                                 soaConfig.localPlatforms.Add(
                                     new RedDismountConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
                                         GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedDismountWeaponized)
@@ -146,9 +146,9 @@ namespace soa
                             {
                                 soaConfig.localPlatforms.Add(
                                     new RedTruckConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
                                         GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedTruckWeaponized)
@@ -160,9 +160,9 @@ namespace soa
                             {
                                 soaConfig.localPlatforms.Add(
                                     new NeutralDismountConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1)
                                     )
                                 );
@@ -172,9 +172,9 @@ namespace soa
                             {
                                 soaConfig.localPlatforms.Add(
                                     new NeutralTruckConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1)
                                     )
                                 );
@@ -184,9 +184,9 @@ namespace soa
                             {
                                 soaConfig.localPlatforms.Add(
                                     new BluePoliceConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1)
                                     )
                                 );
@@ -221,9 +221,9 @@ namespace soa
                             {
                                 soaConfig.remotePlatforms.Add(
                                     new HeavyUAVConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1)
                                     )
                                 );
@@ -233,9 +233,9 @@ namespace soa
                             {
                                 soaConfig.remotePlatforms.Add(
                                     new SmallUAVConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1)
                                     )
                                 );
@@ -245,9 +245,9 @@ namespace soa
                             {
                                 soaConfig.remotePlatforms.Add(
                                     new BalloonConfig(
-                                        GetFloatAttribute(c, "x", 0),
-                                        GetFloatAttribute(c, "y", 0),
-                                        GetFloatAttribute(c, "z", 0),
+                                        GetFloatAttribute(c, "x_km", 0),
+                                        GetFloatAttribute(c, "y_km", 0),
+                                        GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1)
                                     )
                                 );

@@ -100,9 +100,9 @@ public class RedDismountSim : MonoBehaviour
 
             // Configure a replacement agent
             RedDismountConfig c = new RedDismountConfig(
-                retreatBasePosition.x,
-                retreatBasePosition.y,
-                retreatBasePosition.z,
+                retreatBasePosition.x / SimControl.KmToUnity,
+                retreatBasePosition.y / SimControl.KmToUnity,
+                retreatBasePosition.z / SimControl.KmToUnity,
                 -1,
                 null,
                 Random.value <= simControlScript.probRedDismountWeaponized);

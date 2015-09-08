@@ -33,10 +33,10 @@ namespace soa
     public abstract class PlatformConfig
     {
         public enum ConfigType {RED_DISMOUNT, RED_TRUCK, NEUTRAL_DISMOUNT, NEUTRAL_TRUCK, BLUE_POLICE, HEAVY_UAV, SMALL_UAV, BALLOON};
-        public Vector3 pos;
+        public Vector3 pos_km;
         public int id;
-        public PlatformConfig(float x, float y, float z, int id) {
-            this.pos = new Vector3(x, y, z);
+        public PlatformConfig(float x_km, float y_km, float z_km, int id) {
+            this.pos_km = new Vector3(x_km, y_km, z_km);
             this.id = id;
         }
         public abstract ConfigType GetConfigType();
@@ -47,8 +47,8 @@ namespace soa
     {
         public bool hasWeapon;
         public string initialWaypoint;
-        public RedDismountConfig(float x, float y, float z, int id, string initialWaypoint, bool hasWeapon) 
-            : base(x, y, z, id)
+        public RedDismountConfig(float x_km, float y_km, float z_km, int id, string initialWaypoint, bool hasWeapon)
+            : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
@@ -61,8 +61,8 @@ namespace soa
     {
         public bool hasWeapon;
         public string initialWaypoint;
-        public RedTruckConfig(float x, float y, float z, int id, string initialWaypoint, bool hasWeapon) 
-            : base(x, y, z, id)
+        public RedTruckConfig(float x_km, float y_km, float z_km, int id, string initialWaypoint, bool hasWeapon)
+            : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
@@ -73,48 +73,48 @@ namespace soa
     // Neutral dismount config
     public class NeutralDismountConfig : PlatformConfig
     {
-        public NeutralDismountConfig(float x, float y, float z, int id)
-            : base(x, y, z, id) {}
+        public NeutralDismountConfig(float x_km, float y_km, float z_km, int id)
+            : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.NEUTRAL_DISMOUNT; }
     }
     
     // Neutral truck config
     public class NeutralTruckConfig : PlatformConfig
     {
-        public NeutralTruckConfig(float x, float y, float z, int id)
-            : base(x, y, z, id) { }
+        public NeutralTruckConfig(float x_km, float y_km, float z_km, int id)
+            : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.NEUTRAL_TRUCK; }
     }
 
     // Blue police config
     public class BluePoliceConfig : PlatformConfig
     {
-        public BluePoliceConfig(float x, float y, float z, int id)
-            : base(x, y, z, id) { }
+        public BluePoliceConfig(float x_km, float y_km, float z_km, int id)
+            : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.BLUE_POLICE; }
     }
 
     // Heavy UAV config
     public class HeavyUAVConfig : PlatformConfig
     {
-        public HeavyUAVConfig(float x, float y, float z, int id)
-            : base(x, y, z, id) { }
+        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id)
+            : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.HEAVY_UAV; }
     }
 
     // Small UAV config
     public class SmallUAVConfig : PlatformConfig
     {
-        public SmallUAVConfig(float x, float y, float z, int id)
-            : base(x, y, z, id) { }
+        public SmallUAVConfig(float x_km, float y_km, float z_km, int id)
+            : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.SMALL_UAV; }
     }
 
     // Balloon config
     public class BalloonConfig : PlatformConfig
     {
-        public BalloonConfig(float x, float y, float z, int id)
-            : base(x, y, z, id) { }
+        public BalloonConfig(float x_km, float y_km, float z_km, int id)
+            : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.BALLOON; }
     }
 }
