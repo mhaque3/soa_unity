@@ -62,6 +62,7 @@ public class SoaActor : MonoBehaviour
     private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
 
     public SoldierWaypointMotion motionScript;
+    SimControl simControlScript;
     public NavMeshAgent navAgent;
 
     // Use this for initialization
@@ -100,6 +101,9 @@ public class SoaActor : MonoBehaviour
         // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
         navAgent = gameObject.GetComponent<NavMeshAgent>();
+
+        // Save reference to simControl
+        simControlScript = GameObject.FindObjectOfType<SimControl>();
 
         // Initialize the belief dictionary
         beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
@@ -140,42 +144,56 @@ public class SoaActor : MonoBehaviour
                 }
             }
         }*/
-        
 	}
 
     // Called when the actor has been killed
-    public virtual void Kill()
+    public virtual void Kill(string killerName)
     {
-        // If remote platform (uses external waypoint), send a final message
-        if (this.useExternalWaypoint)
+        if (isAlive)
         {
-            // Convert position from Unity to km for Belief_Actor
-            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, isWeaponized,
-                transform.position.x / SimControl.KmToUnity,
-                transform.position.y / SimControl.KmToUnity,
-                transform.position.z / SimControl.KmToUnity);
+            // Set that it is no longer alive
+            isAlive = false;
+                
+            // Log event
+            if (gameObject.CompareTag("HeavyUAV"))
+            {
+                simControlScript.soaEventLogger.LogHeavyUAVLost(gameObject.name, killerName);
+            }
+            else if (gameObject.CompareTag("SmallUAV"))
+            {
+                simControlScript.soaEventLogger.LogSmallUAVLost(gameObject.name, killerName);
+            }
 
-            addBelief(newActorData);
-            //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
-            if (dataManager != null)
-                dataManager.addAndBroadcastBelief(newActorData, unique_id);
+            // If remote platform (uses external waypoint), send a final message
+            if (this.useExternalWaypoint)
+            {
+                // Convert position from Unity to km for Belief_Actor
+                Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, isWeaponized,
+                    transform.position.x / SimControl.KmToUnity,
+                    transform.position.y / SimControl.KmToUnity,
+                    transform.position.z / SimControl.KmToUnity);
+
+                addBelief(newActorData);
+                //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+                if (dataManager != null)
+                {
+                    dataManager.addAndBroadcastBelief(newActorData, unique_id);
+                }
+            }
+
+            // Don't move anymore
+            simulateMotion = false;
+            navAgent.ResetPath();
+            navAgent.enabled = false;
+            motionScript.enabled = false;
+
+            // TODO: Make sure dead unit does not act as relay for comms
+
+            // Change appearance to look destroyed
+            Vector3 destroyedPos = transform.position;
+            destroyedPos.y = 0.85f;
+            transform.position = destroyedPos;
         }
-
-        // Set that it is no longer alive
-        isAlive = false;
-
-        // Don't move anymore
-        simulateMotion = false;
-        navAgent.ResetPath();
-        navAgent.enabled = false;
-        motionScript.enabled = false;
-
-        // TODO: Make sure dead unit does not act as relay for comms
-
-        // Change appearance to look destroyed
-        Vector3 destroyedPos = transform.position;
-        destroyedPos.y = 0.85f;
-        transform.position = destroyedPos;
     }
 
     //Set this actors position and orientation
@@ -350,137 +368,117 @@ public class SoaActor : MonoBehaviour
 
     // Check if belief is newer than current belief of matching type and id, if so,
     // replace old belief with b.
-    public virtual void addBelief(Belief b)
+    public virtual void addBelief(Belief incomingBelief)
     {
-        #if(UNITY_STANDALONE)
-            //Debug.Log("SoaActor - DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
-        #else
-        Console.WriteLine("SoaActor - DataManager: Received belief of type "
-            + (int)b.getBeliefType() + "\n" + b);
-        #endif
+        // Get belief dictionary
+        SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[incomingBelief.getBeliefType()];
 
-        // Get the dictionary for that belief type
-        Belief.BeliefType bt = b.getBeliefType();
-        try
-        {
-            int i = beliefDictionary.Count;
-        }
-        catch (Exception)
-        {
-            Debug.LogWarning("SoaActor: Exception from beliefDictionary for " + gameObject.name);
-        }
-        SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
-        bool updateDictionary;
-        Belief oldBelief;
-        if (tempTypeDict != null && beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief))
-        {
-            // We are in here if a previous belief already exists and we have to merge
-            if (b.getBeliefType() == Belief.BeliefType.ACTOR)
-            {
-                // Convert to belief actors
-                Belief_Actor oldActorBelief = (Belief_Actor)oldBelief;
-                Belief_Actor incomingActorBelief = (Belief_Actor)b;
-
-                // To keep track of what to merge
-                bool useIncomingClassification = false;
-                bool useIncomingData = false;
-
-                // Check which classification to use
-                if (oldActorBelief.getAffiliation() == (int)Affiliation.UNCLASSIFIED &&
-                    incomingActorBelief.getAffiliation() != (int)Affiliation.UNCLASSIFIED)
+        // Check if dictionary even exists
+        if (tempTypeDict != null){
+            // Check if dictionary entry exists for our belief type
+            Belief oldBelief;
+            if(beliefDictionary[incomingBelief.getBeliefType()].TryGetValue(incomingBelief.getId(), out oldBelief)){
+                // We are in here if a previous belief already exists and we have to merge
+                if (incomingBelief.getBeliefType() == Belief.BeliefType.ACTOR)
                 {
-                    // Incoming belief has new classification information
-                    useIncomingClassification = true;
-                }
-
-                // Check which data to use
-                if (incomingActorBelief.getBeliefTime() > oldActorBelief.getBeliefTime())
-                {
-                    // Incoming belief has new data information
-                    useIncomingData = true;
-                }
-
-                // Merge based on what was new
-                if (!useIncomingClassification && !useIncomingData)
-                {
-                    // No new classification or new data, just ignore the incoming belief
-                    updateDictionary = false;
-                }
-                else if (!useIncomingClassification && useIncomingData)
-                {
-                    // Keep existing classification and just take incoming data
-                    updateDictionary = true;
-                    b = new Belief_Actor(
-                        incomingActorBelief.getUnique_id(),
-                        oldActorBelief.getAffiliation(),
-                        incomingActorBelief.getType(),
-                        incomingActorBelief.getIsAlive(),
-                        incomingActorBelief.getIsCarrying(),
-                        oldActorBelief.getIsWeaponized(),
-                        incomingActorBelief.getPos_x(),
-                        incomingActorBelief.getPos_y(),
-                        incomingActorBelief.getPos_z(),
-                        incomingActorBelief.getVelocity_x_valid(),
-                        incomingActorBelief.getVelocity_x(),
-                        incomingActorBelief.getVelocity_y_valid(),
-                        incomingActorBelief.getVelocity_y(),
-                        incomingActorBelief.getVelocity_z_valid(),
-                        incomingActorBelief.getVelocity_z());
-                    b.setBeliefTime(incomingActorBelief.getBeliefTime());
-                }
-                else if (useIncomingClassification && !useIncomingData)
-                {
-                    // Use incoming classification but keep existing data
-                    updateDictionary = true;
-                    b = new Belief_Actor(
-                        oldActorBelief.getUnique_id(),
-                        incomingActorBelief.getAffiliation(),
-                        oldActorBelief.getType(),
-                        oldActorBelief.getIsAlive(),
-                        oldActorBelief.getIsCarrying(),
-                        incomingActorBelief.getIsWeaponized(),
-                        oldActorBelief.getPos_x(),
-                        oldActorBelief.getPos_y(),
-                        oldActorBelief.getPos_z(),
-                        oldActorBelief.getVelocity_x_valid(),
-                        oldActorBelief.getVelocity_x(),
-                        oldActorBelief.getVelocity_y_valid(),
-                        oldActorBelief.getVelocity_y(),
-                        oldActorBelief.getVelocity_z_valid(),
-                        oldActorBelief.getVelocity_z());
-                    b.setBeliefTime(oldActorBelief.getBeliefTime());
+                    // Merge actor beliefs
+                    beliefDictionary[Belief.BeliefType.ACTOR][incomingBelief.getId()] = ActorMergePolicy(oldBelief, incomingBelief);
                 }
                 else
                 {
-                    // Use all of the incoming belief
-                    updateDictionary = true;
-                    b = incomingActorBelief;
+                    // For all other beliefs, just use newest
+                    beliefDictionary[incomingBelief.getBeliefType()][incomingBelief.getId()] = NewestBeliefPolicy(oldBelief, incomingBelief);
                 }
             }
             else
             {
-                // General merge policy (take newest belief) for every belief except actor  
-                if (oldBelief.getBeliefTime() < b.getBeliefTime())
-                {
-                    updateDictionary = true;
-                }
-                else
-                {
-                    updateDictionary = false;
-                }
+                // No previous belief exists, put the incoming belief in the dictionary
+                beliefDictionary[incomingBelief.getBeliefType()][incomingBelief.getId()] = incomingBelief; 
             }
         }
         else
         {
-            // Nothing in the dictionary for this belief type, put new entry in
-            updateDictionary = true;
+            // Dictionary does not exist (for some reason, we shouldn't get here ever)
+            // Create dictionary and then put the incoming belief in
+            Debug.LogWarning("SoaActor::addBelief(): beliefDictionary has no dictionary for type " + incomingBelief.getBeliefType() + ", creating a new dictionary");
+            beliefDictionary[incomingBelief.getBeliefType()] = new SortedDictionary<int,Belief>();
+            beliefDictionary[incomingBelief.getBeliefType()][incomingBelief.getId()] = incomingBelief;
+        }
+    }
+
+    private Belief NewestBeliefPolicy(Belief existingBelief, Belief incomingBelief)
+    {
+        // Take the belief with the greater time stamp
+        if (existingBelief.getBeliefTime() < incomingBelief.getBeliefTime())
+        {
+            return incomingBelief;
+        }
+        else
+        {
+            return existingBelief;
+        }
+    }
+
+    private Belief ActorMergePolicy(Belief existingBelief, Belief incomingBelief)
+    {
+        // Convert to belief actors
+        Belief_Actor oldActorBelief = (Belief_Actor)existingBelief;
+        Belief_Actor incomingActorBelief = (Belief_Actor)incomingBelief;
+
+        // Merge affiliation
+        int mergedAffiliation;
+        bool mergedIsWeaponized;
+        if (incomingActorBelief.getAffiliation() != (int)Affiliation.UNCLASSIFIED)
+        {
+            mergedAffiliation = incomingActorBelief.getAffiliation();
+            mergedIsWeaponized = incomingActorBelief.getIsWeaponized();
+        }
+        else
+        {
+            mergedAffiliation = oldActorBelief.getAffiliation();
+            mergedIsWeaponized = oldActorBelief.getIsWeaponized();
         }
 
-        // Update the dictionary entry if necessary
-        if (updateDictionary)
+        // Merge is alive status
+        bool mergedIsAlive;
+        mergedIsAlive = incomingActorBelief.getIsAlive() && oldActorBelief.getIsAlive();
+
+        // Merge other data based on timestamp
+        Belief_Actor mergedData;
+        ulong mergedBeliefTime;
+        if (incomingActorBelief.getBeliefTime() > oldActorBelief.getBeliefTime())
         {
-            beliefDictionary[b.getBeliefType()][b.getId()] = b;
+            mergedData = incomingActorBelief;
+            mergedBeliefTime = incomingActorBelief.getBeliefTime();
         }
+        else
+        {
+            mergedData = oldActorBelief;
+            mergedBeliefTime = oldActorBelief.getBeliefTime();
+        }
+
+        // Put it all together and set appropriate timestamp
+        Belief_Actor mergedBeliefActor = new Belief_Actor(
+            mergedData.getUnique_id(),
+            mergedAffiliation,
+            mergedData.getType(),
+            mergedIsAlive,
+            mergedData.getIsCarrying(),
+            mergedIsWeaponized,
+            mergedData.getPos_x(),
+            mergedData.getPos_y(),
+            mergedData.getPos_z(),
+            mergedData.getVelocity_x_valid(),
+            mergedData.getVelocity_x(),
+            mergedData.getVelocity_y_valid(),
+            mergedData.getVelocity_y(),
+            mergedData.getVelocity_z_valid(),
+            mergedData.getVelocity_z()
+        );
+        mergedBeliefActor.setBeliefTime(mergedBeliefTime);
+
+        // Return the merged belief
+        return mergedBeliefActor;
     }
 
     public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getBeliefDictionary()
@@ -510,22 +508,14 @@ public class SoaActor : MonoBehaviour
                 SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
                 foreach (KeyValuePair<int, Belief> entry in typeDict)
                 {
-                    /*if (type == Belief.BeliefType.NGOSITE)
-                    {
-                        Debug.Log("NGO " + entry.Value.getId() + "!!!!!!!!!!!!!!!!!!!!!!!!");
-                        Debug.Log("Belief Time " + entry.Value.getBeliefTime() + " " + entry.Value.ToString());
-                    }*/
-
                     // only publish new data (beliefs created within last 5 seconds)
+                    // twupy1: Change this later, I don't like this..
                     if (entry.Value.getBeliefTime() >= (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
                     {
-                        /*if (type == Belief.BeliefType.NGOSITE)
+                        if (dataManager != null)
                         {
-                            Debug.Log("In!");
-                        }*/
-
-                        if(dataManager != null)
                             dataManager.addAndBroadcastBelief(entry.Value, unique_id);
+                        }
                     }
                 }
             }

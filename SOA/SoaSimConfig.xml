@@ -2,16 +2,23 @@
 <Config>
   <!-- Network Configuration Settings -->
   <Network 
-       redRoom ="soa-test-red" 
-       blueRoom="soa-test-blue2" 
+       redRoom ="soa-apl-red" 
+       blueRoom="soa-apl-blue" 
   />
  
+ <!-- Logger Configuration Settings -->
+  <Logger 
+       outputFile               ="SoaLogOutput.xml"
+       enableLogToFile          ="true"
+       enableLogToUnityConsole  ="true"
+  />
+
  <!-- Simulation Configuration Settings -->
   <Simulation 
        probRedDismountWeaponized="0.0"
        probRedTruckWeaponized   ="0.0" 
   />
-
+	
   <!-- Local Platform Descriptions -->
   <Local>
     <!-- Red Dismounts -->
@@ -66,7 +73,7 @@
     <SmallUAV        x_km="-1.362"    y_km="2.000"   z_km="-10.626"   id="202"/>
     <SmallUAV        x_km="-4.760"    y_km="2.000"   z_km="-9.889"    id="203"/>
     <SmallUAV        x_km="1.178"     y_km="2.000"   z_km="-11.628"   id="204"/>
-    <!--<SmallUAV        x_km="-1.299"    y_km="2.000"   z_km="12.248"    id="999"/>-->
+    <SmallUAV        x_km="-1.299"    y_km="2.000"   z_km="12.248"    id="999"/>
     
     <!-- Balloons --> 
     <Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="205"/>

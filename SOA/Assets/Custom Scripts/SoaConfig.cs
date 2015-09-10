@@ -12,9 +12,14 @@ namespace soa
         public string networkRedRoom;
         public string networkBlueRoom;
 
-        // Red platform weapon probability
+        // Simulation configuration
         public float probRedDismountWeaponized;
         public float probRedTruckWeaponized;
+
+        // Logger configuration
+        public string loggerOutputFile;
+        public bool enableLogToFile;
+        public bool enableLogToUnityConsole;
 
         // Local platforms
         public List<PlatformConfig> localPlatforms;

@@ -34,6 +34,9 @@ namespace soa
         // Default source ID to send along with Belief to data manager
         private int defaultSourceID;
 
+        // The actor number we want to use when connecting to room
+        private int actorNumber;
+
         // Outgoing messages
         private Queue<Byte[]> outgoingQueue;
         private Queue<int[]> outgoingTargetQueue;
@@ -58,8 +61,8 @@ namespace soa
         /// Initializes a new instance of the <see cref="PhotonCloudCommManager"/> class. 
         /// </summary>
         public PhotonCloudCommManager(DataManager dataManager, Serializer serializer,
-            string ipAddress, string roomName, int defaultSourceID, int updateSleepTime_ms = 100,
-            int maxQueueSize = 1000000, bool overwriteWhenQueueFull = true)
+            string ipAddress, string roomName, int defaultSourceID, int actorNumber = 0, // actorNumber = 0 for randomly assigned
+            int updateSleepTime_ms = 100, int maxQueueSize = 1000000, bool overwriteWhenQueueFull = true)
             : base()
         {
             // Copy variables
@@ -68,6 +71,7 @@ namespace soa
             this.ipAddress = ipAddress;
             this.roomName = roomName;
             this.defaultSourceID = defaultSourceID;
+            this.actorNumber = actorNumber;
             this.updateSleepTime_ms = updateSleepTime_ms;
             this.maxQueueSize = maxQueueSize;
             this.overwriteWhenQueueFull = overwriteWhenQueueFull;
@@ -222,7 +226,7 @@ namespace soa
                             break;
                         case ClientState.JoinedLobby:
                             // Create or join our room
-                            OpJoinOrCreateRoom(roomName, 0, new RoomOptions());
+                            OpJoinOrCreateRoom(roomName, actorNumber, new RoomOptions());
                             break;
                         case ClientState.Joined:
                             // Within room, send any queued outgoing messages

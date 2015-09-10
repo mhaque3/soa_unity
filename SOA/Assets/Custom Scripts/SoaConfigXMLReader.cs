@@ -59,6 +59,10 @@ namespace soa
                         // Simulation configuration
                         ParseSimulation(c, soaConfig);
                         break;
+                    case "Logger":
+                        // Logger configuration
+                        ParseLogger(c, soaConfig);
+                        break;
                 }
             }
 
@@ -111,6 +115,21 @@ namespace soa
             {
                 soaConfig.probRedDismountWeaponized = GetFloatAttribute(node, "probRedDismountWeaponized", 1.0f);
                 soaConfig.probRedTruckWeaponized = GetFloatAttribute(node, "probRedTruckWeaponized", 1.0f);
+            }
+            catch (Exception)
+            {
+                Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+            }
+        }
+
+        static void ParseLogger(XmlNode node, SoaConfig soaConfig)
+        {
+            // Pull attributes directly from the node
+            try
+            {
+                soaConfig.loggerOutputFile = GetStringAttribute(node, "outputFile", "SoaSimOutput.xml");
+                soaConfig.enableLogToFile = GetBooleanAttribute(node, "enableLogToFile", false);
+                soaConfig.enableLogToUnityConsole = GetBooleanAttribute(node, "enableLogToUnityConsole", true);
             }
             catch (Exception)
             {

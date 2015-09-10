@@ -36,7 +36,7 @@ namespace soa
             //data on cm.start()
             
             Serializer ps = new ProtobufSerializer();
-            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0);
+            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();

@@ -6,7 +6,7 @@ using soa;
 
 public class SoaSite : SoaActor
 {
-    public override void Kill()    
+    public override void Kill(string killerName)    
     {
         // There is no way to kill a site
     }

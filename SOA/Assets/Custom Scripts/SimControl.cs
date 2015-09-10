@@ -41,6 +41,9 @@ public class SimControl : MonoBehaviour
     // Conversion Factor
     static public float KmToUnity;
  
+    // Logging
+    public SoaEventLogger soaEventLogger;
+
     // Misc
     public bool BroadcastOn;
     public float updateRateS;
@@ -205,6 +208,10 @@ public class SimControl : MonoBehaviour
     {
         // Parse the XML config file
         SoaConfig soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
+
+        // Logger settings
+        soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,
+            ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogToUnityConsole);
 
         // Red platform weapon probability
         probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
@@ -565,8 +572,12 @@ public class SimControl : MonoBehaviour
      *****************************************************************************************************/
     void OnApplicationQuit()
     {
+        // Stop data managers / comms managers
         redDataManager.stopPhoton();
         blueDataManager.stopPhoton();
+
+        // Stop logger and write output to file
+        soaEventLogger.TerminateLogging();
     }
     #endregion
 

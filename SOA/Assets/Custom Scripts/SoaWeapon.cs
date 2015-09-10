@@ -18,7 +18,7 @@ public class SoaWeapon : MonoBehaviour
     // Unity exposed parameters
     public WeaponModality[] modes;
 
-    // Reference to soaActor
+    // Reference to soaActor and simControl
     SoaActor thisSoaActor;
 
     // Use this for initialization
@@ -71,8 +71,7 @@ public class SoaWeapon : MonoBehaviour
     {
         // Tell the corresponding SoaActor that it has been killed so it no longer
         // sends out info or moves
-        target.GetComponent<SoaActor>().Kill();
-        Debug.Log(target.name + " was killed by Actor " + thisSoaActor.unique_id);
+        target.GetComponent<SoaActor>().Kill(gameObject.name);
     }
 
     // Update is called once per frame

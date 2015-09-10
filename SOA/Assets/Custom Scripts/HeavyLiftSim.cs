@@ -3,6 +3,7 @@ using System.Collections;
 
 public class HeavyLiftSim : MonoBehaviour 
 {
+    SimControl simControlScript;
     SoaActor thisSoaActor;
     public bool Casuality;
     public bool Supply;
@@ -13,6 +14,7 @@ public class HeavyLiftSim : MonoBehaviour
 	void Start () 
     {
         thisSoaActor = gameObject.GetComponent<SoaActor>();
+        simControlScript = GameObject.FindObjectOfType<SimControl>();
 	}
 	
 	// Update is called once per frame
@@ -37,6 +39,9 @@ public class HeavyLiftSim : MonoBehaviour
                         b.Casualties += 1f;
                         Casuality = false;
                         thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+
+                        // Log event
+                        simControlScript.soaEventLogger.LogCasualtyDelivery(gameObject.name, other.name);
                     }
                 }
                 if (!Supply && b.Supply >=1f)
@@ -69,6 +74,9 @@ public class HeavyLiftSim : MonoBehaviour
                         n.Supply += 1f;
                         Supply = false;
                         thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+
+                        // Log event
+                        simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                     }
                 }
             }
@@ -93,6 +101,9 @@ public class HeavyLiftSim : MonoBehaviour
                         v.Supply += 1f;
                         Supply = false;
                         thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+
+                        // Log event
+                        simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                     }
                 }
             }

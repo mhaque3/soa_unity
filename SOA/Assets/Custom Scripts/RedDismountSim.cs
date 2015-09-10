@@ -91,6 +91,9 @@ public class RedDismountSim : MonoBehaviour
                 s.logKill(thisSoaActor);
             }
 
+            // Log event
+            simControlScript.soaEventLogger.LogRedDismountCaptured(other.name, gameObject.name);
+
             // Find out where to retreat to
             BluePoliceSim b = other.gameObject.GetComponent<BluePoliceSim>();
             Vector3 retreatBasePosition = GetRetreatRedBase(b).transform.position;
@@ -121,6 +124,9 @@ public class RedDismountSim : MonoBehaviour
                     Civilian = false;
                     thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     rb.Civilians++;
+
+                    // Log event
+                    simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
                 }
                 waypointScript.On = false;
 
@@ -136,8 +142,6 @@ public class RedDismountSim : MonoBehaviour
                 {
                     weapon.enabled = rb.EnableWeapon();
                 }
-
-
             }
         }
 

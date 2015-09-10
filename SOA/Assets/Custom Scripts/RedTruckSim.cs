@@ -90,6 +90,9 @@ public class RedTruckSim : MonoBehaviour
             {
                 s.logKill(thisSoaActor);
             }
+
+            // Log event
+            simControlScript.soaEventLogger.LogRedTruckCaptured(other.name, gameObject.name);
             
             // Find out where to retreat to
             BluePoliceSim b = other.gameObject.GetComponent<BluePoliceSim>();
@@ -121,6 +124,9 @@ public class RedTruckSim : MonoBehaviour
                     Civilian = false;
                     thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
                     rb.Civilians++;
+
+                    // Log event
+                    simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
                 }
                 waypointScript.On = false;
                 waypointScript.waypointIndex = 0;
