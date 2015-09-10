@@ -211,7 +211,8 @@ public class SimControl : MonoBehaviour
 
         // Logger settings
         soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,
-            ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogToUnityConsole);
+            ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogEventsToFile, 
+            soaConfig.enableLogToUnityConsole);
 
         // Red platform weapon probability
         probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
@@ -273,17 +274,17 @@ public class SimControl : MonoBehaviour
         b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x / KmToUnity, hexGrid.Map[currentCell].z / KmToUnity, 1.0f);
         blueDataManager.addBelief(b, 0);
         blueDataManager.addInitializationBelief(b);
-        Debug.Log(b.ToString());
+        //Debug.Log(b.ToString());
 
         b = new Belief_Terrain((int)soa.Terrain.MOUNTAIN, MountainCells);
         blueDataManager.addBelief(b, 0);
         blueDataManager.addInitializationBelief(b);
-        Debug.Log(MountainCells.Count + " mountain hexes.");
+        //Debug.Log(MountainCells.Count + " mountain hexes.");
 
         b = new Belief_Terrain((int)soa.Terrain.WATER, WaterCells);
         blueDataManager.addBelief(b, 0);
         blueDataManager.addInitializationBelief(b);
-        Debug.Log(WaterCells.Count + " water hexes.");
+        //Debug.Log(WaterCells.Count + " water hexes.");
 
         for (int i = 0; i < BlueBases.Count; i++)
         {
@@ -295,7 +296,7 @@ public class SimControl : MonoBehaviour
             b = new Belief_Base(i, theseCells, s.Supply);
             blueDataManager.addBelief(b, 0);
             blueDataManager.addInitializationBelief(b);
-            Debug.Log(b.ToString());
+            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < NgoSites.Count; i++)
@@ -308,7 +309,7 @@ public class SimControl : MonoBehaviour
             b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
             blueDataManager.addBelief(b, 0);
             blueDataManager.addInitializationBelief(b);
-            Debug.Log(b.ToString());
+            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < Villages.Count; i++)
@@ -321,7 +322,7 @@ public class SimControl : MonoBehaviour
             b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
             blueDataManager.addBelief(b, 0);
             blueDataManager.addInitializationBelief(b);
-            Debug.Log(b.ToString());
+            //Debug.Log(b.ToString());
         }
     }
     #endregion
@@ -621,7 +622,7 @@ public class SimControl : MonoBehaviour
         {
             g = BlueBases[i];
             SoaSite s = g.GetComponent<SoaSite>();
-            s.addBelief(b);
+            s.addBelief(b,-1);
         }
     }
 

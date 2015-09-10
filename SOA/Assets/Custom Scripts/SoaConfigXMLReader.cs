@@ -128,7 +128,8 @@ namespace soa
             try
             {
                 soaConfig.loggerOutputFile = GetStringAttribute(node, "outputFile", "SoaSimOutput.xml");
-                soaConfig.enableLogToFile = GetBooleanAttribute(node, "enableLogToFile", false);
+                soaConfig.enableLogToFile = GetBooleanAttribute(node, "enableLogToFile", true);
+                soaConfig.enableLogEventsToFile = GetBooleanAttribute(node, "enableLogEventsToFile", true);
                 soaConfig.enableLogToUnityConsole = GetBooleanAttribute(node, "enableLogToUnityConsole", true);
             }
             catch (Exception)

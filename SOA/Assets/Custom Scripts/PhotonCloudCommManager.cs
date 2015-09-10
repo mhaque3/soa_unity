@@ -247,7 +247,7 @@ namespace soa
         /// Adds information from data manager to outgoing queue using default source ID
         /// and broadcasts message to everyone
         /// </summary>
-        public void addOutgoing(Belief b)
+        /*public void addOutgoing(Belief b)
         {
             addOutgoing(b, defaultSourceID, null);
         }
@@ -259,7 +259,7 @@ namespace soa
         public void addOutgoing(List<Belief> l)
         {
             addOutgoing(l, null);
-        }
+        }*/
 
         /// <summary>
         /// Adds multiple beliefs from data manager to outgoing queue using default source ID

@@ -10,6 +10,7 @@
   <Logger 
        outputFile               ="SoaLogOutput.xml"
        enableLogToFile          ="true"
+       enableLogEventsToFile    ="true"
        enableLogToUnityConsole  ="true"
   />
 

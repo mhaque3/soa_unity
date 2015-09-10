@@ -19,6 +19,7 @@ namespace soa
         // Logger configuration
         public string loggerOutputFile;
         public bool enableLogToFile;
+        public bool enableLogEventsToFile;
         public bool enableLogToUnityConsole;
 
         // Local platforms

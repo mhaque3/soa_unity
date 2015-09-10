@@ -9,23 +9,47 @@ namespace soa
 {
     public class SoaEventLogger
     {
+        // Timekeeping
         private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
+ 
+        // XML structure
         private XmlDocument xmlDoc;
         private XmlNode simulationNode;
+        private XmlNode resultNode;
         private XmlNode eventsNode;
-        private string outputFile;
-        private bool logToFile;
-        private bool logToConsole;
 
-        public SoaEventLogger(string outputFile, string configFile, bool logToFile, bool logToConsole)
+        // Options
+        private string outputFile;
+        private bool logToFile, logEventsToFile, logToConsole;
+
+        // Counters
+        private int countSupplyDelivery;
+        private int countRedTruckCaptured;
+        private int countRedDismountCaptured;
+        private int countCasualtyDelivered;
+        private int countHeavyUAVLost;
+        private int countSmallUAVLost;
+        private int countCivilianInRedCustody;
+
+        public SoaEventLogger(string outputFile, string configFile, bool logToFile, bool logEventsToFile, bool logToConsole)
         {
             // Save whether the logger is enabled
             this.logToFile = logToFile;
+            this.logEventsToFile = logEventsToFile;
             this.logToConsole = logToConsole;
 
             // Compute timestamp
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
+
+            // Reset counters
+            countSupplyDelivery = 0;
+            countRedTruckCaptured = 0;
+            countRedDismountCaptured = 0;
+            countCasualtyDelivered = 0;
+            countHeavyUAVLost = 0;
+            countSmallUAVLost = 0;
+            countCivilianInRedCustody = 0;
 
             // Only take action if logger is enabled
             if (logToFile)
@@ -49,9 +73,16 @@ namespace soa
                 AddAttribute(simulationNode, "startDateTime", now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
                 AddAttribute(simulationNode, "startTimeStamp", timeStamp);
 
+                // Create "Result" node
+                resultNode = xmlDoc.CreateElement("Result");
+                logNode.AppendChild(resultNode);
+
                 // Create "Events" node
-                eventsNode = xmlDoc.CreateElement("Events");
-                logNode.AppendChild(eventsNode);
+                if (logEventsToFile)
+                {
+                    eventsNode = xmlDoc.CreateElement("Events");
+                    logNode.AppendChild(eventsNode);
+                }
             }
             if (logToConsole)
             {
@@ -86,12 +117,31 @@ namespace soa
                 AddAttribute(simulationNode, "stopDateTime", now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
                 AddAttribute(simulationNode, "stopTimeStamp", timeStamp);
 
+                // Log counts
+                AddAttribute(resultNode, "supplyDelivery", countSupplyDelivery.ToString());
+                AddAttribute(resultNode, "redTruckCaptured", countRedTruckCaptured.ToString());
+                AddAttribute(resultNode, "redDismountCaptured", countRedDismountCaptured.ToString());
+                AddAttribute(resultNode, "casualtyDelivered", countCasualtyDelivered.ToString());
+                AddAttribute(resultNode, "heavyUAVLost", countHeavyUAVLost.ToString());
+                AddAttribute(resultNode, "smallUAVLost", countSmallUAVLost.ToString());
+                AddAttribute(resultNode, "civilianInRedCustody", countCivilianInRedCustody.ToString());
+
                 // Write contents to file
                 xmlDoc.Save(outputFile);
             }
             if (logToConsole)
             {
+                // Output current time
                 Debug.Log("SIMULATION (" + timeStamp + "): Terminate date/time " + now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
+
+                // Output counts
+                Debug.Log("SIMULATION (" + timeStamp + "): Supplies delivered: " + countSupplyDelivery.ToString());
+                Debug.Log("SIMULATION (" + timeStamp + "): Red trucks captured: " + countRedTruckCaptured.ToString());
+                Debug.Log("SIMULATION (" + timeStamp + "): Red dismounts captured: " + countRedDismountCaptured.ToString());
+                Debug.Log("SIMULATION (" + timeStamp + "): Casualties delivered: " + countCasualtyDelivered.ToString());
+                Debug.Log("SIMULATION (" + timeStamp + "): Heavy UAVs lost: " + countHeavyUAVLost.ToString());
+                Debug.Log("SIMULATION (" + timeStamp + "): Small UAVs lost: " + countSmallUAVLost.ToString());
+                Debug.Log("SIMULATION (" + timeStamp + "): Civilians in red custody: " + countCivilianInRedCustody.ToString());
             }
         }
 
@@ -102,7 +152,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countSupplyDelivery++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "SupplyDelivery" node
                 XmlNode node = xmlDoc.CreateElement("SupplyDelivery");
@@ -127,7 +181,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countRedTruckCaptured++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "RedTruckCaptured" node
                 XmlNode node = xmlDoc.CreateElement("RedTruckCaptured");
@@ -152,7 +210,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countRedDismountCaptured++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "RedDismountCaptured" node
                 XmlNode node = xmlDoc.CreateElement("RedDismountCaptured");
@@ -177,7 +239,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countCasualtyDelivered++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "CasualtyDelivery" node
                 XmlNode node = xmlDoc.CreateElement("CasualtyDelivery");
@@ -202,7 +268,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countHeavyUAVLost++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "HeavyUAVLost" node
                 XmlNode node = xmlDoc.CreateElement("HeavyUAVLost");
@@ -227,7 +297,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countSmallUAVLost++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "SmallUAVLost" node
                 XmlNode node = xmlDoc.CreateElement("SmallUAVLost");
@@ -252,7 +326,11 @@ namespace soa
             DateTime now = DateTime.Now;
             String timeStamp = CreateTimestamp(now);
 
-            if (logToFile)
+            // Increment counter
+            countCivilianInRedCustody++;
+
+            // Log to file
+            if (logToFile && logEventsToFile)
             {
                 // Create a "CivilianInRedCustody" node
                 XmlNode node = xmlDoc.CreateElement("CivilianInRedCustody");
