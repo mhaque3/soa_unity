@@ -212,7 +212,6 @@ GameObject:
   - 4: {fileID: 457068}
   - 114: {fileID: 11412626}
   - 136: {fileID: 13699590}
-  - 114: {fileID: 11410232}
   - 114: {fileID: 11491110}
   m_Layer: 0
   m_Name: Blue Base
@@ -551,17 +550,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109834}
   m_Mesh: {fileID: 4300000, guid: caacfa635af78e34399e8769c2a6b41c, type: 3}
---- !u!114 &11410232
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 995a496ca1c3c8b4387404d57ebaa0cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11412626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -597,6 +585,7 @@ MonoBehaviour:
   commsRange: 10
   Sensors: []
   Weapons: []
+  Classifiers: []
   Detections: []
   Tracks: []
   simulateMotion: 0
@@ -605,6 +594,7 @@ MonoBehaviour:
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
   navAgent: {fileID: 0}
+  started: 0
 --- !u!135 &13512120
 SphereCollider:
   m_ObjectHideFlags: 1

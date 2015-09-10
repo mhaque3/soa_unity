@@ -829,8 +829,7 @@ MonoBehaviour:
   RoadCost: 1
   waypointEpsilon: 1
   PATROL: 0
-  waypoints:
-  - {fileID: 0}
+  waypoints: []
   waypointIndex: 0
   targetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11476826

@@ -8,12 +8,23 @@ using soa;
 using Gamelogic.Grids;
 
 public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
+
 public class SimControl : MonoBehaviour 
 {
-    static public float KmToUnity;
-
-    public string RedRoom = "soa-apl-red";
-    public string BlueRoom = "soa-apl-blue";
+    // Config
+    string ConfigFileName = "SoaSimConfig.xml";
+    
+    // Prefabs
+    public GameObject RedDismountPrefab;
+    public GameObject RedTruckPrefab;
+    public GameObject NeutralDismountPrefab;
+    public GameObject NeutralTruckPrefab;
+    public GameObject BluePolicePrefab;
+    public GameObject HeavyUAVPrefab;
+    public GameObject SmallUAVPrefab;
+    //public GameObject BalloonPrefab;
+    
+    // GameObject Lists
     public List<GameObject> LocalPlatforms;
     public List<GameObject> RemotePlatforms;
     public List<GameObject> NgoSites;
@@ -22,21 +33,22 @@ public class SimControl : MonoBehaviour
     public List<GameObject> BlueBases;
     public List<GridCell> MountainCells;
     public List<GridCell> WaterCells;
-    public bool BroadcastOn;
-    
-    public OverheadMouseCamera omcScript;
-    public SoaHexWorld hexGrid;
 
+    // Unique IDs
+    HashSet<int> TakenUniqueIDs;
+    int smallestAvailableUniqueID = 200; // Start assigning IDs from here
+    
+    // Conversion Factor
+    static public float KmToUnity;
+ 
+    // Misc
+    public bool BroadcastOn;
     public float updateRateS;
     private bool showTruePositions = true;
-
-    //only access this when you have the DataManager lock
-    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayBeliefDictionary;
-	// Use this for initialization
-
+    public OverheadMouseCamera omcScript;
+    public SoaHexWorld hexGrid;
     DataManager redDataManager;
     DataManager blueDataManager;
-
     public Canvas uiCanvas;
     public GameObject labelUI;
     GameObject labelInstance;
@@ -44,154 +56,142 @@ public class SimControl : MonoBehaviour
     Vector3 labelPosition;
     Text[] labels;
     Camera thisCamera;
+    public Vector3 mouseVector;
 
-    int availableLocalUniqueID;
-    int availableRemoteUniqueID;
+    // Config file parameters
+    public string networkRedRoom;
+    public string networkBlueRoom;
+    public float probRedTruckWeaponized;
+    public float probRedDismountWeaponized;
 
+    // For updates
+    int randDraw;
+    Belief b;
+    float messageTimer = 0f;
+    float updateTimer = 0f;
+    float sensorClock = 0f;
+    public float sensorUpdatePeriod;
+
+    // Only access this when you have the DataManager lock
+    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayBeliefDictionary;
+
+    #region Initialization
+    /*****************************************************************************************************
+     *                                        INITIALIZATION                                             *
+     *****************************************************************************************************/
+
+    // Initialization function
 	void Start () 
     {
-        availableRemoteUniqueID = 100;
-        availableLocalUniqueID = 200;
-
+        // Scale factor (this must be the first thing called)
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
+        
+        // Reset all existing local and remote configs as having unique id -1
+        // Note: This must be called before LoadConfigFile();
+        foreach (GameObject g in LocalPlatforms)
+        {
+            g.GetComponent<SoaActor>().unique_id = -1;
+        }
+        foreach (GameObject g in RemotePlatforms)
+        {
+            g.GetComponent<SoaActor>().unique_id = -1;
+        }
 
+        // Set up book keeping for assigning unique IDs
+        // Note: This must be called before LoadConfigFile();
+        TakenUniqueIDs = new HashSet<int>();
+        TakenUniqueIDs.Add(0); // Reserved for blue base
+        smallestAvailableUniqueID = 1;
+
+        // Load settings from config file (should be the first thing that's called)
+        LoadConfigFile();
+
+        // Set up mountain and water cells
         WaterCells = new List<GridCell>();
         MountainCells = new List<GridCell>();
 
         Debug.Log(hexGrid.WaterHexes.Count + " water hexes to copy");
         foreach (FlatHexPoint point in hexGrid.WaterHexes)
+        {
             WaterCells.Add(new GridCell(point.Y, point.X));
-
+        }
         Debug.Log(hexGrid.MountainHexes.Count + " mountain hexes to copy");
         foreach (FlatHexPoint point in hexGrid.MountainHexes)
-            MountainCells.Add(new GridCell(point.Y, point.X));
-
-        LoadConfigFile();
-
-        thisCamera = omcScript.GetComponent<Camera>();
-
-        NavMesh.pathfindingIterationsPerFrame = 50;
-
-        //if (BroadcastOn)
-        //{
-            // Create manager
-            redDataManager = new DataManager(RedRoom);
-            blueDataManager = new DataManager(BlueRoom);
-            displayBeliefDictionary = blueDataManager.getGodsEyeView();
-
-        //}
-
-        for (int i=0; i<LocalPlatforms.Count; i++)
         {
-            GameObject platform = LocalPlatforms[i];
-            Debug.Log("Adding platform " + platform.name);
-            omcScript.AddPlatform(platform);
-
-            SoaActor actor = platform.GetComponent<SoaActor>();
-            actor.unique_id = requestNewLocalUniqueID();
-            //actor.simulateMotion = true;
-
-            if (platform.name.Contains("Blue Base"))
-            {
-                actor.unique_id = 0;
-            }
-
-
-            if (platform.name.Contains("Blue"))
-            {
-                //actor.affiliation = (int)Affiliation.BLUE;
-                actor.dataManager = blueDataManager;
-                blueDataManager.addNewActor(actor);
-            }
-            if (platform.name.Contains("HeavyLift"))
-            {
-                //actor.affiliation = 0;
-                //actor.type = 2;
-                //actor.commsRange = 5000;
-                //actor.useExternalWaypoint = true;
-            }
-            if (platform.name.Contains("SmallUav"))
-            {
-                //actor.affiliation = 0;
-                //actor.type = 3;
-                //actor.commsRange = 5000;
-                //actor.useExternalWaypoint = true;
-            }
-            if(platform.name.Contains("Red"))
-            {
-                //actor.affiliation = 1;
-                actor.useExternalWaypoint = false;
-                actor.dataManager = redDataManager;
-                redDataManager.addNewActor(actor);
-            }
-
+            MountainCells.Add(new GridCell(point.Y, point.X));
         }
 
-        Debug.Log("Adding remote platforms");
+        // Camera
+        thisCamera = omcScript.GetComponent<Camera>();
+
+        // NavMesh
+        NavMesh.pathfindingIterationsPerFrame = 50;
+
+        // Create data managers
+        redDataManager = new DataManager(networkRedRoom);
+        blueDataManager = new DataManager(networkBlueRoom);
+
+        // Get gods eye view
+        displayBeliefDictionary = blueDataManager.getGodsEyeView();
+
+        // Activate local platforms (both pre-existing and instantiated from config)
+        for (int i = 0; i < LocalPlatforms.Count; i++)
+        {
+            GameObject platform = LocalPlatforms[i];
+            if (platform.tag.Contains("BlueBase"))
+            {
+                ActivateBlueBase(platform);
+            }
+            else if (platform.tag.Contains("RedDismount"))
+            {
+                ActivateRedDismount(platform);
+            }
+            else if (platform.tag.Contains("RedTruck"))
+            {
+                ActivateRedTruck(platform);
+            }
+            else if (platform.tag.Contains("NeutralDismount"))
+            {
+                ActivateNeutralDismount(platform);
+            }
+            else if (platform.tag.Contains("NeutralTruck"))
+            {
+                ActivateNeutralTruck(platform);
+            }
+            else if (platform.tag.Contains("BluePolice"))
+            {
+                ActivateBluePolice(platform);
+            }
+            else
+            {
+                Debug.LogWarning("Error activating local platform, unrecognized tag " + platform.tag);
+            }
+        }
+
+        // Activate remote platforms (both pre-existing and instantiated from config)
         for (int i = 0; i < RemotePlatforms.Count; i++)
         {
             GameObject platform = RemotePlatforms[i];
-            omcScript.AddPlatform(platform);
-
-            SoaActor actor = platform.GetComponent<SoaActor>();
-            actor.unique_id = requestNewRemoteUniqueID();
-
-            Debug.Log("Adding platform " + platform.name + " id " + actor.unique_id);
-            actor.simulateMotion = true;
-
-            if (platform.name.Contains("Blue"))
+            if (platform.tag.Contains("HeavyUAV"))
             {
-                //actor.affiliation = (int)Affiliation.BLUE;
-                actor.dataManager = blueDataManager;
-                blueDataManager.addNewActor(actor);
+                ActivateHeavyUAV(platform);
             }
-            if (platform.name.Contains("HeavyLift"))
+            else if (platform.tag.Contains("SmallUAV"))
             {
-                //actor.affiliation = (int)Affiliation.BLUE;
-                //actor.type = 2;
-                //actor.commsRange = 5000;
-                actor.useExternalWaypoint = true;
-                actor.dataManager = blueDataManager;
-                blueDataManager.addNewActor(actor);
+                ActivateSmallUAV(platform);
             }
-            if (platform.name.Contains("SmallUav"))
+            else if (platform.tag.Contains("Balloon"))
             {
-                //actor.affiliation = 0;
-                //actor.type = 3;
-                //actor.commsRange = 5000;
-                actor.useExternalWaypoint = true;
-                actor.dataManager = blueDataManager;
-                blueDataManager.addNewActor(actor);
+                ActivateBalloon(platform);
             }
-            if (platform.name.Contains("Red"))
+            else
             {
-                //actor.affiliation = 1;
-                actor.dataManager = redDataManager;
-                actor.useExternalWaypoint = false;
-                redDataManager.addNewActor(actor);
-            }
-
-            if (platform.name.Contains("Truck"))
-            {
-                //actor.type = 0;
-                //actor.commsRange = 5000;
-                actor.useExternalWaypoint = false;
-            }
-            if (platform.name.Contains("Dismount"))
-            {
-                //actor.type = 1;
-                //actor.commsRange = 5000;
-                actor.useExternalWaypoint = false;
-            }
-            if (platform.name.Contains("Police"))
-            {
-                //actor.type = 4;
-                //actor.commsRange = 5000;
-                actor.useExternalWaypoint = false;
+                Debug.LogWarning("Error activating remote platform, unrecognized tag " + platform.tag);
             }
         }
 
+        // Add map beliefs to outgoing queue
         PushInitialMapBeliefs();
 
         // Last thing to do is to start comms with all beliefs in data
@@ -199,16 +199,131 @@ public class SimControl : MonoBehaviour
         redDataManager.startComms();
         blueDataManager.startComms();
 	} // End Start()
-	
-	// Update is called once per frame
 
-    int randDraw;
-    Belief b;
-    float messageTimer = 0f;
-    float updateTimer = 0f;
+    // Reads in the XML config file
+    void LoadConfigFile()
+    {
+        // Parse the XML config file
+        SoaConfig soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
 
-    float sensorClock = 0f;
-    public float sensorUpdatePeriod;
+        // Red platform weapon probability
+        probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
+        probRedDismountWeaponized = soaConfig.probRedDismountWeaponized;
+
+        // Network settings
+        networkRedRoom = soaConfig.networkRedRoom;
+        networkBlueRoom = soaConfig.networkBlueRoom;
+
+        // Set up remote platforms
+        foreach (PlatformConfig p in soaConfig.remotePlatforms)
+        {
+            switch (p.GetConfigType())
+            {
+                case PlatformConfig.ConfigType.HEAVY_UAV:
+                    InstantiateHeavyUAV((HeavyUAVConfig)p);
+                    break;
+                case PlatformConfig.ConfigType.SMALL_UAV:
+                    InstantiateSmallUAV((SmallUAVConfig)p);
+                    break;
+                case PlatformConfig.ConfigType.BALLOON:
+                    Debug.LogWarning("Balloon creation currently disabled");
+                    //InstantiateBalloon((BalloonConfig) p);
+                    break;
+            }
+        }
+
+        // Set up local platforms
+        foreach (PlatformConfig p in soaConfig.localPlatforms)
+        {
+            switch (p.GetConfigType())
+            {
+                case PlatformConfig.ConfigType.RED_DISMOUNT:
+                    InstantiateRedDismount((RedDismountConfig)p);
+                    break;
+                case PlatformConfig.ConfigType.RED_TRUCK:
+                    InstantiateRedTruck((RedTruckConfig)p);
+                    break;
+                case PlatformConfig.ConfigType.NEUTRAL_DISMOUNT:
+                    InstantiateNeutralDismount((NeutralDismountConfig)p);
+                    break;
+                case PlatformConfig.ConfigType.NEUTRAL_TRUCK:
+                    InstantiateNeutralTruck((NeutralTruckConfig)p);
+                    break;
+                case PlatformConfig.ConfigType.BLUE_POLICE:
+                    InstantiateBluePolice((BluePoliceConfig)p);
+                    break;
+            }
+        }
+    }
+
+    // Sends out initial map beliefs through the blue data manager
+    void PushInitialMapBeliefs()
+    {
+        GameObject g;
+        FlatHexPoint currentCell;
+
+        currentCell = new FlatHexPoint(0, 0);
+        b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x / KmToUnity, hexGrid.Map[currentCell].z / KmToUnity, 1.0f);
+        blueDataManager.addBelief(b, 0);
+        blueDataManager.addInitializationBelief(b);
+        Debug.Log(b.ToString());
+
+        b = new Belief_Terrain((int)soa.Terrain.MOUNTAIN, MountainCells);
+        blueDataManager.addBelief(b, 0);
+        blueDataManager.addInitializationBelief(b);
+        Debug.Log(MountainCells.Count + " mountain hexes.");
+
+        b = new Belief_Terrain((int)soa.Terrain.WATER, WaterCells);
+        blueDataManager.addBelief(b, 0);
+        blueDataManager.addInitializationBelief(b);
+        Debug.Log(WaterCells.Count + " water hexes.");
+
+        for (int i = 0; i < BlueBases.Count; i++)
+        {
+            g = BlueBases[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            BlueBaseSim s = g.GetComponent<BlueBaseSim>();
+            b = new Belief_Base(i, theseCells, s.Supply);
+            blueDataManager.addBelief(b, 0);
+            blueDataManager.addInitializationBelief(b);
+            Debug.Log(b.ToString());
+        }
+
+        for (int i = 0; i < NgoSites.Count; i++)
+        {
+            g = NgoSites[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            NgoSim s = g.GetComponent<NgoSim>();
+            b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
+            blueDataManager.addBelief(b, 0);
+            blueDataManager.addInitializationBelief(b);
+            Debug.Log(b.ToString());
+        }
+
+        for (int i = 0; i < Villages.Count; i++)
+        {
+            g = Villages[i];
+            List<GridCell> theseCells = new List<GridCell>();
+            currentCell = hexGrid.Map[g.transform.position];
+            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            VillageSim s = g.GetComponent<VillageSim>();
+            b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
+            blueDataManager.addBelief(b, 0);
+            blueDataManager.addInitializationBelief(b);
+            Debug.Log(b.ToString());
+        }
+    }
+    #endregion
+
+    #region Update
+    /*****************************************************************************************************
+     *                                              UPDATE                                               *
+     *****************************************************************************************************/
+    // Update is called once per frame
 	void Update () 
     {
         float dt = Time.deltaTime;
@@ -248,7 +363,6 @@ public class SimControl : MonoBehaviour
                     SoaActor actor = platform.GetComponent<SoaActor>();
                     if (actor.affiliation == Affiliation.RED)
                     {
-
                         //If showing true position, first arg gets ignored
                         //Otherwise, the data in the first arg is represented in the display.
                         //If null the actor is no longer visible.
@@ -266,7 +380,6 @@ public class SimControl : MonoBehaviour
                     SoaActor actor = platform.GetComponent<SoaActor>();
                     if (actor.affiliation == Affiliation.BLUE)
                     {
-
                         //If showing true position, first arg gets ignored
                         //Otherwise, the data in the first arg is represented in the display.
                         //If null the actor is no longer visible.
@@ -306,7 +419,6 @@ public class SimControl : MonoBehaviour
                 {
                     lock (blueDataManager.dataManagerLock)
                     {
-
                         //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
                         //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
 
@@ -327,50 +439,10 @@ public class SimControl : MonoBehaviour
                         messageTimer = 0f;
                     }
                 }
-                //Debug.Log("*** END OUTGOING MESSAGE BLOCK ***");
             }
         }
 	}
 
-    public void relabelLocalRedActor(int unique_id)
-    {
-        SoaActor actor;
-        GameObject platform;
-
-        // Go through each of the local platforms
-        for (int i = 0; i < LocalPlatforms.Count; i++)
-        {
-            platform = LocalPlatforms[i];
-            actor = platform.GetComponent<SoaActor>();
-
-            // Find the red actor we want by unique id
-            if (platform.name.Contains("Red") && actor.unique_id == unique_id)
-            {
-                // Remove current red actor from all lists
-                redDataManager.removeActor(actor);
-
-                // Change its unique ID
-                actor.unique_id = requestNewLocalUniqueID();
-
-                // Add relabeled red actor to all lists
-                redDataManager.addNewActor(actor);
-
-                break;
-            }
-        }
-    }
-
-    public int requestNewRemoteUniqueID()
-    {
-        return availableRemoteUniqueID++;
-    }
-
-    public int requestNewLocalUniqueID()
-    {
-        return availableLocalUniqueID++;
-    }
-
-    public Vector3 mouseVector;
     void UpdateMouseOver()
     {
         mouseVector = thisCamera.ScreenToViewportPoint(Input.mousePosition);
@@ -407,7 +479,7 @@ public class SimControl : MonoBehaviour
                     if (thisObjectName != null)
                     {
                         labels[0].text = thisObjectName;
-                        
+
                         SoaActor thisActor = thisGameObject.GetComponent<SoaActor>();
                         NavMeshAgent thisNavAgent = thisGameObject.GetComponentInChildren<NavMeshAgent>();
                         if (thisNavAgent)
@@ -426,7 +498,7 @@ public class SimControl : MonoBehaviour
                     }
                     else
                     {
-                        
+
                     }
 
                     if (Input.GetMouseButtonUp(0))
@@ -447,92 +519,10 @@ public class SimControl : MonoBehaviour
         }
     }
 
-    string ConfigFileName = "SoaSimConfig.xml";
-    void LoadConfigFile()
-    {
-        Debug.Log("Loading from " + ConfigFileName);
-
-        XmlTextReader reader = new XmlTextReader(ConfigFileName);
-
-        reader.ReadToDescendant("RedRoom");
-        Debug.Log(reader.Name);
-        RedRoom = reader.ReadElementContentAsString();
-        Debug.Log(RedRoom);
-        reader.ReadToFollowing("BlueRoom");
-        Debug.Log(reader.Name);
-        BlueRoom = reader.ReadElementContentAsString();
-        Debug.Log(BlueRoom);
-
-        reader.Close();
-    }
-
-    void PushInitialMapBeliefs()
-    {
-        GameObject g;
-        FlatHexPoint currentCell;
-
-        currentCell = new FlatHexPoint(0, 0);
-        b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x / KmToUnity , hexGrid.Map[currentCell].z / KmToUnity, 1.0f);
-        blueDataManager.addBelief(b, 0);
-        blueDataManager.addInitializationBelief(b);
-        Debug.Log(b.ToString());
-
-        b = new Belief_Terrain((int)soa.Terrain.MOUNTAIN, MountainCells);
-        blueDataManager.addBelief(b, 0);
-        blueDataManager.addInitializationBelief(b);
-        Debug.Log(MountainCells.Count + " mountain hexes.");
-
-        b = new Belief_Terrain((int)soa.Terrain.WATER, WaterCells);
-        blueDataManager.addBelief(b, 0);
-        blueDataManager.addInitializationBelief(b);
-        Debug.Log(WaterCells.Count + " water hexes.");
-
-        for (int i = 0; i < BlueBases.Count; i++ )
-        {
-            g = BlueBases[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            BlueBaseSim s = g.GetComponent<BlueBaseSim>();
-            b = new Belief_Base(i, theseCells, s.Supply);
-            blueDataManager.addBelief(b, 0);
-            blueDataManager.addInitializationBelief(b);
-            Debug.Log(b.ToString());
-        }
-
-        for (int i = 0; i < NgoSites.Count; i++)
-        {
-            g = NgoSites[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            NgoSim s = g.GetComponent<NgoSim>();
-            b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
-            blueDataManager.addBelief(b, 0);
-            blueDataManager.addInitializationBelief(b);
-            Debug.Log(b.ToString());
-        }
-
-        for (int i = 0; i < Villages.Count; i++)
-        {
-            g = Villages[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            VillageSim s = g.GetComponent<VillageSim>();
-            b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
-            blueDataManager.addBelief(b, 0);
-            blueDataManager.addInitializationBelief(b);
-            Debug.Log(b.ToString());
-        }
-    }
-
     void UpdateSiteBeliefs()
     {
         GameObject g;
-        FlatHexPoint currentCell;
-
-        currentCell = new FlatHexPoint(0, 0);
+        FlatHexPoint currentCell = new FlatHexPoint(0, 0);
 
         for (int i = 0; i < BlueBases.Count; i++)
         {
@@ -543,7 +533,6 @@ public class SimControl : MonoBehaviour
             BlueBaseSim s = g.GetComponent<BlueBaseSim>();
             b = new Belief_Base(i, theseCells, s.Supply);
             AddBeliefToBlueBases(b);
-            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < NgoSites.Count; i++)
@@ -555,7 +544,6 @@ public class SimControl : MonoBehaviour
             NgoSim s = g.GetComponent<NgoSim>();
             b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
             AddBeliefToBlueBases(b);
-            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < Villages.Count; i++)
@@ -567,8 +555,52 @@ public class SimControl : MonoBehaviour
             VillageSim s = g.GetComponent<VillageSim>();
             b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
             AddBeliefToBlueBases(b);
-            //Debug.Log(b.ToString());
         }
+    }
+    #endregion
+
+    #region Termination
+    /*****************************************************************************************************
+     *                                           TERMINATION                                             *
+     *****************************************************************************************************/
+    void OnApplicationQuit()
+    {
+        redDataManager.stopPhoton();
+        blueDataManager.stopPhoton();
+    }
+    #endregion
+
+    #region Utility Functions
+    /*****************************************************************************************************
+     *                                        UTILITY FUNCTIONS                                          *
+     *****************************************************************************************************/
+    // Gets a never before assigned Unique ID and takes suggestions
+    int RequestUniqueID(int requestedID)
+    {
+        int assignedID;
+
+        // Try to give the requested ID first
+        if (requestedID >= smallestAvailableUniqueID && !TakenUniqueIDs.Contains(requestedID))
+        {
+            // Can use the requested ID, mark it as taken
+            assignedID = requestedID;
+            TakenUniqueIDs.Add(requestedID);
+        }
+        else
+        {
+            // Cannot use the requested ID, use the next available ID 
+            assignedID = smallestAvailableUniqueID;
+            TakenUniqueIDs.Add(smallestAvailableUniqueID);
+        }
+
+        // Find the next smallest available ID for the next call
+        while (TakenUniqueIDs.Contains(smallestAvailableUniqueID))
+        {
+            smallestAvailableUniqueID++;
+        }
+
+        // Return ID to user
+        return assignedID;
     }
 
     void AddBeliefToBlueBases(Belief b)
@@ -582,29 +614,417 @@ public class SimControl : MonoBehaviour
         }
     }
 
-    public void AddLocalPlatform(GameObject newPlatform)
+    GameObject FindClosestInList(GameObject g, List<GameObject> targetList)
     {
-        LocalPlatforms.Add(newPlatform);
-        omcScript.AddPlatform(newPlatform);
-    }
-
-    public void AddRemotePlatform(GameObject newPlatform)
-    {
-        RemotePlatforms.Add(newPlatform);
-        omcScript.AddPlatform(newPlatform);
-    }
-
-    void BroadcastPlatforms()
-    {
-        foreach (GameObject platform in LocalPlatforms)
+        GameObject closestTarget = null;
+        float closestDist = float.PositiveInfinity;
+        float tempDist;
+        foreach (GameObject t in targetList)
         {
-            Debug.Log("Sending platform " + platform.name);
+            tempDist = (g.transform.position - t.transform.position).magnitude;
+            if (tempDist < closestDist)
+            {
+                closestDist = tempDist;
+                closestTarget = t;
+            }
+        }
+        return closestTarget;
+    }
+    #endregion
+
+    #region Remote Platform Instantiation
+    /*****************************************************************************************************
+     *                                  REMOTE PLATFORM INSTANTIATION                                    *
+     *****************************************************************************************************/
+    public GameObject InstantiateHeavyUAV(HeavyUAVConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "HeavyLift " + a.unique_id;
+
+        // Add to list of remote platforms
+        RemotePlatforms.Add(g);
+        return g;
+    }
+
+    public GameObject InstantiateSmallUAV(SmallUAVConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(SmallUAVPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+        
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "SmallUAV " + a.unique_id;
+
+        // Add to list of remote platforms
+        RemotePlatforms.Add(g);
+        return g;
+    }
+
+    public GameObject InstantiateBalloon(BalloonConfig c)
+    {
+        // Instantiate
+        /*GameObject g = (GameObject)Instantiate(BalloonPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+                        
+        // Set grid
+        g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
+                         
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "Balloon " + a.unique_id;
+                         
+        // Add to list of remote platforms
+        RemotePlatforms.Add(g);
+        return g;*/
+
+        return null;
+    }
+    #endregion
+
+    #region Remote Platform Activation
+    /*****************************************************************************************************
+     *                                    REMOTE PLATFORM ACTIVATION                                     *
+     *****************************************************************************************************/
+    private void ActivateRemotePlatform(GameObject platform)
+    {
+        // Add to mouse script
+        omcScript.AddPlatform(platform);
+
+        // Assign unique ID if does not already have one
+        SoaActor actor = platform.GetComponent<SoaActor>();
+        if (actor.unique_id < 0)
+        {
+            actor.unique_id = RequestUniqueID(smallestAvailableUniqueID);
+        }
+
+        // Settings
+        actor.simulateMotion = true;
+        actor.useExternalWaypoint = true;
+
+        // Data manager
+        actor.dataManager = blueDataManager;
+        blueDataManager.addNewActor(actor);
+    }
+
+    public void ActivateHeavyUAV(GameObject platform)
+    {
+        ActivateRemotePlatform(platform);
+    }
+
+    public void ActivateSmallUAV(GameObject platform)
+    {
+        ActivateRemotePlatform(platform);
+    }
+
+    public void ActivateBalloon(GameObject platform)
+    {
+        ActivateRemotePlatform(platform);
+    }
+    #endregion
+
+    #region Local Platform Instantiation
+    /*****************************************************************************************************
+     *                                   LOCAL PLATFORM INSTANTIATION                                    *
+     *****************************************************************************************************/
+    public GameObject InstantiateRedDismount(RedDismountConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(RedDismountPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "Red Dismount " + a.unique_id;
+
+        // Waypoint motion
+        SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
+        GameObject waypoint;
+        bool initialWaypointSpecified = false;
+        if (c.initialWaypoint != null)
+        {
+            waypoint = GameObject.Find(c.initialWaypoint);
+            if (waypoint != null)
+            {
+                // Initial waypoint was specified, go to it first and then
+                // go to the closest red base from there
+                initialWaypointSpecified = true;
+                swm.waypoints.Add(waypoint);
+                swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+            }
+        }
+        if (!initialWaypointSpecified)
+        {
+            // Go to current closest base if no initial waypoint was specified
+            swm.waypoints.Add(FindClosestInList(g, RedBases));
+        }
+
+        // Weapon
+        SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
+        foreach (WeaponModality wm in sw.modes)
+        {
+            wm.enabled = c.hasWeapon;
+        }
+
+        // Add to list of local platforms
+        LocalPlatforms.Add(g);
+        return g;
+    }
+
+    public GameObject InstantiateRedTruck(RedTruckConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(RedTruckPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "Red Truck " + a.unique_id;
+
+        // Waypoint motion
+        SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
+        GameObject waypoint;
+        bool initialWaypointSpecified = false;
+        if (c.initialWaypoint != null)
+        {
+            waypoint = GameObject.Find(c.initialWaypoint);
+            if (waypoint != null)
+            {
+                // Initial waypoint was specified, go to it first and then
+                // go to the closest red base from there
+                initialWaypointSpecified = true;
+                swm.waypoints.Add(waypoint);
+                swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+            }
+        }
+        if (!initialWaypointSpecified)
+        {
+            // Go to current closest base if no initial waypoint was specified
+            swm.waypoints.Add(FindClosestInList(g, RedBases));
+        }
+
+        // Weapon
+        SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
+        foreach (WeaponModality wm in sw.modes)
+        {
+            wm.enabled = c.hasWeapon;
+        }
+
+        // Add to list of local platforms
+        LocalPlatforms.Add(g);
+        return g;
+    }
+
+    public GameObject InstantiateNeutralDismount(NeutralDismountConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "Neutral Dismount " + a.unique_id;
+
+        // Add to list of local platforms
+        LocalPlatforms.Add(g);
+        return g;
+    }
+
+    public GameObject InstantiateNeutralTruck(NeutralTruckConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "Neutral Truck " + a.unique_id;
+
+        // Add to list of local platforms
+        LocalPlatforms.Add(g);
+        return g;
+    }
+
+    public GameObject InstantiateBluePolice(BluePoliceConfig c)
+    {
+        // Instantiate
+        GameObject g = (GameObject)Instantiate(BluePolicePrefab, c.pos_km * KmToUnity, Quaternion.identity);
+
+        // Set grid
+        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+        // Assign unique ID
+        SoaActor a = g.GetComponent<SoaActor>();
+        a.unique_id = RequestUniqueID(c.id);
+        g.name = "Blue Police " + a.unique_id;
+
+        // Add to list of local platforms
+        LocalPlatforms.Add(g);
+        return g;
+    }
+    #endregion
+
+    #region Local Platform Activation
+    /*****************************************************************************************************
+     *                                     LOCAL PLATFORM ACTIVATION                                     *
+     *****************************************************************************************************/
+    private void ActivateBlueBase(GameObject platform)
+    {
+        // Add to mouse script
+        omcScript.AddPlatform(platform);
+
+        // ID 0 is reserved for blue base
+        SoaActor actor = platform.GetComponent<SoaActor>();
+        actor.unique_id = 0;
+
+        // Data manager
+        actor.dataManager = blueDataManager;
+        blueDataManager.addNewActor(actor);
+    }
+
+    private void ActivateLocalRedPlatform(GameObject platform)
+    {
+        // Add to mouse script
+        omcScript.AddPlatform(platform);
+
+        // Assign unique ID if does not already have one
+        SoaActor actor = platform.GetComponent<SoaActor>();
+        if (actor.unique_id < 0)
+        {
+            actor.unique_id = RequestUniqueID(smallestAvailableUniqueID);
+        }
+
+        // Settings
+        actor.useExternalWaypoint = false;
+
+        // Data manager
+        actor.dataManager = redDataManager;
+        redDataManager.addNewActor(actor);
+    }
+
+    public void ActivateRedDismount(GameObject platform)
+    {
+        ActivateLocalRedPlatform(platform);
+    }
+
+    public void ActivateRedTruck(GameObject platform)
+    {
+        ActivateLocalRedPlatform(platform);
+    }
+
+    private void ActivateLocalNeutralPlatform(GameObject platform)
+    {
+        // Add to mouse script
+        omcScript.AddPlatform(platform);
+
+        // Assign unique ID if does not already have one
+        SoaActor actor = platform.GetComponent<SoaActor>();
+        if (actor.unique_id < 0)
+        {
+            actor.unique_id = RequestUniqueID(smallestAvailableUniqueID);
         }
     }
 
-    void OnApplicationQuit()
+    public void ActivateNeutralDismount(GameObject platform)
     {
-        redDataManager.stopPhoton();
-        blueDataManager.stopPhoton();
+        ActivateLocalNeutralPlatform(platform);
     }
+
+    public void ActivateNeutralTruck(GameObject platform)
+    {
+        ActivateLocalNeutralPlatform(platform);
+    }
+
+    public void ActivateBluePolice(GameObject platform)
+    {
+        // Add to mouse script
+        omcScript.AddPlatform(platform);
+
+        // Assign unique ID if does not already have one
+        SoaActor actor = platform.GetComponent<SoaActor>();
+        if (actor.unique_id < 0)
+        {
+            actor.unique_id = RequestUniqueID(smallestAvailableUniqueID);
+        }
+
+        // Data manager
+        actor.dataManager = blueDataManager;
+        blueDataManager.addNewActor(actor);
+    }
+    #endregion
+
+    #region Local Platform Destroy
+    /*****************************************************************************************************
+     *                                     LOCAL PLATFORM DESTROY                                       *
+     *****************************************************************************************************/
+    private void DestroyLocalRedPlatform(GameObject platform)
+    {
+        // Remove from mouse script
+        omcScript.DeletePlatform(platform);
+
+        // Remove from data manager
+        redDataManager.removeActor(platform.GetComponent<SoaActor>());
+
+        // Remove from local platform list
+        LocalPlatforms.Remove(platform);
+
+        // Destroy now
+        Destroy(platform);
+    }
+
+    public void DestroyRedDismount(GameObject platform)
+    {
+        DestroyLocalRedPlatform(platform);
+    }
+
+    public void DestroyRedTruck(GameObject platform)
+    {
+        DestroyLocalRedPlatform(platform);
+    }
+
+    private void DestroyLocalNeutralPlatform(GameObject platform)
+    {
+        // Remove from mouse script
+        omcScript.DeletePlatform(platform);
+
+        // Remove from local platform list
+        LocalPlatforms.Remove(platform);
+
+        // Destroy now
+        Destroy(platform);
+    }
+
+    public void DestroyNeutralDismount(GameObject platform)
+    {
+        DestroyLocalNeutralPlatform(platform);
+    }
+
+    public void DestroyNeutralTruck(GameObject platform)
+    {
+        DestroyLocalNeutralPlatform(platform);
+    }
+    #endregion
 }

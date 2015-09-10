@@ -565,9 +565,12 @@ MonoBehaviour:
   affiliation: 2
   type: 0
   isAlive: 1
+  isCarrying: 0
+  isWeaponized: 0
   commsRange: 0
   Sensors: []
   Weapons: []
+  Classifiers: []
   Detections: []
   Tracks: []
   simulateMotion: 1
@@ -602,9 +605,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 156500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d4fd6dedfaa8f94e94c9e8a135ebd74, type: 3}
+  m_Script: {fileID: 11500000, guid: 151d43b0e99533b4b978a087817299fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PathUpdateInterval: 30
 --- !u!114 &11488826
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -6,15 +6,6 @@ using soa;
 
 public class SoaSite : SoaActor
 {
-    public override void Start()
-    {
-        // Call Start() of base class
-        base.Start();
-
-        // Always alive
-        isAlive = true;
-    }
-
     public override void Kill()    
     {
         // There is no way to kill a site

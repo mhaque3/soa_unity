@@ -32,7 +32,7 @@ public class SoaActor : MonoBehaviour
         BALLOON = 6
     };
 
-    public bool isAlive;
+    public bool isAlive = false;
     public CarriedResource isCarrying;
     public bool isWeaponized;
 
@@ -65,9 +65,9 @@ public class SoaActor : MonoBehaviour
 
     public SoldierWaypointMotion motionScript;
     public NavMeshAgent navAgent;
-    
+
     // Use this for initialization
-	public virtual void Start () 
+    void Start()
     {
 
         //Initialize id array for photon
@@ -83,11 +83,6 @@ public class SoaActor : MonoBehaviour
         displayOrientation = transform.rotation;
 
         Sensors = transform.GetComponentsInChildren<SoaSensor>();
-
-        foreach (SoaSensor sensor in Sensors)
-        {
-            //sensor.soaActor = this;
-        }
 
         // Look at my children and populate list of classifiers
         Classifiers = transform.GetComponentsInChildren<SoaClassifier>();
@@ -133,23 +128,28 @@ public class SoaActor : MonoBehaviour
 
         // Initialize a new classification dictionary
         classificationDictionary = new Dictionary<int, bool>();
+
+        // Set to alive now, must be last thing done
+        isAlive = true;
 	}
 
     // Update is called once per frame
     void Update() 
     {
-        /*
         // Debug output 
-        if (unique_id == 100)
+        /*if (unique_id == 200)
         {
             Debug.Log("**************************************");
             foreach (Belief b in beliefDictionary[Belief.BeliefType.ACTOR].Values)
             {
                 Belief_Actor a = (Belief_Actor)b;
-                Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive());
+                if (a.getAffiliation() != 0)
+                {
+                    Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive() + ", TIME: " + a.getBeliefTime());
+                }
             }
-        }
-        */
+        }*/
+        
 	}
 
     // Called when the actor has been killed
@@ -164,7 +164,8 @@ public class SoaActor : MonoBehaviour
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
 
-            beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+            addBelief(newActorData);
+            //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if (dataManager != null)
                 dataManager.addAndBroadcastBelief(newActorData, unique_id, idArray);
         }
@@ -265,7 +266,8 @@ public class SoaActor : MonoBehaviour
                     motionScript.targetPosition.x / SimControl.KmToUnity,
                     motionScript.targetPosition.y / SimControl.KmToUnity,
                     motionScript.targetPosition.z / SimControl.KmToUnity);
-                beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
+                addBelief(newWaypoint);
+                //beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
                 if(dataManager != null)
                     dataManager.addAndBroadcastBelief(newWaypoint, unique_id, idArray);
             }
@@ -275,7 +277,8 @@ public class SoaActor : MonoBehaviour
                 transform.position.x / SimControl.KmToUnity,
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
-            beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
+            addBelief(newActorData);
+            //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if (dataManager != null)
             {
                 dataManager.addAndBroadcastBelief(newActorData, unique_id, idArray);
@@ -318,7 +321,8 @@ public class SoaActor : MonoBehaviour
                         gameObject.transform.position.y / SimControl.KmToUnity,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
-                beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
+                addBelief(detectedActor);
+                //beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 if (dataManager != null)
                 {
                     dataManager.addAndBroadcastBelief(detectedActor, unique_id, idArray);
@@ -365,6 +369,15 @@ public class SoaActor : MonoBehaviour
         #endif
 
         // Get the dictionary for that belief type
+        Belief.BeliefType bt = b.getBeliefType();
+        try
+        {
+            int i = beliefDictionary.Count;
+        }
+        catch (Exception)
+        {
+            Debug.LogWarning("SoaActor: Exception from beliefDictionary for " + gameObject.name);
+        }
         SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
         bool updateDictionary;
         Belief oldBelief;
@@ -503,7 +516,6 @@ public class SoaActor : MonoBehaviour
     {
         // Only publish beliefs if still alive
         if(isAlive){
-            ulong currentTime = (ulong)(System.DateTime.UtcNow - epoch).Milliseconds;
             if (beliefDictionary.ContainsKey(type))
             {
                 SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
