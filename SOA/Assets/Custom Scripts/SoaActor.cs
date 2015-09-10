@@ -11,6 +11,8 @@ public class SoaActor : MonoBehaviour
     public Affiliation affiliation;
     public int type;
 
+    private int[] idArray = new int[1];
+
     public enum CarriedResource
     {
         NONE = 0,
@@ -67,6 +69,10 @@ public class SoaActor : MonoBehaviour
     // Use this for initialization
 	public virtual void Start () 
     {
+
+        //Initialize id array for photon
+        idArray[0] = unique_id;
+
         // Alive at the beginning
         isAlive = true;
 
@@ -160,7 +166,7 @@ public class SoaActor : MonoBehaviour
 
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if (dataManager != null)
-                dataManager.addAndBroadcastBelief(newActorData, unique_id);
+                dataManager.addAndBroadcastBelief(newActorData, unique_id, idArray);
         }
 
         // Set that it is no longer alive
@@ -261,7 +267,7 @@ public class SoaActor : MonoBehaviour
                     motionScript.targetPosition.z / SimControl.KmToUnity);
                 beliefDictionary[Belief.BeliefType.WAYPOINT][unique_id] = newWaypoint;
                 if(dataManager != null)
-                    dataManager.addAndBroadcastBelief(newWaypoint, unique_id);
+                    dataManager.addAndBroadcastBelief(newWaypoint, unique_id, idArray);
             }
 
             // Convert position from Unity to km for Belief_Actor
@@ -272,7 +278,7 @@ public class SoaActor : MonoBehaviour
             beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
             if (dataManager != null)
             {
-                dataManager.addAndBroadcastBelief(newActorData, unique_id);
+                dataManager.addAndBroadcastBelief(newActorData, unique_id, idArray);
             }
 
             // Update classifications
@@ -315,7 +321,7 @@ public class SoaActor : MonoBehaviour
                 beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
                 if (dataManager != null)
                 {
-                    dataManager.addAndBroadcastBelief(detectedActor, unique_id);
+                    dataManager.addAndBroadcastBelief(detectedActor, unique_id, idArray);
                 }
             }
             Detections.Clear();
@@ -327,7 +333,7 @@ public class SoaActor : MonoBehaviour
             belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 0, belief_actor.getIsWeaponized(),
             belief_actor.getPos_x(),
             belief_actor.getPos_y(),
-            belief_actor.getPos_z()), unique_id);
+            belief_actor.getPos_z()), unique_id, idArray);
             }
             killDetections.Clear();
 
@@ -349,7 +355,7 @@ public class SoaActor : MonoBehaviour
 
     // Check if belief is newer than current belief of matching type and id, if so,
     // replace old belief with b.
-    public virtual void addBelief(Belief b)
+    public virtual void addBelief(Belief b, int sourceId)
     {
         #if(UNITY_STANDALONE)
             //Debug.Log("SoaActor - DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
@@ -467,8 +473,10 @@ public class SoaActor : MonoBehaviour
         }
 
         // Update the dictionary entry if necessary
+        //broadcast update to remote data manager
         if (updateDictionary)
         {
+            dataManager.broadcastBelief(b,sourceId, idArray);
             beliefDictionary[b.getBeliefType()][b.getId()] = b;
         }
     }
@@ -516,7 +524,7 @@ public class SoaActor : MonoBehaviour
                         }*/
 
                         if(dataManager != null)
-                            dataManager.addAndBroadcastBelief(entry.Value, unique_id);
+                            dataManager.addAndBroadcastBelief(entry.Value, unique_id, idArray);
                     }
                 }
             }

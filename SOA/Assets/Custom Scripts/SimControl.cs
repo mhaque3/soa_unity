@@ -578,7 +578,7 @@ public class SimControl : MonoBehaviour
         {
             g = BlueBases[i];
             SoaSite s = g.GetComponent<SoaSite>();
-            s.addBelief(b);
+            s.addBelief(b,-1);
         }
     }
 

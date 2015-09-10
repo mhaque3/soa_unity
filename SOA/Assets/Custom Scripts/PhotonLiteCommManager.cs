@@ -500,7 +500,7 @@ namespace soa
         /// <summary>
         /// Adds information from data manager to outgoing queue using default source ID
         /// </summary>
-        public void addOutgoing(Belief b)
+        /*public void addOutgoing(Belief b)
         {
             addOutgoing(b, defaultSourceID);
         }
@@ -556,7 +556,7 @@ namespace soa
                 Console.Error.WriteLine("PhotonLiteCommManager: Belief serialization failed");
                 #endif
             }
-        }
+        }*/
 
         // Sends any outgoing messages that are on the queue
         private void sendOutgoing()

@@ -62,9 +62,14 @@ namespace soa
             cm.start();
         }
 
-        public void addAndBroadcastBelief(Belief b, int sourceId)
+        public void broadcastBelief(Belief b, int sourceId, int[] recipients)
         {
-            cm.addOutgoing(b, sourceId, null);
+            cm.addOutgoing(b, sourceId, recipients);
+        }
+
+        public void addAndBroadcastBelief(Belief b, int sourceId, int[] recipients)
+        {
+            cm.addOutgoing(b, sourceId, recipients);
             addBelief(b, sourceId);
             
         }
@@ -103,7 +108,7 @@ namespace soa
                         SoaActor destActor = soaActorDictionary[entry.Key];
                         if (entry.Value)
                         {
-                            destActor.addBelief(b);
+                            destActor.addBelief(b, sourceId);
                         }
                     }
                 }
