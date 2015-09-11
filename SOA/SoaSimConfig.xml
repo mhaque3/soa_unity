@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Config>
+<SoaConfig>
   <!-- Network Configuration Settings -->
   <Network 
        redRoom ="soa-apl-red" 
@@ -79,4 +79,4 @@
     <!-- Balloons --> 
     <Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="205"/>
   </Remote>
-</Config>
+</SoaConfig>

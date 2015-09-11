@@ -651,7 +651,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateHeavyUAV(HeavyUAVConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, 
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -669,7 +670,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateSmallUAV(SmallUAVConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(SmallUAVPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(SmallUAVPrefab,
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -687,7 +689,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBalloon(BalloonConfig c)
     {
         // Instantiate
-        /*GameObject g = (GameObject)Instantiate(BalloonPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        /*GameObject g = (GameObject)Instantiate(BalloonPrefab, 
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
                         
         // Set grid
         g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
@@ -753,7 +756,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedDismount(RedDismountConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(RedDismountPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(RedDismountPrefab,
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -800,7 +804,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedTruck(RedTruckConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(RedTruckPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(RedTruckPrefab,
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -847,7 +852,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralDismount(NeutralDismountConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(NeutralDismountPrefab,
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -865,7 +871,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralTruck(NeutralTruckConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(NeutralTruckPrefab,
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -883,7 +890,8 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBluePolice(BluePoliceConfig c)
     {
         // Instantiate
-        GameObject g = (GameObject)Instantiate(BluePolicePrefab, c.pos_km * KmToUnity, Quaternion.identity);
+        GameObject g = (GameObject)Instantiate(BluePolicePrefab,
+            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
 
         // Set grid
         g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
