@@ -7,6 +7,11 @@ namespace soa
 {
     public class EnvConfig
     {
+        // Gridmath fields
+        public float gridOrigin_x;
+        public float gridOrigin_z;
+        public float gridToWorldScale;
+
         // Terrain cells
         public List<PrimitivePair<int, int>> landCells;
         public List<PrimitivePair<int, int>> waterCells;

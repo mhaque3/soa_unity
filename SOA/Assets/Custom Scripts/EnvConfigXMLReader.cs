@@ -62,6 +62,10 @@ namespace soa
                 // Parse differently depending on which category we are in
                 switch (c.Name)
                 {
+                    case "GridMath":
+                        // Grid math cells
+                        ParseGridMath(c, envConfig);
+                        break;
                     case "RedBase":
                         // Red base cells
                         ParseCells(c, envConfig.redBaseCells);
@@ -109,6 +113,13 @@ namespace soa
             return envConfig;
         }
 
+        private static void ParseGridMath(XmlNode node, EnvConfig envConfig)
+        {
+            envConfig.gridOrigin_x = GetFloatAttribute(node, "gridOrigin_x", 0.0f);
+            envConfig.gridOrigin_z = GetFloatAttribute(node, "gridOrigin_z", 0.0f);
+            envConfig.gridToWorldScale = GetFloatAttribute(node, "gridToWorldScale", 0.0f);
+        }
+
         private static void ParseCells(XmlNode parentNode, List<PrimitivePair<int, int>> cells)
         {
             // Go through each child node
@@ -153,6 +164,27 @@ namespace soa
             {
                 // Return actual value
                 return Convert.ToInt32(node.Attributes[attribute].Value);
+            }
+        }
+
+        private static float GetFloatAttribute(XmlNode node, string attribute, float defaultValue)
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                // Use default and give warning
+                #if(UNITY_STANDALONE)
+                Debug.LogWarning("EnvConfigXMLReader::getFloatAttribute(): Could not find attribute " +
+                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #else
+                Console.WriteLine("EnvConfigXMLReader::getFloatAttribute(): Could not find attribute " +
+                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #endif
+                return defaultValue;
+            }
+            else
+            {
+                // Return actual value
+                return Convert.ToSingle(node.Attributes[attribute].Value);
             }
         }
     }

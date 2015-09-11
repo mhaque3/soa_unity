@@ -389,7 +389,7 @@ namespace soa
             else
             {
                 // Return actual value
-                return (float) Convert.ToDouble(node.Attributes[attribute].Value);
+                return Convert.ToSingle(node.Attributes[attribute].Value);
             }
         }
 

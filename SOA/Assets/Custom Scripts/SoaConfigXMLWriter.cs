@@ -41,9 +41,12 @@ namespace soa
 
         private static void AddAttribute(XmlDocument xmlDoc, XmlNode node, string attribute, string value)
         {
-            XmlAttribute newAttribute = xmlDoc.CreateAttribute(attribute);
-            newAttribute.Value = value;
-            node.Attributes.Append(newAttribute);
+            if (attribute != null && value != null)
+            {
+                XmlAttribute newAttribute = xmlDoc.CreateAttribute(attribute);
+                newAttribute.Value = value;
+                node.Attributes.Append(newAttribute);
+            }
         }
 
         private static void PopulateNetwork(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)

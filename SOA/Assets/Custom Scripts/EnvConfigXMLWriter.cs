@@ -21,6 +21,13 @@ namespace soa
             XmlNode configNode = xmlDoc.CreateElement("EnvConfig");
             xmlDoc.AppendChild(configNode);
 
+            // Populate "GridMath" node
+            node = xmlDoc.CreateElement("GridMath");
+            configNode.AppendChild(node);
+            AddAttribute(xmlDoc, node, "gridOrigin_x", envConfig.gridOrigin_x.ToString());
+            AddAttribute(xmlDoc, node, "gridOrigin_z", envConfig.gridOrigin_z.ToString());
+            AddAttribute(xmlDoc, node, "gridToWorldScale", envConfig.gridToWorldScale.ToString());
+
             // Populate "RedBase" node
             node = xmlDoc.CreateElement("RedBase");
             configNode.AppendChild(node);
