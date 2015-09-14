@@ -133,6 +133,7 @@ public class SimControl : MonoBehaviour
 
         // Create data managers
         redDataManager = new DataManager(networkRedRoom);
+        //Blue data manager must be id one so remote agents know who to talk to
         blueDataManager = new DataManager(networkBlueRoom);
 
         // Get gods eye view

@@ -36,7 +36,8 @@ namespace soa
             //data on cm.start()
             
             Serializer ps = new ProtobufSerializer();
-            cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
+
+             cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
@@ -59,18 +60,23 @@ namespace soa
 
         public void startComms()
         {
+            if (cm != null)
             cm.start();
         }
 
         public void broadcastBelief(Belief b, int sourceId, int[] recipients)
         {
+            if (cm != null)
             cm.addOutgoing(b, sourceId, recipients);
         }
 
         public void addAndBroadcastBelief(Belief b, int sourceId, int[] recipients)
         {
-            cm.addOutgoing(b, sourceId, recipients);
-            addBelief(b, sourceId);
+            if (cm != null)
+            {
+                cm.addOutgoing(b, sourceId, recipients);
+                addBelief(b, sourceId);
+            }
             
         }
 
