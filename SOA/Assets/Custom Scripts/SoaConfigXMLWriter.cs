@@ -68,9 +68,9 @@ namespace soa
 
             // Add attributes
             AddAttribute(xmlDoc, node, "outputFile",              soaConfig.loggerOutputFile);
-            AddAttribute(xmlDoc, node, "enableLogToFile",         soaConfig.enableLogToFile);
-            AddAttribute(xmlDoc, node, "enableLogEventsToFile",   soaConfig.enableLogEventsToFile);
-            AddAttribute(xmlDoc, node, "enableLogToUnityConsole", soaConfig.enableLogToUnityConsole);
+            AddAttribute(xmlDoc, node, "enableLogToFile",         soaConfig.enableLogToFile.ToString());
+            AddAttribute(xmlDoc, node, "enableLogEventsToFile",   soaConfig.enableLogEventsToFile.ToString());
+            AddAttribute(xmlDoc, node, "enableLogToUnityConsole", soaConfig.enableLogToUnityConsole.ToString());
         }
 
         private static void PopulateSimulation(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
@@ -80,8 +80,8 @@ namespace soa
             configNode.AppendChild(node);
 
             // Add attributes
-            AddAttribute(xmlDoc, node, "probRedDismountWeaponized", soaConfig.probRedDismountWeaponized);
-            AddAttribute(xmlDoc, node, "probRedTruckWeaponized",    soaConfig.probRedTruckWeaponized);
+            AddAttribute(xmlDoc, node, "probRedDismountWeaponized", soaConfig.probRedDismountWeaponized.ToString());
+            AddAttribute(xmlDoc, node, "probRedTruckWeaponized",    soaConfig.probRedTruckWeaponized.ToString());
         }
 
         private static void PopulateLocal(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
@@ -96,19 +96,19 @@ namespace soa
                 switch(p.GetConfigType())
                 {
                     case PlatformConfig.ConfigType.RED_DISMOUNT:
-                        PopulateRedDismount(node, (RedDismountConfig) p);
+                        PopulateRedDismount(xmlDoc, node, (RedDismountConfig) p);
                         break;
                     case PlatformConfig.ConfigType.RED_TRUCK:
-                        PopulateRedTruck(node, (RedTruckConfig) p);
+                        PopulateRedTruck(xmlDoc, node, (RedTruckConfig)p);
                         break;
                     case PlatformConfig.ConfigType.NEUTRAL_DISMOUNT:
-                        PopulateNeutralDismount(node, (NeutralDismountConfig) p);
+                        PopulateNeutralDismount(xmlDoc, node, (NeutralDismountConfig)p);
                         break;
                     case PlatformConfig.ConfigType.NEUTRAL_TRUCK:
-                        PopulateNeutralTruck(node, (NeutralTruckConfig) p);
+                        PopulateNeutralTruck(xmlDoc, node, (NeutralTruckConfig)p);
                         break;
                     case PlatformConfig.ConfigType.BLUE_POLICE:
-                        PopulateBluePolice(node, (BluePoliceConfig) p);
+                        PopulateBluePolice(xmlDoc, node, (BluePoliceConfig)p);
                         break;
                     default:
                         #if(UNITY_STANDALONE)
@@ -133,13 +133,13 @@ namespace soa
                 switch (p.GetConfigType())
                 {
                     case PlatformConfig.ConfigType.HEAVY_UAV:
-                        PopulateHeavyUAV(node, (HeavyUAVConfig) p);
+                        PopulateHeavyUAV(xmlDoc, node, (HeavyUAVConfig)p);
                         break;
                     case PlatformConfig.ConfigType.SMALL_UAV:
-                        PopulateSmallUAV(node, (SmallUAVConfig) p);
+                        PopulateSmallUAV(xmlDoc, node, (SmallUAVConfig)p);
                         break;
                     case PlatformConfig.ConfigType.BALLOON:
-                        PopulateBalloon(node, (BalloonConfig) p);
+                        PopulateBalloon(xmlDoc, node, (BalloonConfig)p);
                         break;
                     default:
                         #if(UNITY_STANDALONE)
@@ -152,7 +152,7 @@ namespace soa
             }
         }
 
-        private static void AddPlatformConfigAttributes(XmlDocument xmlDoc, XmlNode parentNode, PlatformConfig c)
+        private static void AddPlatformConfigAttributes(XmlDocument xmlDoc, XmlNode node, PlatformConfig c)
         {
             // Helper function to add attributes common to all platform configs
             AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
@@ -169,7 +169,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
             AddAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon.ToString());
             AddAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
         }
@@ -181,7 +181,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
             AddAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon.ToString());
             AddAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
         }
@@ -193,7 +193,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
         }
 
         private static void PopulateNeutralTruck(XmlDocument xmlDoc, XmlNode parentNode, NeutralTruckConfig c)
@@ -203,7 +203,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
         }
 
         private static void PopulateBluePolice(XmlDocument xmlDoc, XmlNode parentNode, BluePoliceConfig c)
@@ -213,7 +213,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
         }
         #endregion
 
@@ -225,7 +225,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
         }
 
         private static void PopulateSmallUAV(XmlDocument xmlDoc, XmlNode parentNode, SmallUAVConfig c)
@@ -235,7 +235,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
         }
 
         private static void PopulateBalloon(XmlDocument xmlDoc, XmlNode parentNode, BalloonConfig c)
@@ -245,7 +245,7 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            addPlatformConfigAttributes(xmlDoc, node, c);
+            AddPlatformConfigAttributes(xmlDoc, node, c);
         }
         #endregion
     }

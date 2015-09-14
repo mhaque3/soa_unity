@@ -164,6 +164,9 @@ namespace soa
         // Local platform category parsing
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
+            // Random number generator
+            Random rand = new Random();
+
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
 			{
@@ -180,7 +183,7 @@ namespace soa
                                         GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedDismountWeaponized)
+                                        GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountWeaponized)
                                     )
                                 );
                             }
@@ -194,7 +197,7 @@ namespace soa
                                         GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedTruckWeaponized)
+                                        GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized)
                                     )
                                 );
                             }

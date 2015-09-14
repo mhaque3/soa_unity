@@ -72,19 +72,19 @@ namespace soa
             xmlDoc.Save(xmlFilename);
         }
 
-        private static void AddChildCells(XmlDocument xmlDoc, XmlNode node, List<PrimitivePair<int, int>> cells)
+        private static void AddChildCells(XmlDocument xmlDoc, XmlNode parentNode, List<PrimitivePair<int, int>> cells)
         {
             // Go through each cell in list
-            XmlNode node;
+            XmlNode childNode;
             foreach (PrimitivePair<int, int> cell in cells)
             {
                 // Add as a child cell
-                node = xmlDoc.CreateElement("Cell");
-                node.AppendChild(node);
+                childNode = xmlDoc.CreateElement("Cell");
+                parentNode.AppendChild(childNode);
 
                 // Add coordinates as attribute
-                AddAttribute(xmlDoc, node, "u", cell.first.ToString());
-                AddAttribute(xmlDoc, node, "v", cell.second.ToString());
+                AddAttribute(xmlDoc, childNode, "u", cell.first.ToString());
+                AddAttribute(xmlDoc, childNode, "v", cell.second.ToString());
             }
         }
 

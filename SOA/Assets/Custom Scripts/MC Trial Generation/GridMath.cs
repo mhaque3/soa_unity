@@ -8,7 +8,7 @@ namespace soa
     {
         // Unit basis vector (in world coordinates) defining hex grid u-axis direction
         // (Hard coded for now since grid type/axes are fixed)
-        static const float uHat_x = Math.Sqrt(3.0f) / 2.0f;
+        static const float uHat_x = (float)Math.Sqrt(3.0f) / 2.0f;
         static const float uHat_z = 1.0f / 2.0f;
 
         // Unit basis vector (in world coordinates) defining hex grid v-axis direction
@@ -76,9 +76,9 @@ namespace soa
 		    float cube_w = -cube_u - cube_v;
             
 		    // Round cube coordinates to nearest integer
-		    float round_u = Math.Round(cube_u); 
-		    float round_v = Math.Round(cube_v);
-		    float round_w = Math.Round(cube_w);
+            float round_u = (float) Math.Round(cube_u); 
+		    float round_v = (float) Math.Round(cube_v);
+		    float round_w = (float) Math.Round(cube_w);
 
 		    // Compute residual magnitudes
 		    float diff_u = Math.Abs(round_u - cube_u);

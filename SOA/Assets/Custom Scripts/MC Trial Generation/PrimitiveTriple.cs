@@ -4,17 +4,19 @@ using System.Text;
 
 namespace soa
 {
-    public class PrimitivePair<T,S>
+    public class PrimitiveTriple<S,T,U>
     {
         // Members
-        public T first;
-        public S second;
+        public S first;
+        public T second;
+        public U third;
 
         // Constructor
-        public PrimitivePair(T row, S col) 
+        public PrimitiveTriple(S first, T second, U third) 
         {
             this.first = first;
             this.second = second;
+            this.third = third;
         }
     }
 }
