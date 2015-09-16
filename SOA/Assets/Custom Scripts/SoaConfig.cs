@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace soa
 {
@@ -39,10 +38,14 @@ namespace soa
     public abstract class PlatformConfig
     {
         public enum ConfigType {RED_DISMOUNT, RED_TRUCK, NEUTRAL_DISMOUNT, NEUTRAL_TRUCK, BLUE_POLICE, HEAVY_UAV, SMALL_UAV, BALLOON};
-        public Vector3 pos_km;
+        public float x_km;
+        public float y_km;
+        public float z_km;
         public int id;
         public PlatformConfig(float x_km, float y_km, float z_km, int id) {
-            this.pos_km = new Vector3(x_km, y_km, z_km);
+            this.x_km = x_km;
+            this.y_km = y_km;
+            this.z_km = z_km;
             this.id = id;
         }
         public abstract ConfigType GetConfigType();

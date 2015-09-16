@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if(UNITY_STANDALONE)
+using UnityEngine;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,15 +25,19 @@ namespace soa
             catch (System.IO.FileNotFoundException)
             {
                 // Handle error if not found
+                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename);
+                #endif
                 return null;
             }
 
-            // Find the "Config" category
+            // Find the "SoaConfig" category
             XmlNode configNode = null;
             foreach (XmlNode c in xmlDoc.ChildNodes)
             {
-                if (c.Name == "Config")
+                if (c.Name == "SoaConfig")
                 {
                     configNode = c;
                     break;
@@ -41,7 +47,12 @@ namespace soa
             // Check if we actually found it
             if (configNode == null)
             {
-                // Insert error message here
+                // Handle error if not found
+                #if(UNITY_STANDALONE)
+                Debug.LogError("SoaConfigXMLReader::Parse(): Could not find \"SoaConfig\" node");
+                #else
+                Console.WriteLine("SoaConfigXMLReader::Parse(): Could not find \"SoaConfig\" node");
+                #endif
                 return null;
             }
 
@@ -93,7 +104,7 @@ namespace soa
          ********************************************************************************************/
 
         // Network configuration category parsing
-        static void ParseNetwork(XmlNode node, SoaConfig soaConfig)
+        private static void ParseNetwork(XmlNode node, SoaConfig soaConfig)
         {
             // Pull attributes directly from the node
             try
@@ -103,12 +114,16 @@ namespace soa
             }
             catch (Exception)
             {
+                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseNetwork(): Error parsing " + node.Name);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::ParseNetwork(): Error parsing " + node.Name);
+                #endif
             }            
         }
 
         // Simulation configuration category parsing
-        static void ParseSimulation(XmlNode node, SoaConfig soaConfig)
+        private static void ParseSimulation(XmlNode node, SoaConfig soaConfig)
         {
             // Pull attributes directly from the node
             try
@@ -118,11 +133,15 @@ namespace soa
             }
             catch (Exception)
             {
+                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #endif
             }
         }
 
-        static void ParseLogger(XmlNode node, SoaConfig soaConfig)
+        private static void ParseLogger(XmlNode node, SoaConfig soaConfig)
         {
             // Pull attributes directly from the node
             try
@@ -134,13 +153,20 @@ namespace soa
             }
             catch (Exception)
             {
+                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #endif
             }
         }
 
         // Local platform category parsing
-        static void ParseLocal(XmlNode node, SoaConfig soaConfig)
+        private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
+            // Random number generator
+            Random rand = new Random();
+
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
 			{
@@ -157,7 +183,7 @@ namespace soa
                                         GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedDismountWeaponized)
+                                        GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountWeaponized)
                                     )
                                 );
                             }
@@ -171,7 +197,7 @@ namespace soa
                                         GetFloatAttribute(c, "z_km", 0),
                                         GetIntAttribute(c, "id", -1),
                                         GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", UnityEngine.Random.value <= soaConfig.probRedTruckWeaponized)
+                                        GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized)
                                     )
                                 );
                             }
@@ -215,20 +241,28 @@ namespace soa
                         default:
                             if(c.Name != "#comment")
                             {
+                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseLocal(): Unrecognized node " + c.Name);
+                                #else
+                                Console.WriteLine("SoaConfigXMLReader::ParseLocal(): Unrecognized node " + c.Name);
+                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
+                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseLocal(): Error parsing " + c.Name);
+                    #else
+                    Console.WriteLine("SoaConfigXMLReader::ParseLocal(): Error parsing " + c.Name);
+                    #endif
                 }
             }
         }
 
         // Remote platform category parsing
-        static void ParseRemote(XmlNode node, SoaConfig soaConfig)
+        private static void ParseRemote(XmlNode node, SoaConfig soaConfig)
         {
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
@@ -276,14 +310,22 @@ namespace soa
                         default:
                             if (c.Name != "#comment")
                             {
+                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseRemote(): Unrecognized node " + c.Name);
+                                #else
+                                Console.WriteLine("SoaConfigXMLReader::ParseRemote(): Unrecognized node " + c.Name);
+                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
+                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseRemote(): Error parsing " + c.Name);
+                    #else
+                    Console.WriteLine("SoaConfigXMLReader::ParseRemote(): Error parsing " + c.Name);
+                    #endif
                 }
             }
         }
@@ -291,13 +333,18 @@ namespace soa
         /********************************************************************************************
          *                            ATTRIBUTE READING HELPER FUNCTIONS                            *
          ********************************************************************************************/
-        static bool GetBooleanAttribute(XmlNode node, string attribute, bool defaultValue)
+        private static bool GetBooleanAttribute(XmlNode node, string attribute, bool defaultValue)
         {
             if (node.Attributes[attribute] == null)
             {
                 // Use default and give warning
+                #if(UNITY_STANDALONE)
                 Debug.LogWarning("SoaConfigXMLReader::getBooleanAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::getBooleanAttribute(): Could not find attribute " +
+                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #endif
                 return defaultValue;
             }
             else
@@ -307,13 +354,18 @@ namespace soa
             }
         }
 
-        static int GetIntAttribute(XmlNode node, string attribute, int defaultValue)
+        private static int GetIntAttribute(XmlNode node, string attribute, int defaultValue)
         {
             if (node.Attributes[attribute] == null)
             {
                 // Use default and give warning
+                #if(UNITY_STANDALONE)
                 Debug.LogWarning("SoaConfigXMLReader::getIntAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::getIntAttribute(): Could not find attribute " +
+                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #endif
                 return defaultValue;
             }
             else
@@ -323,29 +375,39 @@ namespace soa
             }
         }
 
-        static float GetFloatAttribute(XmlNode node, string attribute, float defaultValue)
+        private static float GetFloatAttribute(XmlNode node, string attribute, float defaultValue)
         {
             if (node.Attributes[attribute] == null)
             {
                 // Use default and give warning
+                #if(UNITY_STANDALONE)
                 Debug.LogWarning("SoaConfigXMLReader::getFloatAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::getFloatAttribute(): Could not find attribute " +
+                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #endif
                 return defaultValue;
             }
             else
             {
                 // Return actual value
-                return (float) Convert.ToDouble(node.Attributes[attribute].Value);
+                return Convert.ToSingle(node.Attributes[attribute].Value);
             }
         }
 
-        static string GetStringAttribute(XmlNode node, string attribute, string defaultValue)
+        private static string GetStringAttribute(XmlNode node, string attribute, string defaultValue)
         {
             if (node.Attributes[attribute] == null)
             {
                 // Use default and give warning
+                #if(UNITY_STANDALONE)
                 Debug.LogWarning("SoaConfigXMLReader::getStringAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::getStringAttribute(): Could not find attribute " +
+                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
+                #endif
                 return defaultValue;
             }
             else
