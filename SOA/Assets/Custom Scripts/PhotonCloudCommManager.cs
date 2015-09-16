@@ -227,9 +227,11 @@ namespace soa
                         case ClientState.JoinedLobby:
                             // Create or join our room
                             OpJoinOrCreateRoom(roomName, actorNumber, new RoomOptions());
+                            ChangeLocalID(1);
                             break;
                         case ClientState.Joined:
                             // Within room, send any queued outgoing messages
+                            if (this.LocalPlayer.ID != 1) Debug.LogError("ERROR: ID IS NOT 1");
                             sendOutgoing();
                             break;
                     }

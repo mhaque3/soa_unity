@@ -254,7 +254,7 @@ namespace soa
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
             // Random number generator
-            Random rand = new Random();
+            System.Random rand = new System.Random();
 
             // Go through each child node
             PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1); // Dummy value

@@ -165,16 +165,16 @@
   <!-- Remote Platform Descriptions -->
   <Remote>
     <!-- Heavy UAVs -->
-    <HeavyUAV        x_km="0.481"     y_km="1.200"   z_km="-9.696"    id="200"/>
-    <HeavyUAV        x_km="5.185"     y_km="1.200"   z_km="-7.268"    id="201"/>
+    <HeavyUAV        x_km="0.481"     y_km="1.200"   z_km="-9.696"    id="100"/>
+    <HeavyUAV        x_km="5.185"     y_km="1.200"   z_km="-7.268"    id="101"/>
     
     <!-- Small UAVs -->
-    <SmallUAV        x_km="-1.362"    y_km="2.000"   z_km="-10.626"   id="202"/>
-    <SmallUAV        x_km="-4.760"    y_km="2.000"   z_km="-9.889"    id="203"/>
-    <SmallUAV        x_km="1.178"     y_km="2.000"   z_km="-11.628"   id="204"/>
-    <SmallUAV        x_km="-1.299"    y_km="2.000"   z_km="12.248"    id="999"/>
+    <SmallUAV        x_km="-1.362"    y_km="2.000"   z_km="-10.626"   id="102"/>
+    <SmallUAV        x_km="-4.760"    y_km="2.000"   z_km="-9.889"    id="103"/>
+    <SmallUAV        x_km="1.178"     y_km="2.000"   z_km="-11.628"   id="104"/>
+    <!--SmallUAV        x_km="-1.299"    y_km="2.000"   z_km="12.248"    id="999"/ -->
     
     <!-- Balloons --> 
-    <Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="205"/>
+    <Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="105"/>
   </Remote>
 </SoaConfig>

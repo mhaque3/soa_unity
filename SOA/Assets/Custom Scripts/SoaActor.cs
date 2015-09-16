@@ -505,7 +505,9 @@ public class SoaActor : MonoBehaviour
         //broadcast update to remote data manager
         if (updateDictionary)
         {
-            dataManager.broadcastBelief(b,sourceId, idArray);
+            //TODO find out which photon comm manager this agent is listening on and only send to that one
+
+            dataManager.broadcastBelief(b,unique_id, null);
             beliefDictionary[b.getBeliefType()][b.getId()] = b;
         }
     }
@@ -544,6 +546,8 @@ public class SoaActor : MonoBehaviour
                     }*/
 
                     // only publish new data (beliefs created within last 5 seconds)
+                    // TODO address protocol changes needed to accomodate classifications/is alive/ other issues tbd
+
                     if (entry.Value.getBeliefTime() >= (UInt64)(System.DateTime.UtcNow - epoch).Ticks/10000 - 5000)
                     {
                         /*if (type == Belief.BeliefType.NGOSITE)
