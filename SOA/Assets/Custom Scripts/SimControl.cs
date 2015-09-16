@@ -33,6 +33,7 @@ public class SimControl : MonoBehaviour
     public List<GameObject> BlueBases;
     public List<GridCell> MountainCells;
     public List<GridCell> WaterCells;
+    public List<GridCell> LandCells;
 
     // Unique IDs
     HashSet<int> TakenUniqueIDs;
@@ -113,6 +114,7 @@ public class SimControl : MonoBehaviour
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
         MountainCells = new List<GridCell>();
+        LandCells = new List<GridCell>();
 
         Debug.Log(hexGrid.WaterHexes.Count + " water hexes to copy");
         foreach (FlatHexPoint point in hexGrid.WaterHexes)
@@ -123,6 +125,11 @@ public class SimControl : MonoBehaviour
         foreach (FlatHexPoint point in hexGrid.MountainHexes)
         {
             MountainCells.Add(new GridCell(point.Y, point.X));
+        }
+        Debug.Log(hexGrid.LandHexes.Count + " land hexes not copied");
+        foreach (FlatHexPoint point in hexGrid.LandHexes)
+        {
+            LandCells.Add(new GridCell(point.Y, point.X));
         }
 
         // Camera
@@ -198,6 +205,9 @@ public class SimControl : MonoBehaviour
         // Add map beliefs to outgoing queue
         PushInitialMapBeliefs();
 
+        // Write envConfig file (comment out normally)
+        //WriteEnvConfigFile();
+
         // Last thing to do is to start comms with all beliefs in data
         // manager already initialized
         redDataManager.startComms();
@@ -272,7 +282,10 @@ public class SimControl : MonoBehaviour
         FlatHexPoint currentCell;
 
         currentCell = new FlatHexPoint(0, 0);
-        b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x / KmToUnity, hexGrid.Map[currentCell].z / KmToUnity, 1.0f);
+        float gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
+        float gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
+        float gridToWorldScale = 1.0f;
+        b = new Belief_GridSpec(64, 36, gridOrigin_x, gridOrigin_z, gridToWorldScale);
         blueDataManager.addBelief(b, 0);
         blueDataManager.addInitializationBelief(b);
         //Debug.Log(b.ToString());
@@ -326,6 +339,61 @@ public class SimControl : MonoBehaviour
             //Debug.Log(b.ToString());
         }
     }
+
+    /*
+    void WriteEnvConfigFile()
+    {
+        // Make a new config file
+        EnvConfig envConfig = new EnvConfig();
+
+        // Populate gridspec
+        FlatHexPoint currentCell;
+        currentCell = new FlatHexPoint(0, 0);
+        envConfig.gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
+        envConfig.gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
+        envConfig.gridToWorldScale = 1.0f;
+
+        // Terrain information
+        foreach (GridCell g in MountainCells)
+        {
+            envConfig.mountainCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+        }
+        foreach (GridCell g in WaterCells)
+        {
+            envConfig.waterCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+        }
+        foreach (GridCell g in LandCells)
+        {
+            envConfig.landCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+        }
+
+        // No road information for now
+
+        // Site information
+        for (int i = 0; i < BlueBases.Count; i++)
+        {
+            currentCell = hexGrid.Map[BlueBases[i].transform.position];
+            envConfig.blueBaseCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+        for (int i = 0; i < RedBases.Count; i++)
+        {
+            currentCell = hexGrid.Map[RedBases[i].transform.position];
+            envConfig.redBaseCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+        for (int i = 0; i < NgoSites.Count; i++)
+        {
+            currentCell = hexGrid.Map[NgoSites[i].transform.position];
+            envConfig.ngoSiteCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+        for (int i = 0; i < Villages.Count; i++)
+        {
+            currentCell = hexGrid.Map[Villages[i].transform.position];
+            envConfig.villageCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+
+        // Write to file
+        EnvConfigXMLWriter.Write(envConfig, "envConfig.xml");
+    }*/
     #endregion
 
     #region Update
