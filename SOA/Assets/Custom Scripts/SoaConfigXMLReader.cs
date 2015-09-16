@@ -165,7 +165,7 @@ namespace soa
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
             // Random number generator
-            Random rand = new Random();
+            System.Random rand = new System.Random();
 
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)

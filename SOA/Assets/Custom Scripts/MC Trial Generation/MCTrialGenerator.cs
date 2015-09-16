@@ -9,21 +9,21 @@ namespace soa
     {
         /******************** ENVIRONMENT ********************/
         // Environment Configuration
-        static const string envConfigFile = "EnvConfig.xml";
+         const string envConfigFile = "EnvConfig.xml";
 
         /********************** NETWORK **********************/
-        static const string networkRedRoomHeader = "soa-mc-red_";
-        static const string networkBlueRoomHeader = "soa-mc-blue_";
+         const string networkRedRoomHeader = "soa-mc-red_";
+         const string networkBlueRoomHeader = "soa-mc-blue_";
 
         /******************** MONTE CARLO ********************/
-        static const int numMCTrials = 10;
-        static const string soaConfigFileHeader = "MCConfig_";
-        static const string soaLoggerFileHeader = "MCOutput_";
-        static const bool logEvents = true;
-        static const bool logToUnityConsole = true;
+         const int numMCTrials = 10;
+         const string soaConfigFileHeader = "MCConfig_";
+         const string soaLoggerFileHeader = "MCOutput_";
+         const bool logEvents = true;
+         const bool logToUnityConsole = true;
 
         /******************** REMOTE ID **********************/
-        static const int remoteStartID = 200;
+         const int remoteStartID = 200;
         private int availableRemoteID;
         
         private class PlatformLaydown
