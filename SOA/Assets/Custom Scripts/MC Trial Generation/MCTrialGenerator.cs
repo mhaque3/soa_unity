@@ -9,22 +9,21 @@ namespace soa
     {
         /******************** ENVIRONMENT ********************/
         // Environment Configuration
-        static const string envConfigFile = "EnvConfig.xml";
+        const string envConfigFile = "SoaEnvConfig.xml";
 
         /********************** NETWORK **********************/
-        static const string networkRedRoomHeader = "soa-mc-red_";
-        static const string networkBlueRoomHeader = "soa-mc-blue_";
+        const string networkRedRoomHeader = "soa-mc-red_";
+        const string networkBlueRoomHeader = "soa-mc-blue_";
 
         /******************** MONTE CARLO ********************/
-        static const int numMCTrials = 10;
-        static const string soaConfigFileHeader = "MCConfig_";
-        static const string soaLoggerFileHeader = "MCOutput_";
-        static const bool logEvents = true;
-        static const bool logToUnityConsole = true;
+        const int numMCTrials = 10;
+        const string soaConfigFileHeader = "MCConfig_";
+        const string soaLoggerFileHeader = "MCOutput_";
+        const bool logEvents = true;
+        const bool logToUnityConsole = true;
 
         /******************** REMOTE ID **********************/
-        static const int remoteStartID = 200;
-        private int availableRemoteID;
+        const int remoteStartID = 200;
         
         private class PlatformLaydown
         {
@@ -61,6 +60,9 @@ namespace soa
         private PlatformLaydown bluePoliceLaydown;
 
         /***************** REMOTE PLATFORMS ******************/
+        // ID
+        private int availableRemoteID;
+
         // Heavy UAVs
         private PlatformLaydown heavyUAVLaydown;
 
@@ -95,9 +97,6 @@ namespace soa
             allCells.UnionWith(envConfig.waterCells);
             allCells.UnionWith(envConfig.mountainCells);
 
-            // Initialize remote platform ID assignment
-            availableRemoteID = remoteStartID;
-
             // Initialize laydown objects
             InitializeLocalLaydown();
             InitializeRemoteLaydown();
@@ -106,6 +105,125 @@ namespace soa
             rand = new Random(); //reuse this if you are generating many
         }
 
+        #region Perception Defaults
+        private void SetSensorDefaults(SoaConfig soaConfig)
+        {
+            // Pointer
+            List<PerceptionModality> modes;
+            
+            // Red Dismount
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("BluePolice", 1.0f, 5.0f));
+            modes.Add(new PerceptionModality("HeavyUAV",   1.0f, 5.0f));
+            modes.Add(new PerceptionModality("SmallUAV",   1.0f, 4.5f));
+            soaConfig.defaultSensorModalities.Add("RedDismount", modes);
+
+            // Red Truck
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("BluePolice", 1.0f, 5.0f));
+            modes.Add(new PerceptionModality("HeavyUAV",   1.0f, 5.0f));
+            modes.Add(new PerceptionModality("SmallUAV",   1.0f, 4.5f));
+            soaConfig.defaultSensorModalities.Add("RedTruck", modes);
+
+            // Neutral Dismount
+            modes = new List<PerceptionModality>();
+            soaConfig.defaultSensorModalities.Add("NeutralDismount", modes);
+
+            // Neutral Truck
+            modes = new List<PerceptionModality>();
+            soaConfig.defaultSensorModalities.Add("NeutralTruck", modes);
+
+            // Blue Police
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     0.5f, 0.5f));
+            modes.Add(new PerceptionModality("RedTruck",        0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralDismount", 0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 0.5f));
+            soaConfig.defaultSensorModalities.Add("BluePolice", modes);
+
+            // Heavy UAV
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     0.5f, 0.5f));
+            modes.Add(new PerceptionModality("RedTruck",        0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralDismount", 0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 0.5f));
+            soaConfig.defaultSensorModalities.Add("HeavyUAV", modes);
+
+            // Small UAV
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     1.0f, 5.0f));
+            modes.Add(new PerceptionModality("RedTruck",        2.0f, 7.0f));
+            modes.Add(new PerceptionModality("NeutralDismount", 1.0f, 5.0f));
+            modes.Add(new PerceptionModality("NeutralTruck",    2.0f, 7.0f));
+            soaConfig.defaultSensorModalities.Add("SmallUAV", modes);
+
+            // Balloon
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     1e20f,1e20f));
+            modes.Add(new PerceptionModality("RedTruck",        1e20f,1e20f));
+            modes.Add(new PerceptionModality("NeutralDismount", 1e20f,1e20f));
+            modes.Add(new PerceptionModality("NeutralTruck",    1e20f,1e20f));
+            soaConfig.defaultSensorModalities.Add("Balloon", modes);
+        }
+
+        private void SetClassifierDefaults(SoaConfig soaConfig)
+        {
+            // Pointer
+            List<PerceptionModality> modes;
+
+            // Red Dismount
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("BluePolice",      5.0f, 5.0f));
+            modes.Add(new PerceptionModality("HeavyUAV",        5.0f, 5.0f));
+            modes.Add(new PerceptionModality("SmallUAV",        4.5f, 4.5f));
+            soaConfig.defaultClassifierModalities.Add("RedDismount", modes);
+
+            // Red Truck
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("BluePolice",      5.0f, 5.0f));
+            modes.Add(new PerceptionModality("HeavyUAV",        5.0f, 5.0f));
+            modes.Add(new PerceptionModality("SmallUAV",        4.5f, 4.5f));
+            soaConfig.defaultClassifierModalities.Add("RedTruck", modes);
+
+            // Neutral Dismount
+            modes = new List<PerceptionModality>();
+            soaConfig.defaultClassifierModalities.Add("NeutralDismount", modes);
+
+            // Neutral Truck
+            modes = new List<PerceptionModality>();
+            soaConfig.defaultClassifierModalities.Add("NeutralTruck", modes);
+
+            // Blue Police
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     0.5f, 0.5f));
+            modes.Add(new PerceptionModality("RedTruck",        0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralDismount", 0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 0.5f));
+            soaConfig.defaultClassifierModalities.Add("BluePolice", modes);
+
+            // Heavy UAV
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     0.5f, 0.5f));
+            modes.Add(new PerceptionModality("RedTruck",        0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralDismount", 0.5f, 0.5f));
+            modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 0.5f));
+            soaConfig.defaultClassifierModalities.Add("HeavyUAV", modes);
+
+            // Small UAV
+            modes = new List<PerceptionModality>();
+            modes.Add(new PerceptionModality("RedDismount",     0.5f, 5.0f));
+            modes.Add(new PerceptionModality("RedTruck",        0.5f, 7.0f));
+            modes.Add(new PerceptionModality("NeutralDismount", 0.5f, 5.0f));
+            modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 7.0f));
+            soaConfig.defaultClassifierModalities.Add("SmallUAV", modes);
+
+            // Balloon
+            modes = new List<PerceptionModality>();
+            soaConfig.defaultClassifierModalities.Add("Balloon", modes);
+        }
+        #endregion
+
+        #region Platform Laydown
         public void InitializeLocalLaydown()
         {
             // Pointer
@@ -253,7 +371,59 @@ namespace soa
             laydownPtr.allowedCells = allCells;
         }
 
-        #region Config File Generator
+        // Computes list of laydowns
+        private List<PrimitiveTriple<float, float, float>> RandomizeLaydown(PlatformLaydown laydown)
+        {
+            // List to return
+            List<PrimitiveTriple<float, float, float>> posList = new List<PrimitiveTriple<float, float, float>>();
+
+            // First determine the # of units
+            int numUnits = (int)Math.Round(RandN(laydown.numMean, laydown.numStdDev, (float)laydown.numMin, (float)laydown.numMax));
+
+            // For each unit
+            PrimitivePair<float, float> tempPos = new PrimitivePair<float, float>(0, 0);
+            PrimitivePair<float, float> anchor;
+            PrimitivePair<int, int> tempGrid;
+            bool laydownFound;
+            float tempAltitude;
+            for (int i = 0; i < numUnits; i++)
+            {
+                // Laydown not valid by default
+                laydownFound = false;
+
+                // Keep trying points until we find one that satisfies grid constraints
+                while (!laydownFound)
+                {
+                    // Randomly pick an anchor and convert coordinates to world
+                    anchor = gridMath.GridToWorld(laydown.anchors[rand.Next(0, laydown.anchors.Count)]); // Note: rand.Next max value is exclusive
+
+                    // Now independently pick X and Z deviations from that point
+                    tempPos.first = anchor.first + RandN(0.0f, laydown.fromAnchorStdDev_km, 0.0f, laydown.fromAnchorMax_km);
+                    tempPos.second = anchor.second + RandN(0.0f, laydown.fromAnchorStdDev_km, 0.0f, laydown.fromAnchorMax_km);
+
+                    // Convert that temp position to grid
+                    tempGrid = gridMath.WorldToGrid(tempPos);
+
+                    // Check to see if the grid is within allowed
+                    if (laydown.allowedCells.Contains(tempGrid))
+                    {
+                        laydownFound = true;
+                    }
+                }
+
+                // Now pick an altitude randomly
+                tempAltitude = RandN(laydown.altitudeMean_km, laydown.altitudeStdDev_km, laydown.altitudeMin_km, laydown.altitudeMax_km);
+
+                // Save the 3D point
+                posList.Add(new PrimitiveTriple<float, float, float>(tempPos.first, tempAltitude, tempPos.second));
+            }
+
+            // Return list of randomized positions
+            return posList;
+        }
+        #endregion
+
+        #region MC Trial Generation
         public void GenerateConfigFiles()
         {
             // Find out trial number formatting
@@ -265,6 +435,12 @@ namespace soa
             List<PrimitiveTriple<float, float, float>> randomizedPositions;
             for (int trial = 1; trial <= numMCTrials; trial++)
             {
+                // Status message
+                Console.WriteLine("Generating config file " + soaConfigFileHeader + trial.ToString(toStringFormat) + ".xml");
+
+                // Initialize remote platform ID assignment
+                availableRemoteID = remoteStartID;
+
                 // Create a new SoaConfig object
                 soaConfig = new SoaConfig();
 
@@ -277,10 +453,14 @@ namespace soa
                 soaConfig.probRedTruckWeaponized = probRedTruckWeaponized;
 
                 // Logger configuration
-                soaConfig.loggerOutputFile = soaLoggerFileHeader + trial.ToString(toStringFormat);
+                soaConfig.loggerOutputFile = soaLoggerFileHeader + trial.ToString(toStringFormat) + ".xml";
                 soaConfig.enableLogToFile = true;
                 soaConfig.enableLogEventsToFile = logEvents;
                 soaConfig.enableLogToUnityConsole = logToUnityConsole;
+
+                // Set sensor and classifier defaults
+                SetSensorDefaults(soaConfig);
+                SetClassifierDefaults(soaConfig);
 
                 // Local units: Red Dismount
                 randomizedPositions = RandomizeLaydown(redDismountLaydown);
@@ -383,7 +563,7 @@ namespace soa
                 }
 
                 // Write SoaConfig contents to a config file
-                SoaConfigXMLWriter.Write(soaConfig, soaConfigFileHeader + trial.ToString(toStringFormat));
+                SoaConfigXMLWriter.Write(soaConfig, soaConfigFileHeader + trial.ToString(toStringFormat) + ".xml");
             } // End current trial
         }
         #endregion
@@ -418,57 +598,6 @@ namespace soa
 
             // Check to see if that cell belongs to the list/set of land, water, or mountain cells
             return allCells.Contains(cell);
-        }
-
-        // Computes list of laydowns
-        private List<PrimitiveTriple<float, float, float>> RandomizeLaydown(PlatformLaydown laydown)
-        {
-            // List to return
-            List<PrimitiveTriple<float, float, float>> posList = new List<PrimitiveTriple<float, float, float>>();
-
-            // First determine the # of units
-            int numUnits = (int)Math.Round(RandN(laydown.numMean, laydown.numStdDev, (float)laydown.numMin, (float)laydown.numMax));
-
-            // For each unit
-            PrimitivePair<float, float> tempPos = new PrimitivePair<float, float>(0, 0);
-            PrimitivePair<float, float> anchor;
-            PrimitivePair<int, int> tempGrid;
-            bool laydownFound;
-            float tempAltitude;
-            for (int i = 0; i < numUnits; i++)
-            {
-                // Laydown not valid by default
-                laydownFound = false;
-
-                // Keep trying points until we find one that satisfies grid constraints
-                while (!laydownFound)
-                {
-                    // Randomly pick an anchor and convert coordinates to world
-                    anchor = gridMath.GridToWorld(laydown.anchors[rand.Next(0, laydown.anchors.Count)]); // Note: rand.Next max value is exclusive
-
-                    // Now independently pick X and Z deviations from that point
-                    tempPos.first = anchor.first + RandN(0.0f, laydown.fromAnchorStdDev_km, 0.0f, laydown.fromAnchorMax_km);
-                    tempPos.second = anchor.second + RandN(0.0f, laydown.fromAnchorStdDev_km, 0.0f, laydown.fromAnchorMax_km);
-
-                    // Convert that temp position to grid
-                    tempGrid = gridMath.WorldToGrid(tempPos);
-
-                    // Check to see if the grid is within allowed
-                    if (laydown.allowedCells.Contains(tempGrid))
-                    {
-                        laydownFound = true;
-                    }
-                }
-
-                // Now pick an altitude randomly
-                tempAltitude = RandN(laydown.altitudeMean_km, laydown.altitudeStdDev_km, laydown.altitudeMin_km, laydown.altitudeMax_km);
-
-                // Save the 3D point
-                posList.Add(new PrimitiveTriple<float, float, float>(tempPos.first, tempAltitude, tempPos.second));
-            }
-
-            // Return list of randomized positions
-            return posList;
         }
         #endregion
 

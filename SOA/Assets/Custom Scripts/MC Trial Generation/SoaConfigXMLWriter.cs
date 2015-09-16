@@ -29,6 +29,14 @@ namespace soa
             // Populate "Simulation" node
             PopulateSimulation(xmlDoc, configNode, soaConfig);
 
+            // Populate "SensorDefaults" node
+            PopulatePerceptionDefaults(xmlDoc, configNode, 
+                soaConfig.defaultSensorModalities, "SensorDefaults");
+
+            // Populate "ClassifierDefaults" node
+            PopulatePerceptionDefaults(xmlDoc, configNode, 
+                soaConfig.defaultClassifierModalities, "ClassifierDefaults");
+
             // Populate "Local" node
             PopulateLocal(xmlDoc, configNode, soaConfig);
 
@@ -82,6 +90,43 @@ namespace soa
             // Add attributes
             AddAttribute(xmlDoc, node, "probRedDismountWeaponized", soaConfig.probRedDismountWeaponized.ToString());
             AddAttribute(xmlDoc, node, "probRedTruckWeaponized",    soaConfig.probRedTruckWeaponized.ToString());
+        }
+
+        private static void PopulatePerceptionDefaults(XmlDocument xmlDoc, XmlNode configNode, 
+            Dictionary<string, List<PerceptionModality>> perceptionDictionary, string nodeName)
+        {
+            // Create perception node
+            XmlNode perceptionNode = xmlDoc.CreateElement(nodeName);
+            configNode.AppendChild(perceptionNode);
+
+            // Make an entry for each key
+            XmlNode platformNode;
+            foreach (string platformName in perceptionDictionary.Keys)
+            {
+                // Create node and add to perception group
+                platformNode = xmlDoc.CreateElement(platformName);
+                perceptionNode.AppendChild(platformNode);
+
+                // Add modes
+                PopulatePerceptionModes(xmlDoc, platformNode, perceptionDictionary[platformName]);
+            }
+        }
+
+        private static void PopulatePerceptionModes(XmlDocument xmlDoc, XmlNode parentNode,
+            List<PerceptionModality> modes)
+        {
+            XmlNode modalityNode;
+            foreach (PerceptionModality mode in modes)
+            {
+                // Create and attach mode node
+                modalityNode = xmlDoc.CreateElement("Mode");
+                parentNode.AppendChild(modalityNode);
+
+                // Add attributes
+                AddAttribute(xmlDoc, modalityNode, "tag", mode.tagString);
+                AddAttribute(xmlDoc, modalityNode, "RangeP1_km", mode.RangeP1.ToString());
+                AddAttribute(xmlDoc, modalityNode, "RangeMax_km", mode.RangeMax.ToString());
+            }
         }
 
         private static void PopulateLocal(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
@@ -161,29 +206,54 @@ namespace soa
             AddAttribute(xmlDoc, node, "id", c.id.ToString());
         }
 
+        private static void AddPerceptionOverride(XmlDocument xmlDoc, XmlNode parentNode, PlatformConfig c)
+        {
+            // Add sensor if overridden
+            if (!c.GetUseDefaultSensorModalities())
+            {
+                XmlNode childNode = xmlDoc.CreateElement("Sensor");
+                parentNode.AppendChild(childNode);
+                PopulatePerceptionModes(xmlDoc, childNode, c.GetSensorModalities());
+            }
+
+            // Add classifier if overridden
+            if (!c.GetUseDefaultClassifierModalities())
+            {
+                XmlNode childNode = xmlDoc.CreateElement("Classifier");
+                parentNode.AppendChild(childNode);
+                PopulatePerceptionModes(xmlDoc, childNode, c.GetClassifierModalities());
+            }
+        }
+
         #region Local Platforms
         private static void PopulateRedDismount(XmlDocument xmlDoc, XmlNode parentNode, RedDismountConfig c)
         {
             // Create "Red Dismount" node and append to parentNode
-            XmlNode node = xmlDoc.CreateElement("Red Dismount");
+            XmlNode node = xmlDoc.CreateElement("RedDismount");
             parentNode.AppendChild(node);
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
             AddAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon.ToString());
             AddAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
 
         private static void PopulateRedTruck(XmlDocument xmlDoc, XmlNode parentNode, RedTruckConfig c)
         {
             // Create "Red Truck" node and append to parentNode
-            XmlNode node = xmlDoc.CreateElement("Red Truck");
+            XmlNode node = xmlDoc.CreateElement("RedTruck");
             parentNode.AppendChild(node);
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
             AddAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon.ToString());
             AddAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
 
         private static void PopulateNeutralDismount(XmlDocument xmlDoc, XmlNode parentNode, NeutralDismountConfig c)
@@ -194,6 +264,9 @@ namespace soa
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
 
         private static void PopulateNeutralTruck(XmlDocument xmlDoc, XmlNode parentNode, NeutralTruckConfig c)
@@ -204,6 +277,9 @@ namespace soa
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
 
         private static void PopulateBluePolice(XmlDocument xmlDoc, XmlNode parentNode, BluePoliceConfig c)
@@ -214,6 +290,9 @@ namespace soa
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
         #endregion
 
@@ -226,6 +305,9 @@ namespace soa
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
 
         private static void PopulateSmallUAV(XmlDocument xmlDoc, XmlNode parentNode, SmallUAVConfig c)
@@ -236,6 +318,9 @@ namespace soa
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
 
         private static void PopulateBalloon(XmlDocument xmlDoc, XmlNode parentNode, BalloonConfig c)
@@ -246,6 +331,9 @@ namespace soa
 
             // Add attributes
             AddPlatformConfigAttributes(xmlDoc, node, c);
+
+            // Add perception override (if specified)
+            AddPerceptionOverride(xmlDoc, node, c);
         }
         #endregion
     }

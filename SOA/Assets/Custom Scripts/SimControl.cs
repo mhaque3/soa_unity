@@ -13,6 +13,7 @@ public class SimControl : MonoBehaviour
 {
     // Config
     string ConfigFileName = "SoaSimConfig.xml";
+    string EnvFileName = "SoaEnvConfig.xml";
     
     // Prefabs
     public GameObject RedDismountPrefab;
@@ -33,6 +34,7 @@ public class SimControl : MonoBehaviour
     public List<GameObject> BlueBases;
     public List<GridCell> MountainCells;
     public List<GridCell> WaterCells;
+    public List<GridCell> LandCells;
 
     // Unique IDs
     HashSet<int> TakenUniqueIDs;
@@ -62,6 +64,7 @@ public class SimControl : MonoBehaviour
     public Vector3 mouseVector;
 
     // Config file parameters
+    public SoaConfig soaConfig;
     public string networkRedRoom;
     public string networkBlueRoom;
     public float probRedTruckWeaponized;
@@ -113,6 +116,7 @@ public class SimControl : MonoBehaviour
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
         MountainCells = new List<GridCell>();
+        LandCells = new List<GridCell>();
 
         Debug.Log(hexGrid.WaterHexes.Count + " water hexes to copy");
         foreach (FlatHexPoint point in hexGrid.WaterHexes)
@@ -123,6 +127,11 @@ public class SimControl : MonoBehaviour
         foreach (FlatHexPoint point in hexGrid.MountainHexes)
         {
             MountainCells.Add(new GridCell(point.Y, point.X));
+        }
+        Debug.Log(hexGrid.LandHexes.Count + " land hexes to copy");
+        foreach (FlatHexPoint point in hexGrid.LandHexes)
+        {
+            LandCells.Add(new GridCell(point.Y, point.X));
         }
 
         // Camera
@@ -197,6 +206,9 @@ public class SimControl : MonoBehaviour
         // Add map beliefs to outgoing queue
         PushInitialMapBeliefs();
 
+        // Write envConfig file (comment out normally)
+        //WriteEnvConfigFile();
+
         // Last thing to do is to start comms with all beliefs in data
         // manager already initialized
         redDataManager.startComms();
@@ -207,7 +219,7 @@ public class SimControl : MonoBehaviour
     void LoadConfigFile()
     {
         // Parse the XML config file
-        SoaConfig soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
+        soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
 
         // Logger settings
         soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,
@@ -324,6 +336,60 @@ public class SimControl : MonoBehaviour
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
         }
+    }
+
+    void WriteEnvConfigFile()
+    {
+        // Make a new config file
+        EnvConfig envConfig = new EnvConfig();
+
+        // Populate gridspec
+        FlatHexPoint currentCell;
+        currentCell = new FlatHexPoint(0, 0);
+        envConfig.gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
+        envConfig.gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
+        envConfig.gridToWorldScale = 1.0f;
+
+        // Terrain information
+        foreach (GridCell g in MountainCells)
+        {
+            envConfig.mountainCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+        }
+        foreach (GridCell g in WaterCells)
+        {
+            envConfig.waterCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+        }
+        foreach (GridCell g in LandCells)
+        {
+            envConfig.landCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+        }
+
+        // No road information for now
+
+        // Site information
+        for (int i = 0; i < BlueBases.Count; i++)
+        {
+            currentCell = hexGrid.Map[BlueBases[i].transform.position];
+            envConfig.blueBaseCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+        for (int i = 0; i < RedBases.Count; i++)
+        {
+            currentCell = hexGrid.Map[RedBases[i].transform.position];
+            envConfig.redBaseCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+        for (int i = 0; i < NgoSites.Count; i++)
+        {
+            currentCell = hexGrid.Map[NgoSites[i].transform.position];
+            envConfig.ngoSiteCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+        for (int i = 0; i < Villages.Count; i++)
+        {
+            currentCell = hexGrid.Map[Villages[i].transform.position];
+            envConfig.villageCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
+        }
+
+        // Write to file
+        EnvConfigXMLWriter.Write(envConfig, EnvFileName);
     }
     #endregion
 
@@ -660,7 +726,19 @@ public class SimControl : MonoBehaviour
         // Assign unique ID
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
-        g.name = "HeavyLift " + a.unique_id;
+        g.name = "Heavy UAV " + a.unique_id;
+
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["HeavyUAV"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["HeavyUAV"] : g.GetClassifierModalities();
+        }
 
         // Add to list of remote platforms
         RemotePlatforms.Add(g);
@@ -679,7 +757,19 @@ public class SimControl : MonoBehaviour
         // Assign unique ID
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
-        g.name = "SmallUAV " + a.unique_id;
+        g.name = "Small UAV " + a.unique_id;
+
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["SmallUAV"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["SmallUAV"] : g.GetClassifierModalities();
+        }
 
         // Add to list of remote platforms
         RemotePlatforms.Add(g);
@@ -699,7 +789,19 @@ public class SimControl : MonoBehaviour
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Balloon " + a.unique_id;
-                         
+                      
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["Balloon"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["Balloon"] : g.GetClassifierModalities();
+        } 
+         
         // Add to list of remote platforms
         RemotePlatforms.Add(g);
         return g;*/
@@ -796,6 +898,18 @@ public class SimControl : MonoBehaviour
             wm.enabled = c.hasWeapon;
         }
 
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["RedDismount"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["RedDismount"] : g.GetClassifierModalities();
+        }
+
         // Add to list of local platforms
         LocalPlatforms.Add(g);
         return g;
@@ -844,6 +958,18 @@ public class SimControl : MonoBehaviour
             wm.enabled = c.hasWeapon;
         }
 
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["RedTruck"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["RedTruck"] : g.GetClassifierModalities();
+        }
+
         // Add to list of local platforms
         LocalPlatforms.Add(g);
         return g;
@@ -862,6 +988,18 @@ public class SimControl : MonoBehaviour
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Neutral Dismount " + a.unique_id;
+
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["NeutralDismount"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["NeutralDismount"] : g.GetClassifierModalities();
+        }
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);
@@ -882,6 +1020,18 @@ public class SimControl : MonoBehaviour
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Neutral Truck " + a.unique_id;
 
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["NeutralTruck"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["NeutralTruck"] : g.GetClassifierModalities();
+        }
+
         // Add to list of local platforms
         LocalPlatforms.Add(g);
         return g;
@@ -900,6 +1050,18 @@ public class SimControl : MonoBehaviour
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Blue Police " + a.unique_id;
+
+        // Set perception capabilities
+        SoaSensor s = g.GetComponent<SoaSensor>();
+        if (s != null)
+        {
+            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["BluePolice"] : g.GetSensorModalities();
+        }
+        SoaClassifier c = g.GetComponent<SoaClassifier>();
+        if (c != null)
+        {
+            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["BluePolice"] : g.GetClassifierModalities();
+        }
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);

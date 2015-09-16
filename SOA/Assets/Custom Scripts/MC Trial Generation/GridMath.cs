@@ -8,13 +8,13 @@ namespace soa
     {
         // Unit basis vector (in world coordinates) defining hex grid u-axis direction
         // (Hard coded for now since grid type/axes are fixed)
-        static const float uHat_x = (float)Math.Sqrt(3.0f) / 2.0f;
-        static const float uHat_z = 1.0f / 2.0f;
+        float uHat_x = (float)Math.Sqrt(3.0f) / 2.0f;
+        const float uHat_z = 1.0f / 2.0f;
 
         // Unit basis vector (in world coordinates) defining hex grid v-axis direction
         // (Hard coded for now since grid type/axes are fixed)
-        static const float vHat_x = 0.0f;
-        static const float vHat_z = 1.0f;
+        const float vHat_x = 0.0f;
+        const float vHat_z = 1.0f;
 
         // Private members
         private float gridOrigin_x;

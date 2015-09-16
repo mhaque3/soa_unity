@@ -27,10 +27,16 @@ namespace soa
         // Remote platforms
         public List<PlatformConfig> remotePlatforms;
 
+        // Default modalities
+        public Dictionary<string, List<PerceptionModality>> defaultSensorModalities;
+        public Dictionary<string, List<PerceptionModality>> defaultClassifierModalities;
+
         public SoaConfig()
         {
             localPlatforms = new List<PlatformConfig>();
             remotePlatforms = new List<PlatformConfig>();
+            defaultSensorModalities = new Dictionary<string, List<PerceptionModality>>();
+            defaultClassifierModalities = new Dictionary<string, List<PerceptionModality>>();
         }
     }
 
@@ -42,13 +48,55 @@ namespace soa
         public float y_km;
         public float z_km;
         public int id;
+        private bool useDefaultSensorModalities;
+        private List<PerceptionModality> sensorModalities;
+        private bool useDefaultClassifierModalities;
+        private List<PerceptionModality> classifierModalities;
+
         public PlatformConfig(float x_km, float y_km, float z_km, int id) {
             this.x_km = x_km;
             this.y_km = y_km;
             this.z_km = z_km;
             this.id = id;
+            this.sensorModalities = new List<PerceptionModality>();
+            this.useDefaultSensorModalities = true;
+            this.classifierModalities = new List<PerceptionModality>();
+            this.useDefaultClassifierModalities = true;
         }
+
         public abstract ConfigType GetConfigType();
+
+        public void SetSensorModalities(List<PerceptionModality> sensorModalities)
+        {
+            this.useDefaultSensorModalities = false;
+            this.sensorModalities = sensorModalities;
+        }
+
+        public List<PerceptionModality> GetSensorModalities()
+        {
+            return sensorModalities;
+        }
+
+        public bool GetUseDefaultSensorModalities()
+        {
+            return useDefaultSensorModalities;
+        }
+
+        public void SetClassifierModalities(List<PerceptionModality> classifierModalities)
+        {
+            this.useDefaultClassifierModalities = false;
+            this.classifierModalities = classifierModalities;
+        }
+
+        public List<PerceptionModality> GetClassifierModalities()
+        {
+            return classifierModalities;
+        }
+
+        public bool GetUseDefaultClassifierModalities()
+        {
+            return useDefaultClassifierModalities;
+        }
     }
 
     // Red dismount config
@@ -56,7 +104,8 @@ namespace soa
     {
         public bool hasWeapon;
         public string initialWaypoint;
-        public RedDismountConfig(float x_km, float y_km, float z_km, int id, string initialWaypoint, bool hasWeapon)
+        public RedDismountConfig(float x_km, float y_km, float z_km, int id,
+            string initialWaypoint, bool hasWeapon)
             : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;
@@ -70,7 +119,8 @@ namespace soa
     {
         public bool hasWeapon;
         public string initialWaypoint;
-        public RedTruckConfig(float x_km, float y_km, float z_km, int id, string initialWaypoint, bool hasWeapon)
+        public RedTruckConfig(float x_km, float y_km, float z_km, int id,
+            string initialWaypoint, bool hasWeapon)
             : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;

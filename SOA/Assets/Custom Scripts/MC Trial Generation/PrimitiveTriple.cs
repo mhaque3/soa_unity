@@ -4,7 +4,7 @@ using System.Text;
 
 namespace soa
 {
-    public class PrimitiveTriple<S,T,U>
+    public class PrimitiveTriple<S, T, U>
     {
         // Members
         public S first;
@@ -17,6 +17,24 @@ namespace soa
             this.first = first;
             this.second = second;
             this.third = third;
+        }
+
+        public override int GetHashCode()
+        {
+            return first.GetHashCode() ^ second.GetHashCode() ^ third.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is PrimitiveTriple<S, T, U>)
+            {
+                PrimitiveTriple<S, T, U> other = obj as PrimitiveTriple<S, T, U>;
+                return first.Equals(other.first) && second.Equals(other.second) && third.Equals(other.third);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

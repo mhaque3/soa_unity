@@ -4,19 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using soa;
 
-[System.Serializable]
-public class ClassifierModality
-{
-    public string tagString;
-    public bool enabled;
-    public float RangeP1;
-    public float RangeMax;
-}
-
 public class SoaClassifier : MonoBehaviour
 {
     // Unity exposed parameters
-    public ClassifierModality[] modes;
+    public PerceptionModality[] modes;
 
     // Reference to soaActor
     SoaActor thisSoaActor;
@@ -40,14 +31,14 @@ public class SoaClassifier : MonoBehaviour
             if (targetActor.isAlive && !thisSoaActor.checkClassified(targetActor.unique_id))
             {
                 // Loop through all possible classifier modes
-                foreach (ClassifierModality mode in modes)
+                foreach (PerceptionModality mode in modes)
                 {
                     // Compute slant range and convert from unity units to km
                     Vector3 delta_unity = transform.position - target.transform.position;
                     float slantRange = delta_unity.magnitude / SimControl.KmToUnity;
 
-                    // If this particular classifier mode is enabled and the game object matches its intended target
-                    if (mode.enabled && mode.tagString == target.tag)
+                    // If the game object matches its intended target
+                    if (mode.tagString == target.tag)
                     {
                         // Determine whether it was classified
                         if (slantRange <= mode.RangeP1)

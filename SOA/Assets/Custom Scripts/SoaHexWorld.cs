@@ -32,6 +32,7 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
 
     public List<FlatHexPoint> WaterHexes;
     public List<FlatHexPoint> MountainHexes;
+    public List<FlatHexPoint> LandHexes;
 
 	override public void InitGrid()
 	{
@@ -43,6 +44,7 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
 
         WaterHexes = new List<FlatHexPoint>();
         MountainHexes = new List<FlatHexPoint>();
+        LandHexes = new List<FlatHexPoint>();
 
 		foreach (var point in Grid)
 		{
@@ -71,20 +73,27 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
                     //block.transform.position += new Vector3(0f, (BaseHeight + WaterHeight) / 4f, 0f);
                     WaterHexes.Add(point);
                 }
-                if (height > HeightScale * 0.6f && height < HeightScale * 0.7f)
+                else if (height > HeightScale * 0.6f && height < HeightScale * 0.7f)
                 {
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
                     thisHex.GetComponent<Renderer>().material = baseGrass;
                     block.transform.localScale = new Vector3(1, BaseHeight, 1);
+                    LandHexes.Add(point);
                 }
-                if (height >= HeightScale * 0.7f)
+                else if (height >= HeightScale * 0.7f)
                 {
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
                     thisHex.GetComponent<Renderer>().material = baseRocky;
                     block.transform.localScale = new Vector3(1, MountainHeight, 1);
                     MountainHexes.Add(point);
                 }
-
+                else
+                {
+                    // Also land?
+                    // Why are these different than the 0.6 to 0.7 heights?
+                    // Question for Bob
+                    LandHexes.Add(point);
+                }
 			}
 		}
 	}

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <SoaConfig>
   <!-- Network Configuration Settings -->
   <Network 
@@ -6,7 +5,7 @@
        blueRoom="soa-apl-blue" 
   />
  
- <!-- Logger Configuration Settings -->
+  <!-- Logger Configuration Settings -->
   <Logger 
        outputFile               ="SoaLogOutput.xml"
        enableLogToFile          ="true"
@@ -14,12 +13,111 @@
        enableLogToUnityConsole  ="true"
   />
 
- <!-- Simulation Configuration Settings -->
+  <!-- Simulation Configuration Settings -->
   <Simulation 
        probRedDismountWeaponized="0.0"
        probRedTruckWeaponized   ="0.0" 
   />
-	
+
+  <!-- Sensor Default Settings -->
+  <SensorDefaults>
+     <RedDismount>
+        <Mode tag="BluePolice"      RangeP1_km="1.0" RangeMax_km="5.0" />
+        <Mode tag="HeavyUAV"        RangeP1_km="1.0" RangeMax_km="5.0" />
+        <Mode tag="SmallUAV"        RangeP1_km="1.0" RangeMax_km="4.5" />
+     </RedDismount>
+
+     <RedTruck>
+        <Mode tag="BluePolice"      RangeP1_km="1.0" RangeMax_km="5.0" />
+        <Mode tag="HeavyUAV"        RangeP1_km="1.0" RangeMax_km="5.0" />
+        <Mode tag="SmallUAV"        RangeP1_km="1.0" RangeMax_km="4.5" />
+     </RedTruck>
+
+     <NeutralDismount>
+        <!-- No sensing capabilities -->
+     </NeutralDismount>
+
+     <NeutralTruck>
+        <!-- No sensing capabilities -->
+     </NeutralTruck>
+
+     <BluePolice>
+        <Mode tag="RedDismount"     RangeP1_km="0.5"   RangeMax_km="0.5" />
+        <Mode tag="RedTruck"        RangeP1_km="0.5"   RangeMax_km="0.5" />
+        <Mode tag="NeutralDismount" RangeP1_km="0.5"   RangeMax_km="0.5" />
+        <Mode tag="NeutralTruck"    RangeP1_km="0.5"   RangeMax_km="0.5" />
+     </BluePolice>
+
+     <HeavyUAV>
+        <Mode tag="RedDismount"     RangeP1_km="0.5"   RangeMax_km="0.5" />
+        <Mode tag="RedTruck"        RangeP1_km="0.5"   RangeMax_km="0.5" />
+        <Mode tag="NeutralDismount" RangeP1_km="0.5"   RangeMax_km="0.5" />
+        <Mode tag="NeutralTruck"    RangeP1_km="0.5"   RangeMax_km="0.5" />
+     </HeavyUAV>
+
+     <SmallUAV>
+        <Mode tag="RedDismount"     RangeP1_km="1.0"   RangeMax_km="5.0" />
+        <Mode tag="RedTruck"        RangeP1_km="2.0"   RangeMax_km="7.0" />
+        <Mode tag="NeutralDismount" RangeP1_km="1.0"   RangeMax_km="5.0" />
+        <Mode tag="NeutralTruck"    RangeP1_km="2.0"   RangeMax_km="7.0" />
+     </SmallUAV>
+
+     <Balloon>
+        <Mode tag="RedDismount"     RangeP1_km="1e20"  RangeMax_km="1e20" />
+        <Mode tag="RedTruck"        RangeP1_km="1e20"  RangeMax_km="1e20" />
+        <Mode tag="NeutralDismount" RangeP1_km="1e20"  RangeMax_km="1e20" />
+        <Mode tag="NeutralTruck"    RangeP1_km="1e20"  RangeMax_km="1e20" />
+     </Balloon>
+  </SensorDefaults>
+
+  <!-- Classifier Default Settings -->
+  <ClassifierDefaults>
+     <RedDismount>
+        <Mode tag="BluePolice"      RangeP1_km="5.0"  RangeMax_km="5.0" />
+        <Mode tag="HeavyUAV"        RangeP1_km="5.0"  RangeMax_km="5.0" />
+        <Mode tag="SmallUAV"        RangeP1_km="4.5"  RangeMax_km="4.5" />
+     </RedDismount>
+
+     <RedTruck>
+        <Mode tag="BluePolice"      RangeP1_km="5.0"  RangeMax_km="5.0" />
+        <Mode tag="HeavyUAV"        RangeP1_km="5.0"  RangeMax_km="5.0" />
+        <Mode tag="SmallUAV"        RangeP1_km="4.5"  RangeMax_km="4.5" />
+     </RedTruck>
+
+     <NeutralDismount>
+        <!-- No classification capabilities -->
+     </NeutralDismount>
+
+     <NeutralTruck>
+        <!-- No classification capabilities -->
+     </NeutralTruck>
+
+     <BluePolice>
+        <Mode tag="RedDismount"     RangeP1_km="0.5"  RangeMax_km="0.5" />
+        <Mode tag="RedTruck"        RangeP1_km="0.5"  RangeMax_km="0.5" />
+        <Mode tag="NeutralDismount" RangeP1_km="0.5"  RangeMax_km="0.5" />
+        <Mode tag="NeutralTruck"    RangeP1_km="0.5"  RangeMax_km="0.5" />
+     </BluePolice>
+
+     <HeavyUAV>
+        <Mode tag="RedDismount"     RangeP1_km="0.5"  RangeMax_km="0.5" />
+        <Mode tag="RedTruck"        RangeP1_km="0.5"  RangeMax_km="0.5" />
+        <Mode tag="NeutralDismount" RangeP1_km="0.5"  RangeMax_km="0.5" />
+        <Mode tag="NeutralTruck"    RangeP1_km="0.5"  RangeMax_km="0.5" />
+     </HeavyUAV>
+
+     <SmallUAV>
+        <Mode tag="RedDismount"     RangeP1_km="0.5"  RangeMax_km="5.0" />
+        <Mode tag="RedTruck"        RangeP1_km="0.5"  RangeMax_km="7.0" />
+        <Mode tag="NeutralDismount" RangeP1_km="0.5"  RangeMax_km="5.0" />
+        <Mode tag="NeutralTruck"    RangeP1_km="0.5"  RangeMax_km="7.0" />
+     </SmallUAV>
+
+     <Balloon>
+        <!-- No classification capabilities -->
+     </Balloon>
+  </ClassifierDefaults>
+
   <!-- Local Platform Descriptions -->
   <Local>
     <!-- Red Dismounts -->

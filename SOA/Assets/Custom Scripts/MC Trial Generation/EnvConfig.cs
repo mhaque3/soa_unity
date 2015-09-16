@@ -39,6 +39,7 @@ namespace soa
             landCells = new List<PrimitivePair<int, int>>();
             waterCells = new List<PrimitivePair<int, int>>();
             mountainCells = new List<PrimitivePair<int, int>>();
+            roadCells = new List<PrimitivePair<int, int>>();
             ngoSiteCells = new List<PrimitivePair<int, int>>();
             villageCells = new List<PrimitivePair<int, int>>();
             blueBaseCells = new List<PrimitivePair<int, int>>();

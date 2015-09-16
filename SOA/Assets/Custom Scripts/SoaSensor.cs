@@ -2,17 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class SensorModality
-{
-    public string tagString;
-    public float RangeP1;
-    public float RangeMax;
-}
-
 abstract public class SoaSensor : MonoBehaviour 
 {
-    public SensorModality[] modes;
+    public PerceptionModality[] modes;
     public SoaActor soaActor;
     public List<GameObject> possibleDetections;
     //public float UpdateRate = 1f;
@@ -37,7 +29,7 @@ abstract public class SoaSensor : MonoBehaviour
                 CheckSensorFootprint(target))
             {
                 // Loop through all possible detect modes
-                foreach (SensorModality mode in modes)
+                foreach (PerceptionModality mode in modes)
                 {
                     Vector3 delta = transform.position - target.transform.position;
                     float slantRange = delta.magnitude / SimControl.KmToUnity;
@@ -79,37 +71,11 @@ abstract public class SoaSensor : MonoBehaviour
             killedActor.transform.position.y / SimControl.KmToUnity,
             killedActor.transform.position.z / SimControl.KmToUnity));
     }
-    /*
-    void OnTriggerStay(Collider other)
-    {
-        foreach(Modality mode in modes)
-        {
-            if (mode.tagString == other.gameObject.tag)
-            {
-                Vector3 delta = transform.position - other.transform.position;
-                float slantRange = delta.magnitude;
-
-                if (slantRange < mode.RangeMax)
-                {
-                    if (slantRange < mode.RangeP1)
-                    {
-                        LogDetection(other.gameObject);
-                    }
-                    else
-                    {
-                        LogPossibleDetection(other.gameObject);
-                    }
-                }
-            }
-        }
-    }*/
 
     void LogDetection(GameObject detectedObject)
     {
         if (soaActor.Detections.IndexOf(detectedObject) == -1)
         {
-            // twupy1
-            // Debug.Log("Adding detection to soa actor list " + soaActor.unique_id);
             soaActor.Detections.Add(detectedObject);
         }
     }

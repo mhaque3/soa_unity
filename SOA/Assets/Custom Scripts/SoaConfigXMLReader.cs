@@ -22,13 +22,13 @@ namespace soa
             {
                 xmlDoc.Load(xmlFilename);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (Exception e)
             {
                 // Handle error if not found
                 #if(UNITY_STANDALONE)
-                Debug.LogError("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename);
+                Debug.LogError("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename + " because " + e.Message);
                 #else
-                Console.WriteLine("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename);
+                Console.WriteLine("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename + " because " + e.Message);
                 #endif
                 return null;
             }
@@ -66,19 +66,28 @@ namespace soa
                         // Network configuration
                         ParseNetwork(c, soaConfig);
                         break;
+                    case "Logger":
+                        // Logger configuration
+                        ParseLogger(c, soaConfig);
+                        break;
                     case "Simulation":
                         // Simulation configuration
                         ParseSimulation(c, soaConfig);
                         break;
-                    case "Logger":
-                        // Logger configuration
-                        ParseLogger(c, soaConfig);
+                    case "SensorDefaults":
+                        // Sensor default configuration
+                        ParsePerceptionDefaults(c, soaConfig.defaultSensorModalities);
+                        break;
+                    case "ClassifierDefaults":
+                        // Classifier default configuration
+                        ParsePerceptionDefaults(c, soaConfig.defaultClassifierModalities);
                         break;
                 }
             }
 
             // Then look at local and remote platforms whose defaults may
             // use information from network or simulation categories
+            // (Note: This step should be done last)
             foreach (XmlNode c in configNode.ChildNodes)
             {
                 // Parse differently depending on which category we are in
@@ -99,6 +108,7 @@ namespace soa
             return soaConfig;
         }
 
+        #region Category Parsing Functions
         /********************************************************************************************
          *                               CATEGORY PARSING FUNCTIONS                                 *
          ********************************************************************************************/
@@ -122,25 +132,7 @@ namespace soa
             }            
         }
 
-        // Simulation configuration category parsing
-        private static void ParseSimulation(XmlNode node, SoaConfig soaConfig)
-        {
-            // Pull attributes directly from the node
-            try
-            {
-                soaConfig.probRedDismountWeaponized = GetFloatAttribute(node, "probRedDismountWeaponized", 1.0f);
-                soaConfig.probRedTruckWeaponized = GetFloatAttribute(node, "probRedTruckWeaponized", 1.0f);
-            }
-            catch (Exception)
-            {
-                #if(UNITY_STANDALONE)
-                Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
-                #endif
-            }
-        }
-
+        // Logger configuration category parsing
         private static void ParseLogger(XmlNode node, SoaConfig soaConfig)
         {
             // Pull attributes directly from the node
@@ -161,6 +153,103 @@ namespace soa
             }
         }
 
+        // Simulation configuration category parsing
+        private static void ParseSimulation(XmlNode node, SoaConfig soaConfig)
+        {
+            // Pull attributes directly from the node
+            try
+            {
+                soaConfig.probRedDismountWeaponized = GetFloatAttribute(node, "probRedDismountWeaponized", 1.0f);
+                soaConfig.probRedTruckWeaponized = GetFloatAttribute(node, "probRedTruckWeaponized", 1.0f);
+            }
+            catch (Exception)
+            {
+                #if(UNITY_STANDALONE)
+                Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #endif
+            }
+        }
+
+        private static List<PerceptionModality> ParseModalities(XmlNode parentNode)
+        {
+            // List for storing parsed modes
+            List<PerceptionModality> modes = new List<PerceptionModality>();
+
+            // Go through each child node
+            foreach (XmlNode c in parentNode.ChildNodes)
+            {
+                switch (c.Name)
+                {
+                    case "Mode":
+                        {
+                            modes.Add(new PerceptionModality(
+                                GetStringAttribute(c, "tag", null),
+                                GetFloatAttribute(c, "RangeP1_km", 0.0f),
+                                GetFloatAttribute(c, "RangeMax_km", 0.0f)
+                                ));
+                            break;
+                        }
+                    default:
+                        if (c.Name != "#comment")
+                        {
+                            #if(UNITY_STANDALONE)
+                            Debug.LogWarning("SoaConfigXMLReader::ParseModalities(): Unrecognized node " + c.Name);
+                            #else
+                            Console.WriteLine("SoaConfigXMLReader::ParseModalities(): Unrecognized node " + c.Name);
+                            #endif
+                        }
+                        break;
+                }
+            }
+
+            // Return mode list
+            return modes;
+        }
+
+        private static void ParsePerceptionDefaults(XmlNode node, Dictionary<string, List<PerceptionModality>> d)
+        {
+            // Go through each child node
+            foreach (XmlNode c in node.ChildNodes)
+            {
+                try
+                {
+                    switch (c.Name)
+                    {
+                        case "RedDismount":
+                        case "RedTruck":
+                        case "NeutralDismount":
+                        case "NeutralTruck":
+                        case "BluePolice":
+                        case "HeavyUAV":
+                        case "SmallUAV":
+                        case "Balloon":
+                            d[c.Name] = ParseModalities(c);
+                            break;
+                        default:
+                            if (c.Name != "#comment")
+                            {
+                                #if(UNITY_STANDALONE)
+                                Debug.LogWarning("SoaConfigXMLReader::ParsePerceptionDefaults(): Unrecognized node " + c.Name);
+                                #else
+                                Console.WriteLine("SoaConfigXMLReader::ParsePerceptionDefaults(): Unrecognized node " + c.Name);
+                                #endif
+                            }
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    #if(UNITY_STANDALONE)
+                    Debug.LogError("SoaConfigXMLReader::ParsePerceptionDefaults(): Error parsing " + c.Name);
+                    #else
+                    Console.WriteLine("SoaConfigXMLReader::ParsePerceptionDefaults(): Error parsing " + c.Name);
+                    #endif
+                }
+            }
+        }
+ 
         // Local platform category parsing
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
@@ -168,77 +257,72 @@ namespace soa
             Random rand = new Random();
 
             // Go through each child node
+            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1); // Dummy value
+            bool newConfigValid;
             foreach (XmlNode c in node.ChildNodes)
 			{
+                newConfigValid = true;
+
 				try
 				{
 					switch (c.Name)
 					{
                         case "RedDismount":
                             {
-                                soaConfig.localPlatforms.Add(
-                                    new RedDismountConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1),
-                                        GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountWeaponized)
-                                    )
+                                newConfig = new RedDismountConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1),
+                                    GetStringAttribute(c, "initialWaypoint", null),
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountWeaponized)
                                 );
                             }
                             break;
                         case "RedTruck":
                             {
-                                soaConfig.localPlatforms.Add(
-                                    new RedTruckConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1),
-                                        GetStringAttribute(c, "initialWaypoint", null),
-                                        GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized)
-                                    )
+                                newConfig = new RedTruckConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1),
+                                    GetStringAttribute(c, "initialWaypoint", null),
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized)
                                 );
                             }
                             break;
                         case "NeutralDismount":
                             {
-                                soaConfig.localPlatforms.Add(
-                                    new NeutralDismountConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1)
-                                    )
+                                newConfig = new NeutralDismountConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1)
                                 );
                             }
                             break;
                         case "NeutralTruck":
                             {
-                                soaConfig.localPlatforms.Add(
-                                    new NeutralTruckConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1)
-                                    )
+                                newConfig = new NeutralTruckConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1)
                                 );
                             }
                             break;
                         case "BluePolice":
                             {
-                                soaConfig.localPlatforms.Add(
-                                    new BluePoliceConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1)
-                                    )
+                                newConfig = new BluePoliceConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1)
                                 );
                             }
                             break;
                         default:
+                            newConfigValid = false;
                             if(c.Name != "#comment")
                             {
                                 #if(UNITY_STANDALONE)
@@ -257,57 +341,78 @@ namespace soa
                     #else
                     Console.WriteLine("SoaConfigXMLReader::ParseLocal(): Error parsing " + c.Name);
                     #endif
-                }
-            }
+                } // End try-catch
+
+                // Handle and add the new config if it is valid
+                if (newConfigValid)
+                {
+                    // Parse any sensor/classifier override modalities specified
+                    foreach (XmlNode g in c.ChildNodes)
+                    {
+                        switch (g.Name)
+                        {
+                            case "Sensor":
+                                newConfig.SetSensorModalities(ParseModalities(g));
+                                break;
+                            case "Classifier":
+                                newConfig.SetClassifierModalities(ParseModalities(g));
+                                break;
+                        }
+                    }
+
+                    // Add to list of local platforms
+                    soaConfig.localPlatforms.Add(newConfig);
+                } // End if new config valid
+            } // End foreach
         }
 
         // Remote platform category parsing
         private static void ParseRemote(XmlNode node, SoaConfig soaConfig)
         {
+            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1); // Dummy value
+            bool newConfigValid;
+
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
             {
+                newConfigValid = true;
+
                 try
                 {
                     switch (c.Name)
                     {
                         case "HeavyUAV":
                             {
-                                soaConfig.remotePlatforms.Add(
-                                    new HeavyUAVConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1)
-                                    )
+                                newConfig = new HeavyUAVConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1)
                                 );
                             }
                             break;
                         case "SmallUAV":
                             {
-                                soaConfig.remotePlatforms.Add(
-                                    new SmallUAVConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1)
-                                    )
+                                newConfig = new SmallUAVConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1)
                                 );
                             }
                             break;
                         case "Balloon":
                             {
-                                soaConfig.remotePlatforms.Add(
-                                    new BalloonConfig(
-                                        GetFloatAttribute(c, "x_km", 0),
-                                        GetFloatAttribute(c, "y_km", 0),
-                                        GetFloatAttribute(c, "z_km", 0),
-                                        GetIntAttribute(c, "id", -1)
-                                    )
+                                newConfig = new BalloonConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "y_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetIntAttribute(c, "id", -1)
                                 );
                             }
                             break;
                         default:
+                            newConfigValid = false;
                             if (c.Name != "#comment")
                             {
                                 #if(UNITY_STANDALONE)
@@ -326,10 +431,33 @@ namespace soa
                     #else
                     Console.WriteLine("SoaConfigXMLReader::ParseRemote(): Error parsing " + c.Name);
                     #endif
-                }
-            }
-        }
+                } // End try-catch
 
+                // Handle and add the new config if it is valid
+                if (newConfigValid)
+                {
+                    // Parse any sensor/classifier override modalities specified
+                    foreach (XmlNode g in c.ChildNodes)
+                    {
+                        switch (g.Name)
+                        {
+                            case "Sensor":
+                                newConfig.SetSensorModalities(ParseModalities(g));
+                                break;
+                            case "Classifier":
+                                newConfig.SetClassifierModalities(ParseModalities(g));
+                                break;
+                        }
+                    }
+
+                    // Add to list of remote platforms
+                    soaConfig.remotePlatforms.Add(newConfig);
+                } // End if new config valid
+            } // End foreach
+        }
+        #endregion
+
+        #region Attribute Reading Helper Functions
         /********************************************************************************************
          *                            ATTRIBUTE READING HELPER FUNCTIONS                            *
          ********************************************************************************************/
@@ -416,7 +544,7 @@ namespace soa
                 return node.Attributes[attribute].Value;
             }
         }
-
+        #endregion
     }
 }
 
