@@ -708,6 +708,22 @@ public class SimControl : MonoBehaviour
         }
         return closestTarget;
     }
+
+    private void SetPerceptionCapabilities(GameObject g, PlatformConfig config, string platformName)
+    {
+        // Set perception capabilities
+        SoaSensor soaSensor = g.GetComponentInChildren<SoaSensor>();
+        if (soaSensor != null)
+        {
+            soaSensor.modes = config.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities[platformName].ToArray() : config.GetSensorModalities().ToArray();
+        }
+        SoaClassifier soaClassifier = g.GetComponentInChildren<SoaClassifier>();
+        if (soaClassifier != null)
+        {
+            soaClassifier.modes = config.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities[platformName].ToArray() : config.GetClassifierModalities().ToArray();
+        }
+    }
+
     #endregion
 
     #region Remote Platform Instantiation
@@ -729,16 +745,7 @@ public class SimControl : MonoBehaviour
         g.name = "Heavy UAV " + a.unique_id;
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["HeavyUAV"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["HeavyUAV"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "HeavyUAV");
 
         // Add to list of remote platforms
         RemotePlatforms.Add(g);
@@ -760,16 +767,7 @@ public class SimControl : MonoBehaviour
         g.name = "Small UAV " + a.unique_id;
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["SmallUAV"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["SmallUAV"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "SmallUAV");
 
         // Add to list of remote platforms
         RemotePlatforms.Add(g);
@@ -791,16 +789,7 @@ public class SimControl : MonoBehaviour
         g.name = "Balloon " + a.unique_id;
                       
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["Balloon"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["Balloon"] : g.GetClassifierModalities();
-        } 
+        SetPerceptionCapabilities(g, c, "Balloon");
          
         // Add to list of remote platforms
         RemotePlatforms.Add(g);
@@ -899,16 +888,7 @@ public class SimControl : MonoBehaviour
         }
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["RedDismount"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["RedDismount"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "RedDismount");
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);
@@ -959,16 +939,7 @@ public class SimControl : MonoBehaviour
         }
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["RedTruck"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["RedTruck"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "RedTruck");
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);
@@ -990,16 +961,7 @@ public class SimControl : MonoBehaviour
         g.name = "Neutral Dismount " + a.unique_id;
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["NeutralDismount"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["NeutralDismount"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "NeutralDismount");
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);
@@ -1021,16 +983,7 @@ public class SimControl : MonoBehaviour
         g.name = "Neutral Truck " + a.unique_id;
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["NeutralTruck"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["NeutralTruck"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "NeutralTruck");
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);
@@ -1052,16 +1005,7 @@ public class SimControl : MonoBehaviour
         g.name = "Blue Police " + a.unique_id;
 
         // Set perception capabilities
-        SoaSensor s = g.GetComponent<SoaSensor>();
-        if (s != null)
-        {
-            s.modes = c.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities["BluePolice"] : g.GetSensorModalities();
-        }
-        SoaClassifier c = g.GetComponent<SoaClassifier>();
-        if (c != null)
-        {
-            s.modes = c.GetUseDefaultClassifierModalities() ? soaConfig.defaultClassifierModalities["BluePolice"] : g.GetClassifierModalities();
-        }
+        SetPerceptionCapabilities(g, c, "BluePolice");
 
         // Add to list of local platforms
         LocalPlatforms.Add(g);
