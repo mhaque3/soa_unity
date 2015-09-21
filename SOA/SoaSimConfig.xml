@@ -125,26 +125,26 @@
        hasWeapon="false" initialWaypoint="Red Base 0" />
     
     <RedDismount     x_km="-18.638"   y_km="0.600"   z_km="12.267"
-       hasWeapon="false" initialWaypoint="Red Base 0" />
+       hasWeapon="true" initialWaypoint="Red Base 0" />
 
     <RedDismount     x_km="-2.190"    y_km="0.600"   z_km="11.744"
        hasWeapon="false" initialWaypoint="Red Base 1" />
 
     <RedDismount     x_km="-2.124"    y_km="0.600"   z_km="12.733"
-       hasWeapon="false" initialWaypoint="Red Base 1" />
+       hasWeapon="true" initialWaypoint="Red Base 1" />
 
     <RedDismount     x_km="21.180"    y_km="0.600"   z_km="9.240"
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
     <RedDismount     x_km="22.077"    y_km="0.600"   z_km="9.752"
-       hasWeapon="false" initialWaypoint="Red Base 2" />
+       hasWeapon="true" initialWaypoint="Red Base 2" />
 
     <!-- Red Trucks -->
     <RedTruck        x_km="-17.770"   y_km="0.600"   z_km="12.758"
        hasWeapon="false" initialWaypoint="Red Base 0" />
 
     <RedTruck        x_km="-1.300"    y_km="0.600"   z_km="12.245"
-       hasWeapon="false" initialWaypoint="Red Base 1" />
+       hasWeapon="true" initialWaypoint="Red Base 1" />
 
     <RedTruck        x_km="21.205"    y_km="0.600"   z_km="11.251"
        hasWeapon="false" initialWaypoint="Red Base 2" />
@@ -172,9 +172,8 @@
     <SmallUAV        x_km="-1.362"    y_km="2.000"   z_km="-10.626"   id="102"/>
     <SmallUAV        x_km="-4.760"    y_km="2.000"   z_km="-9.889"    id="103"/>
     <SmallUAV        x_km="1.178"     y_km="2.000"   z_km="-11.628"   id="104"/>
-    <!--SmallUAV        x_km="-1.299"    y_km="2.000"   z_km="12.248"    id="999"/ -->
     
     <!-- Balloons --> 
-    <Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="105"/>
+    <!--<Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="105"/>-->
   </Remote>
 </SoaConfig>
