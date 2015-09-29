@@ -21,6 +21,9 @@ public class NeutralTruckSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining = float.PositiveInfinity;
+
         // To hold source/destination choices during random selection
         choices = new List<GameObject>();
 

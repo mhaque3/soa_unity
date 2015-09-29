@@ -35,7 +35,7 @@ public class SoaActor : MonoBehaviour
     public bool isAlive = false;
     public CarriedResource isCarrying;
     public bool isWeaponized;
-
+    public float fuelRemaining;
     public double commsRange;
 
     public SoaSensor[] Sensors;
@@ -177,7 +177,8 @@ public class SoaActor : MonoBehaviour
             if (this.useExternalWaypoint)
             {
                 // Convert position from Unity to km for Belief_Actor
-                Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, isWeaponized,
+                Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
+                    type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining,
                     transform.position.x / SimControl.KmToUnity,
                     transform.position.y / SimControl.KmToUnity,
                     transform.position.z / SimControl.KmToUnity);
@@ -289,7 +290,8 @@ public class SoaActor : MonoBehaviour
             }
 
             // Convert position from Unity to km for Belief_Actor
-            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, type, isAlive, (int)isCarrying, isWeaponized,
+            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
+                type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining,
                 transform.position.x / SimControl.KmToUnity,
                 transform.position.y / SimControl.KmToUnity,
                 transform.position.z / SimControl.KmToUnity);
@@ -323,7 +325,7 @@ public class SoaActor : MonoBehaviour
                 {
                     // I have classified this actor before, provide actual affiliation and isWeaponized info
                     detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized, soaActor.fuelRemaining,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         gameObject.transform.position.y / SimControl.KmToUnity,
                         gameObject.transform.position.z / SimControl.KmToUnity);
@@ -332,7 +334,7 @@ public class SoaActor : MonoBehaviour
                 {
                     // I have never classified this actor before, set as unclassified and give default isWeaponized info
                     detectedActor = new Belief_Actor(soaActor.unique_id, (int)Affiliation.UNCLASSIFIED,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false, soaActor.fuelRemaining,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         gameObject.transform.position.y / SimControl.KmToUnity,
                         gameObject.transform.position.z / SimControl.KmToUnity);
@@ -350,7 +352,9 @@ public class SoaActor : MonoBehaviour
             foreach (Belief_Actor belief_actor in killDetections)
             {
                 dataManager.addAndBroadcastBelief(new soa.Belief_Actor(
-            belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 0, belief_actor.getIsWeaponized(),
+            belief_actor.getId(), (int)belief_actor.getAffiliation(), 
+            belief_actor.getType(), false, 0, 
+            belief_actor.getIsWeaponized(), belief_actor.getFuelRemaining(),
             belief_actor.getPos_x(),
             belief_actor.getPos_y(),
             belief_actor.getPos_z()), unique_id, idArray);
@@ -442,6 +446,7 @@ public class SoaActor : MonoBehaviour
                         incomingActorBelief.getIsAlive(),
                         incomingActorBelief.getIsCarrying(),
                         oldActorBelief.getIsWeaponized(),
+                        incomingActorBelief.getFuelRemaining(),
                         incomingActorBelief.getPos_x(),
                         incomingActorBelief.getPos_y(),
                         incomingActorBelief.getPos_z(),
@@ -464,6 +469,7 @@ public class SoaActor : MonoBehaviour
                         oldActorBelief.getIsAlive(),
                         oldActorBelief.getIsCarrying(),
                         incomingActorBelief.getIsWeaponized(),
+                        oldActorBelief.getFuelRemaining(),
                         oldActorBelief.getPos_x(),
                         oldActorBelief.getPos_y(),
                         oldActorBelief.getPos_z(),
