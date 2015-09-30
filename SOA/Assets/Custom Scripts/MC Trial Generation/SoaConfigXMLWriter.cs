@@ -88,6 +88,7 @@ namespace soa
             configNode.AppendChild(node);
 
             // Add attributes
+            AddAttribute(xmlDoc, node, "gameDurationMin", soaConfig.gameDurationMin.ToString());
             AddAttribute(xmlDoc, node, "probRedDismountWeaponized", soaConfig.probRedDismountWeaponized.ToString());
             AddAttribute(xmlDoc, node, "probRedTruckWeaponized",    soaConfig.probRedTruckWeaponized.ToString());
         }

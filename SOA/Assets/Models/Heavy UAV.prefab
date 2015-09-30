@@ -12385,7 +12385,7 @@ GameObject:
   - 54: {fileID: 5470430}
   - 114: {fileID: 11420548}
   m_Layer: 0
-  m_Name: HeavyLift
+  m_Name: Heavy UAV
   m_TagString: HeavyUAV
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23980,7 +23980,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .600000024, y: 1.5, z: -12.1000004}
+  m_LocalPosition: {x: 6.46999979, y: 1.5, z: -9.06999969}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 407684}
@@ -27133,7 +27133,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187476}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -27209,7 +27209,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168166}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33200,7 +33200,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168950}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33596,7 +33596,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165692}
-  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
+  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -61065,12 +61065,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601527037d1fd97419fdcad7525a3e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unique_id: 300
+  unique_id: 301
   affiliation: 0
   type: 2
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
+  fuelRemaining: 0
   commsRange: 10
   Sensors: []
   Weapons: []
@@ -61144,6 +61145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e6ba5873efdf74da5a0d3a3ce540f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fuelTankSize: 100
   Casuality: 0
   Supply: 0
   SupplyIcon: {fileID: 135610}
@@ -61173,19 +61175,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modes:
   - tagString: RedDismount
-    enabled: 1
     RangeP1: 1.00000002e+20
     RangeMax: 1.00000002e+20
   - tagString: RedTruck
-    enabled: 1
     RangeP1: 1.00000002e+20
     RangeMax: 1.00000002e+20
   - tagString: NeutralDismount
-    enabled: 1
     RangeP1: 1.00000002e+20
     RangeMax: 1.00000002e+20
   - tagString: NeutralTruck
-    enabled: 1
     RangeP1: 1.00000002e+20
     RangeMax: 1.00000002e+20
 --- !u!135 &13500244

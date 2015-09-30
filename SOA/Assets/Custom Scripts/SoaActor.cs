@@ -25,7 +25,7 @@ public class SoaActor : MonoBehaviour
     {
         //BASE = 0, // Blue base is no longer a SoaActor, it is now a SoaSite
         SMALL_UAV = 1,
-        HEAVY_LIFT = 2,
+        HEAVY_UAV = 2,
         DISMOUNT = 3,
         TRUCK = 4,
         POLICE = 5,
@@ -398,6 +398,7 @@ public class SoaActor : MonoBehaviour
         {
             Debug.LogWarning("SoaActor: Exception from beliefDictionary for " + gameObject.name);
         }
+        
         SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
         bool updateDictionary;
         Belief oldBelief;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HeavyLiftSim : MonoBehaviour 
+public class HeavyUAVSim : MonoBehaviour 
 {
     SimControl simControlScript;
     SoaActor thisSoaActor;
@@ -35,7 +35,7 @@ public class HeavyLiftSim : MonoBehaviour
             if (thisSoaActor.fuelRemaining <= 0)
             {
                 // Killed by fuel
-                thisSoaActor.Kill("Fuel");
+                thisSoaActor.Kill("Insufficient Fuel");
                 thisSoaActor.fuelRemaining = 0;
             }
         }

@@ -25,7 +25,7 @@ public class SmallUAVSim : MonoBehaviour
             if (thisSoaActor.fuelRemaining <= 0)
             {
                 // Killed by fuel
-                thisSoaActor.Kill("Fuel");
+                thisSoaActor.Kill("Insufficient Fuel");
                 thisSoaActor.fuelRemaining = 0;
             }
         }
