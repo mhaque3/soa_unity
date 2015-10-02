@@ -451,7 +451,10 @@ public class SimControl : MonoBehaviour
                 terminationConditionsMet = true;
                 foreach (GameObject g in RemotePlatforms)
                 {
-                    if (g.GetComponent<SoaActor>().isAlive)
+                    // Conditions not met if there is a small UAV or heavy UAV that is alive
+                    // Note: Balloons don't count
+                    if ((g.tag.Contains("SmallUAV") || g.tag.Contains("HeavyUAV")) && 
+                        g.GetComponent<SoaActor>().isAlive)
                     {
                         terminationConditionsMet = false;
                         break;
