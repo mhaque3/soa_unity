@@ -58,6 +58,7 @@ namespace soa
                         proto.SetIsAlive(b.getIsAlive());
                         proto.SetIsCarrying(b.getIsCarrying());
                         proto.SetIsWeaponized(b.getIsWeaponized());
+                        proto.SetFuelRemaining(b.getFuelRemaining());
                         proto.SetPosX(b.getPos_x());
                         proto.SetPosY(b.getPos_y());
                         proto.SetPosZ(b.getPos_z());
@@ -332,6 +333,7 @@ namespace soa
                             proto.IsAlive,
                             proto.IsCarrying,
                             proto.IsWeaponized,
+                            proto.FuelRemaining,
                             proto.PosX,
                             proto.PosY,
                             proto.PosZ,

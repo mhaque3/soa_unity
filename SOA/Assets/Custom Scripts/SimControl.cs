@@ -11,10 +11,14 @@ public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
 
 public class SimControl : MonoBehaviour 
 {
+    // Game duration
+    public float gameDurationMin = 0.5f;
+    public float gameClockMin = 0f;
+    
     // Config
     string ConfigFileName = "SoaSimConfig.xml";
     string EnvFileName = "SoaEnvConfig.xml";
-    
+
     // Prefabs
     public GameObject RedDismountPrefab;
     public GameObject RedTruckPrefab;
@@ -226,6 +230,9 @@ public class SimControl : MonoBehaviour
             ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogEventsToFile, 
             soaConfig.enableLogToUnityConsole);
 
+        // Game duration
+        gameDurationMin = soaConfig.gameDurationMin;
+
         // Red platform weapon probability
         probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
         probRedDismountWeaponized = soaConfig.probRedDismountWeaponized;
@@ -284,17 +291,17 @@ public class SimControl : MonoBehaviour
 
         currentCell = new FlatHexPoint(0, 0);
         b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x / KmToUnity, hexGrid.Map[currentCell].z / KmToUnity, 1.0f);
-        blueDataManager.addBelief(b, 0);
+        blueDataManager.addBeliefToAllActors(b, 0);
         blueDataManager.addInitializationBelief(b);
         //Debug.Log(b.ToString());
 
         b = new Belief_Terrain((int)soa.Terrain.MOUNTAIN, MountainCells);
-        blueDataManager.addBelief(b, 0);
+        blueDataManager.addBeliefToAllActors(b, 0);
         blueDataManager.addInitializationBelief(b);
         //Debug.Log(MountainCells.Count + " mountain hexes.");
 
         b = new Belief_Terrain((int)soa.Terrain.WATER, WaterCells);
-        blueDataManager.addBelief(b, 0);
+        blueDataManager.addBeliefToAllActors(b, 0);
         blueDataManager.addInitializationBelief(b);
         //Debug.Log(WaterCells.Count + " water hexes.");
 
@@ -306,7 +313,7 @@ public class SimControl : MonoBehaviour
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             BlueBaseSim s = g.GetComponent<BlueBaseSim>();
             b = new Belief_Base(i, theseCells, s.Supply);
-            blueDataManager.addBelief(b, 0);
+            blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
         }
@@ -319,7 +326,7 @@ public class SimControl : MonoBehaviour
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             NgoSim s = g.GetComponent<NgoSim>();
             b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
-            blueDataManager.addBelief(b, 0);
+            blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
         }
@@ -332,7 +339,7 @@ public class SimControl : MonoBehaviour
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             VillageSim s = g.GetComponent<VillageSim>();
             b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
-            blueDataManager.addBelief(b, 0);
+            blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
         }
@@ -400,10 +407,16 @@ public class SimControl : MonoBehaviour
     // Update is called once per frame
 	void Update () 
     {
-        float dt = Time.deltaTime;
-
+        // Update mouse over functions
         UpdateMouseOver();
 
+        // Record the time in seconds it took to complete the last frame
+        float dt = Time.deltaTime;
+
+        // Update game clock
+        gameClockMin += (dt / 60.0f);
+
+        // Update sensor clock
         sensorClock += dt;
         if (sensorClock > sensorUpdatePeriod)
         {
@@ -421,9 +434,45 @@ public class SimControl : MonoBehaviour
             }
         }
 
+        // Update timer
         updateTimer += dt;
         if (updateTimer > updateRateS)
         {
+            bool terminationConditionsMet = false;
+            // Check for game termination conditions
+            if (gameClockMin >= gameDurationMin)
+            {
+                // Condition 1: Game timer maxed out
+                terminationConditionsMet = true;
+            }
+            else
+            {
+                // Condition 2: If all remote controlled heavy and small UAVs are dead
+                terminationConditionsMet = true;
+                foreach (GameObject g in RemotePlatforms)
+                {
+                    // Conditions not met if there is a small UAV or heavy UAV that is alive
+                    // Note: Balloons don't count
+                    if ((g.tag.Contains("SmallUAV") || g.tag.Contains("HeavyUAV")) && 
+                        g.GetComponent<SoaActor>().isAlive)
+                    {
+                        terminationConditionsMet = false;
+                        break;
+                    }
+                }
+            }
+
+            // Quit the game if termination conditions are met
+            if (terminationConditionsMet)
+            {
+                Application.Quit(); // For when running as standalone
+                #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
+                #endif
+                return;
+            }
+
+            // Compute distances between blue/red units for comms purposes
             blueDataManager.calcualteDistances();
             redDataManager.calcualteDistances();
             //TODO get display parameters
@@ -480,38 +529,75 @@ public class SimControl : MonoBehaviour
                 // Clear timer
                 updateTimer = 0f;
             }
-        }
 
-        if (BroadcastOn)
-        {
-            messageTimer += Time.deltaTime;
-            if (messageTimer > updateRateS / 2f)
+
+            if (BroadcastOn)
             {
-                //TODO create separate lists for local blue and local red so that we do not need the nested data manager locks
-                //This lock keeps the comms manager from adding data while we pushing out comms
-                lock (redDataManager.dataManagerLock)
+                int count = 1;
+                while (count < 2)
                 {
-                    lock (blueDataManager.dataManagerLock)
+                    count++;
+                    //TODO create separate lists for local blue and local red so that we do not need the nested data manager locks
+                    //This lock keeps the comms manager from adding data while we pushing out comms
+                    lock (redDataManager.dataManagerLock)
                     {
-                        //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
-                        //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
-
-                        for (int i = 0; i < LocalPlatforms.Count; i++)
+                        lock (blueDataManager.dataManagerLock)
                         {
-                            GameObject platform = LocalPlatforms[i];
-                            SoaActor actor = platform.GetComponent<SoaActor>();
-                            actor.broadcastComms();
-                        }
+                            //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
+                            //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
 
-                        for (int i = 0; i < BlueBases.Count; i++)
-                        {
-                            GameObject platform = BlueBases[i];
-                            SoaSite site = platform.GetComponent<SoaSite>();
-                            site.broadcastComms();
-                        }
+                            for (int i = 0; i < LocalPlatforms.Count; i++)
+                            {
+                                GameObject platform = LocalPlatforms[i];
+                                SoaActor actor = platform.GetComponent<SoaActor>();
+                                actor.broadcastCommsLocal();
+                            }
 
-                        messageTimer = 0f;
+                            for (int i = 0; i < RemotePlatforms.Count; i++)
+                            {
+                                GameObject platform = RemotePlatforms[i];
+                                SoaActor actor = platform.GetComponent<SoaActor>();
+                                actor.broadcastCommsLocal();
+                            }
+
+                            for (int i = 0; i < BlueBases.Count; i++)
+                            {
+                                GameObject platform = BlueBases[i];
+                                SoaSite site = platform.GetComponent<SoaSite>();
+                                site.broadcastCommsLocal();
+                            }
+
+
+                            //Merge in belief dictionary after round of comms
+                            for (int i = 0; i < LocalPlatforms.Count; i++)
+                            {
+                                GameObject platform = LocalPlatforms[i];
+                                SoaActor actor = platform.GetComponent<SoaActor>();
+                                actor.mergeBeliefDictionary();
+                            }
+
+                            for (int i = 0; i < RemotePlatforms.Count; i++)
+                            {
+                                GameObject platform = RemotePlatforms[i];
+                                SoaActor actor = platform.GetComponent<SoaActor>();
+                                actor.mergeBeliefDictionary();
+                            }
+
+                            for (int i = 0; i < BlueBases.Count; i++)
+                            {
+                                GameObject platform = BlueBases[i];
+                                SoaSite site = platform.GetComponent<SoaSite>();
+                                site.mergeBeliefDictionary();
+                            }
+                        }
                     }
+                }
+
+                for (int i = 0; i < RemotePlatforms.Count; i++)
+                {
+                    GameObject platform = RemotePlatforms[i];
+                    SoaActor actor = platform.GetComponent<SoaActor>();
+                    actor.updateRemoteAgent();
                 }
             }
         }
@@ -688,7 +774,7 @@ public class SimControl : MonoBehaviour
         {
             g = BlueBases[i];
             SoaSite s = g.GetComponent<SoaSite>();
-            s.addBelief(b,-1);
+            s.addBeliefToBeliefDictionary(b);
         }
     }
 

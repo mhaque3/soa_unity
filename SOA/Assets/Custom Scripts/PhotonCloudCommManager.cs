@@ -467,7 +467,7 @@ namespace soa
                         if (b != null)
                         {
                             // Add the belief to the data manager if it passed filter, no filter for Unity
-                            dataManager.addBelief(b, sourceID);
+                            dataManager.addExternalBeliefToActor(b, sourceID);
                         }
                         else
                         {

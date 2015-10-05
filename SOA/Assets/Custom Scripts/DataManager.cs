@@ -16,9 +16,9 @@ namespace soa
         //List of all actors in this scenario
         public List<SoaActor> actors = new List<SoaActor>();
         public List<Belief> initializationBeliefs = new List<Belief>();
-        protected SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
+        public SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
 
-        protected SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int,SortedDictionary<int,bool>>();
+        public SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int,SortedDictionary<int,bool>>();
 
         //Dictionary of belief data
         protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
@@ -70,7 +70,7 @@ namespace soa
             cm.addOutgoing(b, sourceId, recipients);
         }
 
-        public void addAndBroadcastBelief(Belief b, int sourceId, int[] recipients)
+        /*public void addAndBroadcastBelief(Belief b, int sourceId, int[] recipients)
         {
             if (cm != null)
             {
@@ -78,11 +78,31 @@ namespace soa
                 addBelief(b, sourceId);
             }
             
+        }*/
+
+        //Add incoming belief to correct agent
+        public void addExternalBeliefToActor(Belief b, int sourceId)
+        {
+            SoaActor a;
+            soaActorDictionary.TryGetValue(sourceId, out a);
+            if (a != null)
+            {
+                a.addBeliefToBeliefDictionary(b);
+            }
         }
+
+        public void addBeliefToAllActors(Belief b, int sourceId)
+        {
+            foreach (KeyValuePair<int, SoaActor> entry in soaActorDictionary)
+            {
+                entry.Value.addBeliefToBeliefDictionary(b);
+            }
+        }
+
 
         // Check if belief is newer than current belief of matching type and id, if so,
         // replace old belief with b.
-        public void addBelief(Belief b, int sourceId)
+        public void addBeliefToDataManager(Belief b, int sourceId)
         {
             lock (dataManagerLock)
             {
@@ -92,6 +112,7 @@ namespace soa
 #else
                 //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b.ToString());
 #endif
+                
                 SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
                 if (tempTypeDict != null)
                 {
@@ -106,6 +127,8 @@ namespace soa
                     beliefDictionary[b.getBeliefType()][b.getId()] = b;
                 }
 
+                /*
+                 * Do not update actors in this function
                 SortedDictionary<int, bool> sourceDistanceDictionary;
                 if (actorDistanceDictionary.TryGetValue(sourceId, out sourceDistanceDictionary))
                 {
@@ -117,7 +140,7 @@ namespace soa
                             destActor.addBelief(b, sourceId);
                         }
                     }
-                }
+                }*/
             }
         }
 
@@ -176,8 +199,9 @@ namespace soa
                 //Debug.Log("Adding actor " + actor.unique_id + " to actor dictionary");
                 soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
-                addBelief(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
-                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized,
+
+                addBeliefToDataManager(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
+                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized, actor.fuelRemaining,
                     actor.transform.position.x / SimControl.KmToUnity,
                     actor.transform.position.y / SimControl.KmToUnity,
                     actor.transform.position.z / SimControl.KmToUnity), 
