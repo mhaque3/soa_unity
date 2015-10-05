@@ -484,22 +484,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 137176}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 32fb445c62742a24e873243859b10507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modes:
-  - tagString: RedDismount
-    RangeP1: .5
-    RangeMax: 5
-  - tagString: RedTruck
-    RangeP1: .5
-    RangeMax: 7
-  - tagString: NeutralDismount
-    RangeP1: .5
-    RangeMax: 5
-  - tagString: NeutralTruck
-    RangeP1: .5
-    RangeMax: 7
+  modes: []
 --- !u!114 &11413086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -520,22 +508,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 170766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a1c6c48c90bf44bbc2fc925cd4c174, type: 3}
+  m_Script: {fileID: 11500000, guid: 9821324b294691e49b3c7a567067505a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modes:
-  - tagString: RedDismount
-    RangeP1: 1
-    RangeMax: 5
-  - tagString: RedTruck
-    RangeP1: 2
-    RangeMax: 7
-  - tagString: NeutralDismount
-    RangeP1: 1
-    RangeMax: 5
-  - tagString: NeutralTruck
-    RangeP1: 2
-    RangeMax: 7
+  modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
   gimbaled: 0
@@ -571,7 +547,6 @@ MonoBehaviour:
   minAltitude_km: 0
   maxAltitude_km: 5
   maxVerticalSpeed_m_s: 5
-  maxHorizontalSpeed_m_s: 20
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
@@ -697,6 +672,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: fuelTankSize_s
       value: 40000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: beamwidthDeg
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: boresightUnitVector.y
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

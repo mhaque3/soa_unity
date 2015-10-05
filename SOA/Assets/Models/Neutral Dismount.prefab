@@ -5520,10 +5520,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 135260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a757bbc561df5134d9db956e51bd6c33, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a5be80cdb2c6cd408de1cca1b7ce3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PathUpdateInterval: 30
+  PathUpdateInterval: 1
 --- !u!114 &11437142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5554,11 +5554,10 @@ MonoBehaviour:
   minAltitude_km: 0
   maxAltitude_km: 0
   maxVerticalSpeed_m_s: 0
-  maxHorizontalSpeed_m_s: 1
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
-  fuelRemaining: 0
+  fuelRemaining_s: 0
   commsRange: 0
   Sensors: []
   Weapons: []
@@ -5922,6 +5921,10 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: maxHorizontalSpeed_m_s
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PathUpdateInterval
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
