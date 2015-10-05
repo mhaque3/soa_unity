@@ -22,7 +22,7 @@ public class NeutralDismountSim : MonoBehaviour
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // Unlimited fuel tank
-        thisSoaActor.fuelRemaining = float.PositiveInfinity;
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
 
         // To hold source/destination choices during random selection
         choices = new List<GameObject>();
@@ -96,7 +96,7 @@ public class NeutralDismountSim : MonoBehaviour
             GameObject startSite = ChooseRandomNeutralSite(false);
             NeutralDismountConfig c = new NeutralDismountConfig(
                 startSite.transform.position.x / SimControl.KmToUnity,
-                startSite.transform.position.y / SimControl.KmToUnity,
+                thisSoaActor.simAltitude_km,
                 startSite.transform.position.z / SimControl.KmToUnity,
                 -1);
 

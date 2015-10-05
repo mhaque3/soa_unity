@@ -22,18 +22,27 @@ abstract public class SoaSensor : MonoBehaviour
 
     public void CheckDetections(List<GameObject> targets)
     {
+        SoaActor targetActor;
+
         foreach (GameObject target in targets)
         {
+            // Get pointer to target's SoaActor
+            targetActor = target.GetComponent<SoaActor>();
+
             // The object being detected must be alive and within the sensor's footprint
-            if (target.GetComponent<SoaActor>().isAlive && 
-                CheckSensorFootprint(target))
+            if (targetActor.isAlive && CheckSensorFootprint(target))
             {
                 // Loop through all possible detect modes
                 foreach (PerceptionModality mode in modes)
                 {
-                    Vector3 delta = transform.position - target.transform.position;
-                    float slantRange = delta.magnitude / SimControl.KmToUnity;
+                    // Compute slant range in km
+                    float slantRange = Mathf.Sqrt(
+                        ((transform.position.x - target.transform.position.x) / SimControl.KmToUnity) * ((transform.position.x - target.transform.position.x) / SimControl.KmToUnity) + 
+                        (soaActor.simAltitude_km - targetActor.simAltitude_km) * (soaActor.simAltitude_km - targetActor.simAltitude_km) + // Recall that altitude is kept track of separately
+                        ((transform.position.z - target.transform.position.z) / SimControl.KmToUnity) * ((transform.position.z - target.transform.position.z) / SimControl.KmToUnity)
+                        );
 
+                    // Compute detection
                     if (mode.tagString == target.tag)
                     {
                         if (slantRange < mode.RangeMax)
@@ -67,9 +76,9 @@ abstract public class SoaSensor : MonoBehaviour
     {
         soaActor.killDetections.Add(new soa.Belief_Actor(
             killedActor.unique_id, (int)killedActor.affiliation, killedActor.type, 
-            false, (int)killedActor.isCarrying, killedActor.isWeaponized, killedActor.fuelRemaining,
+            false, (int)killedActor.isCarrying, killedActor.isWeaponized, killedActor.fuelRemaining_s,
             killedActor.transform.position.x / SimControl.KmToUnity,
-            killedActor.transform.position.y / SimControl.KmToUnity,
+            killedActor.simAltitude_km,
             killedActor.transform.position.z / SimControl.KmToUnity));
     }
 

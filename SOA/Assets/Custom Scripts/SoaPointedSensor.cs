@@ -21,19 +21,27 @@ public class SoaPointedSensor : SoaSensor {
             Belief belief;
             if (spoiBeliefDictionary.TryGetValue(soaActor.unique_id, out belief))
             {
-                // Extract SPOI (x,z) in sim coordinates and transform to Unity coordinates
-                Vector3 unitySpoi = new Vector3(
-                    ((Belief_SPOI)belief).getPos_x() * SimControl.KmToUnity,
-                    ((Belief_SPOI)belief).getPos_y() * SimControl.KmToUnity,
-                    ((Belief_SPOI)belief).getPos_z() * SimControl.KmToUnity);
+                // Extract SPOI (x,y,z) in sim coordinates [km]
+                Vector3 spoi_km = new Vector3(
+                    ((Belief_SPOI)belief).getPos_x(),
+                    ((Belief_SPOI)belief).getPos_y(),
+                    ((Belief_SPOI)belief).getPos_z());
 
-                // Change sensor boresight vector
-                boresightUnitVector = (unitySpoi - transform.position).normalized;
+                // Update the sensor boresight vector
+                boresightUnitVector.x = spoi_km.x - transform.position.x/SimControl.KmToUnity; // [km]
+                boresightUnitVector.y = spoi_km.y - soaActor.simAltitude_km; // [km]
+                boresightUnitVector.z = spoi_km.z - transform.position.z/SimControl.KmToUnity; // [km]
+                boresightUnitVector.Normalize();
             }
         }
 
         // Compute relative vector
-        Vector3 sensorToTargetUnitVector = (target.transform.position - transform.position).normalized;
+        SoaActor targetActor = target.GetComponent<SoaActor>();
+        Vector3 sensorToTargetUnitVector;
+        sensorToTargetUnitVector.x = (target.transform.position.x - transform.position.x) / SimControl.KmToUnity; // [km]
+        sensorToTargetUnitVector.y = targetActor.simAltitude_km - soaActor.simAltitude_km; // [km]
+        sensorToTargetUnitVector.z = (target.transform.position.z - transform.position.z) / SimControl.KmToUnity; // [km]
+        sensorToTargetUnitVector.Normalize();
 
         // Compute target cone angle relative to boresight 
         double coneAngleDeg = (180.0f / Mathf.PI) * Mathf.Acos(

@@ -830,6 +830,9 @@ public class SimControl : MonoBehaviour
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Heavy UAV " + a.unique_id;
 
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
+
         // Set perception capabilities
         SetPerceptionCapabilities(g, c, "HeavyUAV");
 
@@ -851,6 +854,9 @@ public class SimControl : MonoBehaviour
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Small UAV " + a.unique_id;
+
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
 
         // Set perception capabilities
         SetPerceptionCapabilities(g, c, "SmallUAV");
@@ -874,6 +880,9 @@ public class SimControl : MonoBehaviour
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Balloon " + a.unique_id;
                       
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
+        
         // Set perception capabilities
         SetPerceptionCapabilities(g, c, "Balloon");
          
@@ -944,6 +953,9 @@ public class SimControl : MonoBehaviour
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Red Dismount " + a.unique_id;
 
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
+
         // Waypoint motion
         SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
         GameObject waypoint;
@@ -994,6 +1006,9 @@ public class SimControl : MonoBehaviour
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Red Truck " + a.unique_id;
+
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
 
         // Waypoint motion
         SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
@@ -1046,6 +1061,9 @@ public class SimControl : MonoBehaviour
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Neutral Dismount " + a.unique_id;
 
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
+
         // Set perception capabilities
         SetPerceptionCapabilities(g, c, "NeutralDismount");
 
@@ -1068,6 +1086,9 @@ public class SimControl : MonoBehaviour
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Neutral Truck " + a.unique_id;
 
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
+
         // Set perception capabilities
         SetPerceptionCapabilities(g, c, "NeutralTruck");
 
@@ -1089,6 +1110,9 @@ public class SimControl : MonoBehaviour
         SoaActor a = g.GetComponent<SoaActor>();
         a.unique_id = RequestUniqueID(c.id);
         g.name = "Blue Police " + a.unique_id;
+
+        // Assign initial altitude
+        a.SetSimAltitude(c.y_km);
 
         // Set perception capabilities
         SetPerceptionCapabilities(g, c, "BluePolice");

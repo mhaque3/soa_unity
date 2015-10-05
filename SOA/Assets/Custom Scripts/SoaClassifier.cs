@@ -33,9 +33,12 @@ public class SoaClassifier : MonoBehaviour
                 // Loop through all possible classifier modes
                 foreach (PerceptionModality mode in modes)
                 {
-                    // Compute slant range and convert from unity units to km
-                    Vector3 delta_unity = transform.position - target.transform.position;
-                    float slantRange = delta_unity.magnitude / SimControl.KmToUnity;
+                    // Compute slant range in km
+                    float slantRange = Mathf.Sqrt(
+                        ((transform.position.x - target.transform.position.x) / SimControl.KmToUnity) * ((transform.position.x - target.transform.position.x) / SimControl.KmToUnity) +
+                        (thisSoaActor.simAltitude_km - targetActor.simAltitude_km) * (thisSoaActor.simAltitude_km - targetActor.simAltitude_km) + // Recall that altitude is kept track of separately
+                        ((transform.position.z - target.transform.position.z) / SimControl.KmToUnity) * ((transform.position.z - target.transform.position.z) / SimControl.KmToUnity)
+                    );
 
                     // If the game object matches its intended target
                     if (mode.tagString == target.tag)

@@ -122,45 +122,45 @@
   <!-- Local Platform Descriptions -->
   <Local>
     <!-- Red Dismounts -->
-    <RedDismount     x_km="-16.892"   y_km="0.600"   z_km="12.273"
+    <RedDismount     x_km="-16.892"   y_km="0.000"   z_km="12.273"
        hasWeapon="false" initialWaypoint="Red Base 0" />
     
-    <RedDismount     x_km="-18.638"   y_km="0.600"   z_km="12.267"
+    <RedDismount     x_km="-18.638"   y_km="0.000"   z_km="12.267"
        hasWeapon="true" initialWaypoint="Red Base 0" />
 
-    <RedDismount     x_km="-2.190"    y_km="0.600"   z_km="11.744"
+    <RedDismount     x_km="-2.190"    y_km="0.000"   z_km="11.744"
        hasWeapon="false" initialWaypoint="Red Base 1" />
 
-    <RedDismount     x_km="-2.124"    y_km="0.600"   z_km="12.733"
+    <RedDismount     x_km="-2.124"    y_km="0.000"   z_km="12.733"
        hasWeapon="true" initialWaypoint="Red Base 1" />
 
-    <RedDismount     x_km="21.180"    y_km="0.600"   z_km="9.240"
+    <RedDismount     x_km="21.180"    y_km="0.000"   z_km="9.240"
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
-    <RedDismount     x_km="22.077"    y_km="0.600"   z_km="9.752"
+    <RedDismount     x_km="22.077"    y_km="0.000"   z_km="9.752"
        hasWeapon="true" initialWaypoint="Red Base 2" />
 
     <!-- Red Trucks -->
-    <RedTruck        x_km="-17.770"   y_km="0.600"   z_km="12.758"
+    <RedTruck        x_km="-17.770"   y_km="0.000"   z_km="12.758"
        hasWeapon="false" initialWaypoint="Red Base 0" />
 
-    <RedTruck        x_km="-1.300"    y_km="0.600"   z_km="12.245"
+    <RedTruck        x_km="-1.300"    y_km="0.000"   z_km="12.245"
        hasWeapon="true" initialWaypoint="Red Base 1" />
 
-    <RedTruck        x_km="21.205"    y_km="0.600"   z_km="11.251"
+    <RedTruck        x_km="21.205"    y_km="0.000"   z_km="11.251"
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
     <!-- Neutral Dismounts -->
-    <NeutralDismount x_km="23.696"    y_km="0.600"   z_km="-6.595" />
-    <NeutralDismount x_km="-10.987"   y_km="0.600"   z_km="-6.595" />
-    <NeutralDismount x_km="1.210"     y_km="0.600"   z_km="2.075"  />
+    <NeutralDismount x_km="23.696"    y_km="0.000"   z_km="-6.595" />
+    <NeutralDismount x_km="-10.987"   y_km="0.000"   z_km="-6.595" />
+    <NeutralDismount x_km="1.210"     y_km="0.000"   z_km="2.075"  />
 
     <!-- Neutral Trucks -->
-    <NeutralTruck    x_km="-19.345"   y_km="0.600"   z_km="-0.048" />
-    <NeutralTruck    x_km="10.746"    y_km="0.600"   z_km="2.196"  />
+    <NeutralTruck    x_km="-19.345"   y_km="0.000"   z_km="-0.048" />
+    <NeutralTruck    x_km="10.746"    y_km="0.000"   z_km="2.196"  />
 
     <!-- Blue Police -->
-    <BluePolice      x_km="-9.095"    y_km="0.600"   z_km="-15.178" />
+    <BluePolice      x_km="-9.095"    y_km="0.000"   z_km="-15.178" />
   </Local>
 
   <!-- Remote Platform Descriptions -->
