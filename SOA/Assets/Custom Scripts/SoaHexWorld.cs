@@ -73,7 +73,7 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
                     //block.transform.position += new Vector3(0f, (BaseHeight + WaterHeight) / 4f, 0f);
                     WaterHexes.Add(point);
                 }
-                else if (height > HeightScale * 0.6f && height < HeightScale * 0.7f)
+                else if (height >= HeightScale * 0.6f && height < HeightScale * 0.7f)
                 {
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
                     thisHex.GetComponent<Renderer>().material = baseGrass;
@@ -92,7 +92,7 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
                     // Also land?
                     // Why are these different than the 0.6 to 0.7 heights?
                     // Question for Bob
-                    LandHexes.Add(point);
+                    //LandHexes.Add(point);
                 }
 			}
 		}
