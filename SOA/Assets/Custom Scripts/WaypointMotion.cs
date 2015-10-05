@@ -8,10 +8,10 @@ public class WaypointMotion : MonoBehaviour
     public bool GroundHugger = false;
     public float AltitudeOffset;
     public float speed;
+    public float WaypointSlowFactor;
     float currentSpeed;
     public float maxTurn;
     public float waypointEpsilon;
-    public bool PATROL;
     public List<GameObject> waypoints;
     public int waypointIndex;
 
@@ -57,7 +57,7 @@ public class WaypointMotion : MonoBehaviour
                         {
                             waypointIndex = 0;
                         }
-                        currentSpeed = speed / 4;
+                        currentSpeed = speed / WaypointSlowFactor;
                     }
                     else
                     {

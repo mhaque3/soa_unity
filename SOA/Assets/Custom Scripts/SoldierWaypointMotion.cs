@@ -33,6 +33,7 @@ public class SoldierWaypointMotion : MonoBehaviour
         {
             // Set target to be exactly at waypoint
             targetPosition = waypoints[waypointIndex].transform.position;
+            navAgent.baseOffset = waypoints[waypointIndex].transform.position.y;
             navAgent.SetDestination(targetPosition);
         }
     }
@@ -53,7 +54,7 @@ public class SoldierWaypointMotion : MonoBehaviour
 
                 if (waypoints.Count > waypointIndex)
                 {
-                    targetPosition = waypoints[waypointIndex].transform.position + new Vector3(0,transform.position.y,0);
+                    targetPosition = waypoints[waypointIndex].transform.position;  // + new Vector3(0,transform.position.y,0);
                     navAgent.SetDestination(targetPosition);
                     deltaV = (new Vector3(targetPosition.x, targetPosition.y, targetPosition.z)) - transform.position;
                     if (deltaV.magnitude < waypointEpsilon)
