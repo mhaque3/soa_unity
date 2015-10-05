@@ -199,8 +199,9 @@ namespace soa
                 //Debug.Log("Adding actor " + actor.unique_id + " to actor dictionary");
                 soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
+
                 addBeliefToDataManager(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
-                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized,
+                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized, actor.fuelRemaining,
                     actor.transform.position.x / SimControl.KmToUnity,
                     actor.transform.position.y / SimControl.KmToUnity,
                     actor.transform.position.z / SimControl.KmToUnity), 

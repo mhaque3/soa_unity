@@ -18,6 +18,9 @@ public class RedTruckSim : MonoBehaviour
         simControlScript = GameObject.FindObjectOfType<SimControl>();
         waypointScript = gameObject.GetComponent<SoldierWaypointMotion>();
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
+
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining = float.PositiveInfinity;
 	}
 	
 	// Update is called once per frame

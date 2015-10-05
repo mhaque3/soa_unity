@@ -7,8 +7,12 @@ namespace soa
 {
     public class MCTrialGenerator
     {
+        /******************** SIMULATION *********************/
+        const float gameDurationMin = 15.0f;
+        const float probRedDismountWeaponized = 0.5f;
+        const float probRedTruckWeaponized = 0.5f;
+
         /******************** ENVIRONMENT ********************/
-        // Environment Configuration
         const string envConfigFile = "SoaEnvConfig.xml";
 
         /********************** NETWORK **********************/
@@ -44,11 +48,9 @@ namespace soa
         /****************** LOCAL PLATFORMS ******************/
         // Red dismounts 
         private PlatformLaydown redDismountLaydown;
-        private float probRedDismountWeaponized;
 
         // Red trucks
         private PlatformLaydown redTruckLaydown;
-        private float probRedTruckWeaponized;
    
         // Neutral dismounts
         private PlatformLaydown neutralDismountLaydown;
@@ -244,8 +246,7 @@ namespace soa
             laydownPtr.altitudeMax_km = 0.6f;
             laydownPtr.anchors = envConfig.redBaseCells;
             laydownPtr.allowedCells = landCells;
-            probRedDismountWeaponized = 0.5f;
-
+            
             // Red trucks
             redTruckLaydown = new PlatformLaydown();
             laydownPtr = redTruckLaydown;
@@ -261,7 +262,6 @@ namespace soa
             laydownPtr.altitudeMax_km = 0.6f;
             laydownPtr.anchors = envConfig.redBaseCells;
             laydownPtr.allowedCells = landCells;
-            probRedTruckWeaponized = 0.5f;
 
             // Merge list of NGO and village cells
             List<PrimitivePair<int, int>> neutralSiteCells = new List<PrimitivePair<int, int>>();
@@ -449,6 +449,7 @@ namespace soa
                 soaConfig.networkBlueRoom = networkBlueRoomHeader + trial.ToString(toStringFormat);
 
                 // Simulation configuration
+                soaConfig.gameDurationMin = gameDurationMin;
                 soaConfig.probRedDismountWeaponized = probRedDismountWeaponized;
                 soaConfig.probRedTruckWeaponized = probRedTruckWeaponized;
 

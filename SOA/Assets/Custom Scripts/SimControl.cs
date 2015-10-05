@@ -11,10 +11,14 @@ public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
 
 public class SimControl : MonoBehaviour 
 {
+    // Game duration
+    public float gameDurationMin = 0.5f;
+    public float gameClockMin = 0f;
+    
     // Config
     string ConfigFileName = "SoaSimConfig.xml";
     string EnvFileName = "SoaEnvConfig.xml";
-    
+
     // Prefabs
     public GameObject RedDismountPrefab;
     public GameObject RedTruckPrefab;
@@ -226,6 +230,9 @@ public class SimControl : MonoBehaviour
             ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogEventsToFile, 
             soaConfig.enableLogToUnityConsole);
 
+        // Game duration
+        gameDurationMin = soaConfig.gameDurationMin;
+
         // Red platform weapon probability
         probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
         probRedDismountWeaponized = soaConfig.probRedDismountWeaponized;
@@ -400,10 +407,16 @@ public class SimControl : MonoBehaviour
     // Update is called once per frame
 	void Update () 
     {
-        float dt = Time.deltaTime;
-
+        // Update mouse over functions
         UpdateMouseOver();
 
+        // Record the time in seconds it took to complete the last frame
+        float dt = Time.deltaTime;
+
+        // Update game clock
+        gameClockMin += (dt / 60.0f);
+
+        // Update sensor clock
         sensorClock += dt;
         if (sensorClock > sensorUpdatePeriod)
         {
@@ -421,9 +434,45 @@ public class SimControl : MonoBehaviour
             }
         }
 
+        // Update timer
         updateTimer += dt;
         if (updateTimer > updateRateS)
         {
+            bool terminationConditionsMet = false;
+            // Check for game termination conditions
+            if (gameClockMin >= gameDurationMin)
+            {
+                // Condition 1: Game timer maxed out
+                terminationConditionsMet = true;
+            }
+            else
+            {
+                // Condition 2: If all remote controlled heavy and small UAVs are dead
+                terminationConditionsMet = true;
+                foreach (GameObject g in RemotePlatforms)
+                {
+                    // Conditions not met if there is a small UAV or heavy UAV that is alive
+                    // Note: Balloons don't count
+                    if ((g.tag.Contains("SmallUAV") || g.tag.Contains("HeavyUAV")) && 
+                        g.GetComponent<SoaActor>().isAlive)
+                    {
+                        terminationConditionsMet = false;
+                        break;
+                    }
+                }
+            }
+
+            // Quit the game if termination conditions are met
+            if (terminationConditionsMet)
+            {
+                Application.Quit(); // For when running as standalone
+                #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
+                #endif
+                return;
+            }
+
+            // Compute distances between blue/red units for comms purposes
             blueDataManager.calcualteDistances();
             redDataManager.calcualteDistances();
             //TODO get display parameters
