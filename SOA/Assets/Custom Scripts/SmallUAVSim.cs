@@ -4,7 +4,7 @@ using System.Collections;
 public class SmallUAVSim : MonoBehaviour 
 {
     SoaActor thisSoaActor;
-    public float fuelTankSize;
+    public float fuelTankSize_s;
 
 	// Use this for initialization
 	void Start () 
@@ -12,23 +12,7 @@ public class SmallUAVSim : MonoBehaviour
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // Start on a full tank
-        thisSoaActor.fuelRemaining = fuelTankSize;
-	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
-        // Decrement fuel accordingly
-        if (thisSoaActor.isAlive)
-        {
-            thisSoaActor.fuelRemaining -= Time.deltaTime;
-            if (thisSoaActor.fuelRemaining <= 0)
-            {
-                // Killed by fuel
-                thisSoaActor.Kill("Insufficient Fuel");
-                thisSoaActor.fuelRemaining = 0;
-            }
-        }
+        thisSoaActor.fuelRemaining_s = fuelTankSize_s;
 	}
 
     void OnTriggerEnter(Collider other)
@@ -36,7 +20,7 @@ public class SmallUAVSim : MonoBehaviour
         if (other.CompareTag("BlueBase"))
         {
             // Instant refuel
-            thisSoaActor.fuelRemaining = fuelTankSize;
+            thisSoaActor.fuelRemaining_s = fuelTankSize_s;
         }
     }
 }

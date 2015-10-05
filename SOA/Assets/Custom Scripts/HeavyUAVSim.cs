@@ -5,7 +5,7 @@ public class HeavyUAVSim : MonoBehaviour
 {
     SimControl simControlScript;
     SoaActor thisSoaActor;
-    public float fuelTankSize;
+    public float fuelTankSize_s;
     public bool Casuality;
     public bool Supply;
     public GameObject SupplyIcon;
@@ -18,7 +18,7 @@ public class HeavyUAVSim : MonoBehaviour
         simControlScript = GameObject.FindObjectOfType<SimControl>();
 
         // Start on a full tank
-        thisSoaActor.fuelRemaining = fuelTankSize;
+        thisSoaActor.fuelRemaining_s = fuelTankSize_s;
 	}
 	
 	// Update is called once per frame
@@ -27,18 +27,6 @@ public class HeavyUAVSim : MonoBehaviour
         // Set icons
         SupplyIcon.SetActive(Supply);
         CasualtyIcon.SetActive(Casuality);
-
-        // Decrement fuel accordingly
-        if (thisSoaActor.isAlive)
-        {
-            thisSoaActor.fuelRemaining -= Time.deltaTime;
-            if (thisSoaActor.fuelRemaining <= 0)
-            {
-                // Killed by fuel
-                thisSoaActor.Kill("Insufficient Fuel");
-                thisSoaActor.fuelRemaining = 0;
-            }
-        }
 	}
 
     void OnTriggerEnter(Collider other)
@@ -48,7 +36,7 @@ public class HeavyUAVSim : MonoBehaviour
         if (other.CompareTag("BlueBase"))
         {
             // Instant refuel
-            thisSoaActor.fuelRemaining = fuelTankSize;
+            thisSoaActor.fuelRemaining_s = fuelTankSize_s;
 
             // Process casualties/supplies
             BlueBaseSim b = other.gameObject.GetComponent<BlueBaseSim>();
