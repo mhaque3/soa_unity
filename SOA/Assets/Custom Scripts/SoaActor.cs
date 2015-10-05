@@ -19,7 +19,6 @@ public class SoaActor : MonoBehaviour
     public float minAltitude_km;
     public float maxAltitude_km;
     public float maxVerticalSpeed_m_s;
-    public float maxHorizontalSpeed_m_s; // Still unenforced
 
     private int[] idArray = new int[1];
 
