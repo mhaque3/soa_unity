@@ -5708,9 +5708,15 @@ MonoBehaviour:
   unique_id: 152
   affiliation: 1
   type: 3
+  simAltitude_km: 0
+  minAltitude_km: 0
+  maxAltitude_km: 0
+  maxVerticalSpeed_m_s: 0
+  maxHorizontalSpeed_m_s: 1
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
+  fuelRemaining: 0
   commsRange: 5
   Sensors: []
   Weapons: []
@@ -6188,7 +6194,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: maxHorizontalSpeed_m_s
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 113728}

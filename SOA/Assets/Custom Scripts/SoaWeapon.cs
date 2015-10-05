@@ -30,17 +30,24 @@ public class SoaWeapon : MonoBehaviour
 
     public void UpdateWeapon(List<GameObject> detections)
     {
+        SoaActor targetActor;
         foreach (GameObject target in detections)
         {
+            // Save pointer to target's SoaActor
+            targetActor = target.GetComponent<SoaActor>();
+
             // The object being detected must be alive
             if (target.GetComponent<SoaActor>().isAlive)
             {
                 // Loop through all possible detect modes
                 foreach (WeaponModality mode in modes)
                 {
-                    // Compute slant range and convert from unity units to km
-                    Vector3 delta_unity = transform.position - target.transform.position;
-                    float slantRange = delta_unity.magnitude / SimControl.KmToUnity;
+                    // Compute slant range in km
+                    float slantRange = Mathf.Sqrt(
+                        ((transform.position.x - target.transform.position.x) / SimControl.KmToUnity) * ((transform.position.x - target.transform.position.x) / SimControl.KmToUnity) +
+                        (thisSoaActor.simAltitude_km - targetActor.simAltitude_km) * (thisSoaActor.simAltitude_km - targetActor.simAltitude_km) + // Recall that altitude is kept track of separately
+                        ((transform.position.z - target.transform.position.z) / SimControl.KmToUnity) * ((transform.position.z - target.transform.position.z) / SimControl.KmToUnity)
+                    );
 
                     // If this particular weapon mode is enabled and the game object matches its intended target
                     if (mode.enabled && mode.tagString == target.tag)

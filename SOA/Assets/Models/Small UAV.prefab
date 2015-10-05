@@ -508,10 +508,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 136436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849e9e526ea4ac14bb4dc4b6bdb0f386, type: 3}
+  m_Script: {fileID: 11500000, guid: e5819eeae1b3eab44be7bd9d7ad91cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fuelTankSize: 400
+  fuelTankSize_s: 40000
 --- !u!114 &11436636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -567,10 +567,15 @@ MonoBehaviour:
   unique_id: 401
   affiliation: 0
   type: 1
+  simAltitude_km: 0
+  minAltitude_km: 0
+  maxAltitude_km: 5
+  maxVerticalSpeed_m_s: 5
+  maxHorizontalSpeed_m_s: 20
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
-  fuelRemaining: 0
+  fuelRemaining_s: 0
   commsRange: 10
   Sensors: []
   Weapons: []
@@ -676,7 +681,23 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: maxAltitude_km
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxVerticalSpeed_m_s
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxHorizontalSpeed_m_s
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fuelTankSize_s
+      value: 40000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 136436}

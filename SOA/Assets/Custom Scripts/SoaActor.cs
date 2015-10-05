@@ -11,6 +11,16 @@ public class SoaActor : MonoBehaviour
     public Affiliation affiliation;
     public int type;
 
+    // Simulated altitude [km]
+    public float simAltitude_km;
+    private float desiredAltitude_km;
+
+    // Kinematic constraints
+    public float minAltitude_km;
+    public float maxAltitude_km;
+    public float maxVerticalSpeed_m_s;
+    public float maxHorizontalSpeed_m_s; // Still unenforced
+
     private int[] idArray = new int[1];
 
     public enum CarriedResource
@@ -35,7 +45,7 @@ public class SoaActor : MonoBehaviour
     public bool isAlive = false;
     public CarriedResource isCarrying;
     public bool isWeaponized;
-    public float fuelRemaining;
+    public float fuelRemaining_s;
     public double commsRange;
 
     public SoaSensor[] Sensors;
@@ -164,6 +174,10 @@ public class SoaActor : MonoBehaviour
         // Initialize a new classification dictionary
         classificationDictionary = new Dictionary<int, bool>();
 
+        // Initialize initial altitude to be average of min and max altitudes
+        simAltitude_km = 0.5f * (minAltitude_km + maxAltitude_km);
+        desiredAltitude_km = simAltitude_km;
+
         // Set to alive now, must be last thing done
         isAlive = true;
 	}
@@ -171,21 +185,54 @@ public class SoaActor : MonoBehaviour
     // Update is called once per frame
     void Update() 
     {
-        // Debug output 
-        /*if (unique_id == 200)
+        if (isAlive)
         {
-            Debug.Log("**************************************");
-            foreach (Belief b in beliefDictionary[Belief.BeliefType.ACTOR].Values)
+            // Compute time since last frame
+            float dt_s = Time.deltaTime * 60; // Time.deltaTime returns sec, recall 1 sec real time = 60 sec in sim world
+            
+            // Simulate altitude state
+            if (simAltitude_km != desiredAltitude_km)
             {
-                Belief_Actor a = (Belief_Actor)b;
-                if (a.getAffiliation() != 0)
+                float diffAltitude_km = desiredAltitude_km - simAltitude_km;
+                if (Mathf.Abs(diffAltitude_km) <= maxVerticalSpeed_m_s / 1000.0f * dt_s)
                 {
-                    Debug.Log("ID: " + a.getUnique_id() + ", AFFILIATION: " + a.getAffiliation() + ", ISALIVE: " + a.getIsAlive() + ", TIME: " + a.getBeliefTime());
+                    // We can achieve the desired altitude in this time step
+                    simAltitude_km = desiredAltitude_km;
+                }
+                else if (desiredAltitude_km > simAltitude_km)
+                {
+                    // Move max speed up
+                    simAltitude_km += maxVerticalSpeed_m_s / 1000.0f * dt_s;
+                }
+                else
+                {
+                    // Move max speed down
+                    simAltitude_km -= maxVerticalSpeed_m_s / 1000.0f * dt_s;
                 }
             }
-        }*/
-        
+
+            // Decrement fuel accordingly
+            // Note: Fuel is measured in seconds of simulated time, not real time
+            fuelRemaining_s = Mathf.Max(0.0f, fuelRemaining_s - dt_s);
+            if (fuelRemaining_s <= 0)
+            {
+                // Killed by insufficient fuel
+                Kill("Insufficient Fuel");
+            }
+        }
 	}
+
+    // Set simulated altitude but enforce min/max constraints
+    public void SetSimAltitude(float simAltitude_km)
+    {
+        this.simAltitude_km = Mathf.Max(Mathf.Min(simAltitude_km, maxAltitude_km), minAltitude_km);
+    }
+
+    // Set desired altitude but enforce min/max constraints
+    public void SetDesiredAltitude(float desiredAltitude_km)
+    {
+        this.desiredAltitude_km = Mathf.Max(Mathf.Min(desiredAltitude_km, maxAltitude_km), minAltitude_km);
+    }
 
     // Called when the actor has been killed
     public virtual void Kill(string killerName)
@@ -210,9 +257,9 @@ public class SoaActor : MonoBehaviour
             {
                 // Convert position from Unity to km for Belief_Actor
                 Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
-                    type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining,
+                    type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
                     transform.position.x / SimControl.KmToUnity,
-                    transform.position.y / SimControl.KmToUnity,
+                    simAltitude_km,
                     transform.position.z / SimControl.KmToUnity);
 
                 addBeliefToBeliefDictionary(newActorData);
@@ -299,12 +346,16 @@ public class SoaActor : MonoBehaviour
                     Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
                     navAgent.SetDestination(new Vector3(
                         newWaypoint.getPos_x() * SimControl.KmToUnity,
-                        newWaypoint.getPos_y() * SimControl.KmToUnity,
+                        newWaypoint.getPos_y() * SimControl.KmToUnity, // Nav agent ignores the y coordinate (altitude)
                         newWaypoint.getPos_z() * SimControl.KmToUnity));
                     //Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
+
+                    // Set the desired altitude separately [km]
+                    SetDesiredAltitude(newWaypoint.getPos_y());
                 }
                 else
                 {
+                    // Stay put
                     navAgent.SetDestination(new Vector3(transform.position.x, transform.position.y, transform.position.z));
                 }
             }
@@ -313,16 +364,16 @@ public class SoaActor : MonoBehaviour
                 // Convert position coordinates from unity to km before making new belief waypoint
                 Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
                     motionScript.targetPosition.x / SimControl.KmToUnity,
-                    motionScript.targetPosition.y / SimControl.KmToUnity,
+                    desiredAltitude_km,
                     motionScript.targetPosition.z / SimControl.KmToUnity);
                 addMyBeliefData(newWaypoint, unique_id);
             }
 
             // Convert position from Unity to km for Belief_Actor
             Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
-                type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining,
+                type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
                 transform.position.x / SimControl.KmToUnity,
-                transform.position.y / SimControl.KmToUnity,
+                simAltitude_km,
                 transform.position.z / SimControl.KmToUnity);
             addMyBeliefData(newActorData, unique_id);
             
@@ -350,18 +401,18 @@ public class SoaActor : MonoBehaviour
                 {
                     // I have classified this actor before, provide actual affiliation and isWeaponized info
                     detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized, soaActor.fuelRemaining,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
-                        gameObject.transform.position.y / SimControl.KmToUnity,
+                        soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
                 else
                 {
                     // I have never classified this actor before, set as unclassified and give default isWeaponized info
                     detectedActor = new Belief_Actor(soaActor.unique_id, (int)Affiliation.UNCLASSIFIED,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false, soaActor.fuelRemaining,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
-                        gameObject.transform.position.y / SimControl.KmToUnity,
+                        soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
                 addBeliefToBeliefDictionary(detectedActor);
@@ -376,14 +427,13 @@ public class SoaActor : MonoBehaviour
             //TODO make this thread safe since collisions are done by collider in a separate thread????
             foreach (Belief_Actor belief_actor in killDetections)
             {
-
                 addMyBeliefData(new soa.Belief_Actor(
-            belief_actor.getId(), (int)belief_actor.getAffiliation(), 
-            belief_actor.getType(), false, 0, 
-            belief_actor.getIsWeaponized(), belief_actor.getFuelRemaining(),
-            belief_actor.getPos_x(),
-            belief_actor.getPos_y(),
-            belief_actor.getPos_z()), unique_id);
+                    belief_actor.getId(), (int)belief_actor.getAffiliation(), 
+                    belief_actor.getType(), false, 0, 
+                    belief_actor.getIsWeaponized(), belief_actor.getFuelRemaining(),
+                    belief_actor.getPos_x(),
+                    belief_actor.getPos_y(),
+                    belief_actor.getPos_z()), unique_id);
             }
             killDetections.Clear();
 
