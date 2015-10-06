@@ -102,28 +102,6 @@ public class SimControl : MonoBehaviour
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
 
-
-        // Reset all existing local and remote configs as having unique id -1
-        // Note: This must be called before LoadConfigFile();
-        foreach (GameObject g in LocalPlatforms)
-        {
-            g.GetComponent<SoaActor>().unique_id = -1;
-        }
-        foreach (GameObject g in RemotePlatforms)
-        {
-            g.GetComponent<SoaActor>().unique_id = -1;
-        }
-
-        // Set up book keeping for assigning unique IDs
-        // Note: This must be called before LoadConfigFile();
-        TakenUniqueIDs = new HashSet<int>();
-        TakenUniqueIDs.Add(0); // Reserved for blue base
-        smallestAvailableUniqueID = 1;
-
-        // Load settings from config file (should be the first thing that's called)
-        LoadConfigFile();
-
-        
         // Initialize gridmath for grid to world conversions
         //FlatHexPoint currentCell;
         currentCell = new FlatHexPoint(0, 0);
@@ -131,7 +109,6 @@ public class SimControl : MonoBehaviour
         gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
         gridToWorldScale = 1.0f;
         gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
-
 
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
@@ -246,13 +223,8 @@ public class SimControl : MonoBehaviour
             }
         }
 
-
-        // Write envConfig file (comment out normally)
-        //WriteEnvConfigFile();
-
         // Add map beliefs to outgoing queue
-        PushInitialMapBeliefs();
-
+        //PushInitialMapBeliefs();
 
         // Last thing to do is to start comms with all beliefs in data
         // manager already initialized
