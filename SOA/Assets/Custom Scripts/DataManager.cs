@@ -67,7 +67,10 @@ namespace soa
         public void broadcastBelief(Belief b, int sourceId, int[] recipients)
         {
             if (cm != null)
-            cm.addOutgoing(b, sourceId, recipients);
+            {
+                cm.addOutgoing(b, sourceId, null);
+                
+            }
         }
 
         /*public void addAndBroadcastBelief(Belief b, int sourceId, int[] recipients)
@@ -95,7 +98,7 @@ namespace soa
         {
             foreach (KeyValuePair<int, SoaActor> entry in soaActorDictionary)
             {
-                entry.Value.addBeliefToBeliefDictionary(b);
+                entry.Value.addBeliefToUnmergedBeliefDictionary(b);
             }
         }
 
