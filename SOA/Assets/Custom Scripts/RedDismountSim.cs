@@ -20,7 +20,7 @@ public class RedDismountSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
 
         // Unlimited fuel tank
-        thisSoaActor.fuelRemaining = float.PositiveInfinity;
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
     }
 
     // Update is called once per frame
@@ -107,14 +107,14 @@ public class RedDismountSim : MonoBehaviour
             // Configure a replacement agent
             RedDismountConfig c = new RedDismountConfig(
                 retreatBasePosition.x / SimControl.KmToUnity,
-                retreatBasePosition.y / SimControl.KmToUnity,
+                thisSoaActor.simAltitude_km,
                 retreatBasePosition.z / SimControl.KmToUnity,
                 -1,
                 null,
                 Random.value <= simControlScript.probRedDismountWeaponized);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c));
+            simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c, true));
         }
 
         if (other.CompareTag("RedBase"))

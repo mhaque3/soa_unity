@@ -25,14 +25,15 @@ public class SoldierWaypointMotion : MonoBehaviour
             // Add current location as waypoint
             waypoints.Add(gameObject);
 
-            // Perturb a tiny bit to get vehicles oscillating
-            targetPosition = waypoints[waypointIndex].transform.position + new Vector3(1e-6f, 0.0f, 1e-6f);
+            // Set destination as target waypoint position
+            targetPosition = waypoints[waypointIndex].transform.position;
             navAgent.SetDestination(targetPosition);
         }
         else
         {
-            // Set target to be exactly at waypoint
+            // Set destination as target waypoint position
             targetPosition = waypoints[waypointIndex].transform.position;
+            navAgent.baseOffset = waypoints[waypointIndex].transform.position.y;
             navAgent.SetDestination(targetPosition);
         }
     }
@@ -53,7 +54,7 @@ public class SoldierWaypointMotion : MonoBehaviour
 
                 if (waypoints.Count > waypointIndex)
                 {
-                    targetPosition = waypoints[waypointIndex].transform.position + new Vector3(0,transform.position.y,0);
+                    targetPosition = waypoints[waypointIndex].transform.position;  // + new Vector3(0,transform.position.y,0);
                     navAgent.SetDestination(targetPosition);
                     deltaV = (new Vector3(targetPosition.x, targetPosition.y, targetPosition.z)) - transform.position;
                     if (deltaV.magnitude < waypointEpsilon)

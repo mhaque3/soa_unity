@@ -57,13 +57,11 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
 				height = 0.01f;
 			}
 
-
 			var block = Grid[point];
 
 			if (block == null) Debug.LogWarning("block is null " + point);
 			else
 			{
-
                 if (height < HeightScale * 0.3f)
                 {
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
@@ -73,26 +71,19 @@ public class SoaHexWorld : GridBehaviour<FlatHexPoint>
                     //block.transform.position += new Vector3(0f, (BaseHeight + WaterHeight) / 4f, 0f);
                     WaterHexes.Add(point);
                 }
-                else if (height > HeightScale * 0.6f && height < HeightScale * 0.7f)
+                else if (height >= HeightScale * 0.3f && height < HeightScale * 0.7f)
                 {
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
                     thisHex.GetComponent<Renderer>().material = baseGrass;
                     block.transform.localScale = new Vector3(1, BaseHeight, 1);
                     LandHexes.Add(point);
                 }
-                else if (height >= HeightScale * 0.7f)
+                else
                 {
                     UVCell thisHex = block.GetComponentInChildren<UVCell>();
                     thisHex.GetComponent<Renderer>().material = baseRocky;
                     block.transform.localScale = new Vector3(1, MountainHeight, 1);
                     MountainHexes.Add(point);
-                }
-                else
-                {
-                    // Also land?
-                    // Why are these different than the 0.6 to 0.7 heights?
-                    // Question for Bob
-                    LandHexes.Add(point);
                 }
 			}
 		}

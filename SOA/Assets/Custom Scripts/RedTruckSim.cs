@@ -20,7 +20,7 @@ public class RedTruckSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
 
         // Unlimited fuel tank
-        thisSoaActor.fuelRemaining = float.PositiveInfinity;
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
 	}
 	
 	// Update is called once per frame
@@ -107,14 +107,14 @@ public class RedTruckSim : MonoBehaviour
             // Configure a replacement agent
             RedTruckConfig c = new RedTruckConfig(
                 retreatBasePosition.x / SimControl.KmToUnity,
-                retreatBasePosition.y / SimControl.KmToUnity,
+                thisSoaActor.simAltitude_km,
                 retreatBasePosition.z / SimControl.KmToUnity,
                 -1,
                 null,
                 Random.value <= simControlScript.probRedTruckWeaponized);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c));
+            simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c, true));
         }
 
         if (other.CompareTag("RedBase"))

@@ -65,7 +65,7 @@ public class BluePoliceSim : MonoBehaviour
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // Unlimited fuel tank
-        thisSoaActor.fuelRemaining = float.PositiveInfinity;
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
 
         // Internal parameters
         clearPatrolRange = 0.50f; // Unity units

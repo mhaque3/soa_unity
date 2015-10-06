@@ -61068,10 +61068,14 @@ MonoBehaviour:
   unique_id: 301
   affiliation: 0
   type: 2
+  simAltitude_km: 0
+  minAltitude_km: 0
+  maxAltitude_km: .5
+  maxVerticalSpeed_m_s: 2
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
-  fuelRemaining: 0
+  fuelRemaining_s: 0
   commsRange: 10
   Sensors: []
   Weapons: []
@@ -61104,22 +61108,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 168130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01d6d7e7483274243b91fb9791877f9b, type: 3}
+  m_Script: {fileID: 11500000, guid: ee99b1cf4dab3b141b70dc0bc48f5245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modes:
-  - tagString: RedDismount
-    RangeP1: .5
-    RangeMax: .5
-  - tagString: RedTruck
-    RangeP1: .5
-    RangeMax: .5
-  - tagString: NeutralDismount
-    RangeP1: .5
-    RangeMax: .5
-  - tagString: NeutralTruck
-    RangeP1: .5
-    RangeMax: .5
+  modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
 --- !u!114 &11472772
@@ -61145,7 +61137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e6ba5873efdf74da5a0d3a3ce540f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fuelTankSize: 100
+  fuelTankSize_s: 10000
   Casuality: 0
   Supply: 0
   SupplyIcon: {fileID: 135610}
@@ -61170,22 +61162,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 183228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 32fb445c62742a24e873243859b10507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modes:
-  - tagString: RedDismount
-    RangeP1: 1.00000002e+20
-    RangeMax: 1.00000002e+20
-  - tagString: RedTruck
-    RangeP1: 1.00000002e+20
-    RangeMax: 1.00000002e+20
-  - tagString: NeutralDismount
-    RangeP1: 1.00000002e+20
-    RangeMax: 1.00000002e+20
-  - tagString: NeutralTruck
-    RangeP1: 1.00000002e+20
-    RangeMax: 1.00000002e+20
+  modes: []
 --- !u!135 &13500244
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -61249,7 +61229,23 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: maxHorizontalSpeed_m_s
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxVerticalSpeed_m_s
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxAltitude_km
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fuelTankSize_s
+      value: 10000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158962}

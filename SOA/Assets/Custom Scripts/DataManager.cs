@@ -204,9 +204,9 @@ namespace soa
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
 
                 addBeliefToDataManager(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
-                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized, actor.fuelRemaining,
+                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized, actor.fuelRemaining_s,
                     actor.transform.position.x / SimControl.KmToUnity,
-                    actor.transform.position.y / SimControl.KmToUnity,
+                    actor.simAltitude_km,
                     actor.transform.position.z / SimControl.KmToUnity), 
                     actor.unique_id);
             }

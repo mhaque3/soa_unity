@@ -22,7 +22,7 @@ public class NeutralTruckSim : MonoBehaviour
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // Unlimited fuel tank
-        thisSoaActor.fuelRemaining = float.PositiveInfinity;
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
 
         // To hold source/destination choices during random selection
         choices = new List<GameObject>();
@@ -96,12 +96,12 @@ public class NeutralTruckSim : MonoBehaviour
             GameObject startSite = ChooseRandomNeutralSite(false);
             NeutralTruckConfig c = new NeutralTruckConfig(
                 startSite.transform.position.x / SimControl.KmToUnity,
-                startSite.transform.position.y / SimControl.KmToUnity,
+                thisSoaActor.simAltitude_km,
                 startSite.transform.position.z / SimControl.KmToUnity,
                 -1);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c));
+            simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c, true));
         }
     }
 
