@@ -39,5 +39,23 @@ namespace soa
 
         public int getRow() { return row; }
         public int getCol() { return col; }
+
+        public override int GetHashCode()
+        {
+            return row.GetHashCode() ^ col.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GridCell)
+            {
+                GridCell other = obj as GridCell;
+                return (row == other.getRow()) && (col == other.getCol());
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

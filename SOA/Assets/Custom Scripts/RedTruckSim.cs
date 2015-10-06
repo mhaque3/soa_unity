@@ -114,7 +114,7 @@ public class RedTruckSim : MonoBehaviour
                 Random.value <= simControlScript.probRedTruckWeaponized);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c));
+            simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c, true));
         }
 
         if (other.CompareTag("RedBase"))

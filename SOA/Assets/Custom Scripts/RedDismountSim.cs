@@ -114,7 +114,7 @@ public class RedDismountSim : MonoBehaviour
                 Random.value <= simControlScript.probRedDismountWeaponized);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c));
+            simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c, true));
         }
 
         if (other.CompareTag("RedBase"))

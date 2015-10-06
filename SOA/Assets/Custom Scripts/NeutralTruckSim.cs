@@ -101,7 +101,7 @@ public class NeutralTruckSim : MonoBehaviour
                 -1);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c));
+            simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c, true));
         }
     }
 

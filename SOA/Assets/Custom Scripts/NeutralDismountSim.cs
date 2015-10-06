@@ -101,7 +101,7 @@ public class NeutralDismountSim : MonoBehaviour
                 -1);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateNeutralDismount(simControlScript.InstantiateNeutralDismount(c));
+            simControlScript.ActivateNeutralDismount(simControlScript.InstantiateNeutralDismount(c, true));
         }
     }
 

@@ -46,6 +46,10 @@ public class SimControl : MonoBehaviour
     
     // Conversion Factor
     static public float KmToUnity;
+    static public float gridOrigin_x;
+    static public float gridOrigin_z;
+    static public float gridToWorldScale;
+    static public GridMath gridMath;
  
     // Logging
     public SoaEventLogger soaEventLogger;
@@ -97,25 +101,13 @@ public class SimControl : MonoBehaviour
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
         
-        // Reset all existing local and remote configs as having unique id -1
-        // Note: This must be called before LoadConfigFile();
-        foreach (GameObject g in LocalPlatforms)
-        {
-            g.GetComponent<SoaActor>().unique_id = -1;
-        }
-        foreach (GameObject g in RemotePlatforms)
-        {
-            g.GetComponent<SoaActor>().unique_id = -1;
-        }
-
-        // Set up book keeping for assigning unique IDs
-        // Note: This must be called before LoadConfigFile();
-        TakenUniqueIDs = new HashSet<int>();
-        TakenUniqueIDs.Add(0); // Reserved for blue base
-        smallestAvailableUniqueID = 1;
-
-        // Load settings from config file (should be the first thing that's called)
-        LoadConfigFile();
+        // Initialize gridmath for grid to world conversions
+        FlatHexPoint currentCell;
+        currentCell = new FlatHexPoint(0, 0);
+        gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
+        gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
+        gridToWorldScale = 1.0f;
+        gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
 
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
@@ -137,6 +129,29 @@ public class SimControl : MonoBehaviour
         {
             LandCells.Add(new GridCell(point.Y, point.X));
         }
+
+        // Reset all existing local and remote configs as having unique id -1
+        // Note: This must be called before LoadConfigFile();
+        foreach (GameObject g in LocalPlatforms)
+        {
+            g.GetComponent<SoaActor>().unique_id = -1;
+        }
+        foreach (GameObject g in RemotePlatforms)
+        {
+            g.GetComponent<SoaActor>().unique_id = -1;
+        }
+
+        // Set up book keeping for assigning unique IDs
+        // Note: This must be called before LoadConfigFile();
+        TakenUniqueIDs = new HashSet<int>();
+        TakenUniqueIDs.Add(0); // Reserved for blue base
+        smallestAvailableUniqueID = 1;
+
+        // Load settings from config file (should be the first thing that's called)
+        LoadConfigFile();
+
+        // Write envConfig file (keep this commented out normally)
+        //WriteEnvConfigFile();
 
         // Camera
         thisCamera = omcScript.GetComponent<Camera>();
@@ -210,9 +225,6 @@ public class SimControl : MonoBehaviour
         // Add map beliefs to outgoing queue
         PushInitialMapBeliefs();
 
-        // Write envConfig file (comment out normally)
-        //WriteEnvConfigFile();
-
         // Last thing to do is to start comms with all beliefs in data
         // manager already initialized
         redDataManager.startComms();
@@ -247,14 +259,14 @@ public class SimControl : MonoBehaviour
             switch (p.GetConfigType())
             {
                 case PlatformConfig.ConfigType.HEAVY_UAV:
-                    InstantiateHeavyUAV((HeavyUAVConfig)p);
+                    InstantiateHeavyUAV((HeavyUAVConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.SMALL_UAV:
-                    InstantiateSmallUAV((SmallUAVConfig)p);
+                    InstantiateSmallUAV((SmallUAVConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.BALLOON:
                     Debug.LogWarning("Balloon creation currently disabled");
-                    //InstantiateBalloon((BalloonConfig) p);
+                    //InstantiateBalloon((BalloonConfig) p, false);
                     break;
             }
         }
@@ -265,19 +277,19 @@ public class SimControl : MonoBehaviour
             switch (p.GetConfigType())
             {
                 case PlatformConfig.ConfigType.RED_DISMOUNT:
-                    InstantiateRedDismount((RedDismountConfig)p);
+                    InstantiateRedDismount((RedDismountConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.RED_TRUCK:
-                    InstantiateRedTruck((RedTruckConfig)p);
+                    InstantiateRedTruck((RedTruckConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.NEUTRAL_DISMOUNT:
-                    InstantiateNeutralDismount((NeutralDismountConfig)p);
+                    InstantiateNeutralDismount((NeutralDismountConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.NEUTRAL_TRUCK:
-                    InstantiateNeutralTruck((NeutralTruckConfig)p);
+                    InstantiateNeutralTruck((NeutralTruckConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.BLUE_POLICE:
-                    InstantiateBluePolice((BluePoliceConfig)p);
+                    InstantiateBluePolice((BluePoliceConfig)p, false);
                     break;
             }
         }
@@ -287,10 +299,8 @@ public class SimControl : MonoBehaviour
     void PushInitialMapBeliefs()
     {
         GameObject g;
-        FlatHexPoint currentCell;
 
-        currentCell = new FlatHexPoint(0, 0);
-        b = new Belief_GridSpec(64, 36, hexGrid.Map[currentCell].x / KmToUnity, hexGrid.Map[currentCell].z / KmToUnity, 1.0f);
+        b = new Belief_GridSpec(64, 36, gridOrigin_x, gridOrigin_z, gridToWorldScale);
         blueDataManager.addBeliefToAllActors(b, 0);
         blueDataManager.addInitializationBelief(b);
         //Debug.Log(b.ToString());
@@ -351,11 +361,9 @@ public class SimControl : MonoBehaviour
         EnvConfig envConfig = new EnvConfig();
 
         // Populate gridspec
-        FlatHexPoint currentCell;
-        currentCell = new FlatHexPoint(0, 0);
-        envConfig.gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
-        envConfig.gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
-        envConfig.gridToWorldScale = 1.0f;
+        envConfig.gridOrigin_x = gridOrigin_x;
+        envConfig.gridOrigin_z = gridOrigin_z;
+        envConfig.gridToWorldScale = gridToWorldScale;
 
         // Terrain information
         foreach (GridCell g in MountainCells)
@@ -810,87 +818,145 @@ public class SimControl : MonoBehaviour
         }
     }
 
+    private bool CheckInitialLocation(Vector3 position, bool landEnabled, bool waterEnabled, bool mountainEnabled)
+    {
+        // Convert world coordinates to grid coordinates
+        PrimitivePair<float, float> worldPos = new PrimitivePair<float,float> (position.x, position.z);
+        PrimitivePair<int, int> gridPos = gridMath.WorldToGrid(worldPos);
+        GridCell initialCell = new GridCell(gridPos.first, gridPos.second);
+
+        // Check against cell types
+        bool found = false;
+
+        if (landEnabled)
+        {
+            found = found || landCells.Contains(initialCell);
+        }
+        if (waterEnabled)
+        {
+            found = found || waterCells.Contains(initialCell);
+        }
+        if (mountainEnabled)
+        {
+            found = found || mountainCells.Contains(initialCell);
+        }
+
+        return found;
+    }
+
     #endregion
 
     #region Remote Platform Instantiation
     /*****************************************************************************************************
      *                                  REMOTE PLATFORM INSTANTIATION                                    *
      *****************************************************************************************************/
-    public GameObject InstantiateHeavyUAV(HeavyUAVConfig c)
+    public GameObject InstantiateHeavyUAV(HeavyUAVConfig c, bool initialLocationCheckOverride)
     {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, 
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
 
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+        // Heavy UAV can only traverse on land and water
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false))
+        {
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, newPos, Quaternion.identity);
 
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Heavy UAV " + a.unique_id;
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
 
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Heavy UAV " + a.unique_id;
 
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "HeavyUAV");
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
 
-        // Add to list of remote platforms
-        RemotePlatforms.Add(g);
-        return g;
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "HeavyUAV");
+
+            // Add to list of remote platforms
+            RemotePlatforms.Add(g);
+            return g;
+        }
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateHeavyUAV(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
     }
 
-    public GameObject InstantiateSmallUAV(SmallUAVConfig c)
+    public GameObject InstantiateSmallUAV(SmallUAVConfig c, bool initialLocationCheckOverride)
     {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(SmallUAVPrefab,
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
 
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+        // Small UAV can only traverse on land and water
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false))
+        {
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(SmallUAVPrefab, newPos, Quaternion.identity);
+
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Small UAV " + a.unique_id;
+
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
+
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "SmallUAV");
+
+            // Add to list of remote platforms
+            RemotePlatforms.Add(g);
+            return g;
+        }
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateSmallUAV(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
+    }
+
+    public GameObject InstantiateBalloon(BalloonConfig c, bool initialLocationCheckOverride)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
         
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Small UAV " + a.unique_id;
-
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
-
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "SmallUAV");
-
-        // Add to list of remote platforms
-        RemotePlatforms.Add(g);
-        return g;
-    }
-
-    public GameObject InstantiateBalloon(BalloonConfig c)
-    {
-        // Instantiate
-        /*GameObject g = (GameObject)Instantiate(BalloonPrefab, 
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
+        // Balloon can traverse on land, water, and mountains
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true))
+        {
+            // Instantiate
+            /*GameObject g = (GameObject)Instantiate(BalloonPrefab, newPos, Quaternion.identity);
                         
-        // Set grid
-        g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
+            // Set grid
+            g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
                          
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Balloon " + a.unique_id;
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Balloon " + a.unique_id;
                       
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
         
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "Balloon");
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "Balloon");
          
-        // Add to list of remote platforms
-        RemotePlatforms.Add(g);
-        return g;*/
-
-        return null;
+            // Add to list of remote platforms
+            RemotePlatforms.Add(g);
+            return g;*/
+            return null;
+        }
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateBalloon(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
     }
     #endregion
 
@@ -939,187 +1005,242 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                   LOCAL PLATFORM INSTANTIATION                                    *
      *****************************************************************************************************/
-    public GameObject InstantiateRedDismount(RedDismountConfig c)
+    public GameObject InstantiateRedDismount(RedDismountConfig c, bool initialLocationCheckOverride)
     {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(RedDismountPrefab,
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
-
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
-
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Red Dismount " + a.unique_id;
-
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
-
-        // Waypoint motion
-        SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
-        GameObject waypoint;
-        bool initialWaypointSpecified = false;
-        if (c.initialWaypoint != null)
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        
+        // Red dismount can only traverse on land, not water or mountains
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
-            waypoint = GameObject.Find(c.initialWaypoint);
-            if (waypoint != null)
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(RedDismountPrefab, newPos, Quaternion.identity);
+
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Red Dismount " + a.unique_id;
+
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
+
+            // Waypoint motion
+            SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
+            GameObject waypoint;
+            bool initialWaypointSpecified = false;
+            if (c.initialWaypoint != null)
             {
-                // Initial waypoint was specified, go to it first and then
-                // go to the closest red base from there
-                initialWaypointSpecified = true;
-                swm.waypoints.Add(waypoint);
-                swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+                waypoint = GameObject.Find(c.initialWaypoint);
+                if (waypoint != null)
+                {
+                    // Initial waypoint was specified, go to it first and then
+                    // go to the closest red base from there
+                    initialWaypointSpecified = true;
+                    swm.waypoints.Add(waypoint);
+                    swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+                }
             }
-        }
-        if (!initialWaypointSpecified)
-        {
-            // Go to current closest base if no initial waypoint was specified
-            swm.waypoints.Add(FindClosestInList(g, RedBases));
-        }
-
-        // Weapon
-        SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
-        foreach (WeaponModality wm in sw.modes)
-        {
-            wm.enabled = c.hasWeapon;
-        }
-
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "RedDismount");
-
-        // Add to list of local platforms
-        LocalPlatforms.Add(g);
-        return g;
-    }
-
-    public GameObject InstantiateRedTruck(RedTruckConfig c)
-    {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(RedTruckPrefab,
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
-
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
-
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Red Truck " + a.unique_id;
-
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
-
-        // Waypoint motion
-        SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
-        GameObject waypoint;
-        bool initialWaypointSpecified = false;
-        if (c.initialWaypoint != null)
-        {
-            waypoint = GameObject.Find(c.initialWaypoint);
-            if (waypoint != null)
+            if (!initialWaypointSpecified)
             {
-                // Initial waypoint was specified, go to it first and then
-                // go to the closest red base from there
-                initialWaypointSpecified = true;
-                swm.waypoints.Add(waypoint);
-                swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+                // Go to current closest base if no initial waypoint was specified
+                swm.waypoints.Add(FindClosestInList(g, RedBases));
             }
+
+            // Weapon
+            SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
+            foreach (WeaponModality wm in sw.modes)
+            {
+                wm.enabled = c.hasWeapon;
+            }
+
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "RedDismount");
+
+            // Add to list of local platforms
+            LocalPlatforms.Add(g);
+            return g;
         }
-        if (!initialWaypointSpecified)
+        else
         {
-            // Go to current closest base if no initial waypoint was specified
-            swm.waypoints.Add(FindClosestInList(g, RedBases));
+            Debug.LogWarning("SimControl::InstantiateRedDismount(): Platform not instantiated since initial location on grid not valid");
+            return null;
         }
+    }
 
-        // Weapon
-        SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
-        foreach (WeaponModality wm in sw.modes)
+    public GameObject InstantiateRedTruck(RedTruckConfig c, bool initialLocationCheckOverride)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        
+        // Red truck can only traverse on land, not water or mountains
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
-            wm.enabled = c.hasWeapon;
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(RedTruckPrefab, newPos, Quaternion.identity);
+
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Red Truck " + a.unique_id;
+
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
+
+            // Waypoint motion
+            SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
+            GameObject waypoint;
+            bool initialWaypointSpecified = false;
+            if (c.initialWaypoint != null)
+            {
+                waypoint = GameObject.Find(c.initialWaypoint);
+                if (waypoint != null)
+                {
+                    // Initial waypoint was specified, go to it first and then
+                    // go to the closest red base from there
+                    initialWaypointSpecified = true;
+                    swm.waypoints.Add(waypoint);
+                    swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+                }
+            }
+            if (!initialWaypointSpecified)
+            {
+                // Go to current closest base if no initial waypoint was specified
+                swm.waypoints.Add(FindClosestInList(g, RedBases));
+            }
+
+            // Weapon
+            SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
+            foreach (WeaponModality wm in sw.modes)
+            {
+                wm.enabled = c.hasWeapon;
+            }
+
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "RedTruck");
+
+            // Add to list of local platforms
+            LocalPlatforms.Add(g);
+            return g;
         }
-
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "RedTruck");
-
-        // Add to list of local platforms
-        LocalPlatforms.Add(g);
-        return g;
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateRedTruck(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
     }
 
-    public GameObject InstantiateNeutralDismount(NeutralDismountConfig c)
+    public GameObject InstantiateNeutralDismount(NeutralDismountConfig c, bool initialLocationCheckOverride)
     {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(NeutralDismountPrefab,
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        
+        // Neutral dismount can only traverse on land, not water or mountains
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        {
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, newPos, Quaternion.identity);
 
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
 
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Neutral Dismount " + a.unique_id;
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Neutral Dismount " + a.unique_id;
 
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
 
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "NeutralDismount");
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "NeutralDismount");
 
-        // Add to list of local platforms
-        LocalPlatforms.Add(g);
-        return g;
+            // Add to list of local platforms
+            LocalPlatforms.Add(g);
+            return g;
+        }
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateNeutralDismount(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
     }
 
-    public GameObject InstantiateNeutralTruck(NeutralTruckConfig c)
+    public GameObject InstantiateNeutralTruck(NeutralTruckConfig c, bool initialLocationCheckOverride)
     {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(NeutralTruckPrefab,
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        
+        // Neutral truck can only traverse on land, not water or mountains
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        {
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, newPos, Quaternion.identity);
 
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
 
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Neutral Truck " + a.unique_id;
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Neutral Truck " + a.unique_id;
 
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
 
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "NeutralTruck");
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "NeutralTruck");
 
-        // Add to list of local platforms
-        LocalPlatforms.Add(g);
-        return g;
+            // Add to list of local platforms
+            LocalPlatforms.Add(g);
+            return g;
+        }
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateNeutralTruck(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
     }
 
-    public GameObject InstantiateBluePolice(BluePoliceConfig c)
+    public GameObject InstantiateBluePolice(BluePoliceConfig c, bool initialLocationCheckOverride)
     {
-        // Instantiate
-        GameObject g = (GameObject)Instantiate(BluePolicePrefab,
-            new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity, Quaternion.identity);
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        
+        // Blue police can only traverse on land, not water or mountains
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        {
+            // Instantiate
+            GameObject g = (GameObject)Instantiate(BluePolicePrefab, newPos, Quaternion.identity);
 
-        // Set grid
-        g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
+            // Set grid
+            g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
 
-        // Assign unique ID
-        SoaActor a = g.GetComponent<SoaActor>();
-        a.unique_id = RequestUniqueID(c.id);
-        g.name = "Blue Police " + a.unique_id;
+            // Assign unique ID
+            SoaActor a = g.GetComponent<SoaActor>();
+            a.unique_id = RequestUniqueID(c.id);
+            g.name = "Blue Police " + a.unique_id;
 
-        // Assign initial altitude
-        a.SetSimAltitude(c.y_km);
+            // Assign initial altitude
+            a.SetSimAltitude(c.y_km);
 
-        // Set perception capabilities
-        SetPerceptionCapabilities(g, c, "BluePolice");
+            // Set perception capabilities
+            SetPerceptionCapabilities(g, c, "BluePolice");
 
-        // Add to list of local platforms
-        LocalPlatforms.Add(g);
-        return g;
+            // Add to list of local platforms
+            LocalPlatforms.Add(g);
+            return g;
+        }
+        else
+        {
+            Debug.LogWarning("SimControl::InstantiateBluePolice(): Platform not instantiated since initial location on grid not valid");
+            return null;
+        }
     }
     #endregion
 
