@@ -96,7 +96,7 @@ public class SimControl : MonoBehaviour
         // Scale factor (this must be the first thing called)
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
-        
+
         // Reset all existing local and remote configs as having unique id -1
         // Note: This must be called before LoadConfigFile();
         foreach (GameObject g in LocalPlatforms)
@@ -206,9 +206,6 @@ public class SimControl : MonoBehaviour
                 Debug.LogWarning("Error activating remote platform, unrecognized tag " + platform.tag);
             }
         }
-
-        // Add map beliefs to outgoing queue
-        PushInitialMapBeliefs();
 
         // Write envConfig file (comment out normally)
         //WriteEnvConfigFile();
@@ -405,8 +402,16 @@ public class SimControl : MonoBehaviour
      *                                              UPDATE                                               *
      *****************************************************************************************************/
     // Update is called once per frame
+    private bool firstUpdate = true;
 	void Update () 
     {
+        if (firstUpdate)
+        {
+            // Add map beliefs to outgoing queue
+            PushInitialMapBeliefs();
+            firstUpdate = false;
+        }
+
         // Update mouse over functions
         UpdateMouseOver();
 
@@ -550,7 +555,10 @@ public class SimControl : MonoBehaviour
                             {
                                 GameObject platform = LocalPlatforms[i];
                                 SoaActor actor = platform.GetComponent<SoaActor>();
-                                actor.broadcastCommsLocal();
+                                if (actor.affiliation != Affiliation.NEUTRAL)
+                                {
+                                    actor.broadcastCommsLocal();
+                                }
                             }
 
                             for (int i = 0; i < RemotePlatforms.Count; i++)
@@ -573,7 +581,11 @@ public class SimControl : MonoBehaviour
                             {
                                 GameObject platform = LocalPlatforms[i];
                                 SoaActor actor = platform.GetComponent<SoaActor>();
-                                actor.mergeBeliefDictionary();
+                                if (actor.affiliation != Affiliation.NEUTRAL)
+                                {
+                                    actor.mergeBeliefDictionary();
+                                }
+                                
                             }
 
                             for (int i = 0; i < RemotePlatforms.Count; i++)
@@ -598,6 +610,29 @@ public class SimControl : MonoBehaviour
                     GameObject platform = RemotePlatforms[i];
                     SoaActor actor = platform.GetComponent<SoaActor>();
                     actor.updateRemoteAgent();
+                }
+
+                for (int i = 0; i < LocalPlatforms.Count; i++)
+                {
+                    GameObject platform = LocalPlatforms[i];
+                    SoaActor actor = platform.GetComponent<SoaActor>();
+                    if (!actor.isAlive)
+                    {
+                        if (actor.affiliation == Affiliation.BLUE)
+                        {
+                            DestroyLocalBluePlatform(platform);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < RemotePlatforms.Count; i++)
+                {
+                    GameObject platform = RemotePlatforms[i];
+                    SoaActor actor = platform.GetComponent<SoaActor>();
+                    if (!actor.isAlive)
+                    {
+                        DestroyRemoteBluePlatform(platform);
+                    }
                 }
             }
         }
@@ -1202,6 +1237,36 @@ public class SimControl : MonoBehaviour
 
         // Remove from local platform list
         LocalPlatforms.Remove(platform);
+
+        // Destroy now
+        Destroy(platform);
+    }
+
+    private void DestroyLocalBluePlatform(GameObject platform)
+    {
+        // Remove from mouse script
+        omcScript.DeletePlatform(platform);
+
+        // Remove from data manager
+        blueDataManager.removeActor(platform.GetComponent<SoaActor>());
+
+        // Remove from local platform list
+        LocalPlatforms.Remove(platform);
+
+        // Destroy now
+        Destroy(platform);
+    }
+
+    private void DestroyRemoteBluePlatform(GameObject platform)
+    {
+        // Remove from mouse script
+        omcScript.DeletePlatform(platform);
+
+        // Remove from data manager
+        blueDataManager.removeActor(platform.GetComponent<SoaActor>());
+
+        // Remove from local platform list
+        RemotePlatforms.Remove(platform);
 
         // Destroy now
         Destroy(platform);
