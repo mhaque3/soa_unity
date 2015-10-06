@@ -15,6 +15,7 @@ namespace soa
         // XML structure
         private XmlDocument xmlDoc;
         private XmlNode simulationNode;
+        private XmlNode errorsNode;
         private XmlNode resultNode;
         private XmlNode eventsNode;
 
@@ -73,8 +74,12 @@ namespace soa
                 AddAttribute(simulationNode, "startDateTime", now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
                 AddAttribute(simulationNode, "startTimeStamp", timeStamp);
 
-                // Create "Result" node
-                resultNode = xmlDoc.CreateElement("Result");
+                // Create "Errors" node
+                errorsNode = xmlDoc.CreateElement("Errors");
+                logNode.AppendChild(errorsNode);
+
+                // Create "Results" node
+                resultNode = xmlDoc.CreateElement("Results");
                 logNode.AppendChild(resultNode);
 
                 // Create "Events" node
@@ -346,6 +351,31 @@ namespace soa
             if (logToConsole)
             {
                 Debug.Log("EVENT (" + timeStamp + "): Civilian transported by " + capturer + " to custody of " + destination);
+            }
+        }
+
+        public void LogError(string message)
+        {
+            // Compute timestamp
+            DateTime now = DateTime.Now;
+            String timeStamp = CreateTimestamp(now);
+
+            // Log to file
+            if (logToFile)
+            {
+                // Create an "Error" node
+                XmlNode node = xmlDoc.CreateElement("Error");
+
+                // Populate attributes
+                AddAttribute(node, "timeStamp", timeStamp);
+                AddAttribute(node, "message", message);
+
+                // Add to "Errors" node
+                errorsNode.AppendChild(node);
+            }
+            if (logToConsole)
+            {
+                Debug.LogError("ERROR (" + timeStamp + "): " + message);
             }
         }
     }

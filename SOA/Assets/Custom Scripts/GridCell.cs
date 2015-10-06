@@ -5,7 +5,7 @@ using System.Text;
 
 namespace soa
 {
-    public class GridCell
+    public class GridCell : IEquatable<GridCell>
     {
         // Members
         private int row;
@@ -56,6 +56,11 @@ namespace soa
             {
                 return false;
             }
+        }
+
+        public bool Equals(GridCell other)
+        {
+            return (row == other.getRow()) && (col == other.getCol());
         }
     }
 }

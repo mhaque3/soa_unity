@@ -347,7 +347,6 @@ public class SoaActor : MonoBehaviour
                         newWaypoint.getPos_x() * SimControl.KmToUnity,
                         newWaypoint.getPos_y() * SimControl.KmToUnity, // Nav agent ignores the y coordinate (altitude)
                         newWaypoint.getPos_z() * SimControl.KmToUnity));
-                    //Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
 
                     // Set the desired altitude separately [km]
                     SetDesiredAltitude(newWaypoint.getPos_y());
@@ -376,7 +375,6 @@ public class SoaActor : MonoBehaviour
                 transform.position.z / SimControl.KmToUnity);
             addMyBeliefData(newActorData, unique_id);
             
-
             // Update classifications
             foreach (SoaClassifier c in Classifiers)
             {
