@@ -434,7 +434,7 @@ public class SoaActor : MonoBehaviour
                     belief_actor.getIsWeaponized(), belief_actor.getFuelRemaining(),
                     belief_actor.getPos_x(),
                     belief_actor.getPos_y(),
-                    belief_actor.getPos_z()), unique_id);
+                    belief_actor.getPos_z()));
 
             }
             killDetections.Clear();

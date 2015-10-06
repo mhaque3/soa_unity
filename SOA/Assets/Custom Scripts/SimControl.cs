@@ -70,6 +70,7 @@ public class SimControl : MonoBehaviour
     Text[] labels;
     Camera thisCamera;
     public Vector3 mouseVector;
+    FlatHexPoint currentCell;
 
     // Config file parameters
     public SoaConfig soaConfig;
@@ -124,7 +125,7 @@ public class SimControl : MonoBehaviour
 
         
         // Initialize gridmath for grid to world conversions
-        FlatHexPoint currentCell;
+        //FlatHexPoint currentCell;
         currentCell = new FlatHexPoint(0, 0);
         gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
         gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
@@ -896,15 +897,15 @@ public class SimControl : MonoBehaviour
 
         if (landEnabled)
         {
-            found = found || landCells.Contains(initialCell);
+            found = found || LandCells.Contains(initialCell);
         }
         if (waterEnabled)
         {
-            found = found || waterCells.Contains(initialCell);
+            found = found || WaterCells.Contains(initialCell);
         }
         if (mountainEnabled)
         {
-            found = found || mountainCells.Contains(initialCell);
+            found = found || MountainCells.Contains(initialCell);
         }
 
         return found;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace soa
 {
-    class GridMath
+    public class GridMath
     {
         // Unit basis vector (in world coordinates) defining hex grid u-axis direction
         // (Hard coded for now since grid type/axes are fixed)
