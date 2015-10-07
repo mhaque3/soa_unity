@@ -164,24 +164,40 @@ namespace soa
                     Belief_Actor actor = (Belief_Actor)b;
                     Vector3 actorPos = new Vector3(
                         (float)actor.getPos_x(),
-                        (float)actor.getPos_y(),
+                        (float)soaActor.simAltitude_km,
                         (float)actor.getPos_z());
+
+                    float jammerNoiseSummation = 0;
+                    foreach (SoaActor jammerActor in actors) 
+                    {
+                        Belief_Actor jammer = (Belief_Actor)actorDictionary[jammerActor.unique_id];
+                        Vector3 jammerPos = new Vector3(
+                        (float)jammer.getPos_x(),
+                        (float)jammerActor.simAltitude_km,
+                        (float)jammer.getPos_z());
+
+                        float bb =2;
+                        jammerNoiseSummation += Mathf.Pow(bb, 2) / Mathf.Pow(Vector3.Distance(actorPos, jammerPos), 2);
+                    }
 
                     foreach (SoaActor neighborActor in actors)
                     {
                         // Get neighbor position in km
-                        //Debug.Log("looking up actor " + soaActor.unique_id);
+                      
                         Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
                         Vector3 neighborPos = new Vector3(
                             (float)neighbor.getPos_x(),
-                            (float)neighbor.getPos_y(),
+                            (float)neighborActor.simAltitude_km,
                             (float)neighbor.getPos_z());
 
-                        // Compute distance in km and compare against comms range (also specified in km)
+                        
+                        float rx_tx_range = Vector3.Distance(actorPos, neighborPos);
+                        float rangeSquared = Mathf.Pow(rx_tx_range,2);
+                        float snr = Mathf.Pow(soaActor.commsRange,2f) / (rangeSquared * (1 + jammerNoiseSummation));
+
+                        // Compare calculated SNR value to 1.  Comms are 100% reliable at 1
                         actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = 
-                            Math.Sqrt(Math.Pow(actorPos.x - neighborPos.x, 2)
-                            + Math.Pow(actorPos.y - neighborPos.y, 2)
-                            + Math.Pow(actorPos.z - neighborPos.z, 2)) < neighborActor.commsRange;
+                            snr > 1f;
                     }
                 }
                 else

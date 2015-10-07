@@ -15,6 +15,10 @@ public class SoaActor : MonoBehaviour
     public float simAltitude_km;
     private float desiredAltitude_km;
 
+    //Simulated position [km]
+    private float simX_km;
+    private float simZ_km;
+
     // Kinematic constraints
     public float minAltitude_km;
     public float maxAltitude_km;
@@ -46,10 +50,11 @@ public class SoaActor : MonoBehaviour
     public CarriedResource isCarrying;
     public bool isWeaponized;
     public float fuelRemaining_s;
-    public double commsRange;
+    public float commsRange;
 
     public SoaSensor[] Sensors;
     public SoaWeapon[] Weapons;
+    public SoaJammer[] Jammers;
     public SoaClassifier[] Classifiers;
     public List<GameObject> Detections;
     public List<GameObject> Tracks;
@@ -371,11 +376,15 @@ public class SoaActor : MonoBehaviour
             }
 
             // Convert position from Unity to km for Belief_Actor
+            simX_km = transform.position.x / SimControl.KmToUnity;
+            simZ_km = transform.position.z / SimControl.KmToUnity;
+
             Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
                 type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
-                transform.position.x / SimControl.KmToUnity,
+                simX_km,
                 simAltitude_km,
-                transform.position.z / SimControl.KmToUnity);
+                simZ_km);
+
             addMyBeliefData(newActorData);
             if (dataManager != null)
                 dataManager.addBeliefToDataManager(newActorData, unique_id);
@@ -689,6 +698,11 @@ public class SoaActor : MonoBehaviour
         }
     }
 
+    //
+    public Vector3 getPositionVector_km()
+    {
+        return new Vector3(simX_km, simAltitude_km, simZ_km);
+    }
 
     private void localBroadcastBeliefsOfType(Belief.BeliefType type, List<SoaActor> connectedActors)
     {

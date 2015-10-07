@@ -15,6 +15,8 @@ namespace soa
         public float gameDurationMin;
         public float probRedDismountWeaponized;
         public float probRedTruckWeaponized;
+        public float probRedTruckJammer;
+        public float jammerRange;
 
         // Logger configuration
         public string loggerOutputFile;
@@ -119,13 +121,17 @@ namespace soa
     public class RedTruckConfig : PlatformConfig
     {
         public bool hasWeapon;
+        public bool hasJammer;
+        public float jammerRange;
         public string initialWaypoint;
         public RedTruckConfig(float x_km, float y_km, float z_km, int id,
-            string initialWaypoint, bool hasWeapon)
+            string initialWaypoint, bool hasWeapon, bool hasJammer, float jammerRange)
             : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
+            this.hasJammer = hasJammer;
+            this.jammerRange = jammerRange;
         }
         public override ConfigType GetConfigType() { return ConfigType.RED_TRUCK; }
     }

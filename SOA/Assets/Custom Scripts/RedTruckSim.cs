@@ -111,7 +111,9 @@ public class RedTruckSim : MonoBehaviour
                 retreatBasePosition.z / SimControl.KmToUnity,
                 -1,
                 null,
-                Random.value <= simControlScript.probRedTruckWeaponized);
+                Random.value <= simControlScript.probRedTruckWeaponized,
+                Random.value <= simControlScript.probRedTruckJammer,
+                simControlScript.jammerRange);
 
             // Instantiate and activate a replacement
             simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c, true));

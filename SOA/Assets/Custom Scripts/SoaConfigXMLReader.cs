@@ -288,7 +288,9 @@ namespace soa
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
                                     GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized)
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized),
+                                    GetBooleanAttribute(c, "hasJammer", false),
+                                    GetFloatAttribute(c, "jammerRange", 0)
                                 );
                             }
                             break;
@@ -370,9 +372,9 @@ namespace soa
         // Remote platform category parsing
         private static void ParseRemote(XmlNode node, SoaConfig soaConfig)
         {
-            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1); // Dummy value
+            PlatformConfig newConfig = null; // Dummy value
             bool newConfigValid;
-
+            Debug.Log("Number remote platforms " + node.ChildNodes.Count);
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
             {
@@ -384,6 +386,7 @@ namespace soa
                     {
                         case "HeavyUAV":
                             {
+                                
                                 newConfig = new HeavyUAVConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
@@ -394,6 +397,7 @@ namespace soa
                             break;
                         case "SmallUAV":
                             {
+                                
                                 newConfig = new SmallUAVConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),

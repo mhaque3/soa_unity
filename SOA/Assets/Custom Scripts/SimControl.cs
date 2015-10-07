@@ -60,8 +60,11 @@ public class SimControl : MonoBehaviour
     private bool showTruePositions = true;
     public OverheadMouseCamera omcScript;
     public SoaHexWorld hexGrid;
+
     DataManager redDataManager;
     DataManager blueDataManager;
+    List<SoaJammer> jammers;
+
     public Canvas uiCanvas;
     public GameObject labelUI;
     GameObject labelInstance;
@@ -77,7 +80,9 @@ public class SimControl : MonoBehaviour
     public string networkRedRoom;
     public string networkBlueRoom;
     public float probRedTruckWeaponized;
+    public float probRedTruckJammer;
     public float probRedDismountWeaponized;
+    public float jammerRange;
 
     // For updates
     int randDraw;
@@ -102,28 +107,6 @@ public class SimControl : MonoBehaviour
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
 
-
-        // Reset all existing local and remote configs as having unique id -1
-        // Note: This must be called before LoadConfigFile();
-        foreach (GameObject g in LocalPlatforms)
-        {
-            g.GetComponent<SoaActor>().unique_id = -1;
-        }
-        foreach (GameObject g in RemotePlatforms)
-        {
-            g.GetComponent<SoaActor>().unique_id = -1;
-        }
-
-        // Set up book keeping for assigning unique IDs
-        // Note: This must be called before LoadConfigFile();
-        TakenUniqueIDs = new HashSet<int>();
-        TakenUniqueIDs.Add(0); // Reserved for blue base
-        smallestAvailableUniqueID = 1;
-
-        // Load settings from config file (should be the first thing that's called)
-        LoadConfigFile();
-
-        
         // Initialize gridmath for grid to world conversions
         //FlatHexPoint currentCell;
         currentCell = new FlatHexPoint(0, 0);
@@ -251,7 +234,7 @@ public class SimControl : MonoBehaviour
         //WriteEnvConfigFile();
 
         // Add map beliefs to outgoing queue
-        PushInitialMapBeliefs();
+        //PushInitialMapBeliefs();
 
 
         // Last thing to do is to start comms with all beliefs in data
@@ -277,6 +260,10 @@ public class SimControl : MonoBehaviour
         // Red platform weapon probability
         probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
         probRedDismountWeaponized = soaConfig.probRedDismountWeaponized;
+        probRedTruckJammer = soaConfig.probRedTruckJammer;
+
+        //RedTruck jammer range
+        jammerRange = soaConfig.jammerRange;
 
         // Network settings
         networkRedRoom = soaConfig.networkRedRoom;
@@ -892,6 +879,7 @@ public class SimControl : MonoBehaviour
         PrimitivePair<int, int> gridPos = gridMath.WorldToGrid(worldPos);
         GridCell initialCell = new GridCell(gridPos.first, gridPos.second);
 
+        Debug.Log("Cell location " + initialCell.getCol() + " " + initialCell.getRow());
         // Check against cell types
         bool found = false;
 
@@ -908,6 +896,7 @@ public class SimControl : MonoBehaviour
             found = found || MountainCells.Contains(initialCell);
         }
 
+        if (!found) Debug.LogError("CANNOT PLACE VEHICLE ");
         return found;
     }
 
@@ -1141,10 +1130,12 @@ public class SimControl : MonoBehaviour
     {
         // Proposed initial position
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
-        
+        Debug.Log("Initial pos " + newPos.ToString());
+
         // Red truck can only traverse on land, not water or mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
+            Debug.Log("Instantiate red truck");
             // Instantiate
             GameObject g = (GameObject)Instantiate(RedTruckPrefab, newPos, Quaternion.identity);
 
@@ -1188,6 +1179,13 @@ public class SimControl : MonoBehaviour
                 wm.enabled = c.hasWeapon;
             }
 
+            //Jammer
+            SoaJammer jammer = g.GetComponentInChildren<SoaJammer>();
+            jammer.effectiveRange = c.jammerRange;
+            jammer.isOn = c.hasJammer;
+            jammers.Add(jammer);
+            Debug.Log("Has jammer " + jammer.isOn + "effective range" + jammer.effectiveRange);
+
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "RedTruck");
 
@@ -1197,7 +1195,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateRedTruck(): Platform not instantiated since initial location on grid not valid");
+            Debug.LogError("SimControl::InstantiateRedTruck(): Platform not instantiated since initial location on grid not valid");
             return null;
         }
     }

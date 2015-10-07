@@ -142,7 +142,7 @@
 
     <!-- Red Trucks -->
     <RedTruck        x_km="-17.770"   y_km="0.000"   z_km="12.758"
-       hasWeapon="false" initialWaypoint="Red Base 0" />
+       hasWeapon="false" initialWaypoint="Red Base 0" hasJammer="true" jammerRange="2"/>
 
     <RedTruck        x_km="-1.300"    y_km="0.000"   z_km="12.245"
        hasWeapon="true" initialWaypoint="Red Base 1" />
