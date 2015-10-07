@@ -37,13 +37,13 @@ public class NeutralDismountSim : MonoBehaviour
     float PathUpdateClock = 0f;
 	void Update ()
     {
-        float dt = Time.deltaTime;
+        /*float dt = Time.deltaTime;
         PathUpdateClock += dt;
         if (PathUpdateClock > PathUpdateInterval)
         {
             thisNavAgent.ResetPath();
             PathUpdateClock = Random.value * PathUpdateInterval * 0.5f;
-        }
+        }*/
     }
 
     GameObject ChooseRandomNeutralSite(bool differentFromCurrentLocation)

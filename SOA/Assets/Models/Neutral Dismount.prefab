@@ -1039,8 +1039,8 @@ GameObject:
   - 195: {fileID: 19522932}
   - 96: {fileID: 9690352}
   - 136: {fileID: 13618912}
-  - 114: {fileID: 11408410}
   - 114: {fileID: 11437840}
+  - 114: {fileID: 11407442}
   m_Layer: 0
   m_Name: Neutral Dismount
   m_TagString: NeutralDismount
@@ -5512,7 +5512,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 1
---- !u!114 &11408410
+--- !u!114 &11407442
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -5520,7 +5520,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 135260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a5be80cdb2c6cd408de1cca1b7ce3a3, type: 3}
+  m_Script: {fileID: 11500000, guid: a757bbc561df5134d9db956e51bd6c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PathUpdateInterval: 1
@@ -5561,6 +5561,7 @@ MonoBehaviour:
   commsRange: 0
   Sensors: []
   Weapons: []
+  Jammers: []
   Classifiers: []
   Detections: []
   Tracks: []

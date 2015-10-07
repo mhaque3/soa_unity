@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-abstract public class SoaSensor : MonoBehaviour 
+public class SoaSensor : MonoBehaviour 
 {
     public PerceptionModality[] modes;
     public SoaActor soaActor;
@@ -18,7 +18,7 @@ abstract public class SoaSensor : MonoBehaviour
     {
 	}
 
-    abstract public bool CheckSensorFootprint(GameObject target);
+    public virtual bool CheckSensorFootprint(GameObject target) { return false; }
 
     public void CheckDetections(List<GameObject> targets)
     {

@@ -63,7 +63,7 @@ public class SimControl : MonoBehaviour
 
     DataManager redDataManager;
     DataManager blueDataManager;
-    List<SoaJammer> jammers;
+    List<SoaJammer> jammers = new List<SoaJammer>();
 
     public Canvas uiCanvas;
     public GameObject labelUI;
@@ -114,7 +114,6 @@ public class SimControl : MonoBehaviour
         gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
         gridToWorldScale = 1.0f;
         gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
-
 
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
@@ -229,13 +228,8 @@ public class SimControl : MonoBehaviour
             }
         }
 
-
-        // Write envConfig file (comment out normally)
-        //WriteEnvConfigFile();
-
         // Add map beliefs to outgoing queue
         //PushInitialMapBeliefs();
-
 
         // Last thing to do is to start comms with all beliefs in data
         // manager already initialized
@@ -315,6 +309,7 @@ public class SimControl : MonoBehaviour
     void PushInitialMapBeliefs()
     {
         GameObject g;
+        FlatHexPoint currentCell;
 
         b = new Belief_GridSpec(64, 36, gridOrigin_x, gridOrigin_z, gridToWorldScale);
         blueDataManager.addBeliefToAllActors(b, 0);
@@ -398,6 +393,7 @@ public class SimControl : MonoBehaviour
         // No road information for now
 
         // Site information
+        FlatHexPoint currentCell;
         for (int i = 0; i < BlueBases.Count; i++)
         {
             currentCell = hexGrid.Map[BlueBases[i].transform.position];
@@ -872,12 +868,12 @@ public class SimControl : MonoBehaviour
         }
     }
 
-    private bool CheckInitialLocation(Vector3 position, bool landEnabled, bool waterEnabled, bool mountainEnabled)
+    private bool CheckInitialLocation(Vector3 worldPosition, bool landEnabled, bool waterEnabled, bool mountainEnabled)
     {
         // Convert world coordinates to grid coordinates
-        PrimitivePair<float, float> worldPos = new PrimitivePair<float,float> (position.x, position.z);
+        PrimitivePair<float, float> worldPos = new PrimitivePair<float,float> (worldPosition.x, worldPosition.z);
         PrimitivePair<int, int> gridPos = gridMath.WorldToGrid(worldPos);
-        GridCell initialCell = new GridCell(gridPos.first, gridPos.second);
+        GridCell initialCell = new GridCell(gridPos.second, gridPos.first);
 
         Debug.Log("Cell location " + initialCell.getCol() + " " + initialCell.getRow());
         // Check against cell types
@@ -885,15 +881,24 @@ public class SimControl : MonoBehaviour
 
         if (landEnabled)
         {
-            found = found || LandCells.Contains(initialCell);
+            foreach (GridCell g in LandCells)
+            {
+                found = found || g.Equals(initialCell);
+            }
         }
         if (waterEnabled)
         {
-            found = found || WaterCells.Contains(initialCell);
+            foreach (GridCell g in WaterCells)
+            {
+                found = found || g.Equals(initialCell);
+            }
         }
         if (mountainEnabled)
         {
-            found = found || MountainCells.Contains(initialCell);
+            foreach (GridCell g in MountainCells)
+            {
+                found = found || g.Equals(initialCell);
+            }
         }
 
         if (!found) Debug.LogError("CANNOT PLACE VEHICLE ");
@@ -909,13 +914,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateHeavyUAV(HeavyUAVConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
 
         // Heavy UAV can only traverse on land and water
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false))
         {
             // Instantiate
-            GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -937,7 +942,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateHeavyUAV(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Heavy UAV not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -945,13 +950,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateSmallUAV(SmallUAVConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
 
         // Small UAV can only traverse on land and water
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false))
         {
             // Instantiate
-            GameObject g = (GameObject)Instantiate(SmallUAVPrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(SmallUAVPrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -973,7 +978,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateSmallUAV(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Small UAV not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -981,13 +986,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBalloon(BalloonConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Balloon can traverse on land, water, and mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true))
         {
             // Instantiate
-            /*GameObject g = (GameObject)Instantiate(BalloonPrefab, newPos, Quaternion.identity);
+            /*GameObject g = (GameObject)Instantiate(BalloonPrefab, newPos * KmToUnity, Quaternion.identity);
                         
             // Set grid
             g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
@@ -1010,7 +1015,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateBalloon(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Balloon not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -1064,13 +1069,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedDismount(RedDismountConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Red dismount can only traverse on land, not water or mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
             // Instantiate
-            GameObject g = (GameObject)Instantiate(RedDismountPrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(RedDismountPrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -1121,7 +1126,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateRedDismount(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Red dismount not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -1129,7 +1134,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedTruck(RedTruckConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         Debug.Log("Initial pos " + newPos.ToString());
 
         // Red truck can only traverse on land, not water or mountains
@@ -1137,7 +1142,7 @@ public class SimControl : MonoBehaviour
         {
             Debug.Log("Instantiate red truck");
             // Instantiate
-            GameObject g = (GameObject)Instantiate(RedTruckPrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(RedTruckPrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -1195,7 +1200,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogError("SimControl::InstantiateRedTruck(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Red truck not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -1203,13 +1208,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralDismount(NeutralDismountConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Neutral dismount can only traverse on land, not water or mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
             // Instantiate
-            GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -1231,7 +1236,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateNeutralDismount(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Neutral dismount not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -1239,13 +1244,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralTruck(NeutralTruckConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Neutral truck can only traverse on land, not water or mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
             // Instantiate
-            GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -1267,7 +1272,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateNeutralTruck(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Neutral truck not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -1275,13 +1280,13 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBluePolice(BluePoliceConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km) * KmToUnity;
+        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Blue police can only traverse on land, not water or mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
         {
             // Instantiate
-            GameObject g = (GameObject)Instantiate(BluePolicePrefab, newPos, Quaternion.identity);
+            GameObject g = (GameObject)Instantiate(BluePolicePrefab, newPos * KmToUnity, Quaternion.identity);
 
             // Set grid
             g.GetComponent<TrackOnGrid>().hexGrid = hexGrid;
@@ -1303,7 +1308,7 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SimControl::InstantiateBluePolice(): Platform not instantiated since initial location on grid not valid");
+            soaEventLogger.LogError("Blue police not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }

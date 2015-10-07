@@ -132,8 +132,8 @@ GameObject:
   - 96: {fileID: 9678520}
   - 114: {fileID: 11424424}
   - 114: {fileID: 11400382}
-  - 114: {fileID: 11481368}
   - 136: {fileID: 13684596}
+  - 114: {fileID: 11496116}
   m_Layer: 0
   m_Name: Neutral Truck
   m_TagString: NeutralTruck
@@ -575,6 +575,7 @@ MonoBehaviour:
   commsRange: 0
   Sensors: []
   Weapons: []
+  Jammers: []
   Classifiers: []
   Detections: []
   Tracks: []
@@ -602,18 +603,6 @@ MonoBehaviour:
   waypoints: []
   waypointIndex: 0
   targetPosition: {x: 0, y: 0, z: 0}
---- !u!114 &11481368
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fd5ec6e711eb884fab92d15d48ebe56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PathUpdateInterval: 1
 --- !u!114 &11488826
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -626,6 +615,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexGrid: {fileID: 0}
+--- !u!114 &11496116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151d43b0e99533b4b978a087817299fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PathUpdateInterval: 1
 --- !u!136 &13654666
 CapsuleCollider:
   m_ObjectHideFlags: 1
