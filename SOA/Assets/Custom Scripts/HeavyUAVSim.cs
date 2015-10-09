@@ -96,14 +96,6 @@ public class HeavyUAVSim : MonoBehaviour
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
-                if (!Casuality && v.Casualties >= 1f)
-                {
-                    {
-                        v.Casualties -= 1f;
-                        Casuality = true;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.CASUALTIES;
-                    }
-                }
                 if (Supply)
                 {
                     {
@@ -115,6 +107,26 @@ public class HeavyUAVSim : MonoBehaviour
                         simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                     }
                 }
+                if (!Casuality && v.Casualties >= 1f)
+                {
+                    {
+                        v.Casualties -= 1f;
+                        Casuality = true;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.CASUALTIES;
+                    }
+                }
+                /*
+                if (Supply)
+                {
+                    {
+                        v.Supply += 1f;
+                        Supply = false;
+                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+
+                        // Log event
+                        simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
+                    }
+                }*/
             }
         }
     }

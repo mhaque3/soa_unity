@@ -63,7 +63,7 @@ public class SimControl : MonoBehaviour
 
     DataManager redDataManager;
     DataManager blueDataManager;
-    List<SoaJammer> jammers = new List<SoaJammer>();
+    public static List<SoaJammer> jammers = new List<SoaJammer>();
 
     public Canvas uiCanvas;
     public GameObject labelUI;

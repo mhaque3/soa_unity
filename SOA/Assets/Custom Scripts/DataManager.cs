@@ -168,16 +168,9 @@ namespace soa
                         (float)actor.getPos_z());
 
                     float jammerNoiseSummation = 0;
-                    foreach (SoaActor jammerActor in actors) 
+                    foreach (SoaJammer jammerActor in SimControl.jammers) 
                     {
-                        Belief_Actor jammer = (Belief_Actor)actorDictionary[jammerActor.unique_id];
-                        Vector3 jammerPos = new Vector3(
-                        (float)jammer.getPos_x(),
-                        (float)jammerActor.simAltitude_km,
-                        (float)jammer.getPos_z());
-
-                        float bb =2;
-                        jammerNoiseSummation += Mathf.Pow(bb, 2) / Mathf.Pow(Vector3.Distance(actorPos, jammerPos), 2);
+                        jammerNoiseSummation += Mathf.Pow(jammerActor.effectiveRange, 2) / Mathf.Pow(Vector3.Distance(actorPos, jammerActor.getPosition()), 2);
                     }
 
                     foreach (SoaActor neighborActor in actors)

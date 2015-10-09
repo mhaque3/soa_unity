@@ -16,8 +16,8 @@ public class SoaActor : MonoBehaviour
     private float desiredAltitude_km;
 
     //Simulated position [km]
-    private float simX_km;
-    private float simZ_km;
+    protected float simX_km;
+    protected float simZ_km;
 
     // Kinematic constraints
     public float minAltitude_km;
@@ -664,7 +664,7 @@ public class SoaActor : MonoBehaviour
     }
 
 
-    public void broadcastCommsLocal()
+    public virtual void broadcastCommsLocal()
     {
         if (dataManager == null) return;
         List<SoaActor> connectedActors = new List<SoaActor>();
@@ -702,7 +702,7 @@ public class SoaActor : MonoBehaviour
         return new Vector3(simX_km, simAltitude_km, simZ_km);
     }
 
-    private void localBroadcastBeliefsOfType(Belief.BeliefType type, List<SoaActor> connectedActors)
+    protected void localBroadcastBeliefsOfType(Belief.BeliefType type, List<SoaActor> connectedActors)
     {
         if (beliefDictionary.ContainsKey(type))
             {
