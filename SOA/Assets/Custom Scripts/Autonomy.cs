@@ -24,6 +24,8 @@ namespace autonomy_msg {
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SPOI, global::autonomy_msg.Gpb_SPOI.Builder> internal__static_autonomy_msg_Gpb_SPOI__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder> internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_SupplyDelivery__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SupplyDelivery, global::autonomy_msg.Gpb_SupplyDelivery.Builder> internal__static_autonomy_msg_Gpb_SupplyDelivery__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_Village__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Village, global::autonomy_msg.Gpb_Village.Builder> internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_GridCell__Descriptor;
@@ -65,7 +67,10 @@ namespace autonomy_msg {
           "AhINCgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiKBAQoVR3BiX1dheXBv" + 
           "aW50X092ZXJyaWRlEhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3Rf" + 
           "dGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhIN" + 
-          "CgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiJ/CgtHcGJfVmlsbGFnZRIT" + 
+          "CgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiKEAQoSR3BiX1N1cHBseURl" + 
+          "bGl2ZXJ5EhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgC" + 
+          "IAIoBBIQCghhY3Rvcl9pZBgDIAIoBRIYChBkZWxpdmVyX2FueXdoZXJlGAQg" + 
+          "AigIEhcKD2Rlc3RpbmF0aW9uX2lkcxgFIAMoBSJ/CgtHcGJfVmlsbGFnZRIT" + 
           "CgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMo" + 
           "CzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCAC" + 
           "KAISEgoKY2FzdWFsdGllcxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoDcm93" + 
@@ -108,43 +113,47 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Waypoint_Override__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint_Override, global::autonomy_msg.Gpb_Waypoint_Override.Builder>(internal__static_autonomy_msg_Gpb_Waypoint_Override__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
-        internal__static_autonomy_msg_Gpb_Village__Descriptor = Descriptor.MessageTypes[4];
+        internal__static_autonomy_msg_Gpb_SupplyDelivery__Descriptor = Descriptor.MessageTypes[4];
+        internal__static_autonomy_msg_Gpb_SupplyDelivery__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SupplyDelivery, global::autonomy_msg.Gpb_SupplyDelivery.Builder>(internal__static_autonomy_msg_Gpb_SupplyDelivery__Descriptor,
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "DeliverAnywhere", "DestinationIds", });
+        internal__static_autonomy_msg_Gpb_Village__Descriptor = Descriptor.MessageTypes[5];
         internal__static_autonomy_msg_Gpb_Village__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Village, global::autonomy_msg.Gpb_Village.Builder>(internal__static_autonomy_msg_Gpb_Village__Descriptor,
                 new string[] { "BeliefTime", "Id", "Cells", "Supplies", "Casualties", });
-        internal__static_autonomy_msg_Gpb_GridCell__Descriptor = Descriptor.MessageTypes[5];
+        internal__static_autonomy_msg_Gpb_GridCell__Descriptor = Descriptor.MessageTypes[6];
         internal__static_autonomy_msg_Gpb_GridCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_GridCell, global::autonomy_msg.Gpb_GridCell.Builder>(internal__static_autonomy_msg_Gpb_GridCell__Descriptor,
                 new string[] { "Row", "Col", });
-        internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[6];
+        internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[7];
         internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
                 new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "IsAlive", "IsCarrying", "IsWeaponized", "FuelRemaining", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
-        internal__static_autonomy_msg_Gpb_Custom__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_autonomy_msg_Gpb_Custom__Descriptor = Descriptor.MessageTypes[8];
         internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Custom, global::autonomy_msg.Gpb_Custom.Builder>(internal__static_autonomy_msg_Gpb_Custom__Descriptor,
                 new string[] { "BeliefTime", "Data", });
-        internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[8];
+        internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[9];
         internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder>(internal__static_autonomy_msg_Gpb_Base__Descriptor,
                 new string[] { "BeliefTime", "Id", "Cells", "Supplies", });
-        internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[9];
+        internal__static_autonomy_msg_Gpb_Terrain__Descriptor = Descriptor.MessageTypes[10];
         internal__static_autonomy_msg_Gpb_Terrain__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Terrain, global::autonomy_msg.Gpb_Terrain.Builder>(internal__static_autonomy_msg_Gpb_Terrain__Descriptor,
                 new string[] { "BeliefTime", "Type", "Cells", });
-        internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[10];
+        internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor = Descriptor.MessageTypes[11];
         internal__static_autonomy_msg_Gpb_Mode_Command__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Mode_Command, global::autonomy_msg.Gpb_Mode_Command.Builder>(internal__static_autonomy_msg_Gpb_Mode_Command__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "ModeId", });
-        internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[11];
+        internal__static_autonomy_msg_Gpb_Waypoint__Descriptor = Descriptor.MessageTypes[12];
         internal__static_autonomy_msg_Gpb_Waypoint__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Waypoint, global::autonomy_msg.Gpb_Waypoint.Builder>(internal__static_autonomy_msg_Gpb_Waypoint__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "PosX", "PosY", "PosZ", });
-        internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[12];
+        internal__static_autonomy_msg_Gpb_Time__Descriptor = Descriptor.MessageTypes[13];
         internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder>(internal__static_autonomy_msg_Gpb_Time__Descriptor,
                 new string[] { "BeliefTime", "Time", });
-        internal__static_autonomy_msg_Gpb_RoadCell__Descriptor = Descriptor.MessageTypes[13];
+        internal__static_autonomy_msg_Gpb_RoadCell__Descriptor = Descriptor.MessageTypes[14];
         internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder>(internal__static_autonomy_msg_Gpb_RoadCell__Descriptor,
                 new string[] { "BeliefTime", "IsRoadEnd", "Cell", });
@@ -2165,6 +2174,477 @@ namespace autonomy_msg {
       }
     }
     static Gpb_Waypoint_Override() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_SupplyDelivery : pb::GeneratedMessage<Gpb_SupplyDelivery, Gpb_SupplyDelivery.Builder> {
+    private Gpb_SupplyDelivery() { }
+    private static readonly Gpb_SupplyDelivery defaultInstance = new Gpb_SupplyDelivery().MakeReadOnly();
+    private static readonly string[] _gpbSupplyDeliveryFieldNames = new string[] { "actor_id", "belief_time", "deliver_anywhere", "destination_ids", "request_time" };
+    private static readonly uint[] _gpbSupplyDeliveryFieldTags = new uint[] { 24, 8, 32, 40, 16 };
+    public static Gpb_SupplyDelivery DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_SupplyDelivery DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_SupplyDelivery ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SupplyDelivery__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_SupplyDelivery, Gpb_SupplyDelivery.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SupplyDelivery__FieldAccessorTable; }
+    }
+    
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int RequestTimeFieldNumber = 2;
+    private bool hasRequestTime;
+    private ulong requestTime_;
+    public bool HasRequestTime {
+      get { return hasRequestTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong RequestTime {
+      get { return requestTime_; }
+    }
+    
+    public const int ActorIdFieldNumber = 3;
+    private bool hasActorId;
+    private int actorId_;
+    public bool HasActorId {
+      get { return hasActorId; }
+    }
+    public int ActorId {
+      get { return actorId_; }
+    }
+    
+    public const int DeliverAnywhereFieldNumber = 4;
+    private bool hasDeliverAnywhere;
+    private bool deliverAnywhere_;
+    public bool HasDeliverAnywhere {
+      get { return hasDeliverAnywhere; }
+    }
+    public bool DeliverAnywhere {
+      get { return deliverAnywhere_; }
+    }
+    
+    public const int DestinationIdsFieldNumber = 5;
+    private pbc::PopsicleList<int> destinationIds_ = new pbc::PopsicleList<int>();
+    public scg::IList<int> DestinationIdsList {
+      get { return pbc::Lists.AsReadOnly(destinationIds_); }
+    }
+    public int DestinationIdsCount {
+      get { return destinationIds_.Count; }
+    }
+    public int GetDestinationIds(int index) {
+      return destinationIds_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasBeliefTime) return false;
+        if (!hasRequestTime) return false;
+        if (!hasActorId) return false;
+        if (!hasDeliverAnywhere) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbSupplyDeliveryFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
+      if (hasRequestTime) {
+        output.WriteUInt64(2, field_names[4], RequestTime);
+      }
+      if (hasActorId) {
+        output.WriteInt32(3, field_names[0], ActorId);
+      }
+      if (hasDeliverAnywhere) {
+        output.WriteBool(4, field_names[2], DeliverAnywhere);
+      }
+      if (destinationIds_.Count > 0) {
+        output.WriteInt32Array(5, field_names[3], destinationIds_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
+        if (hasRequestTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, RequestTime);
+        }
+        if (hasActorId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(3, ActorId);
+        }
+        if (hasDeliverAnywhere) {
+          size += pb::CodedOutputStream.ComputeBoolSize(4, DeliverAnywhere);
+        }
+        {
+          int dataSize = 0;
+          foreach (int element in DestinationIdsList) {
+            dataSize += pb::CodedOutputStream.ComputeInt32SizeNoTag(element);
+          }
+          size += dataSize;
+          size += 1 * destinationIds_.Count;
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_SupplyDelivery ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_SupplyDelivery ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_SupplyDelivery MakeReadOnly() {
+      destinationIds_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_SupplyDelivery prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_SupplyDelivery, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_SupplyDelivery cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_SupplyDelivery result;
+      
+      private Gpb_SupplyDelivery PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_SupplyDelivery original = result;
+          result = new Gpb_SupplyDelivery();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_SupplyDelivery MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_SupplyDelivery.Descriptor; }
+      }
+      
+      public override Gpb_SupplyDelivery DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_SupplyDelivery.DefaultInstance; }
+      }
+      
+      public override Gpb_SupplyDelivery BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_SupplyDelivery) {
+          return MergeFrom((Gpb_SupplyDelivery) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_SupplyDelivery other) {
+        if (other == global::autonomy_msg.Gpb_SupplyDelivery.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
+        if (other.HasRequestTime) {
+          RequestTime = other.RequestTime;
+        }
+        if (other.HasActorId) {
+          ActorId = other.ActorId;
+        }
+        if (other.HasDeliverAnywhere) {
+          DeliverAnywhere = other.DeliverAnywhere;
+        }
+        if (other.destinationIds_.Count != 0) {
+          result.destinationIds_.Add(other.destinationIds_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbSupplyDeliveryFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbSupplyDeliveryFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              break;
+            }
+            case 24: {
+              result.hasActorId = input.ReadInt32(ref result.actorId_);
+              break;
+            }
+            case 32: {
+              result.hasDeliverAnywhere = input.ReadBool(ref result.deliverAnywhere_);
+              break;
+            }
+            case 42:
+            case 40: {
+              input.ReadInt32Array(tag, field_name, result.destinationIds_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
+      
+      public bool HasRequestTime {
+        get { return result.hasRequestTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong RequestTime {
+        get { return result.RequestTime; }
+        set { SetRequestTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetRequestTime(ulong value) {
+        PrepareBuilder();
+        result.hasRequestTime = true;
+        result.requestTime_ = value;
+        return this;
+      }
+      public Builder ClearRequestTime() {
+        PrepareBuilder();
+        result.hasRequestTime = false;
+        result.requestTime_ = 0UL;
+        return this;
+      }
+      
+      public bool HasActorId {
+        get { return result.hasActorId; }
+      }
+      public int ActorId {
+        get { return result.ActorId; }
+        set { SetActorId(value); }
+      }
+      public Builder SetActorId(int value) {
+        PrepareBuilder();
+        result.hasActorId = true;
+        result.actorId_ = value;
+        return this;
+      }
+      public Builder ClearActorId() {
+        PrepareBuilder();
+        result.hasActorId = false;
+        result.actorId_ = 0;
+        return this;
+      }
+      
+      public bool HasDeliverAnywhere {
+        get { return result.hasDeliverAnywhere; }
+      }
+      public bool DeliverAnywhere {
+        get { return result.DeliverAnywhere; }
+        set { SetDeliverAnywhere(value); }
+      }
+      public Builder SetDeliverAnywhere(bool value) {
+        PrepareBuilder();
+        result.hasDeliverAnywhere = true;
+        result.deliverAnywhere_ = value;
+        return this;
+      }
+      public Builder ClearDeliverAnywhere() {
+        PrepareBuilder();
+        result.hasDeliverAnywhere = false;
+        result.deliverAnywhere_ = false;
+        return this;
+      }
+      
+      public pbc::IPopsicleList<int> DestinationIdsList {
+        get { return PrepareBuilder().destinationIds_; }
+      }
+      public int DestinationIdsCount {
+        get { return result.DestinationIdsCount; }
+      }
+      public int GetDestinationIds(int index) {
+        return result.GetDestinationIds(index);
+      }
+      public Builder SetDestinationIds(int index, int value) {
+        PrepareBuilder();
+        result.destinationIds_[index] = value;
+        return this;
+      }
+      public Builder AddDestinationIds(int value) {
+        PrepareBuilder();
+        result.destinationIds_.Add(value);
+        return this;
+      }
+      public Builder AddRangeDestinationIds(scg::IEnumerable<int> values) {
+        PrepareBuilder();
+        result.destinationIds_.Add(values);
+        return this;
+      }
+      public Builder ClearDestinationIds() {
+        PrepareBuilder();
+        result.destinationIds_.Clear();
+        return this;
+      }
+    }
+    static Gpb_SupplyDelivery() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }
