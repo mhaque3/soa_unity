@@ -5520,10 +5520,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 135260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a757bbc561df5134d9db956e51bd6c33, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a5be80cdb2c6cd408de1cca1b7ce3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PathUpdateInterval: 1
+  PathUpdateInterval: 10
 --- !u!114 &11437142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5926,7 +5926,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: PathUpdateInterval
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

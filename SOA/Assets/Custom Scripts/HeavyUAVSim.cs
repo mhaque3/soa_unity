@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using soa;
 
 public class HeavyUAVSim : MonoBehaviour 
 {
@@ -128,7 +130,7 @@ public class HeavyUAVSim : MonoBehaviour
             // Get the belief dictionary and Supply_Delivery Belief
             SortedDictionary<int, Belief> supplyDeliveryBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_DELIVERY];
             Belief belief;
-            if (supplyDeliveryBeliefDictionary.TryGetValue(soaActor.unique_id, out belief))
+            if (supplyDeliveryBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
             {
                 Belief_Supply_Delivery bsd = (Belief_Supply_Delivery)belief;
                 if (bsd.getDeliver_anywhere())
