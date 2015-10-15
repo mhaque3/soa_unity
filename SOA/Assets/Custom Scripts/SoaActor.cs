@@ -425,6 +425,11 @@ public class SoaActor : MonoBehaviour
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
+
+                if (affiliation == Affiliation.BLUE && soaActor.affiliation == Affiliation.RED)
+                {
+                    //Debug.LogError("*********** detecting red force with blue *********** " + detectedActor.getId());
+                }
                 addMyBeliefData(detectedActor);
                 
                 
@@ -457,7 +462,15 @@ public class SoaActor : MonoBehaviour
         
         if(addBelief(b, beliefDictionary))
         {
+            
            bool addedToRemote = addBelief(b, remoteBeliefs) ;
+           if (addedToRemote)
+           {
+               if (this.affiliation == Affiliation.BLUE)
+               {
+                   //Debug.Log("SUCCESS ADDED TO REMOTE: " + b.getId());
+               }
+           }
            
         }
     }
