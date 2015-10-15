@@ -228,9 +228,6 @@ public class SimControl : MonoBehaviour
             }
         }
 
-        // Add map beliefs to outgoing queue
-        //PushInitialMapBeliefs();
-
         // Last thing to do is to start comms with all beliefs in data
         // manager already initialized
         redDataManager.startComms();
@@ -339,6 +336,9 @@ public class SimControl : MonoBehaviour
             //Debug.Log(b.ToString());
         }
 
+        // Unique ID for ngo/villages
+        int destination_id = 0;
+
         for (int i = 0; i < NgoSites.Count; i++)
         {
             g = NgoSites[i];
@@ -346,10 +346,14 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             NgoSim s = g.GetComponent<NgoSim>();
-            b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
+            s.destination_id = destination_id;
+            b = new Belief_NGOSite(destination_id, theseCells, s.Supply, s.Casualties, s.Civilians);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
+
+            // Increment destination id (unique across all ngo and villages)
+            destination_id++;
         }
 
         for (int i = 0; i < Villages.Count; i++)
@@ -359,10 +363,14 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             VillageSim s = g.GetComponent<VillageSim>();
-            b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
+            s.destination_id = destination_id;
+            b = new Belief_Village(destination_id, theseCells, s.Supply, s.Casualties);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
+
+            // Increment destination id (unique across all ngo and villages)
+            destination_id++;
         }
     }
 

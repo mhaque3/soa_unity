@@ -140,6 +140,7 @@ public class SoaActor : MonoBehaviour
         beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -155,6 +156,7 @@ public class SoaActor : MonoBehaviour
         unmergedBeliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        unmergedBeliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -170,6 +172,7 @@ public class SoaActor : MonoBehaviour
         remoteBeliefs[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        remoteBeliefs[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -177,7 +180,6 @@ public class SoaActor : MonoBehaviour
         remoteBeliefs[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
 
         Debug.Log("SoaActor: Initialized all beliefDictionaries for " + gameObject.name);
-
 
         // Initialize a new classification dictionary
         classificationDictionary = new Dictionary<int, bool>();
@@ -685,6 +687,7 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.ACTOR, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.MODE_COMMAND, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.SPOI, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.SUPPLY_DELIVERY, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
@@ -724,6 +727,7 @@ public class SoaActor : MonoBehaviour
         publishBeliefsOfType_old(Belief.BeliefType.ACTOR);
         publishBeliefsOfType_old(Belief.BeliefType.MODE_COMMAND);
         publishBeliefsOfType_old(Belief.BeliefType.SPOI);
+        publishBeliefsOfType_old(Belief.BeliefType.SUPPLY_DELIVERY);
         publishBeliefsOfType_old(Belief.BeliefType.WAYPOINT);
         publishBeliefsOfType_old(Belief.BeliefType.WAYPOINT_OVERRIDE);
         publishBeliefsOfType_old(Belief.BeliefType.BASE);

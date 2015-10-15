@@ -49,6 +49,7 @@ namespace soa
             beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();

@@ -24,6 +24,7 @@ namespace soa
             NGOSITE, 
             ROADCELL, 
             SPOI, 
+            SUPPLY_DELIVERY,
             TERRAIN,
             TIME,
             VILLAGE, 
@@ -189,6 +190,26 @@ namespace soa
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.SPOI;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
+                case Belief.BeliefType.SUPPLY_DELIVERY:
+                    { // Supply Delivery
+                        Gpb_SupplyDelivery.Builder proto = Gpb_SupplyDelivery.CreateBuilder();
+                        Belief_Supply_Delivery b = (Belief_Supply_Delivery)belief;
+                        proto.SetRequestTime(b.getRequest_time());
+                        proto.SetActorId(b.getActor_id());
+                        proto.SetDeliverAnywhere(b.getDeliverAnywhere());
+                        // Copy contents of destination id list
+                        int[] destination_ids = b.getDestination_ids();
+                        for (int i = 0; i < destination_ids.Length; i++)
+                        {
+                            proto.AddDestination_ids(destination_ids[i]);
+                        }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
+                        // Form header + serialized message
+                        header = (byte)MessageType.SUPPLY_DELIVERY;
                         body = proto.Build().ToByteArray();
                         break;
                     }
@@ -424,6 +445,23 @@ namespace soa
                             proto.PosX,
                             proto.PosY,
                             proto.PosZ);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
+                        break;
+                    }
+                case MessageType.SUPPLY_DELIVERY:
+                    { // Supply delivery
+                        Gpb_SupplyDelivery proto = Gpb_SupplyDelivery.CreateBuilder().MergeFrom(body).Build();
+                        int[] destination_ids = new int[proto.DestinationIdsCount];
+                        for (int i = 0; i < proto.DestinationIdsCount; i++)
+                        {
+                            destination_ids[i] = proto.DestinationIdsList[i];
+                        }
+                        b = new Belief_Supply_Delivery(
+                            proto.RequestTime,
+                            proto.ActorId,
+                            proto.DeliverAnywhere,
+                            destination_ids);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;
