@@ -19,7 +19,7 @@ namespace soa
         {
             this.request_time = request_time;
             this.actor_id = actor_id;
-            this.deliver_anywhere = deliver_anyhwere;
+            this.deliver_anywhere = deliver_anywhere;
             this.destination_ids = new int[destination_ids.Length];
             Array.Copy(destination_ids, this.destination_ids, destination_ids.Length);
         }

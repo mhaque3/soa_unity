@@ -199,12 +199,12 @@ namespace soa
                         Belief_Supply_Delivery b = (Belief_Supply_Delivery)belief;
                         proto.SetRequestTime(b.getRequest_time());
                         proto.SetActorId(b.getActor_id());
-                        proto.SetDeliverAnywhere(b.getDeliverAnywhere());
+                        //proto.SetDeliverAnywhere(b.getDeliverAnywhere());
                         // Copy contents of destination id list
                         int[] destination_ids = b.getDestination_ids();
                         for (int i = 0; i < destination_ids.Length; i++)
                         {
-                            proto.AddDestination_ids(destination_ids[i]);
+                            //proto.AddDestination_ids(destination_ids[i]);
                         }
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());

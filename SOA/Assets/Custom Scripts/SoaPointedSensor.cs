@@ -13,6 +13,7 @@ public class SoaPointedSensor : SoaSensor {
     // Valid in all directions
     public override bool CheckSensorFootprint(GameObject target)
     {
+        Debug.LogError("nEED TO OVERRIDE");
         // Re-evaluate boresight if sensor is gimbaled
         if(gimbaled)
         {
