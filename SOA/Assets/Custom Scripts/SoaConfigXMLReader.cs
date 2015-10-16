@@ -76,6 +76,7 @@ namespace soa
                         break;
                     case "SensorDefaults":
                         // Sensor default configuration
+                        ParseBeamwidthDefaults(c, soaConfig.defaultSensorBeamwidths);
                         ParsePerceptionDefaults(c, soaConfig.defaultSensorModalities);
                         break;
                     case "ClassifierDefaults":
@@ -250,7 +251,31 @@ namespace soa
                 }
             }
         }
- 
+
+        // Only heavy UAV, small UAV, and balloons have default beamwidths
+        private static void ParseBeamwidthDefaults(XmlNode node, Dictionary<string, float> d)
+        {
+            // Go through each child node
+            foreach (XmlNode c in node.ChildNodes)
+            {
+                switch (c.Name)
+                {
+                    case "RedDismount":
+                    case "RedTruck":
+                    case "NeutralDismount":
+                    case "NeutralTruck":
+                    case "BluePolice":
+                        d[c.Name] = 360; // Hardcoded as isotropic, can't change
+                        break;
+                    case "HeavyUAV":
+                    case "SmallUAV":
+                    case "Balloon":
+                        d[c.Name] = GetFloatAttribute(c, "beamwidth_deg", 360); // Get user defined default
+                        break;
+                }
+            }
+        }
+
         // Local platform category parsing
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
@@ -288,7 +313,9 @@ namespace soa
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
                                     GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized)
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized),
+                                    GetBooleanAttribute(c, "hasJammer", false),
+                                    GetFloatAttribute(c, "jammerRange", 0)
                                 );
                             }
                             break;
@@ -370,9 +397,9 @@ namespace soa
         // Remote platform category parsing
         private static void ParseRemote(XmlNode node, SoaConfig soaConfig)
         {
-            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1); // Dummy value
+            PlatformConfig newConfig = null; // Dummy value
             bool newConfigValid;
-
+            Debug.Log("Number remote platforms " + node.ChildNodes.Count);
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
             {
@@ -384,6 +411,7 @@ namespace soa
                     {
                         case "HeavyUAV":
                             {
+                                
                                 newConfig = new HeavyUAVConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
@@ -394,6 +422,7 @@ namespace soa
                             break;
                         case "SmallUAV":
                             {
+                                
                                 newConfig = new SmallUAVConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
@@ -443,6 +472,7 @@ namespace soa
                         switch (g.Name)
                         {
                             case "Sensor":
+                                newConfig.SetSensorBeamwidth(GetFloatAttribute(g, "beamwidth_deg", 360));
                                 newConfig.SetSensorModalities(ParseModalities(g));
                                 break;
                             case "Classifier":

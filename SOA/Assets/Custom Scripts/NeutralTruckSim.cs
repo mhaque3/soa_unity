@@ -37,13 +37,13 @@ public class NeutralTruckSim : MonoBehaviour
     float PathUpdateClock = 0f;
 	void Update ()
     {
-        float dt = Time.deltaTime;
+        /*float dt = Time.deltaTime;
         PathUpdateClock += dt;
         if (PathUpdateClock > PathUpdateInterval)
         {
             thisNavAgent.ResetPath();
             PathUpdateClock = Random.value * PathUpdateInterval * 0.5f;
-        }
+        }*/
     }
 
     GameObject ChooseRandomNeutralSite(bool differentFromCurrentLocation)
@@ -101,7 +101,7 @@ public class NeutralTruckSim : MonoBehaviour
                 -1);
 
             // Instantiate and activate a replacement
-            simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c));
+            simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c, true));
         }
     }
 

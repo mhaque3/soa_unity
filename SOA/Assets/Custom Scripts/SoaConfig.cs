@@ -15,6 +15,8 @@ namespace soa
         public float gameDurationMin;
         public float probRedDismountWeaponized;
         public float probRedTruckWeaponized;
+        public float probRedTruckJammer;
+        public float jammerRange;
 
         // Logger configuration
         public string loggerOutputFile;
@@ -28,6 +30,9 @@ namespace soa
         // Remote platforms
         public List<PlatformConfig> remotePlatforms;
 
+        // Default beamwidth
+        public Dictionary<string, float> defaultSensorBeamwidths;
+
         // Default modalities
         public Dictionary<string, List<PerceptionModality>> defaultSensorModalities;
         public Dictionary<string, List<PerceptionModality>> defaultClassifierModalities;
@@ -36,6 +41,7 @@ namespace soa
         {
             localPlatforms = new List<PlatformConfig>();
             remotePlatforms = new List<PlatformConfig>();
+            defaultSensorBeamwidths = new Dictionary<string, float>();
             defaultSensorModalities = new Dictionary<string, List<PerceptionModality>>();
             defaultClassifierModalities = new Dictionary<string, List<PerceptionModality>>();
         }
@@ -49,6 +55,8 @@ namespace soa
         public float y_km;
         public float z_km;
         public int id;
+        private bool useDefaultSensorBeamwidth;
+        private float sensorBeamwidth_deg;
         private bool useDefaultSensorModalities;
         private List<PerceptionModality> sensorModalities;
         private bool useDefaultClassifierModalities;
@@ -59,13 +67,31 @@ namespace soa
             this.y_km = y_km;
             this.z_km = z_km;
             this.id = id;
-            this.sensorModalities = new List<PerceptionModality>();
+            this.useDefaultSensorBeamwidth = true;
+            this.sensorBeamwidth_deg = 360; // Default is isotropic
             this.useDefaultSensorModalities = true;
-            this.classifierModalities = new List<PerceptionModality>();
+            this.sensorModalities = new List<PerceptionModality>();
             this.useDefaultClassifierModalities = true;
+            this.classifierModalities = new List<PerceptionModality>();
         }
 
         public abstract ConfigType GetConfigType();
+
+        public void SetSensorBeamwidth(float beamwidth_deg)
+        {
+            this.useDefaultSensorBeamwidth = false;
+            this.sensorBeamwidth_deg = beamwidth_deg;
+        }
+
+        public bool GetUseDefaultSensorBeamwidth()
+        {
+            return useDefaultSensorBeamwidth;
+        }
+
+        public float GetSensorBeamwidth()
+        {
+            return sensorBeamwidth_deg;
+        }
 
         public void SetSensorModalities(List<PerceptionModality> sensorModalities)
         {
@@ -119,13 +145,17 @@ namespace soa
     public class RedTruckConfig : PlatformConfig
     {
         public bool hasWeapon;
+        public bool hasJammer;
+        public float jammerRange;
         public string initialWaypoint;
         public RedTruckConfig(float x_km, float y_km, float z_km, int id,
-            string initialWaypoint, bool hasWeapon)
+            string initialWaypoint, bool hasWeapon, bool hasJammer, float jammerRange)
             : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
+            this.hasJammer = hasJammer;
+            this.jammerRange = jammerRange;
         }
         public override ConfigType GetConfigType() { return ConfigType.RED_TRUCK; }
     }
@@ -158,7 +188,8 @@ namespace soa
     public class HeavyUAVConfig : PlatformConfig
     {
         public HeavyUAVConfig(float x_km, float y_km, float z_km, int id)
-            : base(x_km, y_km, z_km, id) { }
+            : base(x_km, y_km, z_km, id) {
+        }
         public override ConfigType GetConfigType() { return ConfigType.HEAVY_UAV; }
     }
 

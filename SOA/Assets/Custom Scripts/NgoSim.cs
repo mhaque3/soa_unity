@@ -13,6 +13,8 @@ public class NgoSim : MonoBehaviour
     public float SupplyRate;
     public float Supply;
 
+    public int destination_id;
+
     public Canvas uiCanvas;
     public Camera uiCamera;
     public GameObject labelUI;

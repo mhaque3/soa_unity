@@ -721,7 +721,7 @@ GameObject:
   - 33: {fileID: 3320526}
   - 135: {fileID: 13525322}
   - 23: {fileID: 2332324}
-  - 114: {fileID: 11460086}
+  - 114: {fileID: 11475152}
   m_Layer: 15
   m_Name: SoaSensor
   m_TagString: Untagged
@@ -3998,6 +3998,7 @@ MonoBehaviour:
   commsRange: 10
   Sensors: []
   Weapons: []
+  Jammers: []
   Classifiers: []
   Detections: []
   Tracks: []
@@ -4031,7 +4032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
---- !u!114 &11460086
+--- !u!114 &11475152
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

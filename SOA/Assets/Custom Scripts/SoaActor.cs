@@ -15,6 +15,10 @@ public class SoaActor : MonoBehaviour
     public float simAltitude_km;
     private float desiredAltitude_km;
 
+    //Simulated position [km]
+    protected float simX_km;
+    protected float simZ_km;
+
     // Kinematic constraints
     public float minAltitude_km;
     public float maxAltitude_km;
@@ -42,13 +46,15 @@ public class SoaActor : MonoBehaviour
     };
 
     public bool isAlive = false;
+    private bool broadcastDeathNotice = false;
     public CarriedResource isCarrying;
     public bool isWeaponized;
     public float fuelRemaining_s;
-    public double commsRange;
+    public float commsRange;
 
     public SoaSensor[] Sensors;
     public SoaWeapon[] Weapons;
+    public SoaJammer[] Jammers;
     public SoaClassifier[] Classifiers;
     public List<GameObject> Detections;
     public List<GameObject> Tracks;
@@ -134,6 +140,7 @@ public class SoaActor : MonoBehaviour
         beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -149,6 +156,7 @@ public class SoaActor : MonoBehaviour
         unmergedBeliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        unmergedBeliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -164,11 +172,14 @@ public class SoaActor : MonoBehaviour
         remoteBeliefs[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
+        remoteBeliefs[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
+
+        Debug.Log("SoaActor: Initialized all beliefDictionaries for " + gameObject.name);
 
         // Initialize a new classification dictionary
         classificationDictionary = new Dictionary<int, bool>();
@@ -180,6 +191,7 @@ public class SoaActor : MonoBehaviour
         // Set to alive now, must be last thing done
         isAlive = true;
 	}
+
 
     // Update is called once per frame
     void Update() 
@@ -251,9 +263,7 @@ public class SoaActor : MonoBehaviour
                 simControlScript.soaEventLogger.LogSmallUAVLost(gameObject.name, killerName);
             }
             
-            // If remote platform (uses external waypoint), send a final message
-            if (this.useExternalWaypoint)
-            {
+
                 // Convert position from Unity to km for Belief_Actor
                 Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
                     type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
@@ -261,11 +271,10 @@ public class SoaActor : MonoBehaviour
                     simAltitude_km,
                     transform.position.z / SimControl.KmToUnity);
 
-                addBeliefToBeliefDictionary(newActorData);
-                //beliefDictionary[Belief.BeliefType.ACTOR][unique_id] = newActorData;
-                if (dataManager != null)
-                    dataManager.broadcastBelief(newActorData, unique_id, idArray);
-            }
+                addMyBeliefData(newActorData);
+                //addBeliefToBeliefDictionary(newActorData);
+                //addBelief(newActorData, remoteBeliefs);
+
 
             // Don't move anymore
             simulateMotion = false;
@@ -347,7 +356,6 @@ public class SoaActor : MonoBehaviour
                         newWaypoint.getPos_x() * SimControl.KmToUnity,
                         newWaypoint.getPos_y() * SimControl.KmToUnity, // Nav agent ignores the y coordinate (altitude)
                         newWaypoint.getPos_z() * SimControl.KmToUnity));
-                    //Debug.Log("Actor " + unique_id + " has external waypoint " + newWaypoint.getPos_x() + " " + newWaypoint.getPos_y() + " " + newWaypoint.getPos_z());
 
                     // Set the desired altitude separately [km]
                     SetDesiredAltitude(newWaypoint.getPos_y());
@@ -365,18 +373,23 @@ public class SoaActor : MonoBehaviour
                     motionScript.targetPosition.x / SimControl.KmToUnity,
                     desiredAltitude_km,
                     motionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint, unique_id);
+                addMyBeliefData(newWaypoint);
             }
 
             // Convert position from Unity to km for Belief_Actor
+            simX_km = transform.position.x / SimControl.KmToUnity;
+            simZ_km = transform.position.z / SimControl.KmToUnity;
+
             Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
                 type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
-                transform.position.x / SimControl.KmToUnity,
+                simX_km,
                 simAltitude_km,
-                transform.position.z / SimControl.KmToUnity);
-            addMyBeliefData(newActorData, unique_id);
-            
+                simZ_km);
 
+            addMyBeliefData(newActorData);
+            if (dataManager != null)
+                dataManager.addBeliefToDataManager(newActorData, unique_id);
+            
             // Update classifications
             foreach (SoaClassifier c in Classifiers)
             {
@@ -414,25 +427,29 @@ public class SoaActor : MonoBehaviour
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
-                addBeliefToBeliefDictionary(detectedActor);
-                //beliefDictionary[Belief.BeliefType.ACTOR][soaActor.unique_id] = detectedActor;
-                if (dataManager != null)
+
+                if (affiliation == Affiliation.BLUE && soaActor.affiliation == Affiliation.RED)
                 {
-                    addMyBeliefData(detectedActor, unique_id);
+                    //Debug.LogError("*********** detecting red force with blue *********** " + detectedActor.getId());
                 }
+                addMyBeliefData(detectedActor);
+                
+                
             }
             Detections.Clear();
 
             //TODO make this thread safe since collisions are done by collider in a separate thread????
             foreach (Belief_Actor belief_actor in killDetections)
             {
+
                 addMyBeliefData(new soa.Belief_Actor(
                     belief_actor.getId(), (int)belief_actor.getAffiliation(), 
                     belief_actor.getType(), false, 0, 
                     belief_actor.getIsWeaponized(), belief_actor.getFuelRemaining(),
                     belief_actor.getPos_x(),
                     belief_actor.getPos_y(),
-                    belief_actor.getPos_z()), unique_id);
+                    belief_actor.getPos_z()));
+
             }
             killDetections.Clear();
 
@@ -441,14 +458,23 @@ public class SoaActor : MonoBehaviour
         }
     }
 
-    //Add data from the sensors of this actor (position updates, sensor data)
-    private void addMyBeliefData(Belief b, int unique_id)
+    //Add data from the sensors of this actor (position updates, sensor data).  This goes to the belief dictionary and the remote beliefs to be sent.
+    private void addMyBeliefData(Belief b)
     {
-
-        addBelief(b, beliefDictionary);
-
-        if (dataManager != null)
-            dataManager.addBeliefToDataManager(b, unique_id);
+        
+        if(addBelief(b, beliefDictionary))
+        {
+            
+           bool addedToRemote = addBelief(b, remoteBeliefs) ;
+           if (addedToRemote)
+           {
+               if (this.affiliation == Affiliation.BLUE)
+               {
+                   //Debug.Log("SUCCESS ADDED TO REMOTE: " + b.getId());
+               }
+           }
+           
+        }
     }
 
     public bool checkClassified(int uniqueId)
@@ -462,17 +488,17 @@ public class SoaActor : MonoBehaviour
         classificationDictionary[uniqueId] = true;
     }
 
-    public void addBeliefToBeliefDictionary(Belief b)
+    public bool addBeliefToBeliefDictionary(Belief b)
     {
-        addBelief(b, beliefDictionary);
+        return addBelief(b, beliefDictionary);
     }
 
     /*
      * Add belief to the unmerged map
      */ 
-    public void addBeliefToUnmergedBeliefDictionary(Belief b)
+    public bool addBeliefToUnmergedBeliefDictionary(Belief b)
     {
-        addBelief(b, unmergedBeliefDictionary);
+        return addBelief(b, unmergedBeliefDictionary);
     }
 
     public void mergeBeliefDictionary()
@@ -653,8 +679,9 @@ public class SoaActor : MonoBehaviour
     }
 
 
-    public void broadcastCommsLocal()
+    public virtual void broadcastCommsLocal()
     {
+        if (dataManager == null) return;
         List<SoaActor> connectedActors = new List<SoaActor>();
         SortedDictionary<int, bool> actorCommDictionary;
         if (dataManager.actorDistanceDictionary.TryGetValue(unique_id, out actorCommDictionary))
@@ -673,6 +700,7 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.ACTOR, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.MODE_COMMAND, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.SPOI, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.SUPPLY_DELIVERY, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
@@ -684,8 +712,13 @@ public class SoaActor : MonoBehaviour
         }
     }
 
+    //
+    public Vector3 getPositionVector_km()
+    {
+        return new Vector3(simX_km, simAltitude_km, simZ_km);
+    }
 
-    private void localBroadcastBeliefsOfType(Belief.BeliefType type, List<SoaActor> connectedActors)
+    protected void localBroadcastBeliefsOfType(Belief.BeliefType type, List<SoaActor> connectedActors)
     {
         if (beliefDictionary.ContainsKey(type))
             {
@@ -707,6 +740,7 @@ public class SoaActor : MonoBehaviour
         publishBeliefsOfType_old(Belief.BeliefType.ACTOR);
         publishBeliefsOfType_old(Belief.BeliefType.MODE_COMMAND);
         publishBeliefsOfType_old(Belief.BeliefType.SPOI);
+        publishBeliefsOfType_old(Belief.BeliefType.SUPPLY_DELIVERY);
         publishBeliefsOfType_old(Belief.BeliefType.WAYPOINT);
         publishBeliefsOfType_old(Belief.BeliefType.WAYPOINT_OVERRIDE);
         publishBeliefsOfType_old(Belief.BeliefType.BASE);

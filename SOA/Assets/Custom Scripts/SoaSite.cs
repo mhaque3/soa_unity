@@ -18,6 +18,8 @@ public class SoaSite : SoaActor
 
     public override void updateActor()
     {
-        // No position information to update
+        simX_km = transform.position.x / SimControl.KmToUnity;
+        simZ_km = transform.position.z / SimControl.KmToUnity;
+        simAltitude_km = .725f / SimControl.KmToUnity;
     }
 }

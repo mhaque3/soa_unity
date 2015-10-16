@@ -33,7 +33,7 @@ public class SoldierWaypointMotion : MonoBehaviour
         {
             // Set destination as target waypoint position
             targetPosition = waypoints[waypointIndex].transform.position;
-            navAgent.baseOffset = waypoints[waypointIndex].transform.position.y;
+            //navAgent.baseOffset = waypoints[waypointIndex].transform.position.y;
             navAgent.SetDestination(targetPosition);
         }
     }

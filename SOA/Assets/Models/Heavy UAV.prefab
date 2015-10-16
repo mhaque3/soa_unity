@@ -61079,6 +61079,7 @@ MonoBehaviour:
   commsRange: 10
   Sensors: []
   Weapons: []
+  Jammers: []
   Classifiers: []
   Detections: []
   Tracks: []
@@ -61108,12 +61109,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 168130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee99b1cf4dab3b141b70dc0bc48f5245, type: 3}
+  m_Script: {fileID: 11500000, guid: 9821324b294691e49b3c7a567067505a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
+  gimbaled: 0
+  beamwidthDeg: 0
+  boresightUnitVector: {x: 0, y: -1, z: 0}
 --- !u!114 &11472772
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -61245,6 +61249,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: fuelTankSize_s
       value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: SupplyIcon
+      value: 
+      objectReference: {fileID: 135610}
+    - target: {fileID: 0}
+      propertyPath: CasualtyIcon
+      value: 
+      objectReference: {fileID: 160444}
+    - target: {fileID: 0}
+      propertyPath: boresightUnitVector.y
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

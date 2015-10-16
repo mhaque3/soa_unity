@@ -2,7 +2,7 @@
   <!-- Network Configuration Settings -->
   <Network 
        redRoom ="soa-apl-red" 
-       blueRoom="soa-apl-blue" 
+       blueRoom="soa-testroom-blue" 
   />
  
   <!-- Logger Configuration Settings -->
@@ -49,21 +49,21 @@
         <Mode tag="NeutralTruck"    RangeP1_km="0.5"   RangeMax_km="0.5" />
      </BluePolice>
 
-     <HeavyUAV>
+     <HeavyUAV beamwidth_deg="360">
         <Mode tag="RedDismount"     RangeP1_km="0.5"   RangeMax_km="0.5" />
         <Mode tag="RedTruck"        RangeP1_km="0.5"   RangeMax_km="0.5" />
         <Mode tag="NeutralDismount" RangeP1_km="0.5"   RangeMax_km="0.5" />
         <Mode tag="NeutralTruck"    RangeP1_km="0.5"   RangeMax_km="0.5" />
      </HeavyUAV>
 
-     <SmallUAV>
+     <SmallUAV beamwidth_deg="20">
         <Mode tag="RedDismount"     RangeP1_km="1.0"   RangeMax_km="5.0" />
         <Mode tag="RedTruck"        RangeP1_km="2.0"   RangeMax_km="7.0" />
         <Mode tag="NeutralDismount" RangeP1_km="1.0"   RangeMax_km="5.0" />
         <Mode tag="NeutralTruck"    RangeP1_km="2.0"   RangeMax_km="7.0" />
      </SmallUAV>
 
-     <Balloon>
+     <Balloon beamwidth_deg="4">
         <Mode tag="RedDismount"     RangeP1_km="1e20"  RangeMax_km="1e20" />
         <Mode tag="RedTruck"        RangeP1_km="1e20"  RangeMax_km="1e20" />
         <Mode tag="NeutralDismount" RangeP1_km="1e20"  RangeMax_km="1e20" />
@@ -142,7 +142,7 @@
 
     <!-- Red Trucks -->
     <RedTruck        x_km="-17.770"   y_km="0.000"   z_km="12.758"
-       hasWeapon="false" initialWaypoint="Red Base 0" />
+       hasWeapon="false" initialWaypoint="Red Base 0" hasJammer="true" jammerRange="2"/>
 
     <RedTruck        x_km="-1.300"    y_km="0.000"   z_km="12.245"
        hasWeapon="true" initialWaypoint="Red Base 1" />
@@ -166,15 +166,15 @@
   <!-- Remote Platform Descriptions -->
   <Remote>
     <!-- Heavy UAVs -->
-    <HeavyUAV        x_km="0.481"     y_km="1.200"   z_km="-9.696"    id="100"/>
-    <HeavyUAV        x_km="5.185"     y_km="1.200"   z_km="-7.268"    id="101"/>
+    <HeavyUAV        x_km="0.481"     y_km="0.500"   z_km="-9.696"    id="100"/>
+    <HeavyUAV        x_km="5.185"     y_km="0.500"   z_km="-7.268"    id="101"/>
     
     <!-- Small UAVs -->
-    <SmallUAV        x_km="-1.362"    y_km="2.000"   z_km="-10.626"   id="102"/>
-    <SmallUAV        x_km="-4.760"    y_km="2.000"   z_km="-9.889"    id="103"/>
-    <SmallUAV        x_km="1.178"     y_km="2.000"   z_km="-11.628"   id="104"/>
+    <SmallUAV        x_km="-1.362"    y_km="5.000"   z_km="-10.626"   id="102"/>
+    <SmallUAV        x_km="-4.760"    y_km="5.000"   z_km="-9.889"    id="103"/>
+    <SmallUAV        x_km="1.178"     y_km="5.000"   z_km="-11.628"   id="104"/>
     
     <!-- Balloons --> 
-    <!--<Balloon         x_km="8.227"    y_km="12.000"  z_km="-14.250"    id="105"/>-->
+    <!--<Balloon         x_km="8.227"    y_km="15.000"  z_km="-14.250"    id="105"/>-->
   </Remote>
 </SoaConfig>

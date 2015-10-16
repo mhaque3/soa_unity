@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 499352}
-  - 114: {fileID: 11453932}
+  - 114: {fileID: 11417070}
   m_Layer: 0
   m_Name: SoaClassifier
   m_TagString: Untagged
@@ -202,6 +202,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 416962}
   - 114: {fileID: 11435116}
+  - 114: {fileID: 11426208}
   m_Layer: 0
   m_Name: SoaWeapon
   m_TagString: Untagged
@@ -744,6 +745,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexGrid: {fileID: 0}
+--- !u!114 &11417070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32fb445c62742a24e873243859b10507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modes: []
+--- !u!114 &11426208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef0c438474c771479c1c23de71c76db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectiveRange: 0
+  isOn: 0
 --- !u!114 &11435116
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -764,18 +790,6 @@ MonoBehaviour:
     enabled: 0
     RangeP1: 2.5
     RangeMax: 2.5
---- !u!114 &11453932
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 147038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32fb445c62742a24e873243859b10507, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modes: []
 --- !u!114 &11459744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -847,6 +861,7 @@ MonoBehaviour:
   commsRange: 5
   Sensors: []
   Weapons: []
+  Jammers: []
   Classifiers: []
   Detections: []
   Tracks: []

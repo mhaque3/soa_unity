@@ -99,7 +99,7 @@ GameObject:
   - 135: {fileID: 13541808}
   - 114: {fileID: 11489222}
   - 54: {fileID: 5454706}
-  - 114: {fileID: 11413086}
+  - 114: {fileID: 11411212}
   m_Layer: 0
   m_Name: Small UAV
   m_TagString: SmallUAV
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
---- !u!114 &11413086
+--- !u!114 &11411212
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -515,7 +515,7 @@ MonoBehaviour:
   soaActor: {fileID: 0}
   possibleDetections: []
   gimbaled: 0
-  beamwidthDeg: 20
+  beamwidthDeg: 0
   boresightUnitVector: {x: 0, y: -1, z: 0}
 --- !u!114 &11462278
 MonoBehaviour:
@@ -554,6 +554,7 @@ MonoBehaviour:
   commsRange: 10
   Sensors: []
   Weapons: []
+  Jammers: []
   Classifiers: []
   Detections: []
   Tracks: []

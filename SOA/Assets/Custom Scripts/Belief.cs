@@ -17,6 +17,7 @@ namespace soa
             NGOSITE, 
             ROADCELL, 
             SPOI, 
+            SUPPLY_DELIVERY,
             TERRAIN,
             TIME,
             VILLAGE, 

@@ -11,6 +11,8 @@ namespace soa
         const float gameDurationMin = 15.0f;
         const float probRedDismountWeaponized = 0.5f;
         const float probRedTruckWeaponized = 0.5f;
+        const float probRedTruckJammer = 0.5f;
+        const float jammerRange = 2f;
 
         /******************** ENVIRONMENT ********************/
         const string envConfigFile = "SoaEnvConfig.xml";
@@ -487,7 +489,9 @@ namespace soa
                         randomizedPositions[i].third,  // z
                         -1, // id
                         "null", // initialWaypoint
-                        (rand.NextDouble() <= probRedDismountWeaponized) // hasWeapon
+                        (rand.NextDouble() <= probRedDismountWeaponized), // hasWeapon
+                        (rand.NextDouble() <= probRedTruckJammer), // has Jammer on
+                         jammerRange// Jammer range
                         ));
                 }
 
