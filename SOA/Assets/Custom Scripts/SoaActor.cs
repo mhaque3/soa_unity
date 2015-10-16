@@ -358,7 +358,7 @@ public class SoaActor : MonoBehaviour
             velocityZ = (nma.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
             velocityZValid = true;
 
-            Debug.Log("VELOCITY " + unique_id + " " + nma.velocity.magnitude);
+            //Debug.Log("VELOCITY " + unique_id + " " + (nma.velocity.magnitude / 60f * 1000f));
         }
 
         if (simulateMotion)
