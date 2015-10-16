@@ -10,6 +10,12 @@ public class SoaPointedSensor : SoaSensor {
     public float beamwidthDeg;
     public Vector3 boresightUnitVector;
 
+    void Start()
+    {
+        boresightUnitVector = new Vector3(0,-1,0); // Pointed down by default
+        soaActor = gameObject.GetComponentInParent<SoaActor>();
+    }
+
     // Valid in all directions
     public override bool CheckSensorFootprint(GameObject target)
     {

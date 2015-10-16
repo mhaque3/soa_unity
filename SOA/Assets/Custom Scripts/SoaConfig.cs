@@ -83,6 +83,11 @@ namespace soa
             this.sensorBeamwidth_deg = beamwidth_deg;
         }
 
+        public bool GetUseDefaultSensorBeamwidth()
+        {
+            return useDefaultSensorBeamwidth;
+        }
+
         public float GetSensorBeamwidth()
         {
             return sensorBeamwidth_deg;
