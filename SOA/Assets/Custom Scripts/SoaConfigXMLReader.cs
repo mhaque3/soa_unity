@@ -76,6 +76,7 @@ namespace soa
                         break;
                     case "SensorDefaults":
                         // Sensor default configuration
+                        ParseBeamwidthDefaults(c, soaConfig.defaultSensorBeamwidths);
                         ParsePerceptionDefaults(c, soaConfig.defaultSensorModalities);
                         break;
                     case "ClassifierDefaults":
@@ -250,7 +251,27 @@ namespace soa
                 }
             }
         }
- 
+
+        // Only heavy UAV, small UAV, and balloons have default beamwidths
+        private static void ParseBeamwidthDefaults(XmlNode node, Dictionary<string, float> d)
+        {
+            switch (c.Name)
+            {
+                case "RedDismount":
+                case "RedTruck":
+                case "NeutralDismount":
+                case "NeutralTruck":
+                case "BluePolice":
+                    d[c.Name] = 360; // Hardcoded as isotropic, can't change
+                    break;
+                case "HeavyUAV":
+                case "SmallUAV":
+                case "Balloon":
+                    d[c.Name] = GetFloatAttribute(c, "beamwidth_deg", 360); // Get user defined default
+                    break;
+            }
+        }
+
         // Local platform category parsing
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
@@ -447,6 +468,7 @@ namespace soa
                         switch (g.Name)
                         {
                             case "Sensor":
+                                newConfig.SetSensorBeamwidth(GetFloatAttribute(g, "beamwidth_deg", 360));
                                 newConfig.SetSensorModalities(ParseModalities(g));
                                 break;
                             case "Classifier":
