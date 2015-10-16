@@ -184,8 +184,8 @@ namespace soa
                     case PlatformConfig.ConfigType.SMALL_UAV:
                         PopulateSmallUAV(xmlDoc, node, (SmallUAVConfig)p);
                         break;
-                    case PlatformConfig.ConfigType.BALLOON:
-                        PopulateBalloon(xmlDoc, node, (BalloonConfig)p);
+                    case PlatformConfig.ConfigType.BLUE_BALLOON:
+                        PopulateBlueBalloon(xmlDoc, node, (BlueBalloonConfig)p);
                         break;
                     default:
                         #if(UNITY_STANDALONE)
@@ -324,10 +324,10 @@ namespace soa
             AddPerceptionOverride(xmlDoc, node, c);
         }
 
-        private static void PopulateBalloon(XmlDocument xmlDoc, XmlNode parentNode, BalloonConfig c)
+        private static void PopulateBlueBalloon(XmlDocument xmlDoc, XmlNode parentNode, BlueBalloonConfig c)
         {
-            // Create "Balloon" node and append to parentNode
-            XmlNode node = xmlDoc.CreateElement("Balloon");
+            // Create "BlueBalloon" node and append to parentNode
+            XmlNode node = xmlDoc.CreateElement("BlueBalloon");
             parentNode.AppendChild(node);
 
             // Add attributes

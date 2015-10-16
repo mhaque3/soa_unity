@@ -27,7 +27,7 @@ public class SimControl : MonoBehaviour
     public GameObject BluePolicePrefab;
     public GameObject HeavyUAVPrefab;
     public GameObject SmallUAVPrefab;
-    //public GameObject BalloonPrefab;
+    public GameObject BlueBalloonPrefab;
     
     // GameObject Lists
     public List<GameObject> LocalPlatforms;
@@ -218,9 +218,9 @@ public class SimControl : MonoBehaviour
             {
                 ActivateSmallUAV(platform);
             }
-            else if (platform.tag.Contains("Balloon"))
+            else if (platform.tag.Contains("BlueBalloon"))
             {
-                ActivateBalloon(platform);
+                ActivateBlueBalloon(platform);
             }
             else
             {
@@ -271,9 +271,8 @@ public class SimControl : MonoBehaviour
                 case PlatformConfig.ConfigType.SMALL_UAV:
                     InstantiateSmallUAV((SmallUAVConfig)p, false);
                     break;
-                case PlatformConfig.ConfigType.BALLOON:
-                    Debug.LogWarning("Balloon creation currently disabled");
-                    //InstantiateBalloon((BalloonConfig) p, false);
+                case PlatformConfig.ConfigType.BLUE_BALLOON:
+                    InstantiateBlueBalloon((BlueBalloonConfig) p, false);
                     break;
             }
         }
@@ -996,7 +995,7 @@ public class SimControl : MonoBehaviour
         }
     }
 
-    public GameObject InstantiateBalloon(BalloonConfig c, bool initialLocationCheckOverride)
+    public GameObject InstantiateBlueBalloon(BlueBalloonConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
@@ -1005,30 +1004,26 @@ public class SimControl : MonoBehaviour
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true))
         {
             // Instantiate
-            /*GameObject g = (GameObject)Instantiate(BalloonPrefab, newPos * KmToUnity, Quaternion.identity);
-                        
-            // Set grid
-            g.GetComponent<TrackOnGrid>.hexGrid = hexGrid;
-                         
+            GameObject g = (GameObject)Instantiate(BlueBalloonPrefab, newPos * KmToUnity, Quaternion.identity);
+                       
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
             a.unique_id = RequestUniqueID(c.id);
-            g.name = "Balloon " + a.unique_id;
+            g.name = "Blue Balloon " + a.unique_id;
                       
             // Assign initial altitude
             a.SetSimAltitude(c.y_km);
         
             // Set perception capabilities
-            SetPerceptionCapabilities(g, c, "Balloon");
+            SetPerceptionCapabilities(g, c, "BlueBalloon");
          
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
-            return g;*/
-            return null;
+            return g;
         }
         else
         {
-            soaEventLogger.LogError("Balloon not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Blue balloon not instantiated since initial position " + newPos + " not on valid grid");
             return null;
         }
     }
@@ -1038,7 +1033,7 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                    REMOTE PLATFORM ACTIVATION                                     *
      *****************************************************************************************************/
-    private void ActivateRemotePlatform(GameObject platform)
+    private void ActivateRemotePlatform(GameObject platform, bool useExternalWaypoint)
     {
         // Add to mouse script
         omcScript.AddPlatform(platform);
@@ -1052,7 +1047,7 @@ public class SimControl : MonoBehaviour
 
         // Settings
         actor.simulateMotion = true;
-        actor.useExternalWaypoint = true;
+        actor.useExternalWaypoint = useExternalWaypoint;
 
         // Data manager
         actor.dataManager = blueDataManager;
@@ -1061,17 +1056,17 @@ public class SimControl : MonoBehaviour
 
     public void ActivateHeavyUAV(GameObject platform)
     {
-        ActivateRemotePlatform(platform);
+        ActivateRemotePlatform(platform, true);
     }
 
     public void ActivateSmallUAV(GameObject platform)
     {
-        ActivateRemotePlatform(platform);
+        ActivateRemotePlatform(platform, true);
     }
 
-    public void ActivateBalloon(GameObject platform)
+    public void ActivateBlueBalloon(GameObject platform)
     {
-        ActivateRemotePlatform(platform);
+        ActivateRemotePlatform(platform, false);
     }
     #endregion
 
@@ -1454,6 +1449,8 @@ public class SimControl : MonoBehaviour
     {
         // Remove from mouse script
         omcScript.DeletePlatform(platform);
+
+        Debug.LogWarning("DESTROYING " + platform.name);
 
         // Remove from data manager
         blueDataManager.removeActor(platform.GetComponent<SoaActor>());

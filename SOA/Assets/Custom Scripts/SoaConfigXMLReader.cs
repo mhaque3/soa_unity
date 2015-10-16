@@ -226,7 +226,7 @@ namespace soa
                         case "BluePolice":
                         case "HeavyUAV":
                         case "SmallUAV":
-                        case "Balloon":
+                        case "BlueBalloon":
                             d[c.Name] = ParseModalities(c);
                             break;
                         default:
@@ -252,7 +252,7 @@ namespace soa
             }
         }
 
-        // Only heavy UAV, small UAV, and balloons have default beamwidths
+        // Only heavy UAV, small UAV, and blue balloons have default beamwidths
         private static void ParseBeamwidthDefaults(XmlNode node, Dictionary<string, float> d)
         {
             // Go through each child node
@@ -269,7 +269,7 @@ namespace soa
                         break;
                     case "HeavyUAV":
                     case "SmallUAV":
-                    case "Balloon":
+                    case "BlueBalloon":
                         d[c.Name] = GetFloatAttribute(c, "beamwidth_deg", 360); // Get user defined default
                         break;
                 }
@@ -431,9 +431,9 @@ namespace soa
                                 );
                             }
                             break;
-                        case "Balloon":
+                        case "BlueBalloon":
                             {
-                                newConfig = new BalloonConfig(
+                                newConfig = new BlueBalloonConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),

@@ -25,6 +25,8 @@ public class WaypointMotion : MonoBehaviour
         waypointIndex = 0;
         currentSpeed = 0;
 
+        transform.position = new Vector3(transform.position.x, AltitudeOffset, transform.position.z);
+
         if(GetComponent<Animation>() != null)
             GetComponent<Animation>().wrapMode = WrapMode.Loop;
 	}
@@ -47,7 +49,13 @@ public class WaypointMotion : MonoBehaviour
 
                 if (waypoints.Count > 0)
                 {
-                    targetPosition = waypoints[waypointIndex].transform.position + new Vector3(0f, AltitudeOffset, 0f);
+                    if (targetPosition == null)
+                    {
+                        targetPosition = new Vector3();
+                    }
+                    targetPosition.x = waypoints[waypointIndex].transform.position.x;
+                    targetPosition.y = AltitudeOffset;
+                    targetPosition.z = waypoints[waypointIndex].transform.position.z;
 
                     deltaV = (new Vector3(targetPosition.x, targetPosition.y, targetPosition.z)) - transform.position;
                     if (deltaV.magnitude < waypointEpsilon)

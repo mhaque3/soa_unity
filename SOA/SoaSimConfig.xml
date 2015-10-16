@@ -63,12 +63,12 @@
         <Mode tag="NeutralTruck"    RangeP1_km="2.0"   RangeMax_km="7.0" />
      </SmallUAV>
 
-     <Balloon beamwidth_deg="4">
+     <BlueBalloon beamwidth_deg="4">
         <Mode tag="RedDismount"     RangeP1_km="1e20"  RangeMax_km="1e20" />
         <Mode tag="RedTruck"        RangeP1_km="1e20"  RangeMax_km="1e20" />
         <Mode tag="NeutralDismount" RangeP1_km="1e20"  RangeMax_km="1e20" />
         <Mode tag="NeutralTruck"    RangeP1_km="1e20"  RangeMax_km="1e20" />
-     </Balloon>
+     </BlueBalloon>
   </SensorDefaults>
 
   <!-- Classifier Default Settings -->
@@ -114,9 +114,9 @@
         <Mode tag="NeutralTruck"    RangeP1_km="0.5"  RangeMax_km="7.0" />
      </SmallUAV>
 
-     <Balloon>
+     <BlueBalloon>
         <!-- No classification capabilities -->
-     </Balloon>
+     </BlueBalloon>
   </ClassifierDefaults>
 
   <!-- Local Platform Descriptions -->
@@ -174,7 +174,7 @@
     <SmallUAV        x_km="-4.760"    y_km="5.000"   z_km="-9.889"    id="103"/>
     <SmallUAV        x_km="1.178"     y_km="5.000"   z_km="-11.628"   id="104"/>
     
-    <!-- Balloons --> 
-    <!--<Balloon         x_km="8.227"    y_km="15.000"  z_km="-14.250"    id="105"/>-->
+    <!-- Blue Balloons --> 
+    <BlueBalloon     x_km="0.481"     y_km="15.000"  z_km="-9.696"    id="105"/>
   </Remote>
 </SoaConfig>

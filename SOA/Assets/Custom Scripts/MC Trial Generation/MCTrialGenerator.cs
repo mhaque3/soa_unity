@@ -74,7 +74,7 @@ namespace soa
         private PlatformLaydown smallUAVLaydown;
 
         // Balloons
-        private PlatformLaydown balloonLaydown;
+        private PlatformLaydown blueBalloonLaydown;
 
         /***************** CLASS DEFINITION ******************/
         private GridMath gridMath;
@@ -161,13 +161,13 @@ namespace soa
             modes.Add(new PerceptionModality("NeutralTruck",    2.0f, 7.0f));
             soaConfig.defaultSensorModalities.Add("SmallUAV", modes);
 
-            // Balloon
+            // Blue Balloon
             modes = new List<PerceptionModality>();
             modes.Add(new PerceptionModality("RedDismount",     1e20f,1e20f));
             modes.Add(new PerceptionModality("RedTruck",        1e20f,1e20f));
             modes.Add(new PerceptionModality("NeutralDismount", 1e20f,1e20f));
             modes.Add(new PerceptionModality("NeutralTruck",    1e20f,1e20f));
-            soaConfig.defaultSensorModalities.Add("Balloon", modes);
+            soaConfig.defaultSensorModalities.Add("BlueBalloon", modes);
         }
 
         private void SetClassifierDefaults(SoaConfig soaConfig)
@@ -221,9 +221,9 @@ namespace soa
             modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 7.0f));
             soaConfig.defaultClassifierModalities.Add("SmallUAV", modes);
 
-            // Balloon
+            // Blue Balloon
             modes = new List<PerceptionModality>();
-            soaConfig.defaultClassifierModalities.Add("Balloon", modes);
+            soaConfig.defaultClassifierModalities.Add("BlueBalloon", modes);
         }
         #endregion
 
@@ -356,9 +356,9 @@ namespace soa
             laydownPtr.anchors = envConfig.blueBaseCells;
             laydownPtr.allowedCells = allCells;
 
-            // Balloon
-            balloonLaydown = new PlatformLaydown();
-            laydownPtr = balloonLaydown;
+            // Blue Balloon
+            blueBalloonLaydown = new PlatformLaydown();
+            laydownPtr = blueBalloonLaydown;
             laydownPtr.numMean = 1;
             laydownPtr.numStdDev = 0.0f;
             laydownPtr.numMin = 1;
@@ -555,11 +555,11 @@ namespace soa
                         ));
                 }
 
-                // Remote units: Balloon
-                randomizedPositions = RandomizeLaydown(balloonLaydown);
+                // Remote units: Blue Balloon
+                randomizedPositions = RandomizeLaydown(blueBalloonLaydown);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
-                    soaConfig.remotePlatforms.Add(new BalloonConfig(
+                    soaConfig.remotePlatforms.Add(new BlueBalloonConfig(
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z

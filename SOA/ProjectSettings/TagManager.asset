@@ -16,6 +16,7 @@ TagManager:
   - HeavyUAV
   - NeutralTruck
   - NeutralDismount
+  - BlueBalloon
   layers:
   - Default
   - TransparentFX

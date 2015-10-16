@@ -50,7 +50,7 @@ namespace soa
     // Generalized platform
     public abstract class PlatformConfig
     {
-        public enum ConfigType {RED_DISMOUNT, RED_TRUCK, NEUTRAL_DISMOUNT, NEUTRAL_TRUCK, BLUE_POLICE, HEAVY_UAV, SMALL_UAV, BALLOON};
+        public enum ConfigType {RED_DISMOUNT, RED_TRUCK, NEUTRAL_DISMOUNT, NEUTRAL_TRUCK, BLUE_POLICE, HEAVY_UAV, SMALL_UAV, BLUE_BALLOON};
         public float x_km;
         public float y_km;
         public float z_km;
@@ -201,11 +201,11 @@ namespace soa
         public override ConfigType GetConfigType() { return ConfigType.SMALL_UAV; }
     }
 
-    // Balloon config
-    public class BalloonConfig : PlatformConfig
+    // Blue balloon config
+    public class BlueBalloonConfig : PlatformConfig
     {
-        public BalloonConfig(float x_km, float y_km, float z_km, int id)
+        public BlueBalloonConfig(float x_km, float y_km, float z_km, int id)
             : base(x_km, y_km, z_km, id) { }
-        public override ConfigType GetConfigType() { return ConfigType.BALLOON; }
+        public override ConfigType GetConfigType() { return ConfigType.BLUE_BALLOON; }
     }
 }
