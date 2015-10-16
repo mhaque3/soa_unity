@@ -14,6 +14,7 @@ public class WaypointMotion : MonoBehaviour
     public float waypointEpsilon;
     public List<GameObject> waypoints;
     public int waypointIndex;
+    public bool TeleportFromLastWaypoint = false;
 
     public Vector3 targetPosition;
 
@@ -64,6 +65,10 @@ public class WaypointMotion : MonoBehaviour
                         if (waypointIndex >= waypoints.Count)
                         {
                             waypointIndex = 0;
+                            if (TeleportFromLastWaypoint)
+                            {
+                                transform.position = new Vector3(waypoints[0].transform.position.x, transform.position.y, waypoints[0].transform.position.z);
+                            }
                         }
                         currentSpeed = speed / WaypointSlowFactor;
                     }

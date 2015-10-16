@@ -18,7 +18,7 @@ public class SoaSensor : MonoBehaviour
     {
 	}
 
-    public virtual bool CheckSensorFootprint(GameObject target) { return false; }
+    public virtual bool CheckSensorFootprint(GameObject target) { return true; }
 
     public void CheckDetections(List<GameObject> targets)
     {

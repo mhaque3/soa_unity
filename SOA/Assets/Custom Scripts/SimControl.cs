@@ -542,6 +542,8 @@ public class SimControl : MonoBehaviour
                         //Otherwise, the data in the first arg is represented in the display.
                         //If null the actor is no longer visible.
                         actor.updateActor();
+
+
                     }
                 }
 

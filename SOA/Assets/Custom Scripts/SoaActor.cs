@@ -85,6 +85,16 @@ public class SoaActor : MonoBehaviour
     public NavMeshAgent navAgent;
     SimControl simControlScript;
 
+    private float velocityX = 0;
+    private float velocityY = 0;
+    private float velocityZ = 0;
+
+    private bool velocityXValid = false;
+    private bool velocityYValid = false;
+    private bool velocityZValid = false;
+
+    NavMeshAgent nma;
+
     // Use this for initialization
     void Start()
     {
@@ -192,6 +202,7 @@ public class SoaActor : MonoBehaviour
 
         // Set to alive now, must be last thing done
         isAlive = true;
+        nma = GetComponent<NavMeshAgent>();
 	}
 
 
@@ -346,6 +357,18 @@ public class SoaActor : MonoBehaviour
             return;
         }
 
+        if (nma != null)
+        {
+            velocityX = (nma.velocity.x / SimControl.KmToUnity) / 60f * 1000f;
+            velocityXValid = true;
+            velocityY = (nma.velocity.y / SimControl.KmToUnity) / 60f * 1000f;
+            velocityYValid = true;
+            velocityZ = (nma.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
+            velocityZValid = true;
+
+            //Debug.Log("VELOCITY " + unique_id + " " + (nma.velocity.magnitude / 60f * 1000f));
+        }
+
         if (simulateMotion)
         {
             displayActor = true;
@@ -402,7 +425,13 @@ public class SoaActor : MonoBehaviour
                 type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
                 simX_km,
                 simAltitude_km,
-                simZ_km);
+                simZ_km,
+                velocityXValid,
+                velocityX,
+                velocityYValid,
+                velocityY,
+                velocityZValid,
+                velocityZ);
 
             addMyBeliefData(newActorData);
             if (dataManager != null)
@@ -446,10 +475,6 @@ public class SoaActor : MonoBehaviour
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
 
-                if (affiliation == Affiliation.BLUE && soaActor.affiliation == Affiliation.RED)
-                {
-                    //Debug.LogError("*********** detecting red force with blue *********** " + detectedActor.getId());
-                }
                 addMyBeliefData(detectedActor);
                 
                 
@@ -484,13 +509,6 @@ public class SoaActor : MonoBehaviour
         {
             
            bool addedToRemote = addBelief(b, remoteBeliefs) ;
-           if (addedToRemote)
-           {
-               if (this.affiliation == Affiliation.BLUE)
-               {
-                   //Debug.Log("SUCCESS ADDED TO REMOTE: " + b.getId());
-               }
-           }
            
         }
     }

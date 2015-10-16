@@ -27133,7 +27133,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187476}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -27209,7 +27209,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168166}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33200,7 +33200,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168950}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33596,7 +33596,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165692}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -61109,15 +61109,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 168130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9821324b294691e49b3c7a567067505a, type: 3}
+  m_Script: {fileID: 11500000, guid: 01d6d7e7483274243b91fb9791877f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
-  gimbaled: 0
-  beamwidthDeg: 0
-  boresightUnitVector: {x: 0, y: -1, z: 0}
 --- !u!114 &11472772
 MonoBehaviour:
   m_ObjectHideFlags: 1
