@@ -869,6 +869,11 @@ public class SimControl : MonoBehaviour
         SoaSensor soaSensor = g.GetComponentInChildren<SoaSensor>();
         if (soaSensor != null)
         {
+            if (soaSensor is SoaPointedSensor)
+            {
+                SoaPointedSensor sps = (SoaPointedSensor)soaSensor;
+                sps.beamwidthDeg = config.GetUseDefaultSensorBeamwidth() ? soaConfig.defaultSensorBeamwidths[platformName] : config.GetSensorBeamwidth();
+            }
             soaSensor.modes = config.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities[platformName].ToArray() : config.GetSensorModalities().ToArray();
         }
         SoaClassifier soaClassifier = g.GetComponentInChildren<SoaClassifier>();

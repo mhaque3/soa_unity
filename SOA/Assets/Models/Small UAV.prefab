@@ -484,7 +484,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 137176}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3a2da67beed96a41aa5853bd0c717ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 32fb445c62742a24e873243859b10507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 136436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849e9e526ea4ac14bb4dc4b6bdb0f386, type: 3}
+  m_Script: {fileID: 11500000, guid: e5819eeae1b3eab44be7bd9d7ad91cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fuelTankSize_s: 40000
@@ -508,12 +508,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 170766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84d7b966b46371e478a366ea6818d96a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9821324b294691e49b3c7a567067505a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
+  gimbaled: 0
+  beamwidthDeg: 0
+  boresightUnitVector: {x: 0, y: -1, z: 0}
 --- !u!114 &11462278
 MonoBehaviour:
   m_ObjectHideFlags: 1
