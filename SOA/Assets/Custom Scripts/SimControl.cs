@@ -79,9 +79,9 @@ public class SimControl : MonoBehaviour
     public SoaConfig soaConfig;
     public string networkRedRoom;
     public string networkBlueRoom;
-    public float probRedTruckWeaponized;
-    public float probRedTruckJammer;
-    public float probRedDismountWeaponized;
+    public float probRedTruckHasWeapon;
+    public float probRedTruckHasJammer;
+    public float probRedDismountHasWeapon;
     public float jammerRange;
 
     // For updates
@@ -249,9 +249,9 @@ public class SimControl : MonoBehaviour
         gameDurationHr = soaConfig.gameDurationHr;
 
         // Red platform weapon probability
-        probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
-        probRedDismountWeaponized = soaConfig.probRedDismountWeaponized;
-        probRedTruckJammer = soaConfig.probRedTruckJammer;
+        probRedTruckHasWeapon = soaConfig.probRedTruckHasWeapon;
+        probRedDismountHasWeapon = soaConfig.probRedDismountHasWeapon;
+        probRedTruckHasJammer = soaConfig.probRedTruckHasJammer;
 
         // RedTruck jammer range
         jammerRange = soaConfig.jammerRange;
@@ -1199,7 +1199,8 @@ public class SimControl : MonoBehaviour
             jammer.effectiveRange = c.jammerRange;
             jammer.isOn = c.hasJammer;
             jammers.Add(jammer);
-            Debug.Log("Has jammer " + jammer.isOn + "effective range" + jammer.effectiveRange);
+            Debug.Log("Has jammer " + jammer.isOn + ", effective range" + jammer.effectiveRange);
+            Debug.Log("Jammer list size: " + jammers.Count);
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "RedTruck");
@@ -1471,6 +1472,10 @@ public class SimControl : MonoBehaviour
 
     public void DestroyRedTruck(GameObject platform)
     {
+        // Remove jammer from global list
+        jammers.Remove(platform.GetComponentInChildren<SoaJammer>());
+
+        // Standard destroy procedure
         DestroyLocalRedPlatform(platform);
     }
 

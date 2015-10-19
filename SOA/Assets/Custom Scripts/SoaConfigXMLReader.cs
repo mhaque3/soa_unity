@@ -161,8 +161,9 @@ namespace soa
             try
             {
                 soaConfig.gameDurationHr = GetFloatAttribute(node,"gameDurationHr", 15.0f);
-                soaConfig.probRedDismountWeaponized = GetFloatAttribute(node, "probRedDismountWeaponized", 1.0f);
-                soaConfig.probRedTruckWeaponized = GetFloatAttribute(node, "probRedTruckWeaponized", 1.0f);
+                soaConfig.probRedDismountHasWeapon = GetFloatAttribute(node, "probRedDismountHasWeapon", 0.5f);
+                soaConfig.probRedTruckHasWeapon = GetFloatAttribute(node, "probRedTruckHasWeapon", 0.5f);
+                soaConfig.probRedTruckHasJammer = GetFloatAttribute(node, "probRedTruckHasJammer", 0.5f);
             }
             catch (Exception)
             {
@@ -301,7 +302,7 @@ namespace soa
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
                                     GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountWeaponized)
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountHasWeapon)
                                 );
                             }
                             break;
@@ -313,8 +314,8 @@ namespace soa
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
                                     GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckWeaponized),
-                                    GetBooleanAttribute(c, "hasJammer", false),
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckHasWeapon),
+                                    GetBooleanAttribute(c, "hasJammer", rand.NextDouble() <= soaConfig.probRedTruckHasJammer),
                                     GetFloatAttribute(c, "jammerRange", 0)
                                 );
                             }

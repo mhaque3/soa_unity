@@ -16,8 +16,9 @@
   <!-- Simulation Configuration Settings -->
   <Simulation 
        gameDurationHr           ="15.0"
-       probRedDismountWeaponized="0.0"
-       probRedTruckWeaponized   ="0.0" 
+       probRedDismountHasWeapon ="0.5"
+       probRedTruckHasWeapon    ="0.5" 
+       probRedTruckHasJammer    ="0.5"
   />
 
   <!-- Sensor Default Settings -->
@@ -145,10 +146,10 @@
        hasWeapon="false" initialWaypoint="Red Base 0" hasJammer="true" jammerRange="2"/>
 
     <RedTruck        x_km="-1.300"    y_km="0.000"   z_km="12.245"
-       hasWeapon="true" initialWaypoint="Red Base 1" />
+       hasWeapon="true"  initialWaypoint="Red Base 1" hasJammer="false" jammerRange="0"/>
 
     <RedTruck        x_km="21.205"    y_km="0.000"   z_km="11.251"
-       hasWeapon="false" initialWaypoint="Red Base 2" />
+       hasWeapon="false" initialWaypoint="Red Base 2" hasJammer="false" jammerRange="0"/>
 
     <!-- Neutral Dismounts -->
     <NeutralDismount x_km="23.696"    y_km="0.000"   z_km="-6.595" />

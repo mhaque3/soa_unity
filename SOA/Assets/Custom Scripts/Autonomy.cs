@@ -74,27 +74,27 @@ namespace autonomy_msg {
           "CgtiZWxpZWZfdGltZRgBIAIoBBIKCgJpZBgCIAIoBRIpCgVjZWxscxgDIAMo" + 
           "CzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwSEAoIc3VwcGxpZXMYBCAC" + 
           "KAISEgoKY2FzdWFsdGllcxgFIAIoAiIoCgxHcGJfR3JpZENlbGwSCwoDcm93" + 
-          "GAEgAigFEgsKA2NvbBgCIAIoBSKVAgoJR3BiX0FjdG9yEhMKC2JlbGllZl90" + 
+          "GAEgAigFEgsKA2NvbBgCIAIoBSKpAgoJR3BiX0FjdG9yEhMKC2JlbGllZl90" + 
           "aW1lGAEgAigEEhEKCXVuaXF1ZV9pZBgCIAIoBRITCgthZmZpbGlhdGlvbhgD" + 
           "IAIoBRIMCgR0eXBlGAQgAigFEhAKCGlzX2FsaXZlGAUgAigIEhMKC2lzX2Nh" + 
-          "cnJ5aW5nGAYgAigFEhUKDWlzX3dlYXBvbml6ZWQYByACKAgSFgoOZnVlbF9y" + 
-          "ZW1haW5pbmcYCCACKAISDQoFcG9zX3gYCSACKAISDQoFcG9zX3kYCiACKAIS" + 
-          "DQoFcG9zX3oYCyACKAISEgoKdmVsb2NpdHlfeBgMIAEoAhISCgp2ZWxvY2l0" + 
-          "eV95GA0gASgCEhIKCnZlbG9jaXR5X3oYDiABKAIiLwoKR3BiX0N1c3RvbRIT" + 
-          "CgtiZWxpZWZfdGltZRgBIAIoBBIMCgRkYXRhGAIgAigMImgKCEdwYl9CYXNl" + 
-          "EhMKC2JlbGllZl90aW1lGAEgAigEEgoKAmlkGAIgAigFEikKBWNlbGxzGAMg" + 
-          "AygLMhouYXV0b25vbXlfbXNnLkdwYl9HcmlkQ2VsbBIQCghzdXBwbGllcxgE" + 
-          "IAIoAiJbCgtHcGJfVGVycmFpbhITCgtiZWxpZWZfdGltZRgBIAIoBBIMCgR0" + 
-          "eXBlGAIgAigFEikKBWNlbGxzGAMgAygLMhouYXV0b25vbXlfbXNnLkdwYl9H" + 
-          "cmlkQ2VsbCJgChBHcGJfTW9kZV9Db21tYW5kEhMKC2JlbGllZl90aW1lGAEg" + 
-          "AigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRIP" + 
-          "Cgdtb2RlX2lkGAQgAigFIngKDEdwYl9XYXlwb2ludBITCgtiZWxpZWZfdGlt" + 
-          "ZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQSEAoIYWN0b3JfaWQYAyAC" + 
-          "KAUSDQoFcG9zX3gYBCACKAISDQoFcG9zX3kYBSACKAISDQoFcG9zX3oYBiAC" + 
-          "KAIiLQoIR3BiX1RpbWUSEwoLYmVsaWVmX3RpbWUYASACKAQSDAoEdGltZRgC" + 
-          "IAIoBCJgCgxHcGJfUm9hZENlbGwSEwoLYmVsaWVmX3RpbWUYASACKAQSEQoJ" + 
-          "aXNSb2FkRW5kGAIgAigIEigKBGNlbGwYAyACKAsyGi5hdXRvbm9teV9tc2cu" + 
-          "R3BiX0dyaWRDZWxs");
+          "cnJ5aW5nGAYgAigFEhUKDWlzX3dlYXBvbml6ZWQYByACKAgSEgoKaGFzX2ph" + 
+          "bW1lchgIIAIoCBIWCg5mdWVsX3JlbWFpbmluZxgJIAIoAhINCgVwb3NfeBgK" + 
+          "IAIoAhINCgVwb3NfeRgLIAIoAhINCgVwb3NfehgMIAIoAhISCgp2ZWxvY2l0" + 
+          "eV94GA0gASgCEhIKCnZlbG9jaXR5X3kYDiABKAISEgoKdmVsb2NpdHlfehgP" + 
+          "IAEoAiIvCgpHcGJfQ3VzdG9tEhMKC2JlbGllZl90aW1lGAEgAigEEgwKBGRh" + 
+          "dGEYAiACKAwiaAoIR3BiX0Jhc2USEwoLYmVsaWVmX3RpbWUYASACKAQSCgoC" + 
+          "aWQYAiACKAUSKQoFY2VsbHMYAyADKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dy" + 
+          "aWRDZWxsEhAKCHN1cHBsaWVzGAQgAigCIlsKC0dwYl9UZXJyYWluEhMKC2Jl" + 
+          "bGllZl90aW1lGAEgAigEEgwKBHR5cGUYAiACKAUSKQoFY2VsbHMYAyADKAsy" + 
+          "Gi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxsImAKEEdwYl9Nb2RlX0NvbW1h" + 
+          "bmQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigE" + 
+          "EhAKCGFjdG9yX2lkGAMgAigFEg8KB21vZGVfaWQYBCACKAUieAoMR3BiX1dh" + 
+          "eXBvaW50EhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgC" + 
+          "IAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3Nf" + 
+          "eRgFIAIoAhINCgVwb3NfehgGIAIoAiItCghHcGJfVGltZRITCgtiZWxpZWZf" + 
+          "dGltZRgBIAIoBBIMCgR0aW1lGAIgAigEImAKDEdwYl9Sb2FkQ2VsbBITCgti" + 
+          "ZWxpZWZfdGltZRgBIAIoBBIRCglpc1JvYWRFbmQYAiACKAgSKAoEY2VsbBgD" + 
+          "IAIoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGw=");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
@@ -128,7 +128,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Actor__Descriptor = Descriptor.MessageTypes[7];
         internal__static_autonomy_msg_Gpb_Actor__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Actor, global::autonomy_msg.Gpb_Actor.Builder>(internal__static_autonomy_msg_Gpb_Actor__Descriptor,
-                new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "IsAlive", "IsCarrying", "IsWeaponized", "FuelRemaining", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
+                new string[] { "BeliefTime", "UniqueId", "Affiliation", "Type", "IsAlive", "IsCarrying", "IsWeaponized", "HasJammer", "FuelRemaining", "PosX", "PosY", "PosZ", "VelocityX", "VelocityY", "VelocityZ", });
         internal__static_autonomy_msg_Gpb_Custom__Descriptor = Descriptor.MessageTypes[8];
         internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Custom, global::autonomy_msg.Gpb_Custom.Builder>(internal__static_autonomy_msg_Gpb_Custom__Descriptor,
@@ -3447,8 +3447,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Actor : pb::GeneratedMessage<Gpb_Actor, Gpb_Actor.Builder> {
     private Gpb_Actor() { }
     private static readonly Gpb_Actor defaultInstance = new Gpb_Actor().MakeReadOnly();
-    private static readonly string[] _gpbActorFieldNames = new string[] { "affiliation", "belief_time", "fuel_remaining", "is_alive", "is_carrying", "is_weaponized", "pos_x", "pos_y", "pos_z", "type", "unique_id", "velocity_x", "velocity_y", "velocity_z" };
-    private static readonly uint[] _gpbActorFieldTags = new uint[] { 24, 8, 69, 40, 48, 56, 77, 85, 93, 32, 16, 101, 109, 117 };
+    private static readonly string[] _gpbActorFieldNames = new string[] { "affiliation", "belief_time", "fuel_remaining", "has_jammer", "is_alive", "is_carrying", "is_weaponized", "pos_x", "pos_y", "pos_z", "type", "unique_id", "velocity_x", "velocity_y", "velocity_z" };
+    private static readonly uint[] _gpbActorFieldTags = new uint[] { 24, 8, 77, 64, 40, 48, 56, 85, 93, 101, 32, 16, 109, 117, 125 };
     public static Gpb_Actor DefaultInstance {
       get { return defaultInstance; }
     }
@@ -3540,7 +3540,17 @@ namespace autonomy_msg {
       get { return isWeaponized_; }
     }
     
-    public const int FuelRemainingFieldNumber = 8;
+    public const int HasJammerFieldNumber = 8;
+    private bool hasHasJammer;
+    private bool hasJammer_;
+    public bool HasHasJammer {
+      get { return hasHasJammer; }
+    }
+    public bool HasJammer {
+      get { return hasJammer_; }
+    }
+    
+    public const int FuelRemainingFieldNumber = 9;
     private bool hasFuelRemaining;
     private float fuelRemaining_;
     public bool HasFuelRemaining {
@@ -3550,7 +3560,7 @@ namespace autonomy_msg {
       get { return fuelRemaining_; }
     }
     
-    public const int PosXFieldNumber = 9;
+    public const int PosXFieldNumber = 10;
     private bool hasPosX;
     private float posX_;
     public bool HasPosX {
@@ -3560,7 +3570,7 @@ namespace autonomy_msg {
       get { return posX_; }
     }
     
-    public const int PosYFieldNumber = 10;
+    public const int PosYFieldNumber = 11;
     private bool hasPosY;
     private float posY_;
     public bool HasPosY {
@@ -3570,7 +3580,7 @@ namespace autonomy_msg {
       get { return posY_; }
     }
     
-    public const int PosZFieldNumber = 11;
+    public const int PosZFieldNumber = 12;
     private bool hasPosZ;
     private float posZ_;
     public bool HasPosZ {
@@ -3580,7 +3590,7 @@ namespace autonomy_msg {
       get { return posZ_; }
     }
     
-    public const int VelocityXFieldNumber = 12;
+    public const int VelocityXFieldNumber = 13;
     private bool hasVelocityX;
     private float velocityX_;
     public bool HasVelocityX {
@@ -3590,7 +3600,7 @@ namespace autonomy_msg {
       get { return velocityX_; }
     }
     
-    public const int VelocityYFieldNumber = 13;
+    public const int VelocityYFieldNumber = 14;
     private bool hasVelocityY;
     private float velocityY_;
     public bool HasVelocityY {
@@ -3600,7 +3610,7 @@ namespace autonomy_msg {
       get { return velocityY_; }
     }
     
-    public const int VelocityZFieldNumber = 14;
+    public const int VelocityZFieldNumber = 15;
     private bool hasVelocityZ;
     private float velocityZ_;
     public bool HasVelocityZ {
@@ -3619,6 +3629,7 @@ namespace autonomy_msg {
         if (!hasIsAlive) return false;
         if (!hasIsCarrying) return false;
         if (!hasIsWeaponized) return false;
+        if (!hasHasJammer) return false;
         if (!hasFuelRemaining) return false;
         if (!hasPosX) return false;
         if (!hasPosY) return false;
@@ -3634,43 +3645,46 @@ namespace autonomy_msg {
         output.WriteUInt64(1, field_names[1], BeliefTime);
       }
       if (hasUniqueId) {
-        output.WriteInt32(2, field_names[10], UniqueId);
+        output.WriteInt32(2, field_names[11], UniqueId);
       }
       if (hasAffiliation) {
         output.WriteInt32(3, field_names[0], Affiliation);
       }
       if (hasType) {
-        output.WriteInt32(4, field_names[9], Type);
+        output.WriteInt32(4, field_names[10], Type);
       }
       if (hasIsAlive) {
-        output.WriteBool(5, field_names[3], IsAlive);
+        output.WriteBool(5, field_names[4], IsAlive);
       }
       if (hasIsCarrying) {
-        output.WriteInt32(6, field_names[4], IsCarrying);
+        output.WriteInt32(6, field_names[5], IsCarrying);
       }
       if (hasIsWeaponized) {
-        output.WriteBool(7, field_names[5], IsWeaponized);
+        output.WriteBool(7, field_names[6], IsWeaponized);
+      }
+      if (hasHasJammer) {
+        output.WriteBool(8, field_names[3], HasJammer);
       }
       if (hasFuelRemaining) {
-        output.WriteFloat(8, field_names[2], FuelRemaining);
+        output.WriteFloat(9, field_names[2], FuelRemaining);
       }
       if (hasPosX) {
-        output.WriteFloat(9, field_names[6], PosX);
+        output.WriteFloat(10, field_names[7], PosX);
       }
       if (hasPosY) {
-        output.WriteFloat(10, field_names[7], PosY);
+        output.WriteFloat(11, field_names[8], PosY);
       }
       if (hasPosZ) {
-        output.WriteFloat(11, field_names[8], PosZ);
+        output.WriteFloat(12, field_names[9], PosZ);
       }
       if (hasVelocityX) {
-        output.WriteFloat(12, field_names[11], VelocityX);
+        output.WriteFloat(13, field_names[12], VelocityX);
       }
       if (hasVelocityY) {
-        output.WriteFloat(13, field_names[12], VelocityY);
+        output.WriteFloat(14, field_names[13], VelocityY);
       }
       if (hasVelocityZ) {
-        output.WriteFloat(14, field_names[13], VelocityZ);
+        output.WriteFloat(15, field_names[14], VelocityZ);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3703,26 +3717,29 @@ namespace autonomy_msg {
         if (hasIsWeaponized) {
           size += pb::CodedOutputStream.ComputeBoolSize(7, IsWeaponized);
         }
+        if (hasHasJammer) {
+          size += pb::CodedOutputStream.ComputeBoolSize(8, HasJammer);
+        }
         if (hasFuelRemaining) {
-          size += pb::CodedOutputStream.ComputeFloatSize(8, FuelRemaining);
+          size += pb::CodedOutputStream.ComputeFloatSize(9, FuelRemaining);
         }
         if (hasPosX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(9, PosX);
+          size += pb::CodedOutputStream.ComputeFloatSize(10, PosX);
         }
         if (hasPosY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(10, PosY);
+          size += pb::CodedOutputStream.ComputeFloatSize(11, PosY);
         }
         if (hasPosZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(11, PosZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(12, PosZ);
         }
         if (hasVelocityX) {
-          size += pb::CodedOutputStream.ComputeFloatSize(12, VelocityX);
+          size += pb::CodedOutputStream.ComputeFloatSize(13, VelocityX);
         }
         if (hasVelocityY) {
-          size += pb::CodedOutputStream.ComputeFloatSize(13, VelocityY);
+          size += pb::CodedOutputStream.ComputeFloatSize(14, VelocityY);
         }
         if (hasVelocityZ) {
-          size += pb::CodedOutputStream.ComputeFloatSize(14, VelocityZ);
+          size += pb::CodedOutputStream.ComputeFloatSize(15, VelocityZ);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -3869,6 +3886,9 @@ namespace autonomy_msg {
         if (other.HasIsWeaponized) {
           IsWeaponized = other.IsWeaponized;
         }
+        if (other.HasHasJammer) {
+          HasJammer = other.HasJammer;
+        }
         if (other.HasFuelRemaining) {
           FuelRemaining = other.FuelRemaining;
         }
@@ -3961,31 +3981,35 @@ namespace autonomy_msg {
               result.hasIsWeaponized = input.ReadBool(ref result.isWeaponized_);
               break;
             }
-            case 69: {
-              result.hasFuelRemaining = input.ReadFloat(ref result.fuelRemaining_);
+            case 64: {
+              result.hasHasJammer = input.ReadBool(ref result.hasJammer_);
               break;
             }
             case 77: {
-              result.hasPosX = input.ReadFloat(ref result.posX_);
+              result.hasFuelRemaining = input.ReadFloat(ref result.fuelRemaining_);
               break;
             }
             case 85: {
-              result.hasPosY = input.ReadFloat(ref result.posY_);
+              result.hasPosX = input.ReadFloat(ref result.posX_);
               break;
             }
             case 93: {
-              result.hasPosZ = input.ReadFloat(ref result.posZ_);
+              result.hasPosY = input.ReadFloat(ref result.posY_);
               break;
             }
             case 101: {
-              result.hasVelocityX = input.ReadFloat(ref result.velocityX_);
+              result.hasPosZ = input.ReadFloat(ref result.posZ_);
               break;
             }
             case 109: {
-              result.hasVelocityY = input.ReadFloat(ref result.velocityY_);
+              result.hasVelocityX = input.ReadFloat(ref result.velocityX_);
               break;
             }
             case 117: {
+              result.hasVelocityY = input.ReadFloat(ref result.velocityY_);
+              break;
+            }
+            case 125: {
               result.hasVelocityZ = input.ReadFloat(ref result.velocityZ_);
               break;
             }
@@ -4138,6 +4162,26 @@ namespace autonomy_msg {
         PrepareBuilder();
         result.hasIsWeaponized = false;
         result.isWeaponized_ = false;
+        return this;
+      }
+      
+      public bool HasHasJammer {
+        get { return result.hasHasJammer; }
+      }
+      public bool HasJammer {
+        get { return result.HasJammer; }
+        set { SetHasJammer(value); }
+      }
+      public Builder SetHasJammer(bool value) {
+        PrepareBuilder();
+        result.hasHasJammer = true;
+        result.hasJammer_ = value;
+        return this;
+      }
+      public Builder ClearHasJammer() {
+        PrepareBuilder();
+        result.hasHasJammer = false;
+        result.hasJammer_ = false;
         return this;
       }
       

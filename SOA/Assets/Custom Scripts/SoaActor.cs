@@ -49,12 +49,13 @@ public class SoaActor : MonoBehaviour
     private bool broadcastDeathNotice = false;
     public CarriedResource isCarrying;
     public bool isWeaponized;
+    public bool hasJammer;
     public float fuelRemaining_s;
     public float commsRange;
 
     public SoaSensor[] Sensors;
     public SoaWeapon[] Weapons;
-    public SoaJammer[] Jammers;
+    public SoaJammer jammer;
     public SoaClassifier[] Classifiers;
     public List<GameObject> Detections;
     public List<GameObject> Tracks;
@@ -133,6 +134,10 @@ public class SoaActor : MonoBehaviour
                 break;
             }
         }
+
+	// Determine whether the actor has a jammer that is active
+	jammer = transform.GetComponentInChildren<SoaJammer>();
+	hasJammer = jammer.isOn;
 
         // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
@@ -279,7 +284,7 @@ public class SoaActor : MonoBehaviour
 
                 // Convert position from Unity to km for Belief_Actor
                 Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
-                    type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
+                    type, isAlive, (int)isCarrying, isWeaponized, hasJammer, fuelRemaining_s,
                     transform.position.x / SimControl.KmToUnity,
                     simAltitude_km,
                     transform.position.z / SimControl.KmToUnity);
@@ -422,7 +427,7 @@ public class SoaActor : MonoBehaviour
             simZ_km = transform.position.z / SimControl.KmToUnity;
 
             Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
-                type, isAlive, (int)isCarrying, isWeaponized, fuelRemaining_s,
+                type, isAlive, (int)isCarrying, isWeaponized, hasJammer, fuelRemaining_s,
                 simX_km,
                 simAltitude_km,
                 simZ_km,
@@ -460,7 +465,7 @@ public class SoaActor : MonoBehaviour
                 {
                     // I have classified this actor before, provide actual affiliation and isWeaponized info
                     detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized, soaActor.fuelRemaining_s,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized, soaActor.hasJammer, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
@@ -469,7 +474,7 @@ public class SoaActor : MonoBehaviour
                 {
                     // I have never classified this actor before, set as unclassified and give default isWeaponized info
                     detectedActor = new Belief_Actor(soaActor.unique_id, (int)Affiliation.UNCLASSIFIED,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false, soaActor.fuelRemaining_s,
+                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false, false, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
@@ -621,6 +626,7 @@ public class SoaActor : MonoBehaviour
                         incomingActorBelief.getIsAlive(),
                         incomingActorBelief.getIsCarrying(),
                         oldActorBelief.getIsWeaponized(),
+                        oldActorBelief.getHasJammer(),
                         incomingActorBelief.getFuelRemaining(),
                         incomingActorBelief.getPos_x(),
                         incomingActorBelief.getPos_y(),
@@ -644,6 +650,7 @@ public class SoaActor : MonoBehaviour
                         oldActorBelief.getIsAlive(),
                         oldActorBelief.getIsCarrying(),
                         incomingActorBelief.getIsWeaponized(),
+                        incomingActorBelief.getHasJammer(),
                         oldActorBelief.getFuelRemaining(),
                         oldActorBelief.getPos_x(),
                         oldActorBelief.getPos_y(),

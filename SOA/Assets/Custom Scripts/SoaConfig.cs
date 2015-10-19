@@ -13,9 +13,9 @@ namespace soa
 
         // Simulation configuration
         public float gameDurationHr;
-        public float probRedDismountWeaponized;
-        public float probRedTruckWeaponized;
-        public float probRedTruckJammer;
+        public float probRedDismountHasWeapon;
+        public float probRedTruckHasWeapon;
+        public float probRedTruckHasJammer;
         public float jammerRange;
 
         // Logger configuration
