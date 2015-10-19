@@ -12,7 +12,7 @@ namespace soa
         public string networkBlueRoom;
 
         // Simulation configuration
-        public float gameDurationMin;
+        public float gameDurationHr;
         public float probRedDismountWeaponized;
         public float probRedTruckWeaponized;
         public float probRedTruckJammer;

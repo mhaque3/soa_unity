@@ -12,8 +12,8 @@ public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
 public class SimControl : MonoBehaviour 
 {
     // Game duration
-    public float gameDurationMin = 0.5f;
-    public float gameClockMin = 0f;
+    public float gameDurationHr = 12.0f; // Measured in simulated time
+    public float gameClockHr = 0f; // Measured in simulated time
     
     // Config
     string ConfigFileName = "SoaSimConfig.xml";
@@ -246,14 +246,14 @@ public class SimControl : MonoBehaviour
             soaConfig.enableLogToUnityConsole);
 
         // Game duration
-        gameDurationMin = soaConfig.gameDurationMin;
+        gameDurationHr = soaConfig.gameDurationHr;
 
         // Red platform weapon probability
         probRedTruckWeaponized = soaConfig.probRedTruckWeaponized;
         probRedDismountWeaponized = soaConfig.probRedDismountWeaponized;
         probRedTruckJammer = soaConfig.probRedTruckJammer;
 
-        //RedTruck jammer range
+        // RedTruck jammer range
         jammerRange = soaConfig.jammerRange;
 
         // Network settings
@@ -449,7 +449,7 @@ public class SimControl : MonoBehaviour
         float dt = Time.deltaTime;
 
         // Update game clock
-        gameClockMin += (dt / 60.0f);
+        gameClockHr += (dt / 60); // Note: 1 min real time = 1 hr simulated time
 
         // Update sensor clock
         sensorClock += dt;
@@ -475,7 +475,7 @@ public class SimControl : MonoBehaviour
         {
             bool terminationConditionsMet = false;
             // Check for game termination conditions
-            if (gameClockMin >= gameDurationMin)
+            if (gameClockHr >= gameDurationHr)
             {
                 // Condition 1: Game timer maxed out
                 terminationConditionsMet = true;

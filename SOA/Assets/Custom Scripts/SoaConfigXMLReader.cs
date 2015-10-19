@@ -160,7 +160,7 @@ namespace soa
             // Pull attributes directly from the node
             try
             {
-                soaConfig.gameDurationMin = GetFloatAttribute(node,"gameDurationMin", 10.0f);
+                soaConfig.gameDurationHr = GetFloatAttribute(node,"gameDurationHr", 15.0f);
                 soaConfig.probRedDismountWeaponized = GetFloatAttribute(node, "probRedDismountWeaponized", 1.0f);
                 soaConfig.probRedTruckWeaponized = GetFloatAttribute(node, "probRedTruckWeaponized", 1.0f);
             }

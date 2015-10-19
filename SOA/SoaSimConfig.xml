@@ -15,7 +15,7 @@
 
   <!-- Simulation Configuration Settings -->
   <Simulation 
-       gameDurationMin          ="15.0"
+       gameDurationHr           ="15.0"
        probRedDismountWeaponized="0.0"
        probRedTruckWeaponized   ="0.0" 
   />
