@@ -510,8 +510,8 @@ public class SimControl : MonoBehaviour
             }
 
             // Compute distances between blue/red units for comms purposes
-            blueDataManager.calcualteDistances();
-            redDataManager.calcualteDistances();
+            blueDataManager.calculateDistances();
+            redDataManager.calculateDistances();
             //TODO get display parameters
 
             //This lock keeps the comms manager from adding data while we are reading
@@ -953,7 +953,7 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "HeavyUAV");
 
             // Set comms capabilities
-            a.commsRange = c.commsRange_km;
+            a.commsRange_km = c.commsRange_km;
             
             // Set fuel tank size
             HeavyUAVSim h = g.GetComponent<HeavyUAVSim>();
@@ -996,7 +996,7 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "SmallUAV");
 
             // Set comms capabilities
-            a.commsRange = c.commsRange_km;
+            a.commsRange_km = c.commsRange_km;
 
             // Set fuel tank size
             SmallUAVSim s = g.GetComponent<SmallUAVSim>();
@@ -1147,7 +1147,7 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "RedDismount");
 
             // Set comms capabilities
-            a.commsRange = c.commsRange_km;
+            a.commsRange_km = c.commsRange_km;
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);
@@ -1214,14 +1214,14 @@ public class SimControl : MonoBehaviour
             }
 
             // Set comms capabilities
-            a.commsRange = c.commsRange_km;
+            a.commsRange_km = c.commsRange_km;
 
             // Set jammer capabilties
             SoaJammer jammer = g.GetComponentInChildren<SoaJammer>();
-            jammer.effectiveRange = c.jammerRange_km;
+            jammer.effectiveRange_km = c.jammerRange_km;
             jammer.isOn = c.hasJammer;
             jammers.Add(jammer);
-            Debug.Log("Has jammer " + jammer.isOn + ", effective range " + jammer.effectiveRange);
+            Debug.Log("Has jammer " + jammer.isOn + ", effective range " + jammer.effectiveRange_km);
             Debug.Log("Jammer list size: " + jammers.Count);
 
             // Set perception capabilities
@@ -1336,7 +1336,7 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "BluePolice");
 
             // Set comms capabilities
-            a.commsRange = c.commsRange_km;
+            a.commsRange_km = c.commsRange_km;
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);

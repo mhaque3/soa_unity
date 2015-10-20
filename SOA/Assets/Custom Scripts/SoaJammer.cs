@@ -6,7 +6,7 @@ public class SoaJammer : MonoBehaviour {
 
     SoaActor thisSoaActor;
     
-    public float effectiveRange = 0;
+    public float effectiveRange_km = 0;
     public bool isOn = false;
 	
     // Use this for initialization

@@ -152,64 +152,61 @@ namespace soa
          * Call this function once every update of the simulation time step to refresh the true position data for all the actors
          * A pair of actors actorDistanceDictionary[destId][sourceId] = true if the source comms range is large enough to reach the destination.
          */
-        public void calcualteDistances()
+        public void calculateDistances()
         {
-            SortedDictionary<int, Belief> actorDictionary = beliefDictionary[Belief.BeliefType.ACTOR];
             foreach (SoaActor soaActor in actors)
-            {
-                //Debug.Log("looking up actor  " + soaActor.unique_id);
-                Belief b;
-                if (actorDictionary.TryGetValue(soaActor.unique_id, out b))
+            {                
+                // Get own truth coordinates in km
+                Vector3 actorPos_km = new Vector3(
+                    soaActor.gameObject.transform.position.x / SimControl.KmToUnity,
+                    soaActor.simAltitude_km,
+                    soaActor.gameObject.transform.position.z / SimControl.KmToUnity);
+
+                float jammerNoiseSummation = 0;
+                foreach (SoaJammer jammerActor in SimControl.jammers) 
                 {
-                    // Get own position in km
-                    Belief_Actor actor = (Belief_Actor)b;
-                    Vector3 actorPos = new Vector3(
-                        (float)actor.getPos_x(),
-                        (float)soaActor.simAltitude_km,
-                        (float)actor.getPos_z());
+                    // Get jammer truth coordinates in km
+                    Vector3 jammerPos_km = new Vector3(
+                        jammerActor.gameObject.transform.position.x / SimControl.KmToUnity,
+                        jammerActor.GetComponentInParent<SoaActor>().simAltitude_km,
+                        jammerActor.gameObject.transform.position.z / SimControl.KmToUnity);
+                    float jammerToActorDist_km = Vector3.Distance(actorPos_km, jammerPos_km);
 
-                    float jammerNoiseSummation = 0;
-                    foreach (SoaJammer jammerActor in SimControl.jammers) 
-                    {
-                        jammerNoiseSummation += Mathf.Pow(jammerActor.effectiveRange, 2) / Mathf.Pow(Vector3.Distance(actorPos, jammerActor.getPosition()), 2);
-                    }
+                    // Sum jammer's noise contribution to actor's SNR
+                    jammerNoiseSummation += (jammerActor.effectiveRange_km * jammerActor.effectiveRange_km) / (jammerToActorDist_km * jammerToActorDist_km);
+                }
 
-                    foreach (SoaActor neighborActor in actors)
+                foreach (SoaActor neighborActor in actors)
+                {
+                    // Add in exception for balloons
+                    if (soaActor.type == (int)SoaActor.ActorType.BALLOON || neighborActor.type == (int)SoaActor.ActorType.BALLOON)
                     {
-                        // Add in exception for balloon to blue base comms
-                        if (soaActor is SoaSite && neighborActor.type == (int)SoaActor.ActorType.BALLOON ||
-                            neighborActor is SoaSite && soaActor.type == (int)SoaActor.ActorType.BALLOON)
+                        if (soaActor is SoaSite || neighborActor is SoaSite)
                         {
                             // Balloon and blue base comms always established (blue base is the only soasite)
                             actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = true;
                         }
-                        else if (soaActor.type == (int)SoaActor.ActorType.BALLOON || neighborActor.type == (int)SoaActor.ActorType.BALLOON)
+                        else
                         {
                             // Balloons cant talk to anyone else except for blue base
                             actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = false;
                         }
-                        else
-                        {
-                            // Get neighbor position in km
-                            Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
-                            Vector3 neighborPos = new Vector3(
-                                (float)neighbor.getPos_x(),
-                                (float)neighborActor.simAltitude_km,
-                                (float)neighbor.getPos_z());
-
-                            float rx_tx_range = Vector3.Distance(actorPos, neighborPos);
-                            float rangeSquared = Mathf.Pow(rx_tx_range, 2);
-                            float snr = Mathf.Pow(soaActor.commsRange, 2f) / (rangeSquared * (1 + jammerNoiseSummation));
-
-                            // Compare calculated SNR value to 1.  Comms are 100% reliable at 1
-                            actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] =
-                                snr > 1f;
-                        }
                     }
-                }
-                else
-                {
-                    Debug.LogError("Could not find actor " + soaActor.unique_id + " in " + room);
+                    else
+                    {
+                        // Get neighbor truth coordinates in km
+                        Vector3 neighborPos_km = new Vector3(
+                            neighborActor.gameObject.transform.position.x / SimControl.KmToUnity,
+                            neighborActor.simAltitude_km,
+                            neighborActor.gameObject.transform.position.z / SimControl.KmToUnity);
+
+                        float rx_tx_range_km = Vector3.Distance(actorPos_km, neighborPos_km);
+                        float rangeSquared_km2 = rx_tx_range_km * rx_tx_range_km;
+                        float snr = (soaActor.commsRange_km * soaActor.commsRange_km) / (rangeSquared_km2 * (1 + jammerNoiseSummation));
+
+                        // Compare calculated SNR value to 1.  Comms are 100% reliable at 1
+                        actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = (snr >= 1);
+                    }
                 }
             }
         }

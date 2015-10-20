@@ -51,7 +51,7 @@ public class SoaActor : MonoBehaviour
     public bool isWeaponized;
     public bool hasJammer;
     public float fuelRemaining_s;
-    public float commsRange;
+    public float commsRange_km;
 
     public SoaSensor[] Sensors;
     public SoaWeapon[] Weapons;
