@@ -176,22 +176,35 @@ namespace soa
 
                     foreach (SoaActor neighborActor in actors)
                     {
-                        // Get neighbor position in km
-                      
-                        Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
-                        Vector3 neighborPos = new Vector3(
-                            (float)neighbor.getPos_x(),
-                            (float)neighborActor.simAltitude_km,
-                            (float)neighbor.getPos_z());
+                        // Add in exception for balloon to blue base comms
+                        if (soaActor is SoaSite && neighborActor.type == (int)SoaActor.ActorType.BALLOON ||
+                            neighborActor is SoaSite && soaActor.type == (int)SoaActor.ActorType.BALLOON)
+                        {
+                            // Balloon and blue base comms always established (blue base is the only soasite)
+                            actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = true;
+                        }
+                        else if (soaActor.type == (int)SoaActor.ActorType.BALLOON || neighborActor.type == (int)SoaActor.ActorType.BALLOON)
+                        {
+                            // Balloons cant talk to anyone else except for blue base
+                            actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = false;
+                        }
+                        else
+                        {
+                            // Get neighbor position in km
+                            Belief_Actor neighbor = (Belief_Actor)actorDictionary[neighborActor.unique_id];
+                            Vector3 neighborPos = new Vector3(
+                                (float)neighbor.getPos_x(),
+                                (float)neighborActor.simAltitude_km,
+                                (float)neighbor.getPos_z());
 
-                        
-                        float rx_tx_range = Vector3.Distance(actorPos, neighborPos);
-                        float rangeSquared = Mathf.Pow(rx_tx_range,2);
-                        float snr = Mathf.Pow(soaActor.commsRange,2f) / (rangeSquared * (1 + jammerNoiseSummation));
+                            float rx_tx_range = Vector3.Distance(actorPos, neighborPos);
+                            float rangeSquared = Mathf.Pow(rx_tx_range, 2);
+                            float snr = Mathf.Pow(soaActor.commsRange, 2f) / (rangeSquared * (1 + jammerNoiseSummation));
 
-                        // Compare calculated SNR value to 1.  Comms are 100% reliable at 1
-                        actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = 
-                            snr > 1f;
+                            // Compare calculated SNR value to 1.  Comms are 100% reliable at 1
+                            actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] =
+                                snr > 1f;
+                        }
                     }
                 }
                 else
