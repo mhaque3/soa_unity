@@ -16,7 +16,6 @@ namespace soa
         public float probRedDismountHasWeapon;
         public float probRedTruckHasWeapon;
         public float probRedTruckHasJammer;
-        public float jammerRange;
 
         // Logger configuration
         public string loggerOutputFile;
@@ -37,6 +36,10 @@ namespace soa
         public Dictionary<string, List<PerceptionModality>> defaultSensorModalities;
         public Dictionary<string, List<PerceptionModality>> defaultClassifierModalities;
 
+        // Default comms/jamming
+        public Dictionary<string, float> defaultCommsRanges;
+        public Dictionary<string, float> defaultJammerRanges;
+
         public SoaConfig()
         {
             localPlatforms = new List<PlatformConfig>();
@@ -44,6 +47,8 @@ namespace soa
             defaultSensorBeamwidths = new Dictionary<string, float>();
             defaultSensorModalities = new Dictionary<string, List<PerceptionModality>>();
             defaultClassifierModalities = new Dictionary<string, List<PerceptionModality>>();
+            defaultCommsRanges = new Dictionary<string, float>();
+            defaultJammerRanges = new Dictionary<string, float>();
         }
     }
 
@@ -123,7 +128,7 @@ namespace soa
         public bool GetUseDefaultClassifierModalities()
         {
             return useDefaultClassifierModalities;
-        }
+        }     
     }
 
     // Red dismount config
@@ -131,10 +136,12 @@ namespace soa
     {
         public bool hasWeapon;
         public string initialWaypoint;
+        public float commsRange_km;
         public RedDismountConfig(float x_km, float y_km, float z_km, int id,
-            string initialWaypoint, bool hasWeapon)
+            string initialWaypoint, bool hasWeapon, float commsRange_km)
             : base(x_km, y_km, z_km, id)
         {
+            this.commsRange_km = commsRange_km;
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
         }
@@ -146,16 +153,18 @@ namespace soa
     {
         public bool hasWeapon;
         public bool hasJammer;
-        public float jammerRange;
+        public float commsRange_km;
+        public float jammerRange_km;
         public string initialWaypoint;
         public RedTruckConfig(float x_km, float y_km, float z_km, int id,
-            string initialWaypoint, bool hasWeapon, bool hasJammer, float jammerRange)
+            string initialWaypoint, bool hasWeapon, bool hasJammer,  float commsRange_km, float jammerRange_km)
             : base(x_km, y_km, z_km, id)
         {
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
             this.hasJammer = hasJammer;
-            this.jammerRange = jammerRange;
+            this.commsRange_km = commsRange_km;
+            this.jammerRange_km = jammerRange_km;
         }
         public override ConfigType GetConfigType() { return ConfigType.RED_TRUCK; }
     }
@@ -179,16 +188,21 @@ namespace soa
     // Blue police config
     public class BluePoliceConfig : PlatformConfig
     {
-        public BluePoliceConfig(float x_km, float y_km, float z_km, int id)
-            : base(x_km, y_km, z_km, id) { }
+        public float commsRange_km;
+        public BluePoliceConfig(float x_km, float y_km, float z_km, int id, float commsRange_km)
+            : base(x_km, y_km, z_km, id) {
+                this.commsRange_km = commsRange_km;
+        }
         public override ConfigType GetConfigType() { return ConfigType.BLUE_POLICE; }
     }
 
     // Heavy UAV config
     public class HeavyUAVConfig : PlatformConfig
     {
-        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id)
+        public float commsRange_km;
+        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km)
             : base(x_km, y_km, z_km, id) {
+                this.commsRange_km = commsRange_km;
         }
         public override ConfigType GetConfigType() { return ConfigType.HEAVY_UAV; }
     }
@@ -196,8 +210,11 @@ namespace soa
     // Small UAV config
     public class SmallUAVConfig : PlatformConfig
     {
-        public SmallUAVConfig(float x_km, float y_km, float z_km, int id)
-            : base(x_km, y_km, z_km, id) { }
+        public float commsRange_km;
+        public SmallUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km)
+            : base(x_km, y_km, z_km, id) {
+                this.commsRange_km = commsRange_km;
+        }
         public override ConfigType GetConfigType() { return ConfigType.SMALL_UAV; }
     }
 

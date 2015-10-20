@@ -113,7 +113,8 @@ public class RedTruckSim : MonoBehaviour
                 null,
                 Random.value <= simControlScript.probRedTruckHasWeapon,
                 Random.value <= simControlScript.probRedTruckHasJammer,
-                simControlScript.jammerRange);
+                simControlScript.defaultCommsRanges["RedTruck"],
+                simControlScript.defaultJammerRanges["RedTruck"]);
 
             // Instantiate and activate a replacement
             simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c, true));

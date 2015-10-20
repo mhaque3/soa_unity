@@ -339,15 +339,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 131948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9821324b294691e49b3c7a567067505a, type: 3}
+  m_Script: {fileID: 11500000, guid: 84d7b966b46371e478a366ea6818d96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
-  gimbaled: 1
-  beamwidthDeg: 4
-  boresightUnitVector: {x: 0, y: -1, z: 0}
 --- !u!114 &11456586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -368,6 +365,7 @@ MonoBehaviour:
   waypointEpsilon: 0
   waypoints: []
   waypointIndex: 0
+  TeleportFromLastWaypoint: 0
   targetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11458356
 MonoBehaviour:
@@ -401,11 +399,12 @@ MonoBehaviour:
   isAlive: 1
   isCarrying: 0
   isWeaponized: 0
+  hasJammer: 0
   fuelRemaining_s: 0
   commsRange: 10
   Sensors: []
   Weapons: []
-  Jammers: []
+  jammer: {fileID: 0}
   Classifiers: []
   Detections: []
   Tracks: []

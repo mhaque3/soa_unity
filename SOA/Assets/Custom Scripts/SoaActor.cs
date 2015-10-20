@@ -135,9 +135,9 @@ public class SoaActor : MonoBehaviour
             }
         }
 
-	// Determine whether the actor has a jammer that is active
-	jammer = transform.GetComponentInChildren<SoaJammer>();
-	hasJammer = jammer.isOn;
+    	// Determine whether the actor has a jammer that is active
+	    jammer = transform.GetComponentInChildren<SoaJammer>();
+	    hasJammer = jammer != null && jammer.isOn;
 
         // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();

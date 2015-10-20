@@ -111,7 +111,8 @@ public class RedDismountSim : MonoBehaviour
                 retreatBasePosition.z / SimControl.KmToUnity,
                 -1,
                 null,
-                Random.value <= simControlScript.probRedDismountHasWeapon);
+                Random.value <= simControlScript.probRedDismountHasWeapon,
+                simControlScript.defaultCommsRanges["RedDismount"]);
 
             // Instantiate and activate a replacement
             simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c, true));

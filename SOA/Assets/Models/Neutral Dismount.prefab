@@ -5520,7 +5520,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 135260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a5be80cdb2c6cd408de1cca1b7ce3a3, type: 3}
+  m_Script: {fileID: 11500000, guid: a757bbc561df5134d9db956e51bd6c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PathUpdateInterval: 10
@@ -5557,11 +5557,12 @@ MonoBehaviour:
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
+  hasJammer: 0
   fuelRemaining_s: 0
   commsRange: 0
   Sensors: []
   Weapons: []
-  Jammers: []
+  jammer: {fileID: 0}
   Classifiers: []
   Detections: []
   Tracks: []
@@ -5570,6 +5571,7 @@ MonoBehaviour:
   displayTruePosition: 1
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
+  wpMotionScript: {fileID: 0}
   navAgent: {fileID: 0}
 --- !u!114 &11497348
 MonoBehaviour:

@@ -83,6 +83,14 @@ namespace soa
                         // Classifier default configuration
                         ParsePerceptionDefaults(c, soaConfig.defaultClassifierModalities);
                         break;
+                    case "CommsDefaults":
+                        // Comms default configuration
+                        ParseCommsDefaults(c, soaConfig.defaultCommsRanges);
+                        break;
+                    case "JammerDefaults":
+                        // Jammer default configuration
+                        ParseJammerDefaults(c, soaConfig.defaultJammerRanges);
+                        break;
                 }
             }
 
@@ -277,6 +285,86 @@ namespace soa
             }
         }
 
+        // Parse comms defaults
+        private static void ParseCommsDefaults(XmlNode node, Dictionary<string, float> d)
+        {
+            // Go through each child node
+            foreach (XmlNode c in node.ChildNodes)
+            {
+                try
+                {
+                    switch (c.Name)
+                    {
+                        case "Node":
+                            String s = GetStringAttribute(c, "tag", null);
+                            if (s != null)
+                            {
+                                d[s] = GetFloatAttribute(c, "commsRange_km", 0.0f); // Get user defined default
+                            }
+                            break;
+                        default:
+                            if (c.Name != "#comment")
+                            {
+                                #if(UNITY_STANDALONE)
+                                Debug.LogWarning("SoaConfigXMLReader::ParseCommsDefaults(): Unrecognized node " + c.Name);
+                                #else
+                                Console.WriteLine("SoaConfigXMLReader::ParseCommsDefaults(): Unrecognized node " + c.Name);
+                                #endif
+                            }
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    #if(UNITY_STANDALONE)
+                    Debug.LogError("SoaConfigXMLReader::ParseCommsDefaults(): Error parsing " + c.Name);
+                    #else
+                    Console.WriteLine("SoaConfigXMLReader::ParseCommsDefaults(): Error parsing " + c.Name);
+                    #endif
+                }
+            }
+        }
+
+        // Parse jammer defaults
+        private static void ParseJammerDefaults(XmlNode node, Dictionary<string, float> d)
+        {
+            // Go through each child node
+            foreach (XmlNode c in node.ChildNodes)
+            {
+                try
+                {
+                    switch (c.Name)
+                    {
+                        case "Node":
+                            String s = GetStringAttribute(c, "tag", null);
+                            if (s != null)
+                            {
+                                d[s] = GetFloatAttribute(c, "jammerRange_km", 0.0f); // Get user defined default
+                            }
+                            break;
+                        default:
+                            if (c.Name != "#comment")
+                            {
+                                #if(UNITY_STANDALONE)
+                                Debug.LogWarning("SoaConfigXMLReader::ParseJammerDefaults(): Unrecognized node " + c.Name);
+                                #else
+                                Console.WriteLine("SoaConfigXMLReader::ParseJammerDefaults(): Unrecognized node " + c.Name);
+                                #endif
+                            }
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    #if(UNITY_STANDALONE)
+                    Debug.LogError("SoaConfigXMLReader::ParseJammerDefaults(): Error parsing " + c.Name);
+                    #else
+                    Console.WriteLine("SoaConfigXMLReader::ParseJammerDefaults(): Error parsing " + c.Name);
+                    #endif
+                }
+            }
+        }
+
         // Local platform category parsing
         private static void ParseLocal(XmlNode node, SoaConfig soaConfig)
         {
@@ -284,7 +372,7 @@ namespace soa
             System.Random rand = new System.Random();
 
             // Go through each child node
-            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1); // Dummy value
+            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1, 0.0f); // Dummy value
             bool newConfigValid;
             foreach (XmlNode c in node.ChildNodes)
 			{
@@ -302,7 +390,8 @@ namespace soa
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
                                     GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountHasWeapon)
+                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountHasWeapon),
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["RedDismount"])
                                 );
                             }
                             break;
@@ -316,7 +405,8 @@ namespace soa
                                     GetStringAttribute(c, "initialWaypoint", null),
                                     GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckHasWeapon),
                                     GetBooleanAttribute(c, "hasJammer", rand.NextDouble() <= soaConfig.probRedTruckHasJammer),
-                                    GetFloatAttribute(c, "jammerRange", 0)
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["RedTruck"]),
+                                    GetFloatAttribute(c, "jammerRange_km", soaConfig.defaultCommsRanges["RedTruck"])
                                 );
                             }
                             break;
@@ -346,7 +436,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1)
+                                    GetIntAttribute(c, "id", -1),
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["BluePolice"])
                                 );
                             }
                             break;
@@ -412,23 +503,23 @@ namespace soa
                     {
                         case "HeavyUAV":
                             {
-                                
                                 newConfig = new HeavyUAVConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1)
+                                    GetIntAttribute(c, "id", -1),
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["HeavyUAV"])
                                 );
                             }
                             break;
                         case "SmallUAV":
                             {
-                                
                                 newConfig = new SmallUAVConfig(
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1)
+                                    GetIntAttribute(c, "id", -1),
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["SmallUAV"])
                                 );
                             }
                             break;

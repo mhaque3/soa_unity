@@ -82,7 +82,8 @@ public class SimControl : MonoBehaviour
     public float probRedTruckHasWeapon;
     public float probRedTruckHasJammer;
     public float probRedDismountHasWeapon;
-    public float jammerRange;
+    public Dictionary<string, float> defaultCommsRanges;
+    public Dictionary<string, float> defaultJammerRanges;
 
     // For updates
     int randDraw;
@@ -253,8 +254,9 @@ public class SimControl : MonoBehaviour
         probRedDismountHasWeapon = soaConfig.probRedDismountHasWeapon;
         probRedTruckHasJammer = soaConfig.probRedTruckHasJammer;
 
-        // RedTruck jammer range
-        jammerRange = soaConfig.jammerRange;
+        // Comms and jammer range defaults
+        defaultCommsRanges = soaConfig.defaultCommsRanges;
+        defaultJammerRanges = soaConfig.defaultJammerRanges;
 
         // Network settings
         networkRedRoom = soaConfig.networkRedRoom;
@@ -889,7 +891,7 @@ public class SimControl : MonoBehaviour
         PrimitivePair<int, int> gridPos = gridMath.WorldToGrid(worldPos);
         GridCell initialCell = new GridCell(gridPos.second, gridPos.first);
 
-        Debug.Log("Cell location " + initialCell.getCol() + " " + initialCell.getRow());
+        //Debug.Log("Cell location " + initialCell.getCol() + " " + initialCell.getRow());
         // Check against cell types
         bool found = false;
 
@@ -950,6 +952,9 @@ public class SimControl : MonoBehaviour
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "HeavyUAV");
 
+            // Set comms capabilities
+            a.commsRange = c.commsRange_km;
+
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
             return g;
@@ -985,6 +990,9 @@ public class SimControl : MonoBehaviour
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "SmallUAV");
+
+            // Set comms capabilities
+            a.commsRange = c.commsRange_km;
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
@@ -1130,6 +1138,9 @@ public class SimControl : MonoBehaviour
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "RedDismount");
 
+            // Set comms capabilities
+            a.commsRange = c.commsRange_km;
+
             // Add to list of local platforms
             LocalPlatforms.Add(g);
             return g;
@@ -1145,7 +1156,7 @@ public class SimControl : MonoBehaviour
     {
         // Proposed initial position
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
-        Debug.Log("Initial pos " + newPos.ToString());
+        //Debug.Log("Initial pos " + newPos.ToString());
 
         // Red truck can only traverse on land, not water or mountains
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
@@ -1194,12 +1205,15 @@ public class SimControl : MonoBehaviour
                 wm.enabled = c.hasWeapon;
             }
 
-            //Jammer
+            // Set comms capabilities
+            a.commsRange = c.commsRange_km;
+
+            // Set jammer capabilties
             SoaJammer jammer = g.GetComponentInChildren<SoaJammer>();
-            jammer.effectiveRange = c.jammerRange;
+            jammer.effectiveRange = c.jammerRange_km;
             jammer.isOn = c.hasJammer;
             jammers.Add(jammer);
-            Debug.Log("Has jammer " + jammer.isOn + ", effective range" + jammer.effectiveRange);
+            Debug.Log("Has jammer " + jammer.isOn + ", effective range " + jammer.effectiveRange);
             Debug.Log("Jammer list size: " + jammers.Count);
 
             // Set perception capabilities
@@ -1312,6 +1326,9 @@ public class SimControl : MonoBehaviour
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "BluePolice");
+
+            // Set comms capabilities
+            a.commsRange = c.commsRange_km;
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);

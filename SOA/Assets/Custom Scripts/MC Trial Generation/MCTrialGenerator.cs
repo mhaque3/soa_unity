@@ -227,6 +227,22 @@ namespace soa
         }
         #endregion
 
+        #region Comms Defaults
+        public void SetCommsDefaults(SoaConfig soaConfig)
+        {
+            soaConfig.defaultCommsRanges["RedDismount"] = 5.0f;
+            soaConfig.defaultCommsRanges["RedTruck"] = 5.0f;
+            soaConfig.defaultCommsRanges["BluePolice"] = 10.0f;
+            soaConfig.defaultCommsRanges["HeavyUAV"] = 10.0f;
+            soaConfig.defaultCommsRanges["SmallUAV"] = 10.0f;
+        }
+
+        public void SetJammerDefaults(SoaConfig soaConfig)
+        {
+            soaConfig.defaultJammerRanges["RedTruck"] = 2.0f;
+        }
+        #endregion
+
         #region Platform Laydown
         public void InitializeLocalLaydown()
         {
@@ -466,6 +482,10 @@ namespace soa
                 SetSensorDefaults(soaConfig);
                 SetClassifierDefaults(soaConfig);
 
+                // Set comms / jammer defaults
+                SetCommsDefaults(soaConfig);
+                SetJammerDefaults(soaConfig);
+
                 // Local units: Red Dismount
                 randomizedPositions = RandomizeLaydown(redDismountLaydown);
                 for (int i = 0; i < randomizedPositions.Count; i++)
@@ -476,7 +496,8 @@ namespace soa
                         randomizedPositions[i].third,  // z
                         -1, // id
                         "null", // initialWaypoint
-                        (rand.NextDouble() <= probRedDismountHasWeapon) // hasWeapon
+                        (rand.NextDouble() <= probRedDismountHasWeapon), // hasWeapon
+                        soaConfig.defaultCommsRanges["RedDismount"]
                         ));
                 }
 
@@ -490,9 +511,10 @@ namespace soa
                         randomizedPositions[i].third,  // z
                         -1, // id
                         "null", // initialWaypoint
-                        (rand.NextDouble() <= probRedDismountHasWeapon), // hasWeapon
+                        (rand.NextDouble() <= probRedTruckHasWeapon), // hasWeapon
                         (rand.NextDouble() <= probRedTruckHasJammer), // has Jammer on
-                         jammerRange// Jammer range
+                        soaConfig.defaultCommsRanges["RedTruck"],
+                        soaConfig.defaultJammerRanges["RedTruck"]
                         ));
                 }
 
@@ -528,7 +550,8 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1 // id
+                        -1, // id
+                        soaConfig.defaultCommsRanges["BluePolice"]
                         ));
                 }
 
@@ -540,7 +563,8 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        availableRemoteID++ // id
+                        availableRemoteID++, // id
+                        soaConfig.defaultCommsRanges["HeavyUAV"]
                         ));
                 }
 
@@ -552,7 +576,8 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        availableRemoteID++ // id
+                        availableRemoteID++, // id
+                        soaConfig.defaultCommsRanges["SmallUAV"]
                         ));
                 }
 
