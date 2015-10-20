@@ -76,7 +76,7 @@ public class SoaSensor : MonoBehaviour
     {
         soaActor.killDetections.Add(new soa.Belief_Actor(
             killedActor.unique_id, (int)killedActor.affiliation, killedActor.type, 
-            false, (int)killedActor.isCarrying, killedActor.isWeaponized, killedActor.fuelRemaining_s,
+            false, (int)killedActor.isCarrying, killedActor.isWeaponized, killedActor.hasJammer, killedActor.fuelRemaining_s,
             killedActor.transform.position.x / SimControl.KmToUnity,
             killedActor.simAltitude_km,
             killedActor.transform.position.z / SimControl.KmToUnity));

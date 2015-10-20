@@ -493,7 +493,7 @@ public class SoaActor : MonoBehaviour
                 addMyBeliefData(new soa.Belief_Actor(
                     belief_actor.getId(), (int)belief_actor.getAffiliation(), 
                     belief_actor.getType(), false, 0, 
-                    belief_actor.getIsWeaponized(), belief_actor.getFuelRemaining(),
+                    belief_actor.getIsWeaponized(), belief_actor.getHasJammer(), belief_actor.getFuelRemaining(),
                     belief_actor.getPos_x(),
                     belief_actor.getPos_y(),
                     belief_actor.getPos_z()));

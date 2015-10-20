@@ -14,7 +14,7 @@ namespace soa
         private bool isAlive;
         private int isCarrying;
         private bool isWeaponized;
-        private bool hasjammer;
+        private bool hasJammer;
         private float fuelRemaining;
         private float pos_x;
         private float pos_y;

@@ -88,9 +88,10 @@ namespace soa
             configNode.AppendChild(node);
 
             // Add attributes
-            AddAttribute(xmlDoc, node, "gameDurationMin", soaConfig.gameDurationMin.ToString());
-            AddAttribute(xmlDoc, node, "probRedDismountWeaponized", soaConfig.probRedDismountWeaponized.ToString());
-            AddAttribute(xmlDoc, node, "probRedTruckWeaponized",    soaConfig.probRedTruckWeaponized.ToString());
+            AddAttribute(xmlDoc, node, "gameDurationHr", soaConfig.gameDurationHr.ToString());
+            AddAttribute(xmlDoc, node, "probRedDismountHasWeapon", soaConfig.probRedDismountHasWeapon.ToString());
+            AddAttribute(xmlDoc, node, "probRedTruckHasWeapon",    soaConfig.probRedTruckHasWeapon.ToString());
+            AddAttribute(xmlDoc, node, "probRedTruckHasJammer",    soaConfig.probRedTruckHasJammer.ToString());
         }
 
         private static void PopulatePerceptionDefaults(XmlDocument xmlDoc, XmlNode configNode, 

@@ -8,10 +8,10 @@ namespace soa
     public class MCTrialGenerator
     {
         /******************** SIMULATION *********************/
-        const float gameDurationMin = 15.0f;
-        const float probRedDismountWeaponized = 0.5f;
-        const float probRedTruckWeaponized = 0.5f;
-        const float probRedTruckJammer = 0.5f;
+        const float gameDurationHr = 15.0f;
+        const float probRedDismountHasWeapon = 0.5f;
+        const float probRedTruckHasWeapon = 0.5f;
+        const float probRedTruckHasJammer = 0.5f;
         const float jammerRange = 2f;
 
         /******************** ENVIRONMENT ********************/
@@ -451,9 +451,10 @@ namespace soa
                 soaConfig.networkBlueRoom = networkBlueRoomHeader + trial.ToString(toStringFormat);
 
                 // Simulation configuration
-                soaConfig.gameDurationMin = gameDurationMin;
-                soaConfig.probRedDismountWeaponized = probRedDismountWeaponized;
-                soaConfig.probRedTruckWeaponized = probRedTruckWeaponized;
+                soaConfig.gameDurationHr = gameDurationHr;
+                soaConfig.probRedDismountHasWeapon = probRedDismountHasWeapon;
+                soaConfig.probRedTruckHasWeapon = probRedTruckHasWeapon;
+                soaConfig.probRedTruckHasJammer = probRedTruckHasJammer;
 
                 // Logger configuration
                 soaConfig.loggerOutputFile = soaLoggerFileHeader + trial.ToString(toStringFormat) + ".xml";
@@ -475,7 +476,7 @@ namespace soa
                         randomizedPositions[i].third,  // z
                         -1, // id
                         "null", // initialWaypoint
-                        (rand.NextDouble() <= probRedDismountWeaponized) // hasWeapon
+                        (rand.NextDouble() <= probRedDismountHasWeapon) // hasWeapon
                         ));
                 }
 
@@ -489,8 +490,8 @@ namespace soa
                         randomizedPositions[i].third,  // z
                         -1, // id
                         "null", // initialWaypoint
-                        (rand.NextDouble() <= probRedDismountWeaponized), // hasWeapon
-                        (rand.NextDouble() <= probRedTruckJammer), // has Jammer on
+                        (rand.NextDouble() <= probRedDismountHasWeapon), // hasWeapon
+                        (rand.NextDouble() <= probRedTruckHasJammer), // has Jammer on
                          jammerRange// Jammer range
                         ));
                 }
