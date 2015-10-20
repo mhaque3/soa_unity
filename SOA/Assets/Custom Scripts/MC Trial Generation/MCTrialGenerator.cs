@@ -14,6 +14,10 @@ namespace soa
         const float probRedTruckHasJammer = 0.5f;
         const float jammerRange = 2f;
 
+        /*********************** FUEL ************************/
+        const float heavyUAVFuelTankSize_s = 10000;
+        const float smallUAVFuelTankSize_s = 10000;
+
         /******************** ENVIRONMENT ********************/
         const string envConfigFile = "SoaEnvConfig.xml";
 
@@ -466,6 +470,10 @@ namespace soa
                 soaConfig.networkRedRoom = networkRedRoomHeader + trial.ToString(toStringFormat);
                 soaConfig.networkBlueRoom = networkBlueRoomHeader + trial.ToString(toStringFormat);
 
+                // Populate fuel
+                soaConfig.smallUAVFuelTankSize_s = smallUAVFuelTankSize_s;
+                soaConfig.heavyUAVFuelTankSize_s = heavyUAVFuelTankSize_s;
+
                 // Simulation configuration
                 soaConfig.gameDurationHr = gameDurationHr;
                 soaConfig.probRedDismountHasWeapon = probRedDismountHasWeapon;
@@ -564,7 +572,8 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         availableRemoteID++, // id
-                        soaConfig.defaultCommsRanges["HeavyUAV"]
+                        soaConfig.defaultCommsRanges["HeavyUAV"],
+                        soaConfig.heavyUAVFuelTankSize_s
                         ));
                 }
 
@@ -577,7 +586,8 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         availableRemoteID++, // id
-                        soaConfig.defaultCommsRanges["SmallUAV"]
+                        soaConfig.defaultCommsRanges["SmallUAV"],
+                        soaConfig.smallUAVFuelTankSize_s
                         ));
                 }
 

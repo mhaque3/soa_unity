@@ -954,6 +954,10 @@ public class SimControl : MonoBehaviour
 
             // Set comms capabilities
             a.commsRange = c.commsRange_km;
+            
+            // Set fuel tank size
+            HeavyUAVSim h = g.GetComponent<HeavyUAVSim>();
+            h.fuelTankSize_s = c.fuelTankSize_s;
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
@@ -993,6 +997,10 @@ public class SimControl : MonoBehaviour
 
             // Set comms capabilities
             a.commsRange = c.commsRange_km;
+
+            // Set fuel tank size
+            SmallUAVSim s = g.GetComponent<SmallUAVSim>();
+            s.fuelTankSize_s = c.fuelTankSize_s;
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);

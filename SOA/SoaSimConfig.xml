@@ -21,6 +21,12 @@
        probRedTruckHasJammer    ="0.5"
   />
 
+  <!-- Fuel Settings -->
+  <Fuel
+       heavyUAVFuelTankSize_s   ="10000"
+       smallUAVFuelTankSize_s   ="40000"
+  />
+
   <!-- Sensor Default Settings -->
   <SensorDefaults>
      <RedDismount>

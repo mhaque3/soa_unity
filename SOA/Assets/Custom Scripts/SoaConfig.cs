@@ -40,6 +40,10 @@ namespace soa
         public Dictionary<string, float> defaultCommsRanges;
         public Dictionary<string, float> defaultJammerRanges;
 
+        // Fuel settings
+        public float heavyUAVFuelTankSize_s;
+        public float smallUAVFuelTankSize_s;
+
         public SoaConfig()
         {
             localPlatforms = new List<PlatformConfig>();
@@ -200,9 +204,11 @@ namespace soa
     public class HeavyUAVConfig : PlatformConfig
     {
         public float commsRange_km;
-        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km)
+        public float fuelTankSize_s;
+        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km, float fuelTankSize_s)
             : base(x_km, y_km, z_km, id) {
                 this.commsRange_km = commsRange_km;
+                this.fuelTankSize_s = fuelTankSize_s;
         }
         public override ConfigType GetConfigType() { return ConfigType.HEAVY_UAV; }
     }
@@ -211,9 +217,11 @@ namespace soa
     public class SmallUAVConfig : PlatformConfig
     {
         public float commsRange_km;
-        public SmallUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km)
+        public float fuelTankSize_s;
+        public SmallUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km, float fuelTankSize_s)
             : base(x_km, y_km, z_km, id) {
                 this.commsRange_km = commsRange_km;
+                this.fuelTankSize_s = fuelTankSize_s;
         }
         public override ConfigType GetConfigType() { return ConfigType.SMALL_UAV; }
     }

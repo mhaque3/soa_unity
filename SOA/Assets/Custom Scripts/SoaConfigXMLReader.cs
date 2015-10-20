@@ -74,6 +74,10 @@ namespace soa
                         // Simulation configuration
                         ParseSimulation(c, soaConfig);
                         break;
+                    case "Fuel":
+                        // Fuel configuration
+                        ParseFuel(c, soaConfig);
+                        break;
                     case "SensorDefaults":
                         // Sensor default configuration
                         ParseBeamwidthDefaults(c, soaConfig.defaultSensorBeamwidths);
@@ -179,6 +183,25 @@ namespace soa
                 Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
                 #else
                 Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                #endif
+            }
+        }
+
+        // Fuel configuration category parsing
+        private static void ParseFuel(XmlNode node, SoaConfig soaConfig)
+        {
+            // Pull attributes directly from the node
+            try
+            {
+                soaConfig.heavyUAVFuelTankSize_s = GetFloatAttribute(node, "heavyUAVFuelTankSize_s", 10000);
+                soaConfig.smallUAVFuelTankSize_s = GetFloatAttribute(node, "smallUAVFuelTankSize_s", 40000);
+            }
+            catch (Exception)
+            {
+                #if(UNITY_STANDALONE)
+                Debug.LogError("SoaConfigXMLReader::ParseFuel(): Error parsing " + node.Name);
+                #else
+                Console.WriteLine("SoaConfigXMLReader::ParseFuel(): Error parsing " + node.Name);
                 #endif
             }
         }
@@ -508,7 +531,8 @@ namespace soa
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["HeavyUAV"])
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["HeavyUAV"]),
+                                    soaConfig.heavyUAVFuelTankSize_s
                                 );
                             }
                             break;
@@ -519,7 +543,8 @@ namespace soa
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["SmallUAV"])
+                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["SmallUAV"]),
+                                    soaConfig.smallUAVFuelTankSize_s
                                 );
                             }
                             break;
