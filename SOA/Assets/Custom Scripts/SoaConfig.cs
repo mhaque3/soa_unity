@@ -290,8 +290,27 @@ namespace soa
     // Blue balloon config
     public class BlueBalloonConfig : PlatformConfig
     {
-        public BlueBalloonConfig(float x_km, float y_km, float z_km, int id)
-            : base(x_km, y_km, z_km, id) { }
+        public List<PrimitivePair<float, float>> waypoints_km;
+        public bool teleportLoop;
+        public BlueBalloonConfig(int id, List<PrimitivePair<float, float>> waypoints_km, bool teleportLoop)
+            : base(0, 0, 0, id) 
+        {
+            // Copy list of coordinates
+            this.waypoints_km = new List<PrimitivePair<float, float>>();
+            foreach(PrimitivePair<float,float> waypoint_km in waypoints_km){
+                this.waypoints_km.Add(new PrimitivePair<float,float>(waypoint_km.first, waypoint_km.second));
+            }
+
+            // Set coordinates as first waypoint if applicable
+            if (this.waypoints_km.Count > 0)
+            {
+                this.x_km = waypoints_km[0].first;
+                this.z_km = waypoints_km[0].second;
+            }
+
+            // Copy other data
+            this.teleportLoop = teleportLoop;
+        }
         public override ConfigType GetConfigType() { return ConfigType.BLUE_BALLOON; }
     }
 #endregion

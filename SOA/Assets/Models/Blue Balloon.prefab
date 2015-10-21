@@ -342,6 +342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d7b966b46371e478a366ea6818d96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beamwidthDeg: 0
+  boresightUnitVector: {x: 0, y: 0, z: 0}
   modes: []
   soaActor: {fileID: 0}
   possibleDetections: []
@@ -353,17 +355,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 164890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4f5e515e8ecad348a29b1569503291f, type: 3}
+  m_Script: {fileID: 11500000, guid: 21ce7b4b13aab5e47bd9ff1e9ca20358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   On: 1
   GroundHugger: 0
   AltitudeOffset: 2
   speed: .119999997
-  WaypointSlowFactor: 0
-  maxTurn: 0
-  waypointEpsilon: 0
-  waypoints: []
+  WaypointSlowFactor: 1
+  maxTurn: .00999999978
+  waypointEpsilon: 1
   waypointIndex: 0
   TeleportFromLastWaypoint: 0
   targetPosition: {x: 0, y: 0, z: 0}
@@ -401,7 +402,7 @@ MonoBehaviour:
   isWeaponized: 0
   hasJammer: 0
   fuelRemaining_s: 0
-  commsRange: 10
+  commsRange_km: 0
   Sensors: []
   Weapons: []
   jammer: {fileID: 0}
@@ -414,6 +415,7 @@ MonoBehaviour:
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
   wpMotionScript: {fileID: 0}
+  pcMotionScript: {fileID: 0}
   navAgent: {fileID: 0}
 --- !u!135 &13506932
 SphereCollider:
@@ -473,11 +475,43 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: speed
-      value: .119999997
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: targetPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waypointIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: TeleportFromLastWaypoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: targetPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: targetPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waypointEpsilon
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxTurn
+      value: .00999999978
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: WaypointSlowFactor
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

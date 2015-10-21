@@ -216,6 +216,9 @@
     <SmallUAV        x_km="1.178"     y_km="5.000"   z_km="-11.628"   id="104"/>
     
     <!-- Blue Balloons --> 
-    <BlueBalloon     x_km="0.481"     z_km="-9.696"  id="105"/>
+    <BlueBalloon     id="105"    teleportLoop="true">
+       <Waypoint x_km="-28" z_km="0" />
+       <Waypoint x_km="29"  z_km="0"  />
+    </BlueBalloon>
   </Remote>
 </SoaConfig>

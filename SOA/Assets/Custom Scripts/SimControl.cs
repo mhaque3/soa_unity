@@ -1187,11 +1187,19 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBlueBalloon(BlueBalloonConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, 15, c.z_km);
+        Vector3 newPos;
+        if (c.waypoints_km.Count > 0)
+        {
+            newPos = new Vector3(c.waypoints_km[0].first, 15, c.waypoints_km[0].second);
+        }
+        else
+        {
+            newPos = new Vector3(0, 15, 0);
+        }
         
         // Balloon can traverse on land, water, and mountains
         Vector3 snappedPos;
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true, out snappedPos))
+        if (true /*initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true, out snappedPos)*/)
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(BlueBalloonPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1207,6 +1215,25 @@ public class SimControl : MonoBehaviour
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "BlueBalloon");
          
+            // Set waypoints and looping properties
+            PlanarCoordinateMotion pcm = g.GetComponent<PlanarCoordinateMotion>();
+            if (c.waypoints_km.Count > 0)
+            {
+                // Copy over waypoints
+                foreach (PrimitivePair<float, float> pp in c.waypoints_km)
+                {
+                    pcm.AddWaypoint(new PrimitivePair<float,float>(pp.first * KmToUnity, pp.second * KmToUnity));
+                }
+
+                // Set whether to teleport
+                pcm.TeleportFromLastWaypoint = c.teleportLoop;
+            }
+            else
+            {
+                // Waypoint is to be stationary at origin
+                pcm.AddWaypoint(new PrimitivePair<float, float>(0, 0));
+            }
+
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
             return g;

@@ -596,10 +596,9 @@ namespace soa
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.remotePlatforms.Add(new BlueBalloonConfig(
-                        randomizedPositions[i].first, // x
-                        randomizedPositions[i].second, // y
-                        randomizedPositions[i].third,  // z
-                        availableRemoteID++ // id
+                        availableRemoteID++, // id
+                        new List<PrimitivePair<float,float>>(),
+                        false
                         ));
                 }
 

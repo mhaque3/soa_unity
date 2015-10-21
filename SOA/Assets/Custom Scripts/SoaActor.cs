@@ -83,6 +83,7 @@ public class SoaActor : MonoBehaviour
 
     public SoldierWaypointMotion motionScript;
     public WaypointMotion wpMotionScript;
+    public PlanarCoordinateMotion pcMotionScript;
     public NavMeshAgent navAgent;
     SimControl simControlScript;
 
@@ -142,6 +143,7 @@ public class SoaActor : MonoBehaviour
         // Get references to my motion and nav scripts
         motionScript = gameObject.GetComponent<SoldierWaypointMotion>();
         wpMotionScript = gameObject.GetComponent<WaypointMotion>();
+        pcMotionScript = gameObject.GetComponent<PlanarCoordinateMotion>();
         navAgent = gameObject.GetComponent<NavMeshAgent>();
 
         // Save reference to simControl
@@ -411,7 +413,7 @@ public class SoaActor : MonoBehaviour
                     motionScript.targetPosition.z / SimControl.KmToUnity);
                 addMyBeliefData(newWaypoint);
             }
-            else
+            else if (wpMotionScript != null)
             {
                 // Special case for blue balloon
                 // Convert position coordinates from unity to km before making new belief waypoint
@@ -419,6 +421,16 @@ public class SoaActor : MonoBehaviour
                     wpMotionScript.targetPosition.x / SimControl.KmToUnity,
                     desiredAltitude_km,
                     wpMotionScript.targetPosition.z / SimControl.KmToUnity);
+                addMyBeliefData(newWaypoint);
+            }
+            else
+            {
+                // Special case for blue balloon
+                // Convert position coordinates from unity to km before making new belief waypoint
+                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
+                    pcMotionScript.targetPosition.x / SimControl.KmToUnity,
+                    desiredAltitude_km,
+                    pcMotionScript.targetPosition.z / SimControl.KmToUnity);
                 addMyBeliefData(newWaypoint);
             }
 

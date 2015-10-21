@@ -635,11 +635,22 @@ namespace soa
                             break;
                         case "BlueBalloon":
                             {
+                                // Get list of waypoints
+                                List<PrimitivePair<float, float>> waypoints_km = new List<PrimitivePair<float, float>>();
+                                foreach(XmlNode g in c.ChildNodes){
+                                    switch (g.Name)
+                                    {
+                                        case "Waypoint":
+                                            waypoints_km.Add(new PrimitivePair<float, float>(GetFloatAttribute(g, "x_km", 0), GetFloatAttribute(g, "z_km", 0)));
+                                            break;                                            
+                                    }
+                                }
+
+                                // Create a Blue Balloon config
                                 newConfig = new BlueBalloonConfig(
-                                    GetFloatAttribute(c, "x_km", 0),
-                                    15, // Balloon only has one valid altitude, will get set upon instantiation
-                                    GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1)
+                                    GetIntAttribute(c, "id", -1),
+                                    waypoints_km,
+                                    GetBooleanAttribute(c, "teleportLoop", true)
                                 );
                             }
                             break;
