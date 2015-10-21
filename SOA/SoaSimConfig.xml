@@ -21,19 +21,6 @@
        probRedTruckHasJammer    ="0.5"
   />
 
-  <!-- Site Locations -->
-  <Sites>
-    <BlueBase name="BlueBase"     x_km="-16.892"    z_km="12.273" />
-    <RedBase  name="RedBase0"     x_km="-16.892"    z_km="12.273" />
-    <RedBase  name="RedBase1"     x_km="-16.892"    z_km="12.273" />
-    <RedBase  name="RedBase2"     x_km="-16.892"    z_km="12.273" />
-    <NGOSite  name="NGOSite0"     x_km="-16.892"    z_km="12.273" />
-    <NGOSite  name="NGOSite1"     x_km="-16.892"    z_km="12.273" />
-    <Village  name="Village0"     x_km="-16.892"    z_km="12.273" />
-    <Village  name="Village1"     x_km="-16.892"    z_km="12.273" />
-    <Village  name="Village2"     x_km="-16.892"    z_km="12.273" />
-  </Sites>  
-
   <!-- Fuel Settings -->
   <Fuel
        heavyUAVFuelTankSize_s   ="10000"
@@ -141,6 +128,7 @@
 
   <!-- Communication Default Settings -->
   <CommsDefaults>
+     <Node tag="BlueBase"     commsRange_km="10.0"/>
      <Node tag="RedDismount"  commsRange_km="5.0" />
      <Node tag="RedTruck"     commsRange_km="5.0" />
      <Node tag="BluePolice"   commsRange_km="10.0"/>
@@ -154,6 +142,19 @@
      <Node tag="RedTruck"     jammerRange_km="2.0"/>
      <!-- Only red truck entry is used -->
   </JammerDefaults>
+
+  <!-- Site Locations -->
+  <Sites>
+    <BlueBase name="BlueBase"     x_km="-16.892"    z_km="12.273" />
+    <RedBase  name="RedBase0"     x_km="-16.892"    z_km="12.273" />
+    <RedBase  name="RedBase1"     x_km="-16.892"    z_km="12.273" />
+    <RedBase  name="RedBase2"     x_km="-16.892"    z_km="12.273" />
+    <NGOSite  name="NGOSite0"     x_km="-16.892"    z_km="12.273" />
+    <NGOSite  name="NGOSite1"     x_km="-16.892"    z_km="12.273" />
+    <Village  name="Village0"     x_km="-16.892"    z_km="12.273" />
+    <Village  name="Village1"     x_km="-16.892"    z_km="12.273" />
+    <Village  name="Village2"     x_km="-16.892"    z_km="12.273" />
+  </Sites>  
 
   <!-- Local Platform Descriptions -->
   <Local>
@@ -178,7 +179,7 @@
 
     <!-- Red Trucks -->
     <RedTruck        x_km="-17.770"   z_km="12.758"
-       hasWeapon="false" initialWaypoint="Red Base 0" hasJammer="true" jammerRange_km="2"/>
+       hasWeapon="false" initialWaypoint="Red Base 0" hasJammer="true" jammerRange_km="2.0"/>
 
     <RedTruck        x_km="-1.300"    z_km="12.245"
        hasWeapon="true" initialWaypoint="Red Base 1"  hasJammer="false"/>
@@ -211,6 +212,6 @@
     <SmallUAV        x_km="1.178"     y_km="5.000"   z_km="-11.628"   id="104"/>
     
     <!-- Blue Balloons --> 
-    <BlueBalloon     x_km="0.481"     y_km="15.000"  z_km="-9.696"    id="105"/>
+    <BlueBalloon     x_km="0.481"     z_km="-9.696"  id="105"/>
   </Remote>
 </SoaConfig>

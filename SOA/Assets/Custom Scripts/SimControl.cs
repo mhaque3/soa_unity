@@ -1178,7 +1178,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBlueBalloon(BlueBalloonConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 15, c.z_km);
         
         // Balloon can traverse on land, water, and mountains
         Vector3 snappedPos;
@@ -1193,7 +1193,7 @@ public class SimControl : MonoBehaviour
             g.name = "Blue Balloon " + a.unique_id;
                       
             // Assign initial altitude
-            a.SetSimAltitude(c.y_km);
+            a.SetSimAltitude(15);
         
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "BlueBalloon");
@@ -1259,7 +1259,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedDismount(RedDismountConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
         
         // Red dismount can only traverse on land, not water or mountains
         Vector3 snappedPos;
@@ -1329,7 +1329,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedTruck(RedTruckConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
         //Debug.Log("Initial pos " + newPos.ToString());
 
         // Red truck can only traverse on land, not water or mountains
@@ -1409,7 +1409,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralDismount(NeutralDismountConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
         
         // Neutral dismount can only traverse on land, not water or mountains
         Vector3 snappedPos;
@@ -1447,7 +1447,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNeutralTruck(NeutralTruckConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
         
         // Neutral truck can only traverse on land, not water or mountains
         Vector3 snappedPos;
@@ -1485,7 +1485,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBluePolice(BluePoliceConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
         
         // Blue police can only traverse on land, not water or mountains
         Vector3 snappedPos;

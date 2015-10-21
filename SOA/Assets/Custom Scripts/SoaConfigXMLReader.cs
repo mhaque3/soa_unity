@@ -74,10 +74,6 @@ namespace soa
                         // Simulation configuration
                         ParseSimulation(c, soaConfig);
                         break;
-                    case "Sites":
-                        // Sites configuration
-                        ParseSites(c, soaConfig);
-                        break;
                     case "Fuel":
                         // Fuel configuration
                         ParseFuel(c, soaConfig);
@@ -102,14 +98,18 @@ namespace soa
                 }
             }
 
-            // Then look at local and remote platforms whose defaults may
-            // use information from network or simulation categories
+            // Then look at sites, local, and remote platforms whose defaults may
+            // use information from previously parsed categories
             // (Note: This step should be done last)
             foreach (XmlNode c in configNode.ChildNodes)
             {
                 // Parse differently depending on which category we are in
                 switch (c.Name)
                 {
+                    case "Sites":
+                        // Sites configuration
+                        ParseSites(c, soaConfig);
+                        break;
                     case "Local":
                         // Local platforms
                         ParseLocal(c, soaConfig);
@@ -209,7 +209,7 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetStringAttribute(c, "name", null),
-                                    GetFloatAttribute(c, "commsRange_km", 0)
+                                    soaConfig.defaultCommsRanges["BlueBase"] // Lookup direclty from defaults since there is only ever one blue base
                                 );
                             }
                             break;
@@ -628,7 +628,7 @@ namespace soa
                             {
                                 newConfig = new BlueBalloonConfig(
                                     GetFloatAttribute(c, "x_km", 0),
-                                    GetFloatAttribute(c, "y_km", 0),
+                                    15, // Balloon only has one valid altitude, will get set upon instantiation
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1)
                                 );
