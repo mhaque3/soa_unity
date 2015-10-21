@@ -28,7 +28,7 @@ public class SoaSensor : MonoBehaviour
     public bool CheckSensorFootprint(GameObject target)
     {
         // Re-evaluate boresight if sensor is gimbaled (balloon)
-        if (soaActor.type == SoaActor.ActorType.BALLOON)
+        if (soaActor.type == (int)SoaActor.ActorType.BALLOON)
         {
             // Get the belief dictionary and SPOI Belief
             SortedDictionary<int, Belief> spoiBeliefDictionary = soaActor.getBeliefDictionary()[soa.Belief.BeliefType.SPOI];
