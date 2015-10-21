@@ -29,6 +29,9 @@ namespace soa
         // Remote platforms
         public List<PlatformConfig> remotePlatforms;
 
+        // Sites
+        public List<SiteConfig> sites;
+
         // Default beamwidth
         public Dictionary<string, float> defaultSensorBeamwidths;
 
@@ -48,6 +51,7 @@ namespace soa
         {
             localPlatforms = new List<PlatformConfig>();
             remotePlatforms = new List<PlatformConfig>();
+            sites = new List<SiteConfig>();
             defaultSensorBeamwidths = new Dictionary<string, float>();
             defaultSensorModalities = new Dictionary<string, List<PerceptionModality>>();
             defaultClassifierModalities = new Dictionary<string, List<PerceptionModality>>();
@@ -56,6 +60,63 @@ namespace soa
         }
     }
 
+    #region Site Config
+    // Generalized sites
+    public abstract class SiteConfig
+    {
+        public enum ConfigType { BLUE_BASE, RED_BASE, NGO_SITE, VILLAGE };
+        public float x_km;
+        public float z_km;
+        public string name;
+
+        public SiteConfig(float x_km, float z_km, string name)
+        {
+            this.x_km = x_km;
+            this.z_km = z_km;
+            this.name = name;
+        }
+
+        public abstract ConfigType GetConfigType();
+    }
+
+    // Blue base config
+    public class BlueBaseConfig : SiteConfig
+    {
+        public float commsRange_km;
+        public BlueBaseConfig(float x_km, float z_km, string name, float commsRange_km)
+            : base(x_km, z_km, name)
+        {
+            this.commsRange_km = commsRange_km;
+        }
+        public override ConfigType GetConfigType() { return ConfigType.BLUE_BASE; }
+    }
+
+    // Red base config
+    public class RedBaseConfig : SiteConfig
+    {
+        public RedBaseConfig(float x_km, float z_km, string name)
+            : base(x_km, z_km, name) {}
+        public override ConfigType GetConfigType() { return ConfigType.RED_BASE; }
+    }
+
+    // NGO Site config
+    public class NGOSiteConfig : SiteConfig
+    {
+        public NGOSiteConfig(float x_km, float z_km, string name)
+            : base(x_km, z_km, name) {}
+        public override ConfigType GetConfigType() { return ConfigType.NGO_SITE; }
+    }
+
+    // Village config
+    public class VillageConfig : SiteConfig
+    {
+        public VillageConfig(float x_km, float z_km, string name)
+            : base(x_km, z_km, name) {}
+        public override ConfigType GetConfigType() { return ConfigType.VILLAGE; }
+    }
+    #endregion
+
+    #region Platform Config
     // Generalized platform
     public abstract class PlatformConfig
     {
@@ -233,4 +294,5 @@ namespace soa
             : base(x_km, y_km, z_km, id) { }
         public override ConfigType GetConfigType() { return ConfigType.BLUE_BALLOON; }
     }
+#endregion
 }

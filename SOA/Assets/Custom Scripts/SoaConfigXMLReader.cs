@@ -74,6 +74,10 @@ namespace soa
                         // Simulation configuration
                         ParseSimulation(c, soaConfig);
                         break;
+                    case "Sites":
+                        // Sites configuration
+                        ParseSites(c, soaConfig);
+                        break;
                     case "Fuel":
                         // Fuel configuration
                         ParseFuel(c, soaConfig);
@@ -159,9 +163,9 @@ namespace soa
             catch (Exception)
             {
                 #if(UNITY_STANDALONE)
-                Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                Debug.LogError("SoaConfigXMLReader::ParseLogger(): Error parsing " + node.Name);
                 #else
-                Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
+                Console.WriteLine("SoaConfigXMLReader::ParseLogger(): Error parsing " + node.Name);
                 #endif
             }
         }
@@ -185,6 +189,78 @@ namespace soa
                 Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
                 #endif
             }
+        }
+
+        // Site configuration category parsing
+        private static void ParseSites(XmlNode node, SoaConfig soaConfig)
+        {
+            SiteConfig newConfig = null; // Dummy value
+            bool newConfigValid;
+            // Go through each child node
+            foreach (XmlNode c in node.ChildNodes)
+            {
+                try
+                {
+                    switch (c.Name)
+                    {
+                        case "BlueBase":
+                            {
+                                newConfig = new BlueBaseConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetStringAttribute(c, "name", null),
+                                    GetFloatAttribute(c, "commsRange_km", 0)
+                                );
+                            }
+                            break;
+                        case "RedBase":
+                            {
+                                newConfig = new RedBaseConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetStringAttribute(c, "name", null)
+                                );
+                            }
+                            break;
+                        case "NGOSite":
+                            {
+                                newConfig = new NGOSiteConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetStringAttribute(c, "name", null)
+                                );
+                            }
+                            break;
+                        case "Village":
+                            {
+                                newConfig = new VillageConfig(
+                                    GetFloatAttribute(c, "x_km", 0),
+                                    GetFloatAttribute(c, "z_km", 0),
+                                    GetStringAttribute(c, "name", null)
+                                );
+                            }
+                            break;
+                        default:
+                            if (c.Name != "#comment")
+                            {
+                                #if(UNITY_STANDALONE)
+                                Debug.LogWarning("SoaConfigXMLReader::ParseSites(): Unrecognized node " + c.Name);
+                                #else
+                                Console.WriteLine("SoaConfigXMLReader::ParseSites(): Unrecognized node " + c.Name);
+                                #endif
+                            }
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    #if(UNITY_STANDALONE)
+                    Debug.LogError("SoaConfigXMLReader::ParseSites(): Error parsing " + c.Name);
+                    #else
+                    Console.WriteLine("SoaConfigXMLReader::ParseSites(): Error parsing " + c.Name);
+                    #endif
+                } // End try-catch
+            } // End foreach
         }
 
         // Fuel configuration category parsing
@@ -409,9 +485,9 @@ namespace soa
                             {
                                 newConfig = new RedDismountConfig(
                                     GetFloatAttribute(c, "x_km", 0),
-                                    GetFloatAttribute(c, "y_km", 0),
+                                    0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1),
+                                    -1, // Runtime determined id field
                                     GetStringAttribute(c, "initialWaypoint", null),
                                     GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountHasWeapon),
                                     GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["RedDismount"])
@@ -422,9 +498,9 @@ namespace soa
                             {
                                 newConfig = new RedTruckConfig(
                                     GetFloatAttribute(c, "x_km", 0),
-                                    GetFloatAttribute(c, "y_km", 0),
+                                    0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1),
+                                    -1, // Runtime determined id field
                                     GetStringAttribute(c, "initialWaypoint", null),
                                     GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckHasWeapon),
                                     GetBooleanAttribute(c, "hasJammer", rand.NextDouble() <= soaConfig.probRedTruckHasJammer),
@@ -437,9 +513,9 @@ namespace soa
                             {
                                 newConfig = new NeutralDismountConfig(
                                     GetFloatAttribute(c, "x_km", 0),
-                                    GetFloatAttribute(c, "y_km", 0),
+                                    0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1)
+                                    -1 // Runtime determined id field
                                 );
                             }
                             break;
@@ -447,9 +523,9 @@ namespace soa
                             {
                                 newConfig = new NeutralTruckConfig(
                                     GetFloatAttribute(c, "x_km", 0),
-                                    GetFloatAttribute(c, "y_km", 0),
+                                    0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1)
+                                    -1 // Runtime determined id field
                                 );
                             }
                             break;
@@ -457,9 +533,9 @@ namespace soa
                             {
                                 newConfig = new BluePoliceConfig(
                                     GetFloatAttribute(c, "x_km", 0),
-                                    GetFloatAttribute(c, "y_km", 0),
+                                    0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1),
+                                    -1, // Runtime determined id field
                                     GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["BluePolice"])
                                 );
                             }

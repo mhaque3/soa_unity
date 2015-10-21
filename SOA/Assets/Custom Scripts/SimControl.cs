@@ -20,6 +20,10 @@ public class SimControl : MonoBehaviour
     string EnvFileName = "SoaEnvConfig.xml";
 
     // Prefabs
+    public GameObject BlueBasePrefab;
+    public GameObject RedBasePrefab;
+    public GameObject NGOSitePrefab;
+    public GameObject VillagePrefab;
     public GameObject RedDismountPrefab;
     public GameObject RedTruckPrefab;
     public GameObject NeutralDismountPrefab;
@@ -160,6 +164,13 @@ public class SimControl : MonoBehaviour
         // Write envConfig file (keep this commented out normally)
         //WriteEnvConfigFile();
 
+        // Check to see if we have exactly 1 blue base
+        if (BlueBases.Count != 1)
+        {
+            soaEventLogger.LogError("Fatal Error: Blue base count must be 1, instead found " + BlueBases.Count + " at initialization");
+            TerminateSimulation();
+        }
+
         // Camera
         thisCamera = omcScript.GetComponent<Camera>();
 
@@ -262,6 +273,26 @@ public class SimControl : MonoBehaviour
         networkRedRoom = soaConfig.networkRedRoom;
         networkBlueRoom = soaConfig.networkBlueRoom;
 
+        // Set up sites
+        foreach (SiteConfig s in soaConfig.sites)
+        {
+            switch (s.GetConfigType())
+            {
+                case SiteConfig.ConfigType.BLUE_BASE:
+                    InstantiateBlueBase((BlueBaseConfig)s);
+                    break;
+                case SiteConfig.ConfigType.RED_BASE:
+                    InstantiateRedBase((RedBaseConfig)s);
+                    break;
+                case SiteConfig.ConfigType.NGO_SITE:
+                    InstantiateNGOSite((NGOSiteConfig)s);
+                    break;
+                case SiteConfig.ConfigType.VILLAGE:
+                    InstantiateVillage((VillageConfig)s);
+                    break;
+            }
+        }
+
         // Set up remote platforms
         foreach (PlatformConfig p in soaConfig.remotePlatforms)
         {
@@ -274,7 +305,7 @@ public class SimControl : MonoBehaviour
                     InstantiateSmallUAV((SmallUAVConfig)p, false);
                     break;
                 case PlatformConfig.ConfigType.BLUE_BALLOON:
-                    InstantiateBlueBalloon((BlueBalloonConfig) p, false);
+                    InstantiateBlueBalloon((BlueBalloonConfig)p, false);
                     break;
             }
         }
@@ -502,10 +533,7 @@ public class SimControl : MonoBehaviour
             // Quit the game if termination conditions are met
             if (terminationConditionsMet)
             {
-                Application.Quit(); // For when running as standalone
-                #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
-                #endif
+                TerminateSimulation();
                 return;
             }
 
@@ -792,6 +820,14 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                           TERMINATION                                             *
      *****************************************************************************************************/
+    private void TerminateSimulation()
+    {
+        Application.Quit(); // For when running as standalone
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
+        #endif
+    }
+    
     void OnApplicationQuit()
     {
         // Stop data managers / comms managers
@@ -880,14 +916,17 @@ public class SimControl : MonoBehaviour
         }
     }
 
-    private bool CheckInitialLocation(Vector3 worldPosition, bool landEnabled, bool waterEnabled, bool mountainEnabled)
+    private bool CheckInitialLocation(Vector3 worldPosition, bool landEnabled, bool waterEnabled, bool mountainEnabled, out Vector3 snappedPosition)
     {
         // Convert world coordinates to grid coordinates
         PrimitivePair<float, float> worldPos = new PrimitivePair<float,float> (worldPosition.x, worldPosition.z);
         PrimitivePair<int, int> gridPos = gridMath.WorldToGrid(worldPos);
         GridCell initialCell = new GridCell(gridPos.second, gridPos.first);
 
-        //Debug.Log("Cell location " + initialCell.getCol() + " " + initialCell.getRow());
+        // Snap world position to a grid centroid
+        PrimitivePair<float, float> snappedPos = gridMath.GridToWorld(gridPos);
+        snappedPosition = new Vector3(snappedPos.x, 0, snappedPos.z);
+
         // Check against cell types
         bool found = false;
 
@@ -913,10 +952,133 @@ public class SimControl : MonoBehaviour
             }
         }
 
-        if (!found) Debug.LogError("CANNOT PLACE VEHICLE ");
+        if (!found)
+        {
+            Debug.LogError("SimControl::CheckInitialLocation(): Cannot place unit at desired location");
+        }
+
         return found;
     }
 
+    #endregion
+
+    #region Site Instantiation
+    /*****************************************************************************************************
+     *                                        SITE INSTANTIATION                                         *
+     *****************************************************************************************************/
+    public GameObject InstantiateBlueBase(BlueBaseConfig c)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+
+        // Blue base must exist on land
+        Vector3 snappedPos;
+        if (CheckInitialLocation(newPos, true, false, false, out snappedPos))
+        {
+            // Instantiate at the snapped position
+            GameObject g = (GameObject)Instantiate(BlueBasePrefab, newPos * KmToUnity, Quaternion.identity);
+
+            // Blue bases get id 0 always
+            SoaSite s = g.GetComponent<SoaSite>();
+            s.unique_id = 0;
+            g.name = (c.name == null) ? "Blue Base" : c.name;
+
+            // Set comms capabilties
+            s.commsRange_km = c.commsRange_km;
+
+            // Add to appropriate lists
+            LocalPlatforms.Add(g);
+            BlueBases.Add(g);
+            return g;
+        }
+        else
+        {
+            soaEventLogger.LogError("Fatal Error: Blue base not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
+            return null;
+        }
+    }
+
+    public GameObject InstantiateRedBase(RedBaseConfig c)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+
+        // Red base must exist on land
+        Vector3 snappedPos;
+        if (CheckInitialLocation(newPos, true, false, false, out snappedPos))
+        {
+            // Instantiate at the snapped position
+            GameObject g = (GameObject)Instantiate(RedBasePrefab, newPos * KmToUnity, Quaternion.identity);
+
+            // Assign name
+            g.name = (c.name == null) ? ("Red Base " + RedBases.Count) : c.name;
+
+            // Add to appropriate lists
+            RedBases.Add(g);
+            return g;
+        }
+        else
+        {
+            soaEventLogger.LogError("Fatal Error: Red base not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
+            return null;
+        }
+    }
+
+    public GameObject InstantiateNGOSite(NGOSiteConfig c)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+
+        // NGO site must exist on land
+        Vector3 snappedPos;
+        if (CheckInitialLocation(newPos, true, false, false, out snappedPos))
+        {
+            // Instantiate at the snapped position
+            GameObject g = (GameObject)Instantiate(NGOSitePrefab, newPos * KmToUnity, Quaternion.identity);
+
+            // Assign name
+            g.name = (c.name == null) ? ("NGO Site " + NgoSites.Count) : c.name;
+
+            // Add to appropriate lists
+            NgoSites.Add(g);
+            return g;
+        }
+        else
+        {
+            soaEventLogger.LogError("Fatal Error: NGO Site not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
+            return null;
+        }
+    }
+
+    public GameObject InstantiateVillage(VillageConfig c)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+
+        // NGO site must exist on land
+        Vector3 snappedPos;
+        if (CheckInitialLocation(newPos, true, false, false, out snappedPos))
+        {
+            // Instantiate at the snapped position
+            GameObject g = (GameObject)Instantiate(VillagePrefab, newPos * KmToUnity, Quaternion.identity);
+
+            // Assign name
+            g.name = (c.name == null) ? ("Village " + Villages.Count) : c.name;
+
+            // Add to appropriate lists
+            Villages.Add(g);
+            return g;
+        }
+        else
+        {
+            soaEventLogger.LogError("Fatal Error: Village not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
+            return null;
+        }
+    }
     #endregion
 
     #region Remote Platform Instantiation
@@ -929,7 +1091,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
 
         // Heavy UAV can only traverse on land and water
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(HeavyUAVPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -961,7 +1124,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Heavy UAV not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Heavy UAV not instantiated since initial position " + newPos + " not on land or water cell");
+            TerminateSimulation();
             return null;
         }
     }
@@ -972,7 +1136,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
 
         // Small UAV can only traverse on land and water
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, false, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(SmallUAVPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1004,7 +1169,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Small UAV not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Small UAV not instantiated since initial position " + newPos + " not on land or water");
+            TerminateSimulation();
             return null;
         }
     }
@@ -1015,7 +1181,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Balloon can traverse on land, water, and mountains
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(BlueBalloonPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1037,7 +1204,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Blue balloon not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Blue balloon not instantiated since initial position " + newPos + " not on land, water, or mountain cell");
+            TerminateSimulation();
             return null;
         }
     }
@@ -1094,7 +1262,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Red dismount can only traverse on land, not water or mountains
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(RedDismountPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1108,7 +1277,7 @@ public class SimControl : MonoBehaviour
             g.name = "Red Dismount " + a.unique_id;
 
             // Assign initial altitude
-            a.SetSimAltitude(c.y_km);
+            a.SetSimAltitude(0); // Red dismounts stay on the ground
 
             // Waypoint motion
             SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
@@ -1151,7 +1320,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Red dismount not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Red dismount not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
             return null;
         }
     }
@@ -1163,7 +1333,8 @@ public class SimControl : MonoBehaviour
         //Debug.Log("Initial pos " + newPos.ToString());
 
         // Red truck can only traverse on land, not water or mountains
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false, out snappedPos))
         {
             Debug.Log("Instantiate red truck");
             // Instantiate
@@ -1178,7 +1349,7 @@ public class SimControl : MonoBehaviour
             g.name = "Red Truck " + a.unique_id;
 
             // Assign initial altitude
-            a.SetSimAltitude(c.y_km);
+            a.SetSimAltitude(0); // Red trucks stay on the ground
 
             // Waypoint motion
             SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
@@ -1229,7 +1400,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Red truck not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Red truck not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
             return null;
         }
     }
@@ -1240,7 +1412,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Neutral dismount can only traverse on land, not water or mountains
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(NeutralDismountPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1254,7 +1427,7 @@ public class SimControl : MonoBehaviour
             g.name = "Neutral Dismount " + a.unique_id;
 
             // Assign initial altitude
-            a.SetSimAltitude(c.y_km);
+            a.SetSimAltitude(0); // Neutral dismounts stay on the ground
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "NeutralDismount");
@@ -1265,7 +1438,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Neutral dismount not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Neutral dismount not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
             return null;
         }
     }
@@ -1276,7 +1450,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Neutral truck can only traverse on land, not water or mountains
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(NeutralTruckPrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1290,7 +1465,7 @@ public class SimControl : MonoBehaviour
             g.name = "Neutral Truck " + a.unique_id;
 
             // Assign initial altitude
-            a.SetSimAltitude(c.y_km);
+            a.SetSimAltitude(0); // Neutral trucks stay on the ground
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "NeutralTruck");
@@ -1301,7 +1476,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Neutral truck not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Neutral truck not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
             return null;
         }
     }
@@ -1312,7 +1488,8 @@ public class SimControl : MonoBehaviour
         Vector3 newPos = new Vector3(c.x_km, c.y_km, c.z_km);
         
         // Blue police can only traverse on land, not water or mountains
-        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false))
+        Vector3 snappedPos;
+        if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false, out snappedPos))
         {
             // Instantiate
             GameObject g = (GameObject)Instantiate(BluePolicePrefab, newPos * KmToUnity, Quaternion.identity);
@@ -1326,7 +1503,7 @@ public class SimControl : MonoBehaviour
             g.name = "Blue Police " + a.unique_id;
 
             // Assign initial altitude
-            a.SetSimAltitude(c.y_km);
+            a.SetSimAltitude(0); // Blue police stay on the ground
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "BluePolice");
@@ -1340,7 +1517,8 @@ public class SimControl : MonoBehaviour
         }
         else
         {
-            soaEventLogger.LogError("Blue police not instantiated since initial position " + newPos + " not on valid grid");
+            soaEventLogger.LogError("Fatal Error: Blue police not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
             return null;
         }
     }

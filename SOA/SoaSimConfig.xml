@@ -21,6 +21,19 @@
        probRedTruckHasJammer    ="0.5"
   />
 
+  <!-- Site Locations -->
+  <Sites>
+    <BlueBase name="BlueBase"     x_km="-16.892"    z_km="12.273" />
+    <RedBase  name="RedBase0"     x_km="-16.892"    z_km="12.273" />
+    <RedBase  name="RedBase1"     x_km="-16.892"    z_km="12.273" />
+    <RedBase  name="RedBase2"     x_km="-16.892"    z_km="12.273" />
+    <NGOSite  name="NGOSite0"     x_km="-16.892"    z_km="12.273" />
+    <NGOSite  name="NGOSite1"     x_km="-16.892"    z_km="12.273" />
+    <Village  name="Village0"     x_km="-16.892"    z_km="12.273" />
+    <Village  name="Village1"     x_km="-16.892"    z_km="12.273" />
+    <Village  name="Village2"     x_km="-16.892"    z_km="12.273" />
+  </Sites>  
+
   <!-- Fuel Settings -->
   <Fuel
        heavyUAVFuelTankSize_s   ="10000"
@@ -145,45 +158,45 @@
   <!-- Local Platform Descriptions -->
   <Local>
     <!-- Red Dismounts -->
-    <RedDismount     x_km="-16.892"   y_km="0.000"   z_km="12.273"  id="1"
+    <RedDismount     x_km="-16.892"   z_km="12.273"
        hasWeapon="false" initialWaypoint="Red Base 0" />
     
-    <RedDismount     x_km="-18.638"   y_km="0.000"   z_km="12.267"  id="2"
-       hasWeapon="true" initialWaypoint="Red Base 0" />
+    <RedDismount     x_km="-18.638"   z_km="12.267"
+       hasWeapon="true" initialWaypoint="Red Base 0"  />
 
-    <RedDismount     x_km="-2.190"    y_km="0.000"   z_km="11.744"  id="3"
+    <RedDismount     x_km="-2.190"    z_km="11.744"
        hasWeapon="false" initialWaypoint="Red Base 1" />
 
-    <RedDismount     x_km="-2.124"    y_km="0.000"   z_km="12.733"  id="4"
-       hasWeapon="true" initialWaypoint="Red Base 1" />
+    <RedDismount     x_km="-2.124"    z_km="12.733"
+       hasWeapon="true" initialWaypoint="Red Base 1"  />
 
-    <RedDismount     x_km="21.180"    y_km="0.000"   z_km="9.240"   id="5"
+    <RedDismount     x_km="21.180"    z_km="9.240" 
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
-    <RedDismount     x_km="22.077"    y_km="0.000"   z_km="9.752"   id="6"
-       hasWeapon="true" initialWaypoint="Red Base 2" />
+    <RedDismount     x_km="22.077"    z_km="9.752" 
+       hasWeapon="true" initialWaypoint="Red Base 2"  />
 
     <!-- Red Trucks -->
-    <RedTruck        x_km="-17.770"   y_km="0.000"   z_km="12.758"  id="7"
+    <RedTruck        x_km="-17.770"   z_km="12.758"
        hasWeapon="false" initialWaypoint="Red Base 0" hasJammer="true" jammerRange_km="2"/>
 
-    <RedTruck        x_km="-1.300"    y_km="0.000"   z_km="12.245"  id="8"
+    <RedTruck        x_km="-1.300"    z_km="12.245"
        hasWeapon="true" initialWaypoint="Red Base 1"  hasJammer="false"/>
 
-    <RedTruck        x_km="21.205"    y_km="0.000"   z_km="11.251"  id="9"
+    <RedTruck        x_km="21.205"    z_km="11.251" 
        hasWeapon="false" initialWaypoint="Red Base 2" />
 
     <!-- Neutral Dismounts -->
-    <NeutralDismount x_km="23.696"    y_km="0.000"   z_km="-6.595"  id="10"  />
-    <NeutralDismount x_km="-10.987"   y_km="0.000"   z_km="-6.595"  id="11"  />
-    <NeutralDismount x_km="1.210"     y_km="0.000"   z_km="2.075"   id="12"  />
+    <NeutralDismount x_km="23.696"    z_km="-6.595"   />
+    <NeutralDismount x_km="-10.987"   z_km="-6.595"   />
+    <NeutralDismount x_km="1.210"     z_km="2.075"    />
 
     <!-- Neutral Trucks -->
-    <NeutralTruck    x_km="-19.345"   y_km="0.000"   z_km="-0.048"  id="13" />
-    <NeutralTruck    x_km="10.746"    y_km="0.000"   z_km="2.196"   id="14" />
+    <NeutralTruck    x_km="-19.345"   z_km="-0.048"   />
+    <NeutralTruck    x_km="10.746"    z_km="2.196"    />
 
     <!-- Blue Police -->
-    <BluePolice      x_km="-9.095"    y_km="0.000"   z_km="-15.178"  id="15" />
+    <BluePolice      x_km="-9.095"    z_km="-15.178"  />
   </Local>
 
   <!-- Remote Platform Descriptions -->
