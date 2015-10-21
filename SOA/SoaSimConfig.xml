@@ -145,15 +145,19 @@
 
   <!-- Site Locations -->
   <Sites>
-    <BlueBase name="BlueBase"     x_km="-16.892"    z_km="12.273" />
-    <RedBase  name="RedBase0"     x_km="-16.892"    z_km="12.273" />
-    <RedBase  name="RedBase1"     x_km="-16.892"    z_km="12.273" />
-    <RedBase  name="RedBase2"     x_km="-16.892"    z_km="12.273" />
-    <NGOSite  name="NGOSite0"     x_km="-16.892"    z_km="12.273" />
-    <NGOSite  name="NGOSite1"     x_km="-16.892"    z_km="12.273" />
-    <Village  name="Village0"     x_km="-16.892"    z_km="12.273" />
-    <Village  name="Village1"     x_km="-16.892"    z_km="12.273" />
-    <Village  name="Village2"     x_km="-16.892"    z_km="12.273" />
+    <BlueBase name="Blue Base"     x_km="-3.02830208"   z_km="-9.7492255" />
+    <RedBase  name="Red Base 0"    x_km="-17.7515077"   z_km="13.7463599" />
+    <RedBase  name="Red Base 1"    x_km="-0.439941213"  z_km="12.7518844" />
+    <RedBase  name="Red Base 2"    x_km="22.0787984"    z_km="10.7493104" />
+    <NGOSite  name="NGO Site 0"    x_km="-21.2181483"   z_km="-1.25010618" />
+    <NGOSite  name="NGO Site 1"    x_km="-4.76803318"   z_km="-5.74888572" />
+    <NGOSite  name="NGO Site 2"    x_km="11.6916982"    z_km="4.76402643" />
+    <NGOSite  name="NGO Site 3"    x_km="24.6807822"    z_km="-6.75057337" />
+    <Village  name="Village 0"     x_km="-16.0197901"   z_km="5.74808437" />
+    <Village  name="Village 1"     x_km="-14.296086"    z_km="-3.22944096" />
+    <Village  name="Village 2"     x_km="-5.63349131"   z_km="4.74559538" />
+    <Village  name="Village 3"     x_km="7.34998325"    z_km="-0.743652906" />
+    <Village  name="Village 4"     x_km="-13.4306279"   z_km="-11.7638197" />
   </Sites>  
 
   <!-- Local Platform Descriptions -->

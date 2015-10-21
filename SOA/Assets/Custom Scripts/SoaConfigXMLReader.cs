@@ -195,10 +195,12 @@ namespace soa
         private static void ParseSites(XmlNode node, SoaConfig soaConfig)
         {
             SiteConfig newConfig = null; // Dummy value
-            bool newConfigValid;
             // Go through each child node
+            bool newConfigValid;
             foreach (XmlNode c in node.ChildNodes)
             {
+                newConfigValid = true;
+
                 try
                 {
                     switch (c.Name)
@@ -241,6 +243,7 @@ namespace soa
                             }
                             break;
                         default:
+                            newConfigValid = false;
                             if (c.Name != "#comment")
                             {
                                 #if(UNITY_STANDALONE)
@@ -260,6 +263,12 @@ namespace soa
                     Console.WriteLine("SoaConfigXMLReader::ParseSites(): Error parsing " + c.Name);
                     #endif
                 } // End try-catch
+
+                // Add to list of sites if valid
+                if (newConfigValid)
+                {
+                    soaConfig.sites.Add(newConfig);
+                }
             } // End foreach
         }
 
@@ -590,7 +599,7 @@ namespace soa
         {
             PlatformConfig newConfig = null; // Dummy value
             bool newConfigValid;
-            Debug.Log("Number remote platforms " + node.ChildNodes.Count);
+
             // Go through each child node
             foreach (XmlNode c in node.ChildNodes)
             {

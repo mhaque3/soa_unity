@@ -120,6 +120,14 @@ public class SimControl : MonoBehaviour
         gridToWorldScale = 1.0f;
         gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
 
+        // Clear all platform lists
+        LocalPlatforms = new List<GameObject>();
+        RemotePlatforms = new List<GameObject>();
+        NgoSites = new List<GameObject>();
+        Villages = new List<GameObject>();
+        RedBases = new List<GameObject>();
+        BlueBases = new List<GameObject>();
+
         // Set up mountain and water cells
         WaterCells = new List<GridCell>();
         MountainCells = new List<GridCell>();
@@ -822,9 +830,10 @@ public class SimControl : MonoBehaviour
      *****************************************************************************************************/
     private void TerminateSimulation()
     {
-        Application.Quit(); // For when running as standalone
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
+        #else
+        Application.Quit(); // For when running as standalone
         #endif
     }
     
@@ -925,7 +934,7 @@ public class SimControl : MonoBehaviour
 
         // Snap world position to a grid centroid
         PrimitivePair<float, float> snappedPos = gridMath.GridToWorld(gridPos);
-        snappedPosition = new Vector3(snappedPos.x, 0, snappedPos.z);
+        snappedPosition = new Vector3(snappedPos.first, worldPosition.y, snappedPos.second);
 
         // Check against cell types
         bool found = false;
@@ -969,7 +978,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBlueBase(BlueBaseConfig c)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0.75f / KmToUnity, c.z_km);
 
         // Blue base must exist on land
         Vector3 snappedPos;
@@ -1002,7 +1011,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateRedBase(RedBaseConfig c)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0.75f / KmToUnity, c.z_km);
 
         // Red base must exist on land
         Vector3 snappedPos;
@@ -1029,7 +1038,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateNGOSite(NGOSiteConfig c)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0.75f / KmToUnity, c.z_km);
 
         // NGO site must exist on land
         Vector3 snappedPos;
@@ -1056,7 +1065,7 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateVillage(VillageConfig c)
     {
         // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
+        Vector3 newPos = new Vector3(c.x_km, 0.75f / KmToUnity, c.z_km);
 
         // NGO site must exist on land
         Vector3 snappedPos;
@@ -1336,7 +1345,6 @@ public class SimControl : MonoBehaviour
         Vector3 snappedPos;
         if (initialLocationCheckOverride || CheckInitialLocation(newPos, true, false, false, out snappedPos))
         {
-            Debug.Log("Instantiate red truck");
             // Instantiate
             GameObject g = (GameObject)Instantiate(RedTruckPrefab, newPos * KmToUnity, Quaternion.identity);
 

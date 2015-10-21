@@ -5715,11 +5715,12 @@ MonoBehaviour:
   isAlive: 0
   isCarrying: 0
   isWeaponized: 0
+  hasJammer: 0
   fuelRemaining_s: 0
-  commsRange: 5
+  commsRange_km: 0
   Sensors: []
   Weapons: []
-  Jammers: []
+  jammer: {fileID: 0}
   Classifiers: []
   Detections: []
   Tracks: []
@@ -5728,6 +5729,7 @@ MonoBehaviour:
   displayTruePosition: 1
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
+  wpMotionScript: {fileID: 0}
   navAgent: {fileID: 0}
 --- !u!114 &11426336
 MonoBehaviour:
@@ -5755,9 +5757,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 129896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01d6d7e7483274243b91fb9791877f9b, type: 3}
+  m_Script: {fileID: 11500000, guid: 84d7b966b46371e478a366ea6818d96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beamwidthDeg: 0
+  boresightUnitVector: {x: 0, y: 0, z: 0}
   modes: []
   soaActor: {fileID: 0}
   possibleDetections: []

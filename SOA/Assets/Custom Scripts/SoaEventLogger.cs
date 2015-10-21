@@ -373,10 +373,9 @@ namespace soa
                 // Add to "Errors" node
                 errorsNode.AppendChild(node);
             }
-            if (logToConsole)
-            {
-                Debug.LogError("ERROR (" + timeStamp + "): " + message);
-            }
+
+            // Also output to unity debug console
+            Debug.LogError(message);
         }
     }
 }
