@@ -7,85 +7,69 @@ namespace soa
 {
     public class MCTrialGenerator
     {
-        /******************** SIMULATION *********************/
-        const float gameDurationHr = 15.0f;
-        const float probRedDismountHasWeapon = 0.5f;
-        const float probRedTruckHasWeapon = 0.5f;
-        const float probRedTruckHasJammer = 0.5f;
-        const float jammerRange = 2f;
-
-        /*********************** FUEL ************************/
-        const float heavyUAVFuelTankSize_s = 10000;
-        const float smallUAVFuelTankSize_s = 10000;
+        /******************** MONTE CARLO ********************/
+        const int numMCTrials = 10;
+        const string soaConfigFileHeader = "../../../../GeneratedFiles/MCConfig_";
 
         /******************** ENVIRONMENT ********************/
-        const string envConfigFile = "SoaEnvConfig.xml";
+        const string envConfigFile = "../../../../../SOA/Assets/Custom Scripts/MC Trial Generation/SoaEnvConfig.xml";
 
         /********************** NETWORK **********************/
         const string networkRedRoomHeader = "soa-mc-red_";
         const string networkBlueRoomHeader = "soa-mc-blue_";
 
-        /******************** MONTE CARLO ********************/
-        const int numMCTrials = 10;
-        const string soaConfigFileHeader = "MCConfig_";
+        /********************** LOGGER ***********************/
         const string soaLoggerFileHeader = "MCOutput_";
         const bool logEvents = true;
         const bool logToUnityConsole = true;
 
+        /******************** SIMULATION *********************/
+        const float gameDurationHr = 15.0f;
+        const float probRedDismountHasWeapon = 0.5f;
+        const float probRedTruckHasWeapon = 0.5f;
+        const float probRedTruckHasJammer = 0.5f;
+
+        /*********************** FUEL ************************/
+        const float heavyUAVFuelTankSize_s = 10000;
+        const float smallUAVFuelTankSize_s = 40000;
+
         /******************** REMOTE ID **********************/
-        const int remoteStartID = 200;
-        
-        private class PlatformLaydown
-        {
-            public float numMean;
-            public float numStdDev;
-            public int numMin;
-            public int numMax;
-            public float fromAnchorStdDev_km; // Along x and z dimensions separately 
-            public float fromAnchorMax_km; // Along x and z dimensions separately
-            public float altitudeMean_km;
-            public float altitudeStdDev_km;
-            public float altitudeMin_km;
-            public float altitudeMax_km;
-            public List<PrimitivePair<int, int>> anchors;
-            public HashSet<PrimitivePair<int, int>> allowedCells;
-        }
+        const int remoteStartID = 100;
 
         /****************** LOCAL PLATFORMS ******************/
         // Red dismounts 
-        private PlatformLaydown redDismountLaydown;
+        private Platform2DLaydown redDismountLaydown;
 
         // Red trucks
-        private PlatformLaydown redTruckLaydown;
+        private Platform2DLaydown redTruckLaydown;
    
         // Neutral dismounts
-        private PlatformLaydown neutralDismountLaydown;
+        private Platform2DLaydown neutralDismountLaydown;
        
         // Neutral trucks
-        private PlatformLaydown neutralTruckLaydown;
+        private Platform2DLaydown neutralTruckLaydown;
     
         // Blue police
-        private PlatformLaydown bluePoliceLaydown;
+        private Platform2DLaydown bluePoliceLaydown;
 
         /***************** REMOTE PLATFORMS ******************/
         // ID
         private int availableRemoteID;
 
         // Heavy UAVs
-        private PlatformLaydown heavyUAVLaydown;
+        private Platform3DLaydown heavyUAVLaydown;
 
         // Small UAVs
-        private PlatformLaydown smallUAVLaydown;
+        private Platform3DLaydown smallUAVLaydown;
 
-        // Balloons
-        private PlatformLaydown blueBalloonLaydown;
+        // No balloon laydown
 
         /***************** CLASS DEFINITION ******************/
         private GridMath gridMath;
         private HashSet<PrimitivePair<int, int>> landCells;
         private HashSet<PrimitivePair<int, int>> allCells;
-        private Random rand;
         private EnvConfig envConfig;
+        private Random rand;
         public MCTrialGenerator()
         {
             // Read in envConfig
@@ -104,13 +88,13 @@ namespace soa
             allCells = new HashSet<PrimitivePair<int, int>>(envConfig.landCells);
             allCells.UnionWith(envConfig.waterCells);
             allCells.UnionWith(envConfig.mountainCells);
+            
+            // Random generator for determining whether a unit has weapons or jammers etc.
+            rand = new Random();
 
-            // Initialize laydown objects
+            // Initialize platform laydown
             InitializeLocalLaydown();
             InitializeRemoteLaydown();
-
-            // Initialize random number generator
-            rand = new Random(); //reuse this if you are generating many
         }
 
         #region Perception Defaults
@@ -156,6 +140,7 @@ namespace soa
             modes.Add(new PerceptionModality("NeutralDismount", 0.5f, 0.5f));
             modes.Add(new PerceptionModality("NeutralTruck",    0.5f, 0.5f));
             soaConfig.defaultSensorModalities.Add("HeavyUAV", modes);
+            soaConfig.defaultSensorBeamwidths.Add("HeavyUAV", 360);
 
             // Small UAV
             modes = new List<PerceptionModality>();
@@ -164,6 +149,7 @@ namespace soa
             modes.Add(new PerceptionModality("NeutralDismount", 1.0f, 5.0f));
             modes.Add(new PerceptionModality("NeutralTruck",    2.0f, 7.0f));
             soaConfig.defaultSensorModalities.Add("SmallUAV", modes);
+            soaConfig.defaultSensorBeamwidths.Add("SmallUAV", 20);
 
             // Blue Balloon
             modes = new List<PerceptionModality>();
@@ -172,6 +158,7 @@ namespace soa
             modes.Add(new PerceptionModality("NeutralDismount", 1e20f,1e20f));
             modes.Add(new PerceptionModality("NeutralTruck",    1e20f,1e20f));
             soaConfig.defaultSensorModalities.Add("BlueBalloon", modes);
+            soaConfig.defaultSensorBeamwidths.Add("BlueBalloon", 4);
         }
 
         private void SetClassifierDefaults(SoaConfig soaConfig)
@@ -234,6 +221,7 @@ namespace soa
         #region Comms Defaults
         public void SetCommsDefaults(SoaConfig soaConfig)
         {
+            soaConfig.defaultCommsRanges["BlueBase"] = 10.0f;
             soaConfig.defaultCommsRanges["RedDismount"] = 5.0f;
             soaConfig.defaultCommsRanges["RedTruck"] = 5.0f;
             soaConfig.defaultCommsRanges["BluePolice"] = 10.0f;
@@ -250,40 +238,27 @@ namespace soa
         #region Platform Laydown
         public void InitializeLocalLaydown()
         {
-            // Pointer
-            PlatformLaydown laydownPtr;
-
             // Red dismounts
-            redDismountLaydown = new PlatformLaydown();
-            laydownPtr = redDismountLaydown;
-            laydownPtr.numMean = 3;
-            laydownPtr.numStdDev = 2;
-            laydownPtr.numMin = 1;
-            laydownPtr.numMax = 10;
-            laydownPtr.fromAnchorStdDev_km = 1;
-            laydownPtr.fromAnchorMax_km = 2;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = envConfig.redBaseCells;
-            laydownPtr.allowedCells = landCells;
+            redDismountLaydown = new Platform2DLaydown();
+            redDismountLaydown.numMean = 3;
+            redDismountLaydown.numStdDev = 2;
+            redDismountLaydown.numMin = 1;
+            redDismountLaydown.numMax = 10;
+            redDismountLaydown.fromAnchorStdDev_km = 1;
+            redDismountLaydown.fromAnchorMax_km = 2;
+            redDismountLaydown.anchors = envConfig.redBaseCells;
+            redDismountLaydown.allowedCells = landCells;
             
             // Red trucks
-            redTruckLaydown = new PlatformLaydown();
-            laydownPtr = redTruckLaydown;
-            laydownPtr.numMean = 3;
-            laydownPtr.numStdDev = 2;
-            laydownPtr.numMin = 1;
-            laydownPtr.numMax = 10;
-            laydownPtr.fromAnchorStdDev_km = 1;
-            laydownPtr.fromAnchorMax_km = 2;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = envConfig.redBaseCells;
-            laydownPtr.allowedCells = landCells;
+            redTruckLaydown = new Platform2DLaydown();
+            redTruckLaydown.numMean = 3;
+            redTruckLaydown.numStdDev = 2;
+            redTruckLaydown.numMin = 1;
+            redTruckLaydown.numMax = 10;
+            redTruckLaydown.fromAnchorStdDev_km = 1;
+            redTruckLaydown.fromAnchorMax_km = 2;
+            redTruckLaydown.anchors = envConfig.redBaseCells;
+            redTruckLaydown.allowedCells = landCells;
 
             // Merge list of NGO and village cells
             List<PrimitivePair<int, int>> neutralSiteCells = new List<PrimitivePair<int, int>>();
@@ -291,158 +266,98 @@ namespace soa
             neutralSiteCells.AddRange(envConfig.villageCells);
 
             // Neutral dismounts
-            neutralDismountLaydown = new PlatformLaydown();
-            laydownPtr = neutralDismountLaydown;
-            laydownPtr.numMean = 2;
-            laydownPtr.numStdDev = 2;
-            laydownPtr.numMin = 0;
-            laydownPtr.numMax = 4;
-            laydownPtr.fromAnchorStdDev_km = 2;
-            laydownPtr.fromAnchorMax_km = 5;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = neutralSiteCells;
-            laydownPtr.allowedCells = landCells;
+            neutralDismountLaydown = new Platform2DLaydown();
+            neutralDismountLaydown.numMean = 2;
+            neutralDismountLaydown.numStdDev = 2;
+            neutralDismountLaydown.numMin = 0;
+            neutralDismountLaydown.numMax = 4;
+            neutralDismountLaydown.fromAnchorStdDev_km = 2;
+            neutralDismountLaydown.fromAnchorMax_km = 5;
+            neutralDismountLaydown.anchors = neutralSiteCells;
+            neutralDismountLaydown.allowedCells = landCells;
 
             // Neutral trucks
-            neutralTruckLaydown = new PlatformLaydown();
-            laydownPtr = neutralTruckLaydown;
-            laydownPtr.numMean = 2;
-            laydownPtr.numStdDev = 2;
-            laydownPtr.numMin = 0;
-            laydownPtr.numMax = 4;
-            laydownPtr.fromAnchorStdDev_km = 2;
-            laydownPtr.fromAnchorMax_km = 5;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = neutralSiteCells;
-            laydownPtr.allowedCells = landCells;
+            neutralTruckLaydown = new Platform2DLaydown();
+            neutralTruckLaydown.numMean = 2;
+            neutralTruckLaydown.numStdDev = 2;
+            neutralTruckLaydown.numMin = 0;
+            neutralTruckLaydown.numMax = 4;
+            neutralTruckLaydown.fromAnchorStdDev_km = 2;
+            neutralTruckLaydown.fromAnchorMax_km = 5;
+            neutralTruckLaydown.anchors = neutralSiteCells;
+            neutralTruckLaydown.allowedCells = landCells;
 
             // Blue police
-            bluePoliceLaydown = new PlatformLaydown();
-            laydownPtr = bluePoliceLaydown;
-            laydownPtr.numMean = 1;
-            laydownPtr.numStdDev = 0.5f;
-            laydownPtr.numMin = 1;
-            laydownPtr.numMax = 1;
-            laydownPtr.fromAnchorStdDev_km = 2;
-            laydownPtr.fromAnchorMax_km = 5;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = envConfig.blueBaseCells;
-            laydownPtr.allowedCells = landCells;
+            bluePoliceLaydown = new Platform2DLaydown();
+            bluePoliceLaydown.numMean = 1;
+            bluePoliceLaydown.numStdDev = 0f;
+            bluePoliceLaydown.numMin = 1;
+            bluePoliceLaydown.numMax = 1;
+            bluePoliceLaydown.fromAnchorStdDev_km = 2;
+            bluePoliceLaydown.fromAnchorMax_km = 5;
+            bluePoliceLaydown.anchors = envConfig.blueBaseCells;
+            bluePoliceLaydown.allowedCells = landCells;
         }
 
         public void InitializeRemoteLaydown()
         {
-            // Pointer
-            PlatformLaydown laydownPtr;
-
             // Heavy UAV
-            heavyUAVLaydown = new PlatformLaydown();
-            laydownPtr = heavyUAVLaydown;
-            laydownPtr.numMean = 3.5f;
-            laydownPtr.numStdDev = 0.5f;
-            laydownPtr.numMin = 2;
-            laydownPtr.numMax = 5;
-            laydownPtr.fromAnchorStdDev_km = 2;
-            laydownPtr.fromAnchorMax_km = 5;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = envConfig.blueBaseCells;
-            laydownPtr.allowedCells = allCells;
+            heavyUAVLaydown = new Platform3DLaydown();
+            heavyUAVLaydown.numMean = 3.5f;
+            heavyUAVLaydown.numStdDev = 0.5f;
+            heavyUAVLaydown.numMin = 2;
+            heavyUAVLaydown.numMax = 5;
+            heavyUAVLaydown.fromAnchorStdDev_km = 2;
+            heavyUAVLaydown.fromAnchorMax_km = 5;
+            heavyUAVLaydown.altitudeMean_km = 0.25f;
+            heavyUAVLaydown.altitudeStdDev_km = 0.25f;
+            heavyUAVLaydown.altitudeMin_km = 0.0f;
+            heavyUAVLaydown.altitudeMax_km = 0.5f;
+            heavyUAVLaydown.anchors = envConfig.blueBaseCells;
+            heavyUAVLaydown.allowedCells = allCells;
 
             // Small UAV
-            smallUAVLaydown = new PlatformLaydown();
-            laydownPtr = smallUAVLaydown;
-            laydownPtr.numMean = 3.5f;
-            laydownPtr.numStdDev = 0.5f;
-            laydownPtr.numMin = 2;
-            laydownPtr.numMax = 5;
-            laydownPtr.fromAnchorStdDev_km = 2;
-            laydownPtr.fromAnchorMax_km = 5;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = envConfig.blueBaseCells;
-            laydownPtr.allowedCells = allCells;
-
-            // Blue Balloon
-            blueBalloonLaydown = new PlatformLaydown();
-            laydownPtr = blueBalloonLaydown;
-            laydownPtr.numMean = 1;
-            laydownPtr.numStdDev = 0.0f;
-            laydownPtr.numMin = 1;
-            laydownPtr.numMax = 1;
-            laydownPtr.fromAnchorStdDev_km = 2;
-            laydownPtr.fromAnchorMax_km = 5;
-            laydownPtr.altitudeMean_km = 0.6f;
-            laydownPtr.altitudeStdDev_km = 0.0f;
-            laydownPtr.altitudeMin_km = 0.6f;
-            laydownPtr.altitudeMax_km = 0.6f;
-            laydownPtr.anchors = envConfig.blueBaseCells;
-            laydownPtr.allowedCells = allCells;
+            smallUAVLaydown = new Platform3DLaydown();
+            smallUAVLaydown.numMean = 3.5f;
+            smallUAVLaydown.numStdDev = 0.5f;
+            smallUAVLaydown.numMin = 2;
+            smallUAVLaydown.numMax = 5;
+            smallUAVLaydown.fromAnchorStdDev_km = 2;
+            smallUAVLaydown.fromAnchorMax_km = 5;
+            smallUAVLaydown.altitudeMean_km = 2.5f;
+            smallUAVLaydown.altitudeStdDev_km = 2.5f;
+            smallUAVLaydown.altitudeMin_km = 0.0f;
+            smallUAVLaydown.altitudeMax_km = 5.0f;
+            smallUAVLaydown.anchors = envConfig.blueBaseCells;
+            smallUAVLaydown.allowedCells = allCells;
         }
+        #endregion
 
-        // Computes list of laydowns
-        private List<PrimitiveTriple<float, float, float>> RandomizeLaydown(PlatformLaydown laydown)
+        #region Site Locations
+        public void SetSiteLocations(SoaConfig soaConfig)
         {
-            // List to return
-            List<PrimitiveTriple<float, float, float>> posList = new List<PrimitiveTriple<float, float, float>>();
+            // Blue Base
+            soaConfig.sites.Add(new BlueBaseConfig(-3.02830208f, -9.7492255f, "Blue Base", soaConfig.defaultCommsRanges["BlueBase"]));
 
-            // First determine the # of units
-            int numUnits = (int)Math.Round(RandN(laydown.numMean, laydown.numStdDev, (float)laydown.numMin, (float)laydown.numMax));
+            // Red Base
+            soaConfig.sites.Add(new RedBaseConfig(-17.7515077f,  13.7463599f, "Red Base 0"));
+            soaConfig.sites.Add(new RedBaseConfig(-0.439941213f, 12.7518844f, "Red Base 1"));
+            soaConfig.sites.Add(new RedBaseConfig(22.0787984f,   10.7493104f, "Red Base 2"));
 
-            // For each unit
-            PrimitivePair<float, float> tempPos = new PrimitivePair<float, float>(0, 0);
-            PrimitivePair<float, float> anchor;
-            PrimitivePair<int, int> tempGrid;
-            bool laydownFound;
-            float tempAltitude;
-            for (int i = 0; i < numUnits; i++)
-            {
-                // Laydown not valid by default
-                laydownFound = false;
+            // NGO Site
+            soaConfig.sites.Add(new NGOSiteConfig(-21.2181483f, -1.25010618f, "NGO Site 0"));
+            soaConfig.sites.Add(new NGOSiteConfig(-4.76803318f, -5.74888572f, "NGO Site 1"));
+            soaConfig.sites.Add(new NGOSiteConfig(11.6916982f,   4.76402643f, "NGO Site 2"));
+            soaConfig.sites.Add(new NGOSiteConfig(24.6807822f,  -6.75057337f, "NGO Site 3"));
 
-                // Keep trying points until we find one that satisfies grid constraints
-                while (!laydownFound)
-                {
-                    // Randomly pick an anchor and convert coordinates to world
-                    anchor = gridMath.GridToWorld(laydown.anchors[rand.Next(0, laydown.anchors.Count)]); // Note: rand.Next max value is exclusive
-
-                    // Now independently pick X and Z deviations from that point
-                    tempPos.first = anchor.first + RandN(0.0f, laydown.fromAnchorStdDev_km, 0.0f, laydown.fromAnchorMax_km);
-                    tempPos.second = anchor.second + RandN(0.0f, laydown.fromAnchorStdDev_km, 0.0f, laydown.fromAnchorMax_km);
-
-                    // Convert that temp position to grid
-                    tempGrid = gridMath.WorldToGrid(tempPos);
-
-                    // Check to see if the grid is within allowed
-                    if (laydown.allowedCells.Contains(tempGrid))
-                    {
-                        laydownFound = true;
-                    }
-                }
-
-                // Now pick an altitude randomly
-                tempAltitude = RandN(laydown.altitudeMean_km, laydown.altitudeStdDev_km, laydown.altitudeMin_km, laydown.altitudeMax_km);
-
-                // Save the 3D point
-                posList.Add(new PrimitiveTriple<float, float, float>(tempPos.first, tempAltitude, tempPos.second));
-            }
-
-            // Return list of randomized positions
-            return posList;
+            // Village
+            soaConfig.sites.Add(new VillageConfig(-16.0197901f,  5.74808437f, "Village 0"));
+            soaConfig.sites.Add(new VillageConfig(-14.296086f,  -3.22944096f, "Village 1"));
+            soaConfig.sites.Add(new VillageConfig(-5.63349131f,  4.74559538f, "Village 2"));
+            soaConfig.sites.Add(new VillageConfig(7.34998325f, -0.743652906f, "Village 3"));
+            soaConfig.sites.Add(new VillageConfig(-13.4306279f, -11.7638197f, "Village 4"));
         }
+
         #endregion
 
         #region MC Trial Generation
@@ -470,9 +385,11 @@ namespace soa
                 soaConfig.networkRedRoom = networkRedRoomHeader + trial.ToString(toStringFormat);
                 soaConfig.networkBlueRoom = networkBlueRoomHeader + trial.ToString(toStringFormat);
 
-                // Populate fuel
-                soaConfig.smallUAVFuelTankSize_s = smallUAVFuelTankSize_s;
-                soaConfig.heavyUAVFuelTankSize_s = heavyUAVFuelTankSize_s;
+                // Logger configuration
+                soaConfig.loggerOutputFile = soaLoggerFileHeader + trial.ToString(toStringFormat) + ".xml";
+                soaConfig.enableLogToFile = true;
+                soaConfig.enableLogEventsToFile = logEvents;
+                soaConfig.enableLogToUnityConsole = logToUnityConsole;
 
                 // Simulation configuration
                 soaConfig.gameDurationHr = gameDurationHr;
@@ -480,22 +397,23 @@ namespace soa
                 soaConfig.probRedTruckHasWeapon = probRedTruckHasWeapon;
                 soaConfig.probRedTruckHasJammer = probRedTruckHasJammer;
 
-                // Logger configuration
-                soaConfig.loggerOutputFile = soaLoggerFileHeader + trial.ToString(toStringFormat) + ".xml";
-                soaConfig.enableLogToFile = true;
-                soaConfig.enableLogEventsToFile = logEvents;
-                soaConfig.enableLogToUnityConsole = logToUnityConsole;
+                // Populate fuel
+                soaConfig.smallUAVFuelTankSize_s = smallUAVFuelTankSize_s;
+                soaConfig.heavyUAVFuelTankSize_s = heavyUAVFuelTankSize_s;
 
                 // Set sensor and classifier defaults
                 SetSensorDefaults(soaConfig);
                 SetClassifierDefaults(soaConfig);
 
-                // Set comms / jammer defaults
+                // Set comms and jammer defaults
                 SetCommsDefaults(soaConfig);
                 SetJammerDefaults(soaConfig);
 
+                // Set site locations
+                SetSiteLocations(soaConfig);
+
                 // Local units: Red Dismount
-                randomizedPositions = RandomizeLaydown(redDismountLaydown);
+                randomizedPositions = redDismountLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.localPlatforms.Add(new RedDismountConfig(
@@ -503,14 +421,15 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         -1, // id
-                        "null", // initialWaypoint
+                        -1, // sensorBeamwidth_deg
+                        null, // initialWaypoint
                         (rand.NextDouble() <= probRedDismountHasWeapon), // hasWeapon
-                        soaConfig.defaultCommsRanges["RedDismount"]
+                        -1 // commsRange_km
                         ));
                 }
 
                 // Local units: Red Truck
-                randomizedPositions = RandomizeLaydown(redTruckLaydown);
+                randomizedPositions = redTruckLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.localPlatforms.Add(new RedTruckConfig(
@@ -518,40 +437,43 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         -1, // id
-                        "null", // initialWaypoint
+                        -1, // sensorBeamwidth_deg
+                        null, // initialWaypoint
                         (rand.NextDouble() <= probRedTruckHasWeapon), // hasWeapon
-                        (rand.NextDouble() <= probRedTruckHasJammer), // has Jammer on
-                        soaConfig.defaultCommsRanges["RedTruck"],
-                        soaConfig.defaultJammerRanges["RedTruck"]
+                        (rand.NextDouble() <= probRedTruckHasJammer), // hasJammer
+                        -1, // commsRange_km
+                        -1 // jammerRange_km
                         ));
                 }
 
                 // Local units: Neutral Dismount
-                randomizedPositions = RandomizeLaydown(neutralDismountLaydown);
+                randomizedPositions = neutralDismountLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.localPlatforms.Add(new NeutralDismountConfig(
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1 // id
+                        -1, // id
+                        -1 // sensorBeamwidth_deg
                         ));
                 }
 
                 // Local units: Neutral Truck
-                randomizedPositions = RandomizeLaydown(neutralTruckLaydown);
+                randomizedPositions = neutralTruckLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.localPlatforms.Add(new NeutralTruckConfig(
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1 // id
+                        -1, // id
+                        -1 // sensorBeamwidth_deg
                         ));
                 }
 
                 // Local units: Blue Police
-                randomizedPositions = RandomizeLaydown(bluePoliceLaydown);
+                randomizedPositions = bluePoliceLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.localPlatforms.Add(new BluePoliceConfig(
@@ -559,12 +481,13 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         -1, // id
-                        soaConfig.defaultCommsRanges["BluePolice"]
+                        -1, // sensorBeamwidth_deg
+                        -1 // commsRange_km
                         ));
                 }
 
                 // Remote units: Heavy UAV
-                randomizedPositions = RandomizeLaydown(heavyUAVLaydown);
+                randomizedPositions = heavyUAVLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.remotePlatforms.Add(new HeavyUAVConfig(
@@ -572,13 +495,14 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         availableRemoteID++, // id
-                        soaConfig.defaultCommsRanges["HeavyUAV"],
-                        soaConfig.heavyUAVFuelTankSize_s
+                        -1, // sensorBeamwidth_deg
+                        -1, // commsRange_km
+                        soaConfig.heavyUAVFuelTankSize_s // fuelTankSize_s
                         ));
                 }
 
                 // Remote units: Small UAV
-                randomizedPositions = RandomizeLaydown(smallUAVLaydown);
+                randomizedPositions = smallUAVLaydown.Generate(gridMath, rand);
                 for (int i = 0; i < randomizedPositions.Count; i++)
                 {
                     soaConfig.remotePlatforms.Add(new SmallUAVConfig(
@@ -586,21 +510,22 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         availableRemoteID++, // id
-                        soaConfig.defaultCommsRanges["SmallUAV"],
-                        soaConfig.smallUAVFuelTankSize_s
+                        -1, // sensorBeamwidth_deg
+                        -1, // commsRange_km
+                        soaConfig.smallUAVFuelTankSize_s // fuelTankSize_s
                         ));
                 }
 
                 // Remote units: Blue Balloon
-                randomizedPositions = RandomizeLaydown(blueBalloonLaydown);
-                for (int i = 0; i < randomizedPositions.Count; i++)
-                {
-                    soaConfig.remotePlatforms.Add(new BlueBalloonConfig(
-                        availableRemoteID++, // id
-                        new List<PrimitivePair<float,float>>(),
-                        false
-                        ));
-                }
+                List<PrimitivePair<float, float>> balloonWaypoints = new List<PrimitivePair<float, float>>();
+                balloonWaypoints.Add(new PrimitivePair<float, float>(-28, 0));
+                balloonWaypoints.Add(new PrimitivePair<float, float>(29, 0));
+                soaConfig.remotePlatforms.Add(new BlueBalloonConfig(
+                    availableRemoteID++, // id
+                    -1, // sensorBeamwidth_deg
+                    balloonWaypoints,
+                    true
+                    ));
 
                 // Write SoaConfig contents to a config file
                 SoaConfigXMLWriter.Write(soaConfig, soaConfigFileHeader + trial.ToString(toStringFormat) + ".xml");
@@ -610,18 +535,6 @@ namespace soa
 
         #region Helper Functions
         /****************** MAIN FUNCTION ********************/
-        private float RandN(float mean, float stdDev, float min, float max)
-        {
-            double u1 = rand.NextDouble(); //these are uniform(0,1) random doubles
-            double u2 = rand.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
-                         Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)
-            double randNormal =
-                         mean + stdDev * randStdNormal; //random normal(mean,stdDev^2)
-
-            return (float)Math.Min(Math.Max(randNormal, min), max);
-        }
-
         private bool IsLandCell(float x, float z)
         {
             // Convert world coordinate to cell coordinate
@@ -646,6 +559,7 @@ namespace soa
         public static void Main()
         {
             MCTrialGenerator mcTrialGenerator = new MCTrialGenerator();
+
             mcTrialGenerator.GenerateConfigFiles();
         }
         #endregion

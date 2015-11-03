@@ -480,7 +480,7 @@ namespace soa
             System.Random rand = new System.Random();
 
             // Go through each child node
-            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1, 0.0f); // Dummy value
+            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1, 0.0f, 0.0f); // Dummy value
             bool newConfigValid;
             foreach (XmlNode c in node.ChildNodes)
 			{
@@ -496,7 +496,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    -1, // Runtime determined id field
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["RedDismount"]),
                                     GetStringAttribute(c, "initialWaypoint", null),
                                     GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountHasWeapon),
                                     GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["RedDismount"])
@@ -509,7 +510,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    -1, // Runtime determined id field
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["RedTruck"]),
                                     GetStringAttribute(c, "initialWaypoint", null),
                                     GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckHasWeapon),
                                     GetBooleanAttribute(c, "hasJammer", rand.NextDouble() <= soaConfig.probRedTruckHasJammer),
@@ -524,7 +526,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    -1 // Runtime determined id field
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["NeutralDismount"])
                                 );
                             }
                             break;
@@ -534,7 +537,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    -1 // Runtime determined id field
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["NeutralTruck"])
                                 );
                             }
                             break;
@@ -544,7 +548,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    -1, // Runtime determined id field
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["BluePolice"]),
                                     GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["BluePolice"])
                                 );
                             }
@@ -615,7 +620,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1),
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["HeavyUAV"]),
                                     GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["HeavyUAV"]),
                                     soaConfig.heavyUAVFuelTankSize_s
                                 );
@@ -627,7 +633,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1),
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["SmallUAV"]),
                                     GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["SmallUAV"]),
                                     soaConfig.smallUAVFuelTankSize_s
                                 );
@@ -648,7 +655,8 @@ namespace soa
 
                                 // Create a Blue Balloon config
                                 newConfig = new BlueBalloonConfig(
-                                    GetIntAttribute(c, "id", -1),
+                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
+                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["BlueBalloon"]),
                                     waypoints_km,
                                     GetBooleanAttribute(c, "teleportLoop", true)
                                 );
@@ -685,7 +693,6 @@ namespace soa
                         switch (g.Name)
                         {
                             case "Sensor":
-                                newConfig.SetSensorBeamwidth(GetFloatAttribute(g, "beamwidth_deg", 360));
                                 newConfig.SetSensorModalities(ParseModalities(g));
                                 break;
                             case "Classifier":

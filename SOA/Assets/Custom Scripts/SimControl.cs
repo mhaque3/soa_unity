@@ -915,7 +915,7 @@ public class SimControl : MonoBehaviour
         SoaSensor soaSensor = g.GetComponentInChildren<SoaSensor>();
         if (soaSensor != null)
         {
-            soaSensor.beamwidthDeg = config.GetUseDefaultSensorBeamwidth() ? soaConfig.defaultSensorBeamwidths[platformName] : config.GetSensorBeamwidth();
+            soaSensor.beamwidthDeg = (config.sensorBeamwidth_deg < 0) ? soaConfig.defaultSensorBeamwidths[platformName] : config.sensorBeamwidth_deg;
             soaSensor.modes = config.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities[platformName].ToArray() : config.GetSensorModalities().ToArray();
         }
         SoaClassifier soaClassifier = g.GetComponentInChildren<SoaClassifier>();
@@ -1317,26 +1317,23 @@ public class SimControl : MonoBehaviour
 
             // Waypoint motion
             SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
-            GameObject waypoint;
-            bool initialWaypointSpecified = false;
-            if (c.initialWaypoint != null)
-            {
+            
+            // Try to look up the waypoint specified in the config file
+            GameObject waypoint = null;
+            if(c.initialWaypoint != null){
                 waypoint = GameObject.Find(c.initialWaypoint);
-                if (waypoint != null)
-                {
-                    // Initial waypoint was specified, go to it first and then
-                    // go to the closest red base from there
-                    initialWaypointSpecified = true;
-                    swm.waypoints.Add(waypoint);
-                    swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
-                }
-            }
-            if (!initialWaypointSpecified)
-            {
-                // Go to current closest base if no initial waypoint was specified
-                swm.waypoints.Add(FindClosestInList(g, RedBases));
             }
 
+            // If waypoint was not valid, then have the closest base assign a waypoint
+            if (waypoint == null)
+            {
+                waypoint = FindClosestInList(g, RedBases).GetComponent<RedBaseSim>().AssignTarget();
+            }
+
+            // Set the waypoint and return to closest base from waypoint
+            swm.waypoints.Add(waypoint);
+            swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
+               
             // Weapon
             SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
             foreach (WeaponModality wm in sw.modes)
@@ -1366,7 +1363,6 @@ public class SimControl : MonoBehaviour
     {
         // Proposed initial position
         Vector3 newPos = new Vector3(c.x_km, 0, c.z_km);
-        //Debug.Log("Initial pos " + newPos.ToString());
 
         // Red truck can only traverse on land, not water or mountains
         Vector3 snappedPos;
@@ -1388,25 +1384,23 @@ public class SimControl : MonoBehaviour
 
             // Waypoint motion
             SoldierWaypointMotion swm = g.GetComponent<SoldierWaypointMotion>();
-            GameObject waypoint;
-            bool initialWaypointSpecified = false;
+
+            // Try to look up the waypoint specified in the config file
+            GameObject waypoint = null;
             if (c.initialWaypoint != null)
             {
                 waypoint = GameObject.Find(c.initialWaypoint);
-                if (waypoint != null)
-                {
-                    // Initial waypoint was specified, go to it first and then
-                    // go to the closest red base from there
-                    initialWaypointSpecified = true;
-                    swm.waypoints.Add(waypoint);
-                    swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
-                }
             }
-            if (!initialWaypointSpecified)
+
+            // If waypoint was not valid, then have the closest base assign a waypoint
+            if (waypoint == null)
             {
-                // Go to current closest base if no initial waypoint was specified
-                swm.waypoints.Add(FindClosestInList(g, RedBases));
+                waypoint = FindClosestInList(g, RedBases).GetComponent<RedBaseSim>().AssignTarget();
             }
+
+            // Set the waypoint and return to closest base from waypoint
+            swm.waypoints.Add(waypoint);
+            swm.waypoints.Add(FindClosestInList(waypoint, RedBases));
 
             // Weapon
             SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();

@@ -98,7 +98,9 @@ public class NeutralTruckSim : MonoBehaviour
                 startSite.transform.position.x / SimControl.KmToUnity,
                 thisSoaActor.simAltitude_km,
                 startSite.transform.position.z / SimControl.KmToUnity,
-                -1);
+                -1, // id (determined at runtime)
+                -1.0f // beamwidth (use default)
+                );
 
             // Instantiate and activate a replacement
             simControlScript.ActivateNeutralTruck(simControlScript.InstantiateNeutralTruck(c, true));

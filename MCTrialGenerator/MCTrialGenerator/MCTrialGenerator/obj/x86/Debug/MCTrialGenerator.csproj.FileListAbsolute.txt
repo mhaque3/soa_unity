@@ -1,0 +1,5 @@
+C:\Users\twupy1\Documents\Projects\Science of Autonomy\Code\soa_unity\MCTrialGenerator\MCTrialGenerator\MCTrialGenerator\bin\Debug\MCTrialGenerator.exe
+C:\Users\twupy1\Documents\Projects\Science of Autonomy\Code\soa_unity\MCTrialGenerator\MCTrialGenerator\MCTrialGenerator\bin\Debug\MCTrialGenerator.pdb
+C:\Users\twupy1\Documents\Projects\Science of Autonomy\Code\soa_unity\MCTrialGenerator\MCTrialGenerator\MCTrialGenerator\obj\x86\Debug\MCTrialGenerator.exe
+C:\Users\twupy1\Documents\Projects\Science of Autonomy\Code\soa_unity\MCTrialGenerator\MCTrialGenerator\MCTrialGenerator\obj\x86\Debug\MCTrialGenerator.pdb
+C:\Users\twupy1\Documents\Projects\Science of Autonomy\Code\soa_unity\MCTrialGenerator\MCTrialGenerator\MCTrialGenerator\obj\x86\Debug\MCTrialGenerator.csprojResolveAssemblyReference.cache

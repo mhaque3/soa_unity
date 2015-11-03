@@ -125,20 +125,18 @@ namespace soa
         public float y_km;
         public float z_km;
         public int id;
-        private bool useDefaultSensorBeamwidth;
-        private float sensorBeamwidth_deg;
+        public float sensorBeamwidth_deg;
         private bool useDefaultSensorModalities;
         private List<PerceptionModality> sensorModalities;
         private bool useDefaultClassifierModalities;
         private List<PerceptionModality> classifierModalities;
 
-        public PlatformConfig(float x_km, float y_km, float z_km, int id) {
+        public PlatformConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg) {
             this.x_km = x_km;
             this.y_km = y_km;
             this.z_km = z_km;
             this.id = id;
-            this.useDefaultSensorBeamwidth = true;
-            this.sensorBeamwidth_deg = 360; // Default is isotropic
+            this.sensorBeamwidth_deg = sensorBeamwidth_deg;
             this.useDefaultSensorModalities = true;
             this.sensorModalities = new List<PerceptionModality>();
             this.useDefaultClassifierModalities = true;
@@ -146,22 +144,6 @@ namespace soa
         }
 
         public abstract ConfigType GetConfigType();
-
-        public void SetSensorBeamwidth(float beamwidth_deg)
-        {
-            this.useDefaultSensorBeamwidth = false;
-            this.sensorBeamwidth_deg = beamwidth_deg;
-        }
-
-        public bool GetUseDefaultSensorBeamwidth()
-        {
-            return useDefaultSensorBeamwidth;
-        }
-
-        public float GetSensorBeamwidth()
-        {
-            return sensorBeamwidth_deg;
-        }
 
         public void SetSensorModalities(List<PerceptionModality> sensorModalities)
         {
@@ -202,9 +184,9 @@ namespace soa
         public bool hasWeapon;
         public string initialWaypoint;
         public float commsRange_km;
-        public RedDismountConfig(float x_km, float y_km, float z_km, int id,
+        public RedDismountConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg,
             string initialWaypoint, bool hasWeapon, float commsRange_km)
-            : base(x_km, y_km, z_km, id)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg)
         {
             this.commsRange_km = commsRange_km;
             this.initialWaypoint = initialWaypoint;
@@ -221,9 +203,9 @@ namespace soa
         public float commsRange_km;
         public float jammerRange_km;
         public string initialWaypoint;
-        public RedTruckConfig(float x_km, float y_km, float z_km, int id,
+        public RedTruckConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg,
             string initialWaypoint, bool hasWeapon, bool hasJammer,  float commsRange_km, float jammerRange_km)
-            : base(x_km, y_km, z_km, id)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg)
         {
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
@@ -237,16 +219,16 @@ namespace soa
     // Neutral dismount config
     public class NeutralDismountConfig : PlatformConfig
     {
-        public NeutralDismountConfig(float x_km, float y_km, float z_km, int id)
-            : base(x_km, y_km, z_km, id) { }
+        public NeutralDismountConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg) { }
         public override ConfigType GetConfigType() { return ConfigType.NEUTRAL_DISMOUNT; }
     }
     
     // Neutral truck config
     public class NeutralTruckConfig : PlatformConfig
     {
-        public NeutralTruckConfig(float x_km, float y_km, float z_km, int id)
-            : base(x_km, y_km, z_km, id) { }
+        public NeutralTruckConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg) { }
         public override ConfigType GetConfigType() { return ConfigType.NEUTRAL_TRUCK; }
     }
 
@@ -254,8 +236,9 @@ namespace soa
     public class BluePoliceConfig : PlatformConfig
     {
         public float commsRange_km;
-        public BluePoliceConfig(float x_km, float y_km, float z_km, int id, float commsRange_km)
-            : base(x_km, y_km, z_km, id) {
+        public BluePoliceConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg, 
+            float commsRange_km)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg) {
                 this.commsRange_km = commsRange_km;
         }
         public override ConfigType GetConfigType() { return ConfigType.BLUE_POLICE; }
@@ -266,8 +249,9 @@ namespace soa
     {
         public float commsRange_km;
         public float fuelTankSize_s;
-        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km, float fuelTankSize_s)
-            : base(x_km, y_km, z_km, id) {
+        public HeavyUAVConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg,
+            float commsRange_km, float fuelTankSize_s)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg) {
                 this.commsRange_km = commsRange_km;
                 this.fuelTankSize_s = fuelTankSize_s;
         }
@@ -279,8 +263,9 @@ namespace soa
     {
         public float commsRange_km;
         public float fuelTankSize_s;
-        public SmallUAVConfig(float x_km, float y_km, float z_km, int id, float commsRange_km, float fuelTankSize_s)
-            : base(x_km, y_km, z_km, id) {
+        public SmallUAVConfig(float x_km, float y_km, float z_km, int id, float sensorBeamwidth_deg,
+            float commsRange_km, float fuelTankSize_s)
+            : base(x_km, y_km, z_km, id, sensorBeamwidth_deg) {
                 this.commsRange_km = commsRange_km;
                 this.fuelTankSize_s = fuelTankSize_s;
         }
@@ -292,8 +277,9 @@ namespace soa
     {
         public List<PrimitivePair<float, float>> waypoints_km;
         public bool teleportLoop;
-        public BlueBalloonConfig(int id, List<PrimitivePair<float, float>> waypoints_km, bool teleportLoop)
-            : base(0, 0, 0, id) 
+        public BlueBalloonConfig(int id, float sensorBeamwidth_deg, 
+            List<PrimitivePair<float, float>> waypoints_km, bool teleportLoop)
+            : base(0, 0, 0, id, sensorBeamwidth_deg) 
         {
             // Copy list of coordinates
             this.waypoints_km = new List<PrimitivePair<float, float>>();

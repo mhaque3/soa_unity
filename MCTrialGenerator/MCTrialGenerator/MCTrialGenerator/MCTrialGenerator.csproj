@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0AEA7815-FC14-457D-961E-51F5B96600CC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MCTrialGenerator</RootNamespace>
+    <AssemblyName>MCTrialGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\GridMath.cs">
+      <Link>GridMath.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfig.cs">
+      <Link>EnvConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfigXMLReader.cs">
+      <Link>EnvConfigXMLReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfigXMLWriter.cs">
+      <Link>EnvConfigXMLWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\MCTrialGenerator.cs">
+      <Link>MCTrialGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Platform2DLaydown.cs">
+      <Link>Platform2DLaydown.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Platform3DLaydown.cs">
+      <Link>Platform3DLaydown.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\PrimitiveTriple.cs">
+      <Link>PrimitiveTriple.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\SoaConfigXMLWriter.cs">
+      <Link>SoaConfigXMLWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\PerceptionModality.cs">
+      <Link>PerceptionModality.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\PrimitivePair.cs">
+      <Link>PrimitivePair.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\SoaConfig.cs">
+      <Link>SoaConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\SoaConfigXMLReader.cs">
+      <Link>SoaConfigXMLReader.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

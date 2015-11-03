@@ -109,7 +109,8 @@ public class RedTruckSim : MonoBehaviour
                 retreatBasePosition.x / SimControl.KmToUnity,
                 thisSoaActor.simAltitude_km,
                 retreatBasePosition.z / SimControl.KmToUnity,
-                -1,
+                -1, // id (determined at runtime)
+                -1.0f, // beamwidth (use default)
                 null,
                 Random.value <= simControlScript.probRedTruckHasWeapon,
                 Random.value <= simControlScript.probRedTruckHasJammer,
@@ -134,11 +135,14 @@ public class RedTruckSim : MonoBehaviour
                     // Log event
                     simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
                 }
+
+                // Assign a new target and return to closest base from that target
                 waypointScript.On = false;
                 waypointScript.waypointIndex = 0;
                 waypointScript.waypoints.Clear();
-                waypointScript.waypoints.Add(rb.AssignTarget());
-                waypointScript.waypoints.Add(other.gameObject);
+                GameObject target = rb.AssignTarget();
+                waypointScript.waypoints.Add(target);
+                waypointScript.waypoints.Add(simControlScript.FindClosestInPist(target, simControlScript.RedBases));
                 waypointScript.On = true;
 
                 foreach (SoaWeapon weapon in thisSoaActor.Weapons)
