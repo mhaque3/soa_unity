@@ -892,7 +892,7 @@ public class SimControl : MonoBehaviour
         }
     }
 
-    GameObject FindClosestInList(GameObject g, List<GameObject> targetList)
+    public GameObject FindClosestInList(GameObject g, List<GameObject> targetList)
     {
         GameObject closestTarget = null;
         float closestDist = float.PositiveInfinity;

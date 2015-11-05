@@ -142,7 +142,7 @@ public class RedTruckSim : MonoBehaviour
                 waypointScript.waypoints.Clear();
                 GameObject target = rb.AssignTarget();
                 waypointScript.waypoints.Add(target);
-                waypointScript.waypoints.Add(simControlScript.FindClosestInPist(target, simControlScript.RedBases));
+                waypointScript.waypoints.Add(simControlScript.FindClosestInList(target, simControlScript.RedBases));
                 waypointScript.On = true;
 
                 foreach (SoaWeapon weapon in thisSoaActor.Weapons)
