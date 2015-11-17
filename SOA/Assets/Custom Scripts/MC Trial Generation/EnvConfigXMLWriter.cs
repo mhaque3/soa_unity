@@ -28,26 +28,6 @@ namespace soa
             AddAttribute(xmlDoc, node, "gridOrigin_z", envConfig.gridOrigin_z.ToString());
             AddAttribute(xmlDoc, node, "gridToWorldScale", envConfig.gridToWorldScale.ToString());
 
-            // Populate "RedBase" node
-            node = xmlDoc.CreateElement("RedBase");
-            configNode.AppendChild(node);
-            AddChildCells(xmlDoc, node, envConfig.redBaseCells);
-
-            // Populate "BlueBase" node
-            node = xmlDoc.CreateElement("BlueBase");
-            configNode.AppendChild(node);
-            AddChildCells(xmlDoc, node, envConfig.blueBaseCells);
-            
-            // Populate "Village" node
-            node = xmlDoc.CreateElement("Village");
-            configNode.AppendChild(node);
-            AddChildCells(xmlDoc, node, envConfig.villageCells);
-
-            // Populate "NGOSite" node
-            node = xmlDoc.CreateElement("NGOSite");
-            configNode.AppendChild(node);
-            AddChildCells(xmlDoc, node, envConfig.ngoSiteCells);
-
             // Populate "Road" node
             node = xmlDoc.CreateElement("Road");
             configNode.AppendChild(node);

@@ -20,18 +20,6 @@ namespace soa
         // Road cells
         public List<PrimitivePair<int, int>> roadCells;
 
-        // NGO site cells
-        public List<PrimitivePair<int, int>> ngoSiteCells;
-
-        // Village cells
-        public List<PrimitivePair<int, int>> villageCells;
-
-        // Blue base cells
-        public List<PrimitivePair<int, int>> blueBaseCells;
-
-        // Red base cells
-        public List<PrimitivePair<int, int>> redBaseCells;
-
         // Constructor
         public EnvConfig()
         {
@@ -40,10 +28,6 @@ namespace soa
             waterCells = new List<PrimitivePair<int, int>>();
             mountainCells = new List<PrimitivePair<int, int>>();
             roadCells = new List<PrimitivePair<int, int>>();
-            ngoSiteCells = new List<PrimitivePair<int, int>>();
-            villageCells = new List<PrimitivePair<int, int>>();
-            blueBaseCells = new List<PrimitivePair<int, int>>();
-            redBaseCells = new List<PrimitivePair<int, int>>();
         }
     }
 }

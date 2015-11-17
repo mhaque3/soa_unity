@@ -66,22 +66,6 @@ namespace soa
                         // Grid math cells
                         ParseGridMath(c, envConfig);
                         break;
-                    case "RedBase":
-                        // Red base cells
-                        ParseCells(c, envConfig.redBaseCells);
-                        break;
-                    case "BlueBase":
-                        // Blue base cells
-                        ParseCells(c, envConfig.blueBaseCells);
-                        break;
-                    case "Village":
-                        // Village cells
-                        ParseCells(c, envConfig.villageCells);
-                        break;
-                    case "NGOSite":
-                        // NGO site cells
-                        ParseCells(c, envConfig.ngoSiteCells);
-                        break;
                     case "Road":
                         // Road cells
                         ParseCells(c, envConfig.roadCells);

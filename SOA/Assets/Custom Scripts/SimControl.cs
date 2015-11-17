@@ -117,6 +117,7 @@ public class SimControl : MonoBehaviour
         currentCell = new FlatHexPoint(0, 0);
         gridOrigin_x = hexGrid.Map[currentCell].x / KmToUnity;
         gridOrigin_z = hexGrid.Map[currentCell].z / KmToUnity;
+        Debug.Log("Grid Origin (km): " + gridOrigin_x + ", " + gridOrigin_z);
         gridToWorldScale = 1.0f;
         gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
 
@@ -427,41 +428,18 @@ public class SimControl : MonoBehaviour
         // Terrain information
         foreach (GridCell g in MountainCells)
         {
-            envConfig.mountainCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+            envConfig.mountainCells.Add(new PrimitivePair<int, int>(g.getCol(), g.getRow()));
         }
         foreach (GridCell g in WaterCells)
         {
-            envConfig.waterCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+            envConfig.waterCells.Add(new PrimitivePair<int, int>(g.getCol(), g.getRow()));
         }
         foreach (GridCell g in LandCells)
         {
-            envConfig.landCells.Add(new PrimitivePair<int, int>(g.getRow(), g.getCol()));
+            envConfig.landCells.Add(new PrimitivePair<int, int>(g.getCol(), g.getRow()));
         }
 
         // No road information for now
-
-        // Site information
-        FlatHexPoint currentCell;
-        for (int i = 0; i < BlueBases.Count; i++)
-        {
-            currentCell = hexGrid.Map[BlueBases[i].transform.position];
-            envConfig.blueBaseCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
-        }
-        for (int i = 0; i < RedBases.Count; i++)
-        {
-            currentCell = hexGrid.Map[RedBases[i].transform.position];
-            envConfig.redBaseCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
-        }
-        for (int i = 0; i < NgoSites.Count; i++)
-        {
-            currentCell = hexGrid.Map[NgoSites[i].transform.position];
-            envConfig.ngoSiteCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
-        }
-        for (int i = 0; i < Villages.Count; i++)
-        {
-            currentCell = hexGrid.Map[Villages[i].transform.position];
-            envConfig.villageCells.Add(new PrimitivePair<int, int>(currentCell.Y, currentCell.X));
-        }
 
         // Write to file
         EnvConfigXMLWriter.Write(envConfig, EnvFileName);
@@ -963,7 +941,9 @@ public class SimControl : MonoBehaviour
 
         if (!found)
         {
-            Debug.LogError("SimControl::CheckInitialLocation(): Cannot place unit at desired location");
+            Debug.LogError("SimControl::CheckInitialLocation(): Cannot place unit at desired world location: (" + 
+                worldPosition.x + ", " + worldPosition.z + "), corresponding to grid (" + 
+                initialCell.getCol() + ", " + initialCell.getRow() + ")");
         }
 
         return found;

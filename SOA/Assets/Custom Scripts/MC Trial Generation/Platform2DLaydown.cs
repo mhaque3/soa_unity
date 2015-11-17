@@ -13,7 +13,7 @@ namespace soa
         public int numMax;
         public float fromAnchorStdDev_km; // Along x and z dimensions separately 
         public float fromAnchorMax_km; // Along x and z dimensions separately
-        public List<PrimitivePair<int, int>> anchors;
+        public List<PrimitivePair<float, float>> anchors;
         public HashSet<PrimitivePair<int, int>> allowedCells;
 
         public Platform2DLaydown() { }
@@ -67,8 +67,8 @@ namespace soa
                 // Keep trying points until we find one that satisfies grid constraints
                 while (!laydownFound)
                 {
-                    // Randomly pick an anchor and convert coordinates to world
-                    anchor = gridMath.GridToWorld(anchors[rand.Next(0, anchors.Count)]); // Note: rand.Next max value is exclusive
+                    // Randomly pick an anchor (all anchors already in world coordinates)
+                    anchor = anchors[rand.Next(0, anchors.Count)]; // Note: rand.Next max value is exclusive
 
                     // Now independently pick X and Z deviations from that point
                     tempPos.first = anchor.first + RandN(0.0f, fromAnchorStdDev_km, 0.0f, fromAnchorMax_km, rand);

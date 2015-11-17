@@ -24,7 +24,7 @@ namespace soa
         const bool logToUnityConsole = true;
 
         /******************** SIMULATION *********************/
-        const float gameDurationHr = 15.0f;
+        const float gameDurationHr = 1.0f;
         const float probRedDismountHasWeapon = 0.5f;
         const float probRedTruckHasWeapon = 0.5f;
         const float probRedTruckHasJammer = 0.5f;
@@ -64,6 +64,12 @@ namespace soa
 
         // No balloon laydown
 
+        /***************** SITE LAYDOWN **********************/
+        private List<SiteConfig> blueBases;
+        private List<SiteConfig> redBases;
+        private List<SiteConfig> ngoSites;
+        private List<SiteConfig> villages;
+
         /***************** CLASS DEFINITION ******************/
         private GridMath gridMath;
         private HashSet<PrimitivePair<int, int>> landCells;
@@ -91,10 +97,6 @@ namespace soa
             
             // Random generator for determining whether a unit has weapons or jammers etc.
             rand = new Random();
-
-            // Initialize platform laydown
-            InitializeLocalLaydown();
-            InitializeRemoteLaydown();
         }
 
         #region Perception Defaults
@@ -246,7 +248,7 @@ namespace soa
             redDismountLaydown.numMax = 10;
             redDismountLaydown.fromAnchorStdDev_km = 1;
             redDismountLaydown.fromAnchorMax_km = 2;
-            redDismountLaydown.anchors = envConfig.redBaseCells;
+            redDismountLaydown.anchors = extractSiteLocations(redBases);
             redDismountLaydown.allowedCells = landCells;
             
             // Red trucks
@@ -257,13 +259,13 @@ namespace soa
             redTruckLaydown.numMax = 10;
             redTruckLaydown.fromAnchorStdDev_km = 1;
             redTruckLaydown.fromAnchorMax_km = 2;
-            redTruckLaydown.anchors = envConfig.redBaseCells;
+            redTruckLaydown.anchors = extractSiteLocations(redBases);
             redTruckLaydown.allowedCells = landCells;
 
-            // Merge list of NGO and village cells
-            List<PrimitivePair<int, int>> neutralSiteCells = new List<PrimitivePair<int, int>>();
-            neutralSiteCells.AddRange(envConfig.ngoSiteCells);
-            neutralSiteCells.AddRange(envConfig.villageCells);
+            // Merge list of NGO and villages
+            List<SiteConfig> neutralSites = new List<SiteConfig>();
+            neutralSites.AddRange(ngoSites);
+            neutralSites.AddRange(villages);
 
             // Neutral dismounts
             neutralDismountLaydown = new Platform2DLaydown();
@@ -273,7 +275,7 @@ namespace soa
             neutralDismountLaydown.numMax = 4;
             neutralDismountLaydown.fromAnchorStdDev_km = 2;
             neutralDismountLaydown.fromAnchorMax_km = 5;
-            neutralDismountLaydown.anchors = neutralSiteCells;
+            neutralDismountLaydown.anchors = extractSiteLocations(neutralSites);
             neutralDismountLaydown.allowedCells = landCells;
 
             // Neutral trucks
@@ -284,7 +286,7 @@ namespace soa
             neutralTruckLaydown.numMax = 4;
             neutralTruckLaydown.fromAnchorStdDev_km = 2;
             neutralTruckLaydown.fromAnchorMax_km = 5;
-            neutralTruckLaydown.anchors = neutralSiteCells;
+            neutralTruckLaydown.anchors = extractSiteLocations(neutralSites);
             neutralTruckLaydown.allowedCells = landCells;
 
             // Blue police
@@ -295,7 +297,7 @@ namespace soa
             bluePoliceLaydown.numMax = 1;
             bluePoliceLaydown.fromAnchorStdDev_km = 2;
             bluePoliceLaydown.fromAnchorMax_km = 5;
-            bluePoliceLaydown.anchors = envConfig.blueBaseCells;
+            bluePoliceLaydown.anchors = extractSiteLocations(blueBases);
             bluePoliceLaydown.allowedCells = landCells;
         }
 
@@ -313,7 +315,7 @@ namespace soa
             heavyUAVLaydown.altitudeStdDev_km = 0.25f;
             heavyUAVLaydown.altitudeMin_km = 0.0f;
             heavyUAVLaydown.altitudeMax_km = 0.5f;
-            heavyUAVLaydown.anchors = envConfig.blueBaseCells;
+            heavyUAVLaydown.anchors = extractSiteLocations(blueBases);
             heavyUAVLaydown.allowedCells = allCells;
 
             // Small UAV
@@ -328,7 +330,7 @@ namespace soa
             smallUAVLaydown.altitudeStdDev_km = 2.5f;
             smallUAVLaydown.altitudeMin_km = 0.0f;
             smallUAVLaydown.altitudeMax_km = 5.0f;
-            smallUAVLaydown.anchors = envConfig.blueBaseCells;
+            smallUAVLaydown.anchors = extractSiteLocations(blueBases);
             smallUAVLaydown.allowedCells = allCells;
         }
         #endregion
@@ -337,25 +339,35 @@ namespace soa
         public void SetSiteLocations(SoaConfig soaConfig)
         {
             // Blue Base
-            soaConfig.sites.Add(new BlueBaseConfig(-3.02830208f, -9.7492255f, "Blue Base", soaConfig.defaultCommsRanges["BlueBase"]));
+            blueBases = new List<SiteConfig>();
+            blueBases.Add(new BlueBaseConfig(-3.02830208f, -9.7492255f, "Blue Base", soaConfig.defaultCommsRanges["BlueBase"]));
 
             // Red Base
-            soaConfig.sites.Add(new RedBaseConfig(-17.7515077f,  13.7463599f, "Red Base 0"));
-            soaConfig.sites.Add(new RedBaseConfig(-0.439941213f, 12.7518844f, "Red Base 1"));
-            soaConfig.sites.Add(new RedBaseConfig(22.0787984f,   10.7493104f, "Red Base 2"));
+            redBases = new List<SiteConfig>();
+            redBases.Add(new RedBaseConfig(-17.7515077f, 13.7463599f, "Red Base 0"));
+            redBases.Add(new RedBaseConfig(-0.439941213f, 12.7518844f, "Red Base 1"));
+            redBases.Add(new RedBaseConfig(22.0787984f,   10.7493104f, "Red Base 2"));
 
             // NGO Site
-            soaConfig.sites.Add(new NGOSiteConfig(-21.2181483f, -1.25010618f, "NGO Site 0"));
-            soaConfig.sites.Add(new NGOSiteConfig(-4.76803318f, -5.74888572f, "NGO Site 1"));
-            soaConfig.sites.Add(new NGOSiteConfig(11.6916982f,   4.76402643f, "NGO Site 2"));
-            soaConfig.sites.Add(new NGOSiteConfig(24.6807822f,  -6.75057337f, "NGO Site 3"));
+            ngoSites = new List<SiteConfig>();
+            ngoSites.Add(new NGOSiteConfig(-21.2181483f, -1.25010618f, "NGO Site 0"));
+            ngoSites.Add(new NGOSiteConfig(-4.76803318f, -5.74888572f, "NGO Site 1"));
+            ngoSites.Add(new NGOSiteConfig(11.6916982f,   4.76402643f, "NGO Site 2"));
+            ngoSites.Add(new NGOSiteConfig(24.6807822f,  -6.75057337f, "NGO Site 3"));
 
             // Village
-            soaConfig.sites.Add(new VillageConfig(-16.0197901f,  5.74808437f, "Village 0"));
-            soaConfig.sites.Add(new VillageConfig(-14.296086f,  -3.22944096f, "Village 1"));
-            soaConfig.sites.Add(new VillageConfig(-5.63349131f,  4.74559538f, "Village 2"));
-            soaConfig.sites.Add(new VillageConfig(7.34998325f, -0.743652906f, "Village 3"));
-            soaConfig.sites.Add(new VillageConfig(-13.4306279f, -11.7638197f, "Village 4"));
+            villages = new List<SiteConfig>();
+            villages.Add(new VillageConfig(-16.0197901f, 5.74808437f, "Village 0"));
+            villages.Add(new VillageConfig(-14.296086f,  -3.22944096f, "Village 1"));
+            villages.Add(new VillageConfig(-5.63349131f,  4.74559538f, "Village 2"));
+            villages.Add(new VillageConfig(7.34998325f, -0.743652906f, "Village 3"));
+            villages.Add(new VillageConfig(-13.4306279f, -11.7638197f, "Village 4"));
+
+            // Add all to soaConfig
+            soaConfig.sites.AddRange(blueBases);
+            soaConfig.sites.AddRange(redBases);
+            soaConfig.sites.AddRange(ngoSites);
+            soaConfig.sites.AddRange(villages);
         }
 
         #endregion
@@ -409,8 +421,12 @@ namespace soa
                 SetCommsDefaults(soaConfig);
                 SetJammerDefaults(soaConfig);
 
-                // Set site locations
+                // Initialize and set site locations
                 SetSiteLocations(soaConfig);
+
+                // Initialize platform laydown
+                InitializeLocalLaydown();
+                InitializeRemoteLaydown();
 
                 // Local units: Red Dismount
                 randomizedPositions = redDismountLaydown.Generate(gridMath, rand);
@@ -551,6 +567,15 @@ namespace soa
 
             // Check to see if that cell belongs to the list/set of land, water, or mountain cells
             return allCells.Contains(cell);
+        }
+
+        private List<PrimitivePair<float,float>> extractSiteLocations(List<SiteConfig> sites)
+        {
+            List<PrimitivePair<float,float>> locations = new List<PrimitivePair<float, float>>();
+            foreach (SiteConfig site in sites){
+                locations.Add(new PrimitivePair<float, float>(site.x_km, site.z_km));
+            }
+            return locations;
         }
         #endregion
 
