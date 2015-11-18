@@ -4,3 +4,5 @@
 /SOA/SOA-csharp.suo
 /SOA/SOA.sln
 GeneratedFiles
+bin
+obj

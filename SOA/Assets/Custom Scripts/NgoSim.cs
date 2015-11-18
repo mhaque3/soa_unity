@@ -23,7 +23,13 @@ public class NgoSim : MonoBehaviour
     public Vector3 labelPosition;
     Text[] labels;
 
-    // Use this for initialization
+    // Awake is called before anything else
+    void Awake()
+    {
+
+    }
+
+    // Use this for initialization upon activation
     void Start()
     {
         uiCanvas = (Canvas)Object.FindObjectOfType<Canvas>();

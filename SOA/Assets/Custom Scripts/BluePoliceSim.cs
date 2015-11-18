@@ -51,13 +51,13 @@ public class BluePoliceSim : MonoBehaviour
     Dictionary<string, float> protectedSiteVirtualCasualties;
     Dictionary<string, float> protectedSiteTotalCasualties;
 
-    // Use this for initialization
-	void Start () 
+    // Awake is called first before anything else
+    void Awake()
     {
         // Initialize databases
         protectedSitePos = new Dictionary<string, Vector3>();
-        protectedSiteVirtualCasualties = new Dictionary<string,float>();
-        protectedSiteTotalCasualties = new Dictionary<string,float>();
+        protectedSiteVirtualCasualties = new Dictionary<string, float>();
+        protectedSiteTotalCasualties = new Dictionary<string, float>();
 
         // Get and store references
         simControlScript = GameObject.FindObjectOfType<SimControl>();
@@ -78,7 +78,11 @@ public class BluePoliceSim : MonoBehaviour
 
         // Red unit database
         redUnitDatabase = new Dictionary<int, RedUnitInfo>();
+    }
 
+    // Use this for initialization upon activation
+	void Start () 
+    {
         // Save references to Unity game objects for quick lookup of properties
         protectedSites = new List<GameObject>();
         protectedSites.AddRange(simControlScript.NgoSites);

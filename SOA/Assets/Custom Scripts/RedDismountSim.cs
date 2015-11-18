@@ -86,6 +86,12 @@ public class RedDismountSim : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Return if triggered too early (SoaActor has not instantiated yet)
+        if (thisSoaActor == null)
+        {
+            return;
+        }
+
         if (other.CompareTag("BluePolice")) // Killed by police
         {
             SoaSensor s = other.gameObject.GetComponentInChildren<SoaSensor>();

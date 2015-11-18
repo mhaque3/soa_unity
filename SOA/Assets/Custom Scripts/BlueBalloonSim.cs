@@ -7,13 +7,18 @@ public class BlueBalloonSim : MonoBehaviour
 {
     SoaActor thisSoaActor;
 
-    // Use this for initialization
-	void Start () 
+    // Awake is called first before anything else
+    void Awake()
     {
         // Get pointer to SoaActor
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // Unlimited fuel tank
         thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
+    }
+
+    // Use this for initialization upon activation
+	void Start () 
+    {
     }
 }

@@ -64,12 +64,12 @@ namespace soa
                 // Laydown not valid by default
                 laydownFound = false;
 
+                // Randomly pick an anchor (all anchors already in world coordinates)
+                anchor = anchors[rand.Next(0, anchors.Count)]; // Note: rand.Next max value is exclusive
+
                 // Keep trying points until we find one that satisfies grid constraints
                 while (!laydownFound)
                 {
-                    // Randomly pick an anchor (all anchors already in world coordinates)
-                    anchor = anchors[rand.Next(0, anchors.Count)]; // Note: rand.Next max value is exclusive
-
                     // Now independently pick X and Z deviations from that point
                     tempPos.first = anchor.first + RandN(0.0f, fromAnchorStdDev_km, 0.0f, fromAnchorMax_km, rand);
                     tempPos.second = anchor.second + RandN(0.0f, fromAnchorStdDev_km, 0.0f, fromAnchorMax_km, rand);

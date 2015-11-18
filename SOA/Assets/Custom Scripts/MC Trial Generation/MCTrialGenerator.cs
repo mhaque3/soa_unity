@@ -24,7 +24,7 @@ namespace soa
         const bool logToUnityConsole = true;
 
         /******************** SIMULATION *********************/
-        const float gameDurationHr = 1.0f;
+        const float gameDurationHr = 15.0f;
         const float probRedDismountHasWeapon = 0.5f;
         const float probRedTruckHasWeapon = 0.5f;
         const float probRedTruckHasJammer = 0.5f;
@@ -73,7 +73,7 @@ namespace soa
         /***************** CLASS DEFINITION ******************/
         private GridMath gridMath;
         private HashSet<PrimitivePair<int, int>> landCells;
-        private HashSet<PrimitivePair<int, int>> allCells;
+        private HashSet<PrimitivePair<int, int>> landAndWaterCells;
         private EnvConfig envConfig;
         private Random rand;
         public MCTrialGenerator()
@@ -91,9 +91,8 @@ namespace soa
 
             // Populate hashsets of cells for easy lookup
             landCells = new HashSet<PrimitivePair<int, int>>(envConfig.landCells);
-            allCells = new HashSet<PrimitivePair<int, int>>(envConfig.landCells);
-            allCells.UnionWith(envConfig.waterCells);
-            allCells.UnionWith(envConfig.mountainCells);
+            landAndWaterCells = new HashSet<PrimitivePair<int, int>>(envConfig.landCells);
+            landAndWaterCells.UnionWith(envConfig.waterCells);
             
             // Random generator for determining whether a unit has weapons or jammers etc.
             rand = new Random();
@@ -316,7 +315,7 @@ namespace soa
             heavyUAVLaydown.altitudeMin_km = 0.0f;
             heavyUAVLaydown.altitudeMax_km = 0.5f;
             heavyUAVLaydown.anchors = extractSiteLocations(blueBases);
-            heavyUAVLaydown.allowedCells = allCells;
+            heavyUAVLaydown.allowedCells = landAndWaterCells;
 
             // Small UAV
             smallUAVLaydown = new Platform3DLaydown();
@@ -331,7 +330,7 @@ namespace soa
             smallUAVLaydown.altitudeMin_km = 0.0f;
             smallUAVLaydown.altitudeMax_km = 5.0f;
             smallUAVLaydown.anchors = extractSiteLocations(blueBases);
-            smallUAVLaydown.allowedCells = allCells;
+            smallUAVLaydown.allowedCells = landAndWaterCells;
         }
         #endregion
 
@@ -551,24 +550,6 @@ namespace soa
 
         #region Helper Functions
         /****************** MAIN FUNCTION ********************/
-        private bool IsLandCell(float x, float z)
-        {
-            // Convert world coordinate to cell coordinate
-            PrimitivePair<int, int> cell = gridMath.WorldToGrid(new PrimitivePair<float, float>(x, z));
-
-            // Check to see if that cell belongs to the list/set of land cells
-            return landCells.Contains(cell);
-        }
-
-        private bool IsAnyCell(float x, float z)
-        {
-            // Convert world coordinate to cell coordinate
-            PrimitivePair<int, int> cell = gridMath.WorldToGrid(new PrimitivePair<float, float>(x, z));
-
-            // Check to see if that cell belongs to the list/set of land, water, or mountain cells
-            return allCells.Contains(cell);
-        }
-
         private List<PrimitivePair<float,float>> extractSiteLocations(List<SiteConfig> sites)
         {
             List<PrimitivePair<float,float>> locations = new List<PrimitivePair<float, float>>();

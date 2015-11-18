@@ -9,7 +9,13 @@ public class BlueBaseSim : MonoBehaviour
     public float SupplyRate;
     public float Supply;
 
-    // Use this for initialization
+    // Awake is called before anything else
+    void Awake()
+    {
+
+    }
+
+    // Use this for initialization upon activation
     void Start()
     {
     }

@@ -6,13 +6,18 @@ public class SmallUAVSim : MonoBehaviour
     SoaActor thisSoaActor;
     public float fuelTankSize_s;
 
-	// Use this for initialization
-	void Start () 
+    // Awake is called first before anything else
+    void Awake()
     {
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
         // Start on a full tank
         thisSoaActor.fuelRemaining_s = fuelTankSize_s;
+    }
+
+	// Use this for initialization upon activation
+	void Start () 
+    {
 	}
 
     void OnTriggerEnter(Collider other)

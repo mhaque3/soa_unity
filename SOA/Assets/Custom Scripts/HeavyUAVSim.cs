@@ -13,14 +13,19 @@ public class HeavyUAVSim : MonoBehaviour
     public GameObject SupplyIcon;
     public GameObject CasualtyIcon;
 
-	// Use this for initialization
-	void Start () 
+    // Awake is called first before anything else
+    void Awake()
     {
         thisSoaActor = gameObject.GetComponent<SoaActor>();
         simControlScript = GameObject.FindObjectOfType<SimControl>();
 
         // Start on a full tank
-        thisSoaActor.fuelRemaining_s = fuelTankSize_s;
+        thisSoaActor.fuelRemaining_s = fuelTankSize_s;        
+    }
+
+	// Use this for initialization upon activation
+	void Start () 
+    {
 	}
 	
 	// Update is called once per frame

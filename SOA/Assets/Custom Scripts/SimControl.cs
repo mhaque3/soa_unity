@@ -104,8 +104,24 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                        INITIALIZATION                                             *
      *****************************************************************************************************/
+    // Awake is called first before anything else
+    void Awake()
+    {
+        // Clear all platform lists
+        LocalPlatforms = new List<GameObject>();
+        RemotePlatforms = new List<GameObject>();
+        NgoSites = new List<GameObject>();
+        Villages = new List<GameObject>();
+        RedBases = new List<GameObject>();
+        BlueBases = new List<GameObject>();
 
-    // Initialization function
+        // Set up mountain and water cells
+        WaterCells = new List<GridCell>();
+        MountainCells = new List<GridCell>();
+        LandCells = new List<GridCell>();
+    }
+
+    // Use this for initialization upon activation
 	void Start () 
     {
         // Scale factor (this must be the first thing called)
@@ -120,19 +136,6 @@ public class SimControl : MonoBehaviour
         Debug.Log("Grid Origin (km): " + gridOrigin_x + ", " + gridOrigin_z);
         gridToWorldScale = 1.0f;
         gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
-
-        // Clear all platform lists
-        LocalPlatforms = new List<GameObject>();
-        RemotePlatforms = new List<GameObject>();
-        NgoSites = new List<GameObject>();
-        Villages = new List<GameObject>();
-        RedBases = new List<GameObject>();
-        BlueBases = new List<GameObject>();
-
-        // Set up mountain and water cells
-        WaterCells = new List<GridCell>();
-        MountainCells = new List<GridCell>();
-        LandCells = new List<GridCell>();
 
         Debug.Log(hexGrid.WaterHexes.Count + " water hexes to copy");
         foreach (FlatHexPoint point in hexGrid.WaterHexes)
