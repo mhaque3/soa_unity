@@ -114,13 +114,13 @@ public class RedTruckSim : MonoBehaviour
                 retreatBasePosition.x / SimControl.KmToUnity,
                 thisSoaActor.simAltitude_km,
                 retreatBasePosition.z / SimControl.KmToUnity,
-                -1, // id (determined at runtime)
-                -1.0f, // beamwidth (use default)
-                null,
-                Random.value <= simControlScript.probRedTruckHasWeapon,
-                Random.value <= simControlScript.probRedTruckHasJammer,
-                simControlScript.defaultCommsRanges["RedTruck"],
-                simControlScript.defaultJammerRanges["RedTruck"]);
+                new Optional<int>(), // id (determined at runtime)
+                new Optional<float>(), // beamwidth (use default)
+                new Optional<string>(),
+                new Optional<bool>(),
+                new Optional<bool>(),
+                new Optional<float>(),
+                new Optional<float>());
 
             // Instantiate and activate a replacement
             simControlScript.ActivateRedTruck(simControlScript.InstantiateRedTruck(c, true));

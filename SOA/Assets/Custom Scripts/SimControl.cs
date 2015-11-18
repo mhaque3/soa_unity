@@ -264,6 +264,9 @@ public class SimControl : MonoBehaviour
         // Parse the XML config file
         soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
 
+        // Set random number generator seed
+        Random.seed = soaConfig.simulationRandomSeed;
+
         // Logger settings
         soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,
             ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogEventsToFile, 
@@ -896,7 +899,7 @@ public class SimControl : MonoBehaviour
         SoaSensor soaSensor = g.GetComponentInChildren<SoaSensor>();
         if (soaSensor != null)
         {
-            soaSensor.beamwidthDeg = (config.sensorBeamwidth_deg < 0) ? soaConfig.defaultSensorBeamwidths[platformName] : config.sensorBeamwidth_deg;
+            soaSensor.beamwidthDeg = Mathf.Max(config.sensorBeamwidth_deg.GetIsSet() ? config.sensorBeamwidth_deg.GetValue() : soaConfig.defaultSensorBeamwidths[platformName], 0);
             soaSensor.modes = config.GetUseDefaultSensorModalities() ? soaConfig.defaultSensorModalities[platformName].ToArray() : config.GetSensorModalities().ToArray();
         }
         SoaClassifier soaClassifier = g.GetComponentInChildren<SoaClassifier>();
@@ -976,7 +979,7 @@ public class SimControl : MonoBehaviour
             g.name = (c.name == null) ? "Blue Base" : c.name;
 
             // Set comms capabilties
-            s.commsRange_km = c.commsRange_km;
+            s.commsRange_km = Mathf.Max((c.commsRange_km.GetIsSet()) ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["BlueBase"], 0);
 
             // Add to appropriate lists
             LocalPlatforms.Add(g);
@@ -1094,7 +1097,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Heavy UAV " + a.unique_id;
 
             // Assign initial altitude
@@ -1104,11 +1107,11 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "HeavyUAV");
 
             // Set comms capabilities
-            a.commsRange_km = c.commsRange_km;
+            a.commsRange_km = Mathf.Max(c.commsRange_km.GetIsSet() ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["HeavyUAV"], 0);
             
             // Set fuel tank size
             HeavyUAVSim h = g.GetComponent<HeavyUAVSim>();
-            h.fuelTankSize_s = c.fuelTankSize_s;
+            h.fuelTankSize_s = Mathf.Max(c.fuelTankSize_s.GetIsSet() ? Mathf.Max(c.fuelTankSize_s.GetValue(),0) : soaConfig.heavyUAVFuelTankSize_s);
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
@@ -1139,7 +1142,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Small UAV " + a.unique_id;
 
             // Assign initial altitude
@@ -1149,11 +1152,11 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "SmallUAV");
 
             // Set comms capabilities
-            a.commsRange_km = c.commsRange_km;
+            a.commsRange_km = Mathf.Max(c.commsRange_km.GetIsSet() ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["SmallUAV"], 0);
 
             // Set fuel tank size
             SmallUAVSim s = g.GetComponent<SmallUAVSim>();
-            s.fuelTankSize_s = c.fuelTankSize_s;
+            s.fuelTankSize_s = Mathf.Max(c.fuelTankSize_s.GetIsSet() ? Mathf.Max(c.fuelTankSize_s.GetValue(),0) : soaConfig.smallUAVFuelTankSize_s, 0);
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
@@ -1181,7 +1184,6 @@ public class SimControl : MonoBehaviour
         }
         
         // Balloon can traverse on land, water, and mountains
-        Vector3 snappedPos;
         if (true /*initialLocationCheckOverride || CheckInitialLocation(newPos, true, true, true, out snappedPos)*/)
         {
             // Instantiate
@@ -1189,7 +1191,7 @@ public class SimControl : MonoBehaviour
                        
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Blue Balloon " + a.unique_id;
                       
             // Assign initial altitude
@@ -1292,7 +1294,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Red Dismount " + a.unique_id;
 
             // Assign initial altitude
@@ -1303,8 +1305,9 @@ public class SimControl : MonoBehaviour
             
             // Try to look up the waypoint specified in the config file
             GameObject waypoint = null;
-            if(c.initialWaypoint != null){
-                waypoint = GameObject.Find(c.initialWaypoint);
+            string waypointName = c.initialWaypoint.GetIsSet() ? c.initialWaypoint.GetValue() : null;
+            if(waypointName != null){
+                waypoint = GameObject.Find(waypointName);
             }
 
             // If waypoint was not valid, then have the closest base assign a waypoint
@@ -1319,16 +1322,17 @@ public class SimControl : MonoBehaviour
                
             // Weapon
             SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
+            bool weaponsEnabled = c.hasWeapon.GetIsSet() ? c.hasWeapon.GetValue() : (Random.value <= soaConfig.probRedDismountHasWeapon);
             foreach (WeaponModality wm in sw.modes)
             {
-                wm.enabled = c.hasWeapon;
+                wm.enabled = weaponsEnabled;
             }
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "RedDismount");
 
             // Set comms capabilities
-            a.commsRange_km = c.commsRange_km;
+            a.commsRange_km = Mathf.Max(c.commsRange_km.GetIsSet() ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["RedDismount"], 0);
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);
@@ -1359,7 +1363,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Red Truck " + a.unique_id;
 
             // Assign initial altitude
@@ -1370,9 +1374,10 @@ public class SimControl : MonoBehaviour
 
             // Try to look up the waypoint specified in the config file
             GameObject waypoint = null;
-            if (c.initialWaypoint != null)
+            string waypointName = c.initialWaypoint.GetIsSet() ? c.initialWaypoint.GetValue() : null;
+            if (waypointName != null)
             {
-                waypoint = GameObject.Find(c.initialWaypoint);
+                waypoint = GameObject.Find(waypointName);
             }
 
             // If waypoint was not valid, then have the closest base assign a waypoint
@@ -1387,18 +1392,19 @@ public class SimControl : MonoBehaviour
 
             // Weapon
             SoaWeapon sw = g.GetComponentInChildren<SoaWeapon>();
+            bool weaponsEnabled = c.hasWeapon.GetIsSet() ? c.hasWeapon.GetValue() : (Random.value <= soaConfig.probRedTruckHasWeapon);
             foreach (WeaponModality wm in sw.modes)
             {
-                wm.enabled = c.hasWeapon;
+                wm.enabled = weaponsEnabled;
             }
 
             // Set comms capabilities
-            a.commsRange_km = c.commsRange_km;
+            a.commsRange_km = Mathf.Max(c.commsRange_km.GetIsSet() ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["RedTruck"], 0);
 
             // Set jammer capabilties
             SoaJammer jammer = g.GetComponentInChildren<SoaJammer>();
-            jammer.effectiveRange_km = c.jammerRange_km;
-            jammer.isOn = c.hasJammer;
+            jammer.effectiveRange_km = Mathf.Max(c.jammerRange_km.GetIsSet() ? c.jammerRange_km.GetValue() : soaConfig.defaultJammerRanges["RedTruck"], 0);
+            jammer.isOn = c.hasJammer.GetIsSet() ? c.hasJammer.GetValue() : (Random.value <= soaConfig.probRedTruckHasJammer);
             jammers.Add(jammer);
             Debug.Log("Has jammer " + jammer.isOn + ", effective range " + jammer.effectiveRange_km);
             Debug.Log("Jammer list size: " + jammers.Count);
@@ -1435,7 +1441,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Neutral Dismount " + a.unique_id;
 
             // Assign initial altitude
@@ -1473,7 +1479,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Neutral Truck " + a.unique_id;
 
             // Assign initial altitude
@@ -1511,7 +1517,7 @@ public class SimControl : MonoBehaviour
 
             // Assign unique ID
             SoaActor a = g.GetComponent<SoaActor>();
-            a.unique_id = RequestUniqueID(c.id);
+            a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Blue Police " + a.unique_id;
 
             // Assign initial altitude
@@ -1521,7 +1527,7 @@ public class SimControl : MonoBehaviour
             SetPerceptionCapabilities(g, c, "BluePolice");
 
             // Set comms capabilities
-            a.commsRange_km = c.commsRange_km;
+            a.commsRange_km = Mathf.Max(c.commsRange_km.GetIsSet() ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["BluePolice"], 0);
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);

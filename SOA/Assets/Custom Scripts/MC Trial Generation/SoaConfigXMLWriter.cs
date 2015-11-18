@@ -67,6 +67,46 @@ namespace soa
             }
         }
 
+        private static void AddOptionalAttribute(XmlDocument xmlDoc, XmlNode node, string attribute, Optional<bool> value)
+        {
+            if (attribute != null && value != null && value.GetIsSet())
+            {
+                XmlAttribute newAttribute = xmlDoc.CreateAttribute(attribute);
+                newAttribute.Value = value.ToString();
+                node.Attributes.Append(newAttribute);
+            }
+        }
+
+        private static void AddOptionalAttribute(XmlDocument xmlDoc, XmlNode node, string attribute, Optional<int> value)
+        {
+            if (attribute != null && value != null && value.GetIsSet())
+            {
+                XmlAttribute newAttribute = xmlDoc.CreateAttribute(attribute);
+                newAttribute.Value = value.ToString();
+                node.Attributes.Append(newAttribute);
+            }
+        }
+
+        private static void AddOptionalAttribute(XmlDocument xmlDoc, XmlNode node, string attribute, Optional<float> value)
+        {
+            if (attribute != null && value != null && value.GetIsSet())
+            {
+                XmlAttribute newAttribute = xmlDoc.CreateAttribute(attribute);
+                newAttribute.Value = value.ToString();
+                node.Attributes.Append(newAttribute);
+            }
+        }
+
+        private static void AddOptionalAttribute(XmlDocument xmlDoc, XmlNode node, string attribute, Optional<string> value)
+        {
+            if (attribute != null && value != null && value.GetIsSet())
+            {
+                XmlAttribute newAttribute = xmlDoc.CreateAttribute(attribute);
+                newAttribute.Value = value.ToString();
+                node.Attributes.Append(newAttribute);
+            }
+        }
+
         private static void PopulateNetwork(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
         {
             // Create "Network" node and append to configNode
@@ -98,6 +138,7 @@ namespace soa
             configNode.AppendChild(node);
 
             // Add attributes
+            AddAttribute(xmlDoc, node, "simulationRandomSeed", soaConfig.simulationRandomSeed.ToString());
             AddAttribute(xmlDoc, node, "gameDurationHr", soaConfig.gameDurationHr.ToString());
             AddAttribute(xmlDoc, node, "probRedDismountHasWeapon", soaConfig.probRedDismountHasWeapon.ToString());
             AddAttribute(xmlDoc, node, "probRedTruckHasWeapon",    soaConfig.probRedTruckHasWeapon.ToString());
@@ -241,6 +282,7 @@ namespace soa
                         AddAttribute(xmlDoc, node, "name", siteConfig.name);
                         AddAttribute(xmlDoc, node, "x_km", siteConfig.x_km.ToString());
                         AddAttribute(xmlDoc, node, "z_km", siteConfig.z_km.ToString());
+                        AddOptionalAttribute(xmlDoc, node, "commsRange_km", ((BlueBaseConfig)siteConfig).commsRange_km);
                         break;
                     case SiteConfig.ConfigType.RED_BASE:
                         node = xmlDoc.CreateElement("RedBase");
@@ -342,41 +384,6 @@ namespace soa
             }
         }
 
-        private static void Add2DPlatformConfigAttributes(XmlDocument xmlDoc, XmlNode node, PlatformConfig c)
-        {
-            // Helper function to add attributes common to all platform configs
-            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
-            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
-            if (c.id >= 0)
-            {
-                // Negative id means determined by sim at runtime
-                AddAttribute(xmlDoc, node, "id", c.id.ToString());
-            }
-            if (c.sensorBeamwidth_deg >= 0)
-            {
-                // Negative means to use defaults
-                AddAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg.ToString());
-            }
-        }
-
-        private static void Add3DPlatformConfigAttributes(XmlDocument xmlDoc, XmlNode node, PlatformConfig c)
-        {
-            // Helper function to add attributes common to all platform configs
-            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
-            AddAttribute(xmlDoc, node, "y_km", c.y_km.ToString());
-            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
-            if (c.id >= 0)
-            {
-                // Negative id means determined by sim at runtime
-                AddAttribute(xmlDoc, node, "id", c.id.ToString());
-            }
-            if (c.sensorBeamwidth_deg >= 0)
-            {
-                // Negative means to use defaults
-                AddAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg.ToString());
-            }
-        }
-
         private static void AddPerceptionOverride(XmlDocument xmlDoc, XmlNode parentNode, PlatformConfig c)
         {
             // Add sensor if overridden
@@ -404,18 +411,13 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add2DPlatformConfigAttributes(xmlDoc, node, c);
-            AddAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon.ToString());
-            if (c.initialWaypoint != null)
-            {
-                // Null means to be determined at runtime
-                AddAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
-            }
-            if (c.commsRange_km >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km.ToString());
-            }
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddOptionalAttribute(xmlDoc, node, "id", c.id);
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
+            AddOptionalAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon);
+            AddOptionalAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
+            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km); 
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -428,24 +430,15 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add2DPlatformConfigAttributes(xmlDoc, node, c);
-            AddAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon.ToString());
-            if (c.initialWaypoint != null)
-            {
-                // Null means to be determined at runtime
-                AddAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
-            }
-            if (c.commsRange_km >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km.ToString());
-            }
-            AddAttribute(xmlDoc, node, "hasJammer", c.hasJammer.ToString());
-            if (c.jammerRange_km >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "jammerRange_km", c.jammerRange_km.ToString());
-            }
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddOptionalAttribute(xmlDoc, node, "id", c.id);
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
+            AddOptionalAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon);
+            AddOptionalAttribute(xmlDoc, node, "hasJammer", c.hasJammer);
+            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
+            AddOptionalAttribute(xmlDoc, node, "jammerRange_km", c.jammerRange_km);
+            AddOptionalAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -458,7 +451,9 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add2DPlatformConfigAttributes(xmlDoc, node, c);
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddOptionalAttribute(xmlDoc, node, "id", c.id);
             
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -471,7 +466,9 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add2DPlatformConfigAttributes(xmlDoc, node, c);
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddOptionalAttribute(xmlDoc, node, "id", c.id);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -484,13 +481,12 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add2DPlatformConfigAttributes(xmlDoc, node, c);
-            if (c.commsRange_km >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km.ToString());
-            }
-
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddOptionalAttribute(xmlDoc, node, "id", c.id);
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
+            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
+    
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
         }
@@ -504,12 +500,12 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add3DPlatformConfigAttributes(xmlDoc, node, c);
-            if (c.commsRange_km >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km.ToString());
-            }
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "y_km", c.y_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddAttribute(xmlDoc, node, "id", c.id.ToString());
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
+            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -522,12 +518,12 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            Add3DPlatformConfigAttributes(xmlDoc, node, c);
-            if (c.commsRange_km >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km.ToString());
-            }
+            AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
+            AddAttribute(xmlDoc, node, "y_km", c.y_km.ToString());
+            AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
+            AddAttribute(xmlDoc, node, "id", c.id.ToString());
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
+            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -540,16 +536,8 @@ namespace soa
             parentNode.AppendChild(node);
 
             // Add attributes
-            if (c.id >= 0)
-            {
-                // Negative id means determined by sim at runtime
-                AddAttribute(xmlDoc, node, "id", c.id.ToString());
-            }
-            if (c.sensorBeamwidth_deg >= 0)
-            {
-                // Negative means to use default
-                AddAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg.ToString());
-            }
+            AddAttribute(xmlDoc, node, "id", c.id.ToString());
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
             AddAttribute(xmlDoc, node, "teleportLoop", c.teleportLoop.ToString());
 
             // Add waypoints
@@ -567,4 +555,3 @@ namespace soa
         #endregion
     }
 }
-

@@ -115,11 +115,11 @@ public class RedDismountSim : MonoBehaviour
                 retreatBasePosition.x / SimControl.KmToUnity,
                 thisSoaActor.simAltitude_km,
                 retreatBasePosition.z / SimControl.KmToUnity,
-                -1, // id (determined at runtime)
-                -1.0f, // beamwidth (use default)
-                null,
-                Random.value <= simControlScript.probRedDismountHasWeapon,
-                simControlScript.defaultCommsRanges["RedDismount"]);
+                new Optional<int>(), // id (determined at runtime)
+                new Optional<float>(), // beamwidth (use default)
+                new Optional<string>(),
+                new Optional<bool>(),
+                new Optional<float>());
 
             // Instantiate and activate a replacement
             simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c, true));

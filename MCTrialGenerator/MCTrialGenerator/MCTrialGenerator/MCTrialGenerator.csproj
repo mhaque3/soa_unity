@@ -70,6 +70,9 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\SoaConfigXMLWriter.cs">
       <Link>SoaConfigXMLWriter.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\Optional.cs">
+      <Link>Optional.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\PerceptionModality.cs">
       <Link>PerceptionModality.cs</Link>
     </Compile>
@@ -78,9 +81,6 @@
     </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\SoaConfig.cs">
       <Link>SoaConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\SoaConfigXMLReader.cs">
-      <Link>SoaConfigXMLReader.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

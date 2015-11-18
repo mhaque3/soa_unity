@@ -15,6 +15,7 @@
 
   <!-- Simulation Configuration Settings -->
   <Simulation 
+       simulationRandomSeed     ="1"
        gameDurationHr           ="15.0"
        probRedDismountHasWeapon ="0.5"
        probRedTruckHasWeapon    ="0.5" 

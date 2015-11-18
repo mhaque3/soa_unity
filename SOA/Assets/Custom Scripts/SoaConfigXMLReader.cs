@@ -1,11 +1,9 @@
-﻿#if(UNITY_STANDALONE)
-using UnityEngine;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using UnityEngine;
 
 namespace soa
 {
@@ -25,11 +23,7 @@ namespace soa
             catch (Exception e)
             {
                 // Handle error if not found
-                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename + " because " + e.Message);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::Parse(): Could not load " + xmlFilename + " because " + e.Message);
-                #endif
                 return null;
             }
 
@@ -48,11 +42,7 @@ namespace soa
             if (configNode == null)
             {
                 // Handle error if not found
-                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::Parse(): Could not find \"SoaConfig\" node");
-                #else
-                Console.WriteLine("SoaConfigXMLReader::Parse(): Could not find \"SoaConfig\" node");
-                #endif
                 return null;
             }
 
@@ -141,11 +131,7 @@ namespace soa
             }
             catch (Exception)
             {
-                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseNetwork(): Error parsing " + node.Name);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::ParseNetwork(): Error parsing " + node.Name);
-                #endif
             }            
         }
 
@@ -162,11 +148,7 @@ namespace soa
             }
             catch (Exception)
             {
-                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseLogger(): Error parsing " + node.Name);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::ParseLogger(): Error parsing " + node.Name);
-                #endif
             }
         }
 
@@ -176,6 +158,7 @@ namespace soa
             // Pull attributes directly from the node
             try
             {
+                soaConfig.simulationRandomSeed = GetIntAttribute(node, "simulationRandomSeed", 0);
                 soaConfig.gameDurationHr = GetFloatAttribute(node,"gameDurationHr", 15.0f);
                 soaConfig.probRedDismountHasWeapon = GetFloatAttribute(node, "probRedDismountHasWeapon", 0.5f);
                 soaConfig.probRedTruckHasWeapon = GetFloatAttribute(node, "probRedTruckHasWeapon", 0.5f);
@@ -183,11 +166,7 @@ namespace soa
             }
             catch (Exception)
             {
-                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::ParseSimulation(): Error parsing " + node.Name);
-                #endif
             }
         }
 
@@ -211,7 +190,7 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetStringAttribute(c, "name", null),
-                                    soaConfig.defaultCommsRanges["BlueBase"] // Lookup direclty from defaults since there is only ever one blue base
+                                    GetOptionalFloatAttribute(c, "commsRange_km")    
                                 );
                             }
                             break;
@@ -246,22 +225,14 @@ namespace soa
                             newConfigValid = false;
                             if (c.Name != "#comment")
                             {
-                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseSites(): Unrecognized node " + c.Name);
-                                #else
-                                Console.WriteLine("SoaConfigXMLReader::ParseSites(): Unrecognized node " + c.Name);
-                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseSites(): Error parsing " + c.Name);
-                    #else
-                    Console.WriteLine("SoaConfigXMLReader::ParseSites(): Error parsing " + c.Name);
-                    #endif
                 } // End try-catch
 
                 // Add to list of sites if valid
@@ -283,11 +254,7 @@ namespace soa
             }
             catch (Exception)
             {
-                #if(UNITY_STANDALONE)
                 Debug.LogError("SoaConfigXMLReader::ParseFuel(): Error parsing " + node.Name);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::ParseFuel(): Error parsing " + node.Name);
-                #endif
             }
         }
 
@@ -313,11 +280,7 @@ namespace soa
                     default:
                         if (c.Name != "#comment")
                         {
-                            #if(UNITY_STANDALONE)
                             Debug.LogWarning("SoaConfigXMLReader::ParseModalities(): Unrecognized node " + c.Name);
-                            #else
-                            Console.WriteLine("SoaConfigXMLReader::ParseModalities(): Unrecognized node " + c.Name);
-                            #endif
                         }
                         break;
                 }
@@ -349,22 +312,14 @@ namespace soa
                         default:
                             if (c.Name != "#comment")
                             {
-                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParsePerceptionDefaults(): Unrecognized node " + c.Name);
-                                #else
-                                Console.WriteLine("SoaConfigXMLReader::ParsePerceptionDefaults(): Unrecognized node " + c.Name);
-                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParsePerceptionDefaults(): Error parsing " + c.Name);
-                    #else
-                    Console.WriteLine("SoaConfigXMLReader::ParsePerceptionDefaults(): Error parsing " + c.Name);
-                    #endif
                 }
             }
         }
@@ -382,7 +337,7 @@ namespace soa
                     case "NeutralDismount":
                     case "NeutralTruck":
                     case "BluePolice":
-                        d[c.Name] = 360; // Hardcoded as isotropic, can't change
+                        d[c.Name] = 360;
                         break;
                     case "HeavyUAV":
                     case "SmallUAV":
@@ -413,22 +368,14 @@ namespace soa
                         default:
                             if (c.Name != "#comment")
                             {
-                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseCommsDefaults(): Unrecognized node " + c.Name);
-                                #else
-                                Console.WriteLine("SoaConfigXMLReader::ParseCommsDefaults(): Unrecognized node " + c.Name);
-                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseCommsDefaults(): Error parsing " + c.Name);
-                    #else
-                    Console.WriteLine("SoaConfigXMLReader::ParseCommsDefaults(): Error parsing " + c.Name);
-                    #endif
                 }
             }
         }
@@ -453,22 +400,14 @@ namespace soa
                         default:
                             if (c.Name != "#comment")
                             {
-                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseJammerDefaults(): Unrecognized node " + c.Name);
-                                #else
-                                Console.WriteLine("SoaConfigXMLReader::ParseJammerDefaults(): Unrecognized node " + c.Name);
-                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseJammerDefaults(): Error parsing " + c.Name);
-                    #else
-                    Console.WriteLine("SoaConfigXMLReader::ParseJammerDefaults(): Error parsing " + c.Name);
-                    #endif
                 }
             }
         }
@@ -480,7 +419,7 @@ namespace soa
             System.Random rand = new System.Random();
 
             // Go through each child node
-            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, -1, 0.0f, 0.0f); // Dummy value
+            PlatformConfig newConfig = new BluePoliceConfig(0.0f, 0.0f, 0.0f, new Optional<int>(), new Optional<float>(), new Optional<float>()); // Dummy value
             bool newConfigValid;
             foreach (XmlNode c in node.ChildNodes)
 			{
@@ -496,11 +435,11 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["RedDismount"]),
-                                    GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedDismountHasWeapon),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["RedDismount"])
+                                    GetOptionalIntAttribute(c, "id"),
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
+                                    GetOptionalStringAttribute(c, "initialWaypoint"),
+                                    GetOptionalBooleanAttribute(c, "hasWeapon"),
+                                    GetOptionalFloatAttribute(c, "commsRange_km")
                                 );
                             }
                             break;
@@ -510,13 +449,13 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["RedTruck"]),
-                                    GetStringAttribute(c, "initialWaypoint", null),
-                                    GetBooleanAttribute(c, "hasWeapon", rand.NextDouble() <= soaConfig.probRedTruckHasWeapon),
-                                    GetBooleanAttribute(c, "hasJammer", rand.NextDouble() <= soaConfig.probRedTruckHasJammer),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["RedTruck"]),
-                                    GetFloatAttribute(c, "jammerRange_km", soaConfig.defaultCommsRanges["RedTruck"])
+                                    GetOptionalIntAttribute(c, "id"),
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
+                                    GetOptionalStringAttribute(c, "initialWaypoint"),
+                                    GetOptionalBooleanAttribute(c, "hasWeapon"),
+                                    GetOptionalBooleanAttribute(c, "hasJammer"),
+                                    GetOptionalFloatAttribute(c, "commsRange_km"),
+                                    GetOptionalFloatAttribute(c, "jammerRange_km")
                                 );
                             }
                             break;
@@ -526,8 +465,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["NeutralDismount"])
+                                    GetOptionalIntAttribute(c, "id"),
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg")
                                 );
                             }
                             break;
@@ -537,8 +476,8 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["NeutralTruck"])
+                                    GetOptionalIntAttribute(c, "id"),
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg")
                                 );
                             }
                             break;
@@ -548,9 +487,9 @@ namespace soa
                                     GetFloatAttribute(c, "x_km", 0),
                                     0, // No y_km field for land unit
                                     GetFloatAttribute(c, "z_km", 0),
-                                    GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["BluePolice"]),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["BluePolice"])
+                                    GetOptionalIntAttribute(c, "id"),
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
+                                    GetOptionalFloatAttribute(c, "commsRange_km")
                                 );
                             }
                             break;
@@ -558,22 +497,14 @@ namespace soa
                             newConfigValid = false;
                             if(c.Name != "#comment")
                             {
-                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseLocal(): Unrecognized node " + c.Name);
-                                #else
-                                Console.WriteLine("SoaConfigXMLReader::ParseLocal(): Unrecognized node " + c.Name);
-                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseLocal(): Error parsing " + c.Name);
-                    #else
-                    Console.WriteLine("SoaConfigXMLReader::ParseLocal(): Error parsing " + c.Name);
-                    #endif
                 } // End try-catch
 
                 // Handle and add the new config if it is valid
@@ -621,9 +552,9 @@ namespace soa
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["HeavyUAV"]),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["HeavyUAV"]),
-                                    soaConfig.heavyUAVFuelTankSize_s
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
+                                    GetOptionalFloatAttribute(c, "commsRange_km"),
+                                    GetOptionalFloatAttribute(c, "fuelTankSize_s")
                                 );
                             }
                             break;
@@ -634,9 +565,9 @@ namespace soa
                                     GetFloatAttribute(c, "y_km", 0),
                                     GetFloatAttribute(c, "z_km", 0),
                                     GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["SmallUAV"]),
-                                    GetFloatAttribute(c, "commsRange_km", soaConfig.defaultCommsRanges["SmallUAV"]),
-                                    soaConfig.smallUAVFuelTankSize_s
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
+                                    GetOptionalFloatAttribute(c, "commsRange_km"),
+                                    GetOptionalFloatAttribute(c, "fuelTankSize_s")
                                 );
                             }
                             break;
@@ -656,7 +587,7 @@ namespace soa
                                 // Create a Blue Balloon config
                                 newConfig = new BlueBalloonConfig(
                                     GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
-                                    GetFloatAttribute(c, "sensorBeamwidth_deg", soaConfig.defaultSensorBeamwidths["BlueBalloon"]),
+                                    GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
                                     waypoints_km,
                                     GetBooleanAttribute(c, "teleportLoop", true)
                                 );
@@ -666,22 +597,14 @@ namespace soa
                             newConfigValid = false;
                             if (c.Name != "#comment")
                             {
-                                #if(UNITY_STANDALONE)
                                 Debug.LogWarning("SoaConfigXMLReader::ParseRemote(): Unrecognized node " + c.Name);
-                                #else
-                                Console.WriteLine("SoaConfigXMLReader::ParseRemote(): Unrecognized node " + c.Name);
-                                #endif
                             }
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    #if(UNITY_STANDALONE)
                     Debug.LogError("SoaConfigXMLReader::ParseRemote(): Error parsing " + c.Name);
-                    #else
-                    Console.WriteLine("SoaConfigXMLReader::ParseRemote(): Error parsing " + c.Name);
-                    #endif
                 } // End try-catch
 
                 // Handle and add the new config if it is valid
@@ -716,14 +639,9 @@ namespace soa
         {
             if (node.Attributes[attribute] == null)
             {
-                // Use default and give warning
-                #if(UNITY_STANDALONE)
-                Debug.LogWarning("SoaConfigXMLReader::getBooleanAttribute(): Could not find attribute " +
+                // Use default and give error
+                Debug.LogError("SoaConfigXMLReader::getBooleanAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::getBooleanAttribute(): Could not find attribute " +
-                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #endif
                 return defaultValue;
             }
             else
@@ -737,14 +655,9 @@ namespace soa
         {
             if (node.Attributes[attribute] == null)
             {
-                // Use default and give warning
-                #if(UNITY_STANDALONE)
-                Debug.LogWarning("SoaConfigXMLReader::getIntAttribute(): Could not find attribute " +
+                // Use default and give error
+                Debug.LogError("SoaConfigXMLReader::getIntAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::getIntAttribute(): Could not find attribute " +
-                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #endif
                 return defaultValue;
             }
             else
@@ -758,14 +671,9 @@ namespace soa
         {
             if (node.Attributes[attribute] == null)
             {
-                // Use default and give warning
-                #if(UNITY_STANDALONE)
-                Debug.LogWarning("SoaConfigXMLReader::getFloatAttribute(): Could not find attribute " +
+                // Use default and give error
+                Debug.LogError("SoaConfigXMLReader::getFloatAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::getFloatAttribute(): Could not find attribute " +
-                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #endif
                 return defaultValue;
             }
             else
@@ -779,20 +687,73 @@ namespace soa
         {
             if (node.Attributes[attribute] == null)
             {
-                // Use default and give warning
-                #if(UNITY_STANDALONE)
-                Debug.LogWarning("SoaConfigXMLReader::getStringAttribute(): Could not find attribute " +
+                // Use default and give error
+                Debug.LogError("SoaConfigXMLReader::getStringAttribute(): Could not find attribute " +
                     attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #else
-                Console.WriteLine("SoaConfigXMLReader::getStringAttribute(): Could not find attribute " +
-                    attribute + " in node " + node.Name + ", using default value of " + defaultValue);
-                #endif
                 return defaultValue;
             }
             else
             {
                 // Return actual value
                 return node.Attributes[attribute].Value;
+            }
+        }
+        #endregion
+
+        #region Optional Attribute Reading Methods
+        private static Optional<bool> GetOptionalBooleanAttribute(XmlNode node, string attribute)
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                // Not found, set as empty
+                return new Optional<bool>();
+            }
+            else
+            {
+                // Return actual value
+                return new Optional<bool>(Convert.ToBoolean(node.Attributes[attribute].Value));
+            }
+        }
+
+        private static Optional<int> GetOptionalIntAttribute(XmlNode node, string attribute)
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                // Not found, set as empty
+                return new Optional<int>();
+            }
+            else
+            {
+                // Return actual value
+                return new Optional<int>(Convert.ToInt32(node.Attributes[attribute].Value));
+            }
+        }
+
+        private static Optional<float> GetOptionalFloatAttribute(XmlNode node, string attribute)
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                // Not found, set as empty
+                return new Optional<float>();
+            }
+            else
+            {
+                // Return actual value
+                return new Optional<float>(Convert.ToSingle(node.Attributes[attribute].Value));
+            }
+        }
+
+        private static Optional<string> GetOptionalStringAttribute(XmlNode node, string attribute)
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                // Not found, set as empty
+                return new Optional<string>();
+            }
+            else
+            {
+                // Return actual value
+                return new Optional<string>(node.Attributes[attribute].Value);
             }
         }
         #endregion

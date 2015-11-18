@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace soa
 {
     public class MCTrialGenerator
     {
+        /********************* GENERATOR *********************/
+        // Random seed for MC trial generation (not runtime computations)
+        const int generatorRandomSeed = 2;
+
         /******************** MONTE CARLO ********************/
         const int numMCTrials = 10;
-        const string soaConfigFileHeader = "../../../../GeneratedFiles/MCConfig_";
+        const string soaConfigOutputPath = "../../../../GeneratedFiles";
+        const string soaConfigFileHeader = "MCConfig_";
 
         /******************** ENVIRONMENT ********************/
         const string envConfigFile = "../../../../../SOA/Assets/Custom Scripts/MC Trial Generation/SoaEnvConfig.xml";
@@ -24,6 +30,7 @@ namespace soa
         const bool logToUnityConsole = true;
 
         /******************** SIMULATION *********************/
+        const int simulationRandomSeed = 1;
         const float gameDurationHr = 15.0f;
         const float probRedDismountHasWeapon = 0.5f;
         const float probRedTruckHasWeapon = 0.5f;
@@ -95,7 +102,7 @@ namespace soa
             landAndWaterCells.UnionWith(envConfig.waterCells);
             
             // Random generator for determining whether a unit has weapons or jammers etc.
-            rand = new Random();
+            rand = new Random(generatorRandomSeed);
         }
 
         #region Perception Defaults
@@ -305,11 +312,11 @@ namespace soa
             // Heavy UAV
             heavyUAVLaydown = new Platform3DLaydown();
             heavyUAVLaydown.numMean = 3.5f;
-            heavyUAVLaydown.numStdDev = 0.5f;
+            heavyUAVLaydown.numStdDev = 1.0f;
             heavyUAVLaydown.numMin = 2;
             heavyUAVLaydown.numMax = 5;
-            heavyUAVLaydown.fromAnchorStdDev_km = 2;
-            heavyUAVLaydown.fromAnchorMax_km = 5;
+            heavyUAVLaydown.fromAnchorStdDev_km = 5;
+            heavyUAVLaydown.fromAnchorMax_km = 15;
             heavyUAVLaydown.altitudeMean_km = 0.25f;
             heavyUAVLaydown.altitudeStdDev_km = 0.25f;
             heavyUAVLaydown.altitudeMin_km = 0.0f;
@@ -320,11 +327,11 @@ namespace soa
             // Small UAV
             smallUAVLaydown = new Platform3DLaydown();
             smallUAVLaydown.numMean = 3.5f;
-            smallUAVLaydown.numStdDev = 0.5f;
+            smallUAVLaydown.numStdDev = 1.0f;
             smallUAVLaydown.numMin = 2;
             smallUAVLaydown.numMax = 5;
-            smallUAVLaydown.fromAnchorStdDev_km = 2;
-            smallUAVLaydown.fromAnchorMax_km = 5;
+            smallUAVLaydown.fromAnchorStdDev_km = 5;
+            smallUAVLaydown.fromAnchorMax_km = 15;
             smallUAVLaydown.altitudeMean_km = 2.5f;
             smallUAVLaydown.altitudeStdDev_km = 2.5f;
             smallUAVLaydown.altitudeMin_km = 0.0f;
@@ -339,7 +346,7 @@ namespace soa
         {
             // Blue Base
             blueBases = new List<SiteConfig>();
-            blueBases.Add(new BlueBaseConfig(-3.02830208f, -9.7492255f, "Blue Base", soaConfig.defaultCommsRanges["BlueBase"]));
+            blueBases.Add(new BlueBaseConfig(-3.02830208f, -9.7492255f, "Blue Base", new Optional<float>(soaConfig.defaultCommsRanges["BlueBase"])));
 
             // Red Base
             redBases = new List<SiteConfig>();
@@ -403,6 +410,7 @@ namespace soa
                 soaConfig.enableLogToUnityConsole = logToUnityConsole;
 
                 // Simulation configuration
+                soaConfig.simulationRandomSeed = simulationRandomSeed;
                 soaConfig.gameDurationHr = gameDurationHr;
                 soaConfig.probRedDismountHasWeapon = probRedDismountHasWeapon;
                 soaConfig.probRedTruckHasWeapon = probRedTruckHasWeapon;
@@ -435,11 +443,11 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1, // id
-                        -1, // sensorBeamwidth_deg
-                        null, // initialWaypoint
-                        (rand.NextDouble() <= probRedDismountHasWeapon), // hasWeapon
-                        -1 // commsRange_km
+                        new Optional<int>(), // id
+                        new Optional<float>(), // sensorBeamwidth_deg
+                        new Optional<string>(), // initialWaypoint
+                        new Optional<bool>(), // hasWeapon
+                        new Optional<float>() // commsRange_km
                         ));
                 }
 
@@ -451,13 +459,13 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1, // id
-                        -1, // sensorBeamwidth_deg
-                        null, // initialWaypoint
-                        (rand.NextDouble() <= probRedTruckHasWeapon), // hasWeapon
-                        (rand.NextDouble() <= probRedTruckHasJammer), // hasJammer
-                        -1, // commsRange_km
-                        -1 // jammerRange_km
+                        new Optional<int>(), // id
+                        new Optional<float>(), // sensorBeamwidth_deg
+                        new Optional<string>(), // initialWaypoint
+                        new Optional<bool>(), // hasWeapon
+                        new Optional<bool>(), // hasJammer
+                        new Optional<float>(), // commsRange_km
+                        new Optional<float>() // jammerRange_km
                         ));
                 }
 
@@ -469,8 +477,8 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1, // id
-                        -1 // sensorBeamwidth_deg
+                        new Optional<int>(), // id
+                        new Optional<float>() // sensorBeamwidth_deg
                         ));
                 }
 
@@ -482,8 +490,8 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1, // id
-                        -1 // sensorBeamwidth_deg
+                        new Optional<int>(), // id
+                        new Optional<float>() // sensorBeamwidth_deg
                         ));
                 }
 
@@ -495,9 +503,9 @@ namespace soa
                         randomizedPositions[i].first, // x
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
-                        -1, // id
-                        -1, // sensorBeamwidth_deg
-                        -1 // commsRange_km
+                        new Optional<int>(), // id
+                        new Optional<float>(), // sensorBeamwidth_deg
+                        new Optional<float>() // commsRange_km
                         ));
                 }
 
@@ -510,9 +518,9 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         availableRemoteID++, // id
-                        -1, // sensorBeamwidth_deg
-                        -1, // commsRange_km
-                        soaConfig.heavyUAVFuelTankSize_s // fuelTankSize_s
+                        new Optional<float>(), // sensorBeamwidth_deg
+                        new Optional<float>(), // commsRange_km
+                        new Optional<float>() // fuelTankSize_s
                         ));
                 }
 
@@ -525,9 +533,9 @@ namespace soa
                         randomizedPositions[i].second, // y
                         randomizedPositions[i].third,  // z
                         availableRemoteID++, // id
-                        -1, // sensorBeamwidth_deg
-                        -1, // commsRange_km
-                        soaConfig.smallUAVFuelTankSize_s // fuelTankSize_s
+                        new Optional<float>(), // sensorBeamwidth_deg
+                        new Optional<float>(), // commsRange_km
+                        new Optional<float>() // fuelTankSize_s
                         ));
                 }
 
@@ -537,13 +545,14 @@ namespace soa
                 balloonWaypoints.Add(new PrimitivePair<float, float>(29, 0));
                 soaConfig.remotePlatforms.Add(new BlueBalloonConfig(
                     availableRemoteID++, // id
-                    -1, // sensorBeamwidth_deg
+                    new Optional<float>(), // sensorBeamwidth_deg
                     balloonWaypoints,
                     true
                     ));
 
-                // Write SoaConfig contents to a config file
-                SoaConfigXMLWriter.Write(soaConfig, soaConfigFileHeader + trial.ToString(toStringFormat) + ".xml");
+                // Create output directory if it does not already exist and Write SoaConfig contents to a config file
+                Directory.CreateDirectory(soaConfigOutputPath);
+                SoaConfigXMLWriter.Write(soaConfig, Path.Combine(soaConfigOutputPath,soaConfigFileHeader + trial.ToString(toStringFormat) + ".xml"));
             } // End current trial
         }
         #endregion

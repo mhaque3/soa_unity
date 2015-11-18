@@ -98,8 +98,8 @@ public class NeutralDismountSim : MonoBehaviour
                 startSite.transform.position.x / SimControl.KmToUnity,
                 thisSoaActor.simAltitude_km,
                 startSite.transform.position.z / SimControl.KmToUnity,
-                -1, // id (determined at runtime)
-                -1.0f // beamwidth (use default)
+                new Optional<int>(), // id (determined at runtime)
+                new Optional<float>() // beamwidth (use default)
                 );
 
             // Instantiate and activate a replacement
