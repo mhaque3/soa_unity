@@ -47,6 +47,7 @@ public class SimControl : MonoBehaviour
     // Unique IDs
     HashSet<int> TakenUniqueIDs;
     int smallestAvailableUniqueID = 200; // Start assigning IDs from here
+    int smallestAvailableDestinationID = 0;
     
     // Conversion Factor
     static public float KmToUnity;
@@ -383,9 +384,6 @@ public class SimControl : MonoBehaviour
             //Debug.Log(b.ToString());
         }
 
-        // Unique ID for ngo/villages
-        int destination_id = 0;
-
         for (int i = 0; i < NgoSites.Count; i++)
         {
             g = NgoSites[i];
@@ -393,14 +391,10 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             NgoSim s = g.GetComponent<NgoSim>();
-            s.destination_id = destination_id;
-            b = new Belief_NGOSite(destination_id, theseCells, s.Supply, s.Casualties, s.Civilians);
+            b = new Belief_NGOSite(s.destination_id, theseCells, s.Supply, s.Casualties, s.Civilians);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
-
-            // Increment destination id (unique across all ngo and villages)
-            destination_id++;
         }
 
         for (int i = 0; i < Villages.Count; i++)
@@ -410,14 +404,10 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             VillageSim s = g.GetComponent<VillageSim>();
-            s.destination_id = destination_id;
-            b = new Belief_Village(destination_id, theseCells, s.Supply, s.Casualties);
+            b = new Belief_Village(s.destination_id, theseCells, s.Supply, s.Casualties);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
             //Debug.Log(b.ToString());
-
-            // Increment destination id (unique across all ngo and villages)
-            destination_id++;
         }
     }
 
@@ -791,7 +781,7 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             NgoSim s = g.GetComponent<NgoSim>();
-            b = new Belief_NGOSite(i, theseCells, s.Supply, s.Casualties, s.Civilians);
+            b = new Belief_NGOSite(s.destination_id, theseCells, s.Supply, s.Casualties, s.Civilians);
             AddBeliefToBlueBases(b);
         }
 
@@ -802,7 +792,7 @@ public class SimControl : MonoBehaviour
             currentCell = hexGrid.Map[g.transform.position];
             theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
             VillageSim s = g.GetComponent<VillageSim>();
-            b = new Belief_Village(i, theseCells, s.Supply, s.Casualties);
+            b = new Belief_Village(s.destination_id, theseCells, s.Supply, s.Casualties);
             AddBeliefToBlueBases(b);
         }
     }
@@ -1032,9 +1022,12 @@ public class SimControl : MonoBehaviour
         {
             // Instantiate at the snapped position
             GameObject g = (GameObject)Instantiate(NGOSitePrefab, newPos * KmToUnity, Quaternion.identity);
-
+            
             // Assign name
             g.name = (c.name == null) ? ("NGO Site " + NgoSites.Count) : c.name;
+
+            // Assign a unique destination ID
+            g.GetComponent<NgoSim>().destination_id = smallestAvailableDestinationID++;
 
             // Add to appropriate lists
             NgoSites.Add(g);
@@ -1062,6 +1055,9 @@ public class SimControl : MonoBehaviour
 
             // Assign name
             g.name = (c.name == null) ? ("Village " + Villages.Count) : c.name;
+
+            // Assign a unique destination ID
+            g.GetComponent<VillageSim>().destination_id = smallestAvailableDestinationID++;
 
             // Add to appropriate lists
             Villages.Add(g);
