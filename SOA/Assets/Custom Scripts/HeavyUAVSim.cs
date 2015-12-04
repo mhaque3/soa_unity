@@ -8,8 +8,6 @@ public class HeavyUAVSim : MonoBehaviour
     SimControl simControlScript;
     SoaActor thisSoaActor;
     public float fuelTankSize_s;
-    public bool Casuality;
-    public bool Supply;
     public GameObject SupplyIcon;
     public GameObject CasualtyIcon;
 
@@ -32,8 +30,8 @@ public class HeavyUAVSim : MonoBehaviour
 	void Update () 
     {
         // Set icons
-        SupplyIcon.SetActive(Supply);
-        CasualtyIcon.SetActive(Casuality);
+        SupplyIcon.SetActive(thisSoaActor.numSuppliesStored > 0);
+        CasualtyIcon.SetActive(thisSoaActor.numCasualtiesStored > 0);
 	}
 
     void OnTriggerEnter(Collider other)
@@ -49,24 +47,23 @@ public class HeavyUAVSim : MonoBehaviour
             BlueBaseSim b = other.gameObject.GetComponent<BlueBaseSim>();
             if (b != null)
             {
-                if (Casuality)
+                if (thisSoaActor.numCasualtiesStored > 0)
                 {
+                    // Log an event for each casualty delivered
+                    for (int i = 0; i < thisSoaActor.numCasualtiesStored; i++)
                     {
-                        b.Casualties += 1f;
-                        Casuality = false;
-                        thisSoaActor.numCasualtiesStored = 0;
-                       
-                        // Log event
                         simControlScript.soaEventLogger.LogCasualtyDelivery(gameObject.name, other.name);
                     }
+
+                    // Dump off all casualties at the base
+                    b.Casualties += thisSoaActor.numCasualtiesStored;
+                    thisSoaActor.numCasualtiesStored = 0;                       
                 }
-                if (!Supply && b.Supply >=1f)
+                if (thisSoaActor.GetNumFreeSlots() > 0 && b.Supply >=1f)
                 {
-                    {
-                        b.Supply -= 1f;
-                        Supply = true;
-                        thisSoaActor.numSuppliesStored = 1;
-                    }
+                    // Only pick up one supply for now, this has to change later twupy1
+                    b.Supply -= 1f;
+                    thisSoaActor.numSuppliesStored++;
                 }
             }
         }
@@ -76,26 +73,20 @@ public class HeavyUAVSim : MonoBehaviour
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                if (!Casuality && n.Casualties >= 1f)
+                if (thisSoaActor.numSuppliesStored > 0 && CheckSupplyDelivery(n.destination_id))
                 {
-                    {
-                        n.Casualties -= 1f;
-                        Casuality = true;
-                        thisSoaActor.numCasualtiesStored = 1;
-                    }
-                }
-                if (Supply)
-                {
-                    // Check if we are supposed to deliver a supply here
-                    if (CheckSupplyDelivery(n.destination_id))
-                    {
-                        n.Supply += 1f;
-                        Supply = false;
-                        thisSoaActor.numSuppliesStored = 0;
+                    // Only deliver one supply for now, this has to change later twupy1
+                    n.Supply += 1f;
+                    thisSoaActor.numSuppliesStored--;
 
-                        // Log event
-                        simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
-                    }
+                    // Log event, need to change the multiplicity of this later twupy1
+                    simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
+                }
+                if (thisSoaActor.GetNumFreeSlots() > 0 && n.Casualties >= 1f)
+                {
+                    // Only pick up one casualty, this has to change later twupy1
+                    n.Casualties -= 1f;
+                    thisSoaActor.numCasualtiesStored++;
                 }
             }
         }
@@ -105,25 +96,19 @@ public class HeavyUAVSim : MonoBehaviour
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
-                if (Supply)
+                if (thisSoaActor.numSuppliesStored > 0 && CheckSupplyDelivery(v.destination_id))
                 {
-                    // Check if we are supposed to deliver a supply here
-                    if(CheckSupplyDelivery(v.destination_id)){
-                        v.Supply += 1f;
-                        Supply = false;
-                        thisSoaActor.numSuppliesStored = 0;
+                    // Only deliver one supply for now, this has to change later twupy1
+                    v.Supply += 1f;
+                    thisSoaActor.numSuppliesStored--;
 
-                        // Log event
-                        simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
-                    }
+                    // Log event, need to change the multiplicity of this later twupy1
+                    simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                 }
-                if (!Casuality && v.Casualties >= 1f)
+                if (thisSoaActor.GetNumFreeSlots() > 0 && v.Casualties >= 1f)
                 {
-                    {
-                        v.Casualties -= 1f;
-                        Casuality = true;
-                        thisSoaActor.numCasualtiesStored = 1;
-                    }
+                    v.Casualties -= 1f;
+                    thisSoaActor.numCasualtiesStored++;
                 }
             }
         }

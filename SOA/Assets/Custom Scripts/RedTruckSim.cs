@@ -8,7 +8,6 @@ public class RedTruckSim : MonoBehaviour
     SoldierWaypointMotion waypointScript;
     NavMeshAgent thisNavAgent;
     SoaActor thisSoaActor;
-    public bool Civilian;
     public GameObject CivilianIcon;
 
     // Awake is called before anything else
@@ -24,18 +23,18 @@ public class RedTruckSim : MonoBehaviour
     }
 
 	// Use this for initialization upon activation
-	void Start () 
+	void Start() 
     {
 	}
 	
 	// Update is called once per frame
     public float PathUpdateInterval;
     float PathUpdateClock = 0f;
-	void Update () 
+	void Update() 
     {
         float dt = Time.deltaTime;
 
-        CivilianIcon.SetActive(Civilian);
+        CivilianIcon.SetActive(thisSoaActor.numCiviliansStored > 0);
 
         PathUpdateClock += dt;
         if (PathUpdateClock > PathUpdateInterval)
@@ -131,14 +130,18 @@ public class RedTruckSim : MonoBehaviour
             RedBaseSim rb = other.gameObject.GetComponent<RedBaseSim>();
             if (rb != null)
             {
-                if (Civilian)
+                // Drop off all civilians currently carried at the base
+                if (thisSoaActor.numCiviliansStored > 0)
                 {
-                    Civilian = false;
-                    thisSoaActor.numCiviliansStored = 0;
-                    rb.Civilians++;
+                    // Log an event for each civilian dropped off
+                    for (int i = 0; i < thisSoaActor.numCiviliansStored; i++)
+                    {
+                        simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
+                    }
 
-                    // Log event
-                    simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
+                    // Update counts
+                    rb.Civilians += thisSoaActor.numCiviliansStored;
+                    thisSoaActor.numCiviliansStored = 0;
                 }
 
                 // Assign a new target and return to closest base from that target
@@ -159,29 +162,35 @@ public class RedTruckSim : MonoBehaviour
 
         if (other.CompareTag("NGO"))
         {
+            // Red truck can inflict casualties, destroy supplies, and pick up civilians
+            // at NGO sites
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                n.Civilians += 1f;
-                Civilian = true;
-                thisSoaActor.numCiviliansStored = 1;
+                // Only pick up one civilian at a time by design
+                if (thisSoaActor.GetNumFreeSlots() > 0)
+                {
+                    n.Civilians += 1f; // Keeps track of civlians taken from this site
+                    thisSoaActor.numCiviliansStored++;
+                }
 
                 n.Casualties += 1f;
-                n.Supply -= 1f;
+                n.Supply = (n.Supply > 1f) ? (n.Supply - 1f) : 0f; // Can't go negative
 
-                //Debug.Log(transform.name + " attacks " + other.name);
+                Debug.Log(transform.name + " attacks " + other.name);
             }
         }
 
         if (other.CompareTag("Village"))
         {
+            // Red truck only inflicts casualties and destroys supplies at villages
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
-                 v.Casualties += 1f;
-                 v.Supply -= 1f;
+                v.Casualties += 1f;
+                v.Supply = (v.Supply > 1f) ? (v.Supply - 1f) : 0f; // Can't go negative
 
-                 //Debug.Log(transform.name + " attacks " + other.name);
+                Debug.Log(transform.name + " attacks " + other.name);
             }
         }
     }

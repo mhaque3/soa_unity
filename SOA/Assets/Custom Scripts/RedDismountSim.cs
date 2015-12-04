@@ -8,11 +8,10 @@ public class RedDismountSim : MonoBehaviour
     SoldierWaypointMotion waypointScript;
     NavMeshAgent thisNavAgent;
     SoaActor thisSoaActor;
-    public bool Civilian;
     public GameObject CivilianIcon;
 
-    // Use this for initialization
-    void Start()
+    // Awake is called before anything else
+    void Awake()
     {
         thisSoaActor = gameObject.GetComponent<SoaActor>();
         simControlScript = GameObject.FindObjectOfType<SimControl>();
@@ -23,6 +22,11 @@ public class RedDismountSim : MonoBehaviour
         thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
     }
 
+    // Use this for initialization upon activation
+    void Start()
+    {
+    }
+
     // Update is called once per frame
     public float PathUpdateInterval;
     float PathUpdateClock = 0f;
@@ -30,7 +34,7 @@ public class RedDismountSim : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
-        CivilianIcon.SetActive(Civilian);
+        CivilianIcon.SetActive(thisSoaActor.numCiviliansStored > 0);
 
         PathUpdateClock += dt;
         if (PathUpdateClock > PathUpdateInterval)
@@ -130,19 +134,23 @@ public class RedDismountSim : MonoBehaviour
             RedBaseSim rb = other.gameObject.GetComponent<RedBaseSim>();
             if (rb != null)
             {
-                if (Civilian)
+                // Drop off all civilians currently carried at the base
+                if (thisSoaActor.numCiviliansStored > 0)
                 {
-                    Civilian = false;
+                    // Log an event for each civilian dropped off
+                    for (int i = 0; i < thisSoaActor.numCiviliansStored; i++)
+                    {
+                        simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
+                    }
+
+                    // Update counts
+                    rb.Civilians += thisSoaActor.numCiviliansStored;
                     thisSoaActor.numCiviliansStored = 0;
-                    rb.Civilians++;
-
-                    // Log event
-                    simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
                 }
+
+                // Assign a new target and return to closest base from that target
                 waypointScript.On = false;
-
                 thisNavAgent.ResetPath();
-
                 waypointScript.waypointIndex = 0;
                 waypointScript.waypoints.Clear();
                 GameObject target = rb.AssignTarget();
@@ -159,15 +167,20 @@ public class RedDismountSim : MonoBehaviour
 
         if (other.CompareTag("NGO"))
         {
+            // Red dismount can inflict casualties, destroy supplies, and pick up civilians
+            // at NGO sites
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                n.Civilians += 1f;
-                Civilian = true;
-                thisSoaActor.numCiviliansStored = 1;
+                // Only pick up one civilian at a time by design
+                if(thisSoaActor.GetNumFreeSlots() > 0)
+                {
+                    n.Civilians += 1f; // Keeps track of civlians taken from this site
+                    thisSoaActor.numCiviliansStored++;
+                }
 
                 n.Casualties += 1f;
-                n.Supply -= 1f;
+                n.Supply = (n.Supply > 1f) ? (n.Supply - 1f) : 0f; // Can't go negative
 
                 Debug.Log(transform.name + " attacks " + other.name);
             }
@@ -175,11 +188,12 @@ public class RedDismountSim : MonoBehaviour
 
         if (other.CompareTag("Village"))
         {
+            // Red dismount only inflicts casualties and destroys supplies at villages
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
                 v.Casualties += 1f;
-                v.Supply -= 1f;
+                v.Supply = (v.Supply > 1f) ? (v.Supply - 1f) : 0f; // Can't go negative
 
                 Debug.Log(transform.name + " attacks " + other.name);
             }

@@ -851,4 +851,9 @@ public class SoaActor : MonoBehaviour
     {
         return (ulong)(System.DateTime.UtcNow - epoch).Ticks / 10000;
     }
+
+    public UInt32 GetNumFreeSlots()
+    {
+        return numStorageSlots - numCasualtiesStored - numCiviliansStored - numSuppliesStored;
+    }
 }

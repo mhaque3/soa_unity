@@ -49,11 +49,9 @@ public class RedUnitInfo
                 // Save hasCivilian
                 switch (g.tag)
                 {
-                    case "RedTruck":
-                        hasCivilian = g.GetComponent<RedTruckSim>().Civilian;
-                        break;
                     case "RedDismount":
-                        hasCivilian = g.GetComponent<RedDismountSim>().Civilian;
+                    case "RedTruck":
+                        hasCivilian = g.GetComponent<SoaActor>().numCiviliansStored > 0;
                         break;
                     default:
                         // Unrecognized
