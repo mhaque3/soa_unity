@@ -54,8 +54,8 @@ public class HeavyUAVSim : MonoBehaviour
                     {
                         b.Casualties += 1f;
                         Casuality = false;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
-
+                        thisSoaActor.numCasualtiesStored = 0;
+                       
                         // Log event
                         simControlScript.soaEventLogger.LogCasualtyDelivery(gameObject.name, other.name);
                     }
@@ -65,7 +65,7 @@ public class HeavyUAVSim : MonoBehaviour
                     {
                         b.Supply -= 1f;
                         Supply = true;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.SUPPLIES;
+                        thisSoaActor.numSuppliesStored = 1;
                     }
                 }
             }
@@ -81,7 +81,7 @@ public class HeavyUAVSim : MonoBehaviour
                     {
                         n.Casualties -= 1f;
                         Casuality = true;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.CASUALTIES;
+                        thisSoaActor.numCasualtiesStored = 1;
                     }
                 }
                 if (Supply)
@@ -91,7 +91,7 @@ public class HeavyUAVSim : MonoBehaviour
                     {
                         n.Supply += 1f;
                         Supply = false;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+                        thisSoaActor.numSuppliesStored = 0;
 
                         // Log event
                         simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
@@ -111,7 +111,7 @@ public class HeavyUAVSim : MonoBehaviour
                     if(CheckSupplyDelivery(v.destination_id)){
                         v.Supply += 1f;
                         Supply = false;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+                        thisSoaActor.numSuppliesStored = 0;
 
                         // Log event
                         simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
@@ -122,7 +122,7 @@ public class HeavyUAVSim : MonoBehaviour
                     {
                         v.Casualties -= 1f;
                         Casuality = true;
-                        thisSoaActor.isCarrying = SoaActor.CarriedResource.CASUALTIES;
+                        thisSoaActor.numCasualtiesStored = 1;
                     }
                 }
             }

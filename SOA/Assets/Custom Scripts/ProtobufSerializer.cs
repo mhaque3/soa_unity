@@ -57,7 +57,10 @@ namespace soa
                         proto.SetAffiliation(b.getAffiliation());
                         proto.SetType(b.getType());
                         proto.SetIsAlive(b.getIsAlive());
-                        proto.SetIsCarrying(b.getIsCarrying());
+                        proto.SetNumStorageSlots(b.getNumStorageSlots());
+                        proto.SetNumCasualtiesStored(b.getNumCasualtiesStored());
+                        proto.SetNumSuppliesStored(b.getNumSuppliesStored());
+                        proto.SetNumCiviliansStored(b.getNumCiviliansStored());
                         proto.SetIsWeaponized(b.getIsWeaponized());
                         proto.SetHasJammer(b.getHasJammer());
                         proto.SetFuelRemaining(b.getFuelRemaining());
@@ -353,7 +356,10 @@ namespace soa
                             proto.Affiliation,
                             proto.Type,
                             proto.IsAlive,
-                            proto.IsCarrying,
+                            proto.NumStorageSlots,
+                            proto.NumCasualtiesStored,
+                            proto.NumSuppliesStored,
+                            proto.NumCiviliansStored,
                             proto.IsWeaponized,
                             proto.HasJammer,
                             proto.FuelRemaining,

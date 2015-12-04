@@ -26,14 +26,6 @@ public class SoaActor : MonoBehaviour
 
     private int[] idArray = new int[1];
 
-    public enum CarriedResource
-    {
-        NONE = 0,
-        SUPPLIES = 1,
-        CIVILIANS = 2,
-        CASUALTIES = 3
-    };
-
     public enum ActorType
     {
         //BASE = 0, // Blue base is no longer a SoaActor, it is now a SoaSite
@@ -47,7 +39,10 @@ public class SoaActor : MonoBehaviour
 
     public bool isAlive = false;
     private bool broadcastDeathNotice = false;
-    public CarriedResource isCarrying;
+    public UInt32 numStorageSlots;
+    public UInt32 numCasualtiesStored;
+    public UInt32 numSuppliesStored;
+    public UInt32 numCiviliansStored;
     public bool isWeaponized;
     public bool hasJammer;
     public float fuelRemaining_s;
@@ -105,9 +100,6 @@ public class SoaActor : MonoBehaviour
 
         // Alive at the beginning
         isAlive = true;
-
-        // Initially carrying nothing
-        isCarrying = CarriedResource.NONE;
 
         displayPosition = transform.position;
         displayOrientation = transform.rotation;
@@ -285,8 +277,11 @@ public class SoaActor : MonoBehaviour
             
 
                 // Convert position from Unity to km for Belief_Actor
-                Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
-                    type, isAlive, (int)isCarrying, isWeaponized, hasJammer, fuelRemaining_s,
+                Belief_Actor newActorData = new Belief_Actor(
+                    unique_id, (int)affiliation, type, isAlive, 
+                    numStorageSlots, numCasualtiesStored,
+                    numSuppliesStored, numCiviliansStored,
+                    isWeaponized, hasJammer, fuelRemaining_s,
                     transform.position.x / SimControl.KmToUnity,
                     simAltitude_km,
                     transform.position.z / SimControl.KmToUnity);
@@ -438,17 +433,15 @@ public class SoaActor : MonoBehaviour
             simX_km = transform.position.x / SimControl.KmToUnity;
             simZ_km = transform.position.z / SimControl.KmToUnity;
 
-            Belief_Actor newActorData = new Belief_Actor(unique_id, (int)affiliation, 
-                type, isAlive, (int)isCarrying, isWeaponized, hasJammer, fuelRemaining_s,
-                simX_km,
-                simAltitude_km,
-                simZ_km,
-                velocityXValid,
-                velocityX,
-                velocityYValid,
-                velocityY,
-                velocityZValid,
-                velocityZ);
+            Belief_Actor newActorData = new Belief_Actor(
+                unique_id, (int)affiliation, type, isAlive, 
+                numStorageSlots, numCasualtiesStored,
+                numSuppliesStored, numCiviliansStored,
+                isWeaponized, hasJammer, fuelRemaining_s,
+                simX_km, simAltitude_km, simZ_km,
+                velocityXValid, velocityX,
+                velocityYValid, velocityY,
+                velocityZValid, velocityZ);
 
             addMyBeliefData(newActorData);
             if (dataManager != null)
@@ -467,6 +460,7 @@ public class SoaActor : MonoBehaviour
             }
 
             // Go through each detected object's Soa Actor, get unique ID, affiliation, and pos.  Broadcast belief out to everyone
+            // Send detections to Sim Controller to be logged
             foreach (GameObject gameObject in Detections)
             {
                 SoaActor soaActor = gameObject.GetComponent<SoaActor>();
@@ -476,8 +470,11 @@ public class SoaActor : MonoBehaviour
                 if (classificationDictionary.ContainsKey(soaActor.unique_id) && classificationDictionary[soaActor.unique_id])
                 {
                     // I have classified this actor before, provide actual affiliation and isWeaponized info
-                    detectedActor = new Belief_Actor(soaActor.unique_id, (int)soaActor.affiliation,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, soaActor.isWeaponized, soaActor.hasJammer, soaActor.fuelRemaining_s,
+                    detectedActor = new Belief_Actor(
+                        soaActor.unique_id, (int)soaActor.affiliation, soaActor.type, soaActor.isAlive, 
+                        soaActor.numStorageSlots, soaActor.numCasualtiesStored,
+                        soaActor.numSuppliesStored, soaActor.numCiviliansStored,
+                        soaActor.isWeaponized, soaActor.hasJammer, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
@@ -485,14 +482,18 @@ public class SoaActor : MonoBehaviour
                 else
                 {
                     // I have never classified this actor before, set as unclassified and give default isWeaponized info
-                    detectedActor = new Belief_Actor(soaActor.unique_id, (int)Affiliation.UNCLASSIFIED,
-                        soaActor.type, soaActor.isAlive, (int)soaActor.isCarrying, false, false, soaActor.fuelRemaining_s,
+                    detectedActor = new Belief_Actor(
+                        soaActor.unique_id, (int)Affiliation.UNCLASSIFIED, soaActor.type, soaActor.isAlive,
+                        soaActor.numStorageSlots, soaActor.numCasualtiesStored,
+                        soaActor.numSuppliesStored, soaActor.numCiviliansStored,
+                        false, false, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
 
                 addMyBeliefData(detectedActor);
+                simControlScript.logDetectedActor(unique_id, detectedActor);
                 
                 
             }
@@ -502,9 +503,10 @@ public class SoaActor : MonoBehaviour
             foreach (Belief_Actor belief_actor in killDetections)
             {
 
-                addMyBeliefData(new soa.Belief_Actor(
-                    belief_actor.getId(), (int)belief_actor.getAffiliation(), 
-                    belief_actor.getType(), false, 0, 
+                addMyBeliefData(new Belief_Actor(
+                    belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 
+                    belief_actor.getNumStorageSlots(), belief_actor.getNumCasualtiesStored(),
+                    belief_actor.getNumSuppliesStored(), belief_actor.getNumCiviliansStored(),
                     belief_actor.getIsWeaponized(), belief_actor.getHasJammer(), belief_actor.getFuelRemaining(),
                     belief_actor.getPos_x(),
                     belief_actor.getPos_y(),
@@ -636,7 +638,10 @@ public class SoaActor : MonoBehaviour
                         oldActorBelief.getAffiliation(),
                         incomingActorBelief.getType(),
                         incomingActorBelief.getIsAlive(),
-                        incomingActorBelief.getIsCarrying(),
+                        incomingActorBelief.getNumStorageSlots(),
+                        incomingActorBelief.getNumCasualtiesStored(),
+                        incomingActorBelief.getNumSuppliesStored(),
+                        incomingActorBelief.getNumCiviliansStored(),
                         oldActorBelief.getIsWeaponized(),
                         oldActorBelief.getHasJammer(),
                         incomingActorBelief.getFuelRemaining(),
@@ -660,7 +665,10 @@ public class SoaActor : MonoBehaviour
                         incomingActorBelief.getAffiliation(),
                         oldActorBelief.getType(),
                         oldActorBelief.getIsAlive(),
-                        oldActorBelief.getIsCarrying(),
+                        oldActorBelief.getNumStorageSlots(),
+                        oldActorBelief.getNumCasualtiesStored(),
+                        oldActorBelief.getNumSuppliesStored(),
+                        oldActorBelief.getNumCiviliansStored(),
                         incomingActorBelief.getIsWeaponized(),
                         incomingActorBelief.getHasJammer(),
                         oldActorBelief.getFuelRemaining(),

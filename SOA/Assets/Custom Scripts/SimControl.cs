@@ -826,6 +826,12 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                        UTILITY FUNCTIONS                                          *
      *****************************************************************************************************/
+
+    public void logDetectedActor(int unique_id, Belief_Actor detectedActor)
+    {
+        //TODO log detection made by unique_id
+    }
+
     // Gets a never before assigned Unique ID and takes suggestions
     int RequestUniqueID(int requestedID)
     {

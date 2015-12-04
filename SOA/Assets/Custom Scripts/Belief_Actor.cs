@@ -12,7 +12,10 @@ namespace soa
         private int affiliation;
         private int type;
         private bool isAlive;
-        private int isCarrying;
+        private UInt32 numStorageSlots;
+        private UInt32 numCasualtiesStored;
+        private UInt32 numSuppliesStored;
+        private UInt32 numCiviliansStored;
         private bool isWeaponized;
         private bool hasJammer;
         private float fuelRemaining;
@@ -27,8 +30,10 @@ namespace soa
         private float velocity_z;
 
         // Constructor
-        public Belief_Actor(int unique_id, int affiliation, int type,
-            bool isAlive, int isCarrying, bool isWeaponized, bool hasJammer, float fuelRemaining,
+        public Belief_Actor(int unique_id, int affiliation, int type, bool isAlive, 
+            UInt32 numStorageSlots, UInt32 numCasualtiesStored,
+            UInt32 numSuppliesStored, UInt32 numCiviliansStored, 
+            bool isWeaponized, bool hasJammer, float fuelRemaining,
             float pos_x, float pos_y, float pos_z,
             bool velocity_x_valid = false, float velocity_x = 0.0f,
             bool velocity_y_valid = false, float velocity_y = 0.0f,
@@ -38,9 +43,12 @@ namespace soa
             this.affiliation = affiliation;
             this.type = type;
             this.isAlive = isAlive;
-            this.isCarrying = isCarrying;
+            this.numStorageSlots = numStorageSlots;
+            this.numCasualtiesStored = numCasualtiesStored;
+            this.numSuppliesStored = numSuppliesStored;
+            this.numCiviliansStored = numCiviliansStored;
             this.isWeaponized = isWeaponized;
-	    this.hasJammer = hasJammer;
+	        this.hasJammer = hasJammer;
             this.fuelRemaining = fuelRemaining;
             this.pos_x = pos_x;
             this.pos_y = pos_y;
@@ -67,7 +75,10 @@ namespace soa
                 + "\n" + "  affiliation: " + affiliation
                 + "\n" + "  type: " + type
                 + "\n" + "  isAlive: " + isAlive
-                + "\n" + "  isCarrying: " + isCarrying
+                + "\n" + "  numStorageSlots: " + numStorageSlots
+                + "\n" + "  numCasualtiesStored: " + numCasualtiesStored
+                + "\n" + "  numSuppliesStored: " + numSuppliesStored
+                + "\n" + "  numCiviliansStored: " + numCiviliansStored
                 + "\n" + "  isWeaponized: " + isWeaponized
                 + "\n" + "  hasJammer: " + hasJammer
                 + "\n" + "  fuelRemaining: " + fuelRemaining
@@ -89,7 +100,10 @@ namespace soa
         public int getAffiliation() { return affiliation; }
         public int getType() { return type; }
         public bool getIsAlive() { return isAlive; }
-        public int getIsCarrying() { return isCarrying; }
+        public UInt32 getNumStorageSlots() { return numStorageSlots; }
+        public UInt32 getNumCasualtiesStored() { return numCasualtiesStored; }
+        public UInt32 getNumSuppliesStored() { return numSuppliesStored; }
+        public UInt32 getNumCiviliansStored() { return numCiviliansStored; }
         public bool getIsWeaponized() { return isWeaponized; }
         public bool getHasJammer() { return hasJammer; }
         public float getFuelRemaining() { return fuelRemaining; }

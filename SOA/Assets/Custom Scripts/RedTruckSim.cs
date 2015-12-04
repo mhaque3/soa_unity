@@ -134,7 +134,7 @@ public class RedTruckSim : MonoBehaviour
                 if (Civilian)
                 {
                     Civilian = false;
-                    thisSoaActor.isCarrying = SoaActor.CarriedResource.NONE;
+                    thisSoaActor.numCiviliansStored = 0;
                     rb.Civilians++;
 
                     // Log event
@@ -164,7 +164,7 @@ public class RedTruckSim : MonoBehaviour
             {
                 n.Civilians += 1f;
                 Civilian = true;
-                thisSoaActor.isCarrying = SoaActor.CarriedResource.CIVILIANS;
+                thisSoaActor.numCiviliansStored = 1;
 
                 n.Casualties += 1f;
                 n.Supply -= 1f;

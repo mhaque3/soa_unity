@@ -223,12 +223,15 @@ namespace soa
                 soaActorDictionary[actor.unique_id] = actor;
                 actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
 
-                addBeliefToDataManager(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, 
-                    actor.isAlive, (int)actor.isCarrying, actor.isWeaponized, actor.hasJammer, actor.fuelRemaining_s,
-                    actor.transform.position.x / SimControl.KmToUnity,
-                    actor.simAltitude_km,
-                    actor.transform.position.z / SimControl.KmToUnity), 
-                    actor.unique_id);
+                addBeliefToDataManager(
+                    new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, actor.isAlive, 
+                        actor.numStorageSlots, actor.numCasualtiesStored,
+                        actor.numSuppliesStored, actor.numCiviliansStored,
+                        actor.isWeaponized, actor.hasJammer, actor.fuelRemaining_s,
+                        actor.transform.position.x / SimControl.KmToUnity,
+                        actor.simAltitude_km,
+                        actor.transform.position.z / SimControl.KmToUnity), 
+                        actor.unique_id);
             }
             else
             {

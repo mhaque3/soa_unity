@@ -5713,7 +5713,10 @@ MonoBehaviour:
   maxAltitude_km: 0
   maxVerticalSpeed_m_s: 0
   isAlive: 0
-  isCarrying: 0
+  numStorageSlots: 1
+  numCasualtiesStored: 0
+  numSuppliesStored: 0
+  numCiviliansStored: 0
   isWeaponized: 0
   hasJammer: 0
   fuelRemaining_s: 0
@@ -5730,6 +5733,7 @@ MonoBehaviour:
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
   wpMotionScript: {fileID: 0}
+  pcMotionScript: {fileID: 0}
   navAgent: {fileID: 0}
 --- !u!114 &11426336
 MonoBehaviour:
@@ -6168,6 +6172,10 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: maxHorizontalSpeed_m_s
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: numStorageSlots
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
