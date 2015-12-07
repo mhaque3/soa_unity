@@ -46,18 +46,18 @@ public class HeavyUAVSim : MonoBehaviour
             if (b != null)
             {
                 // Deliver specified # of casualties first
-                int numCasualtiesToDeliver = RequestCasualtyDelivery(thisSoaActor.numCasualtiesStored);
+                int numCasualtiesToDeliver = RequestCasualtyDelivery((int)thisSoaActor.numCasualtiesStored);
                 for (int i = 0; i < numCasualtiesToDeliver; i++)
                 {
                     simControlScript.soaEventLogger.LogCasualtyDelivery(gameObject.name, other.name);
                 }
                 b.Casualties += numCasualtiesToDeliver;
-                thisSoaActor.numCasualtiesStored -= numCasualtiesToDeliver;                       
+                thisSoaActor.numCasualtiesStored = (uint) (thisSoaActor.numCasualtiesStored - numCasualtiesToDeliver);                       
                 
                 // Pick up specified # of supplies next
-                int numSuppliesToPickup = RequestSupplyPickup(thisSoaActor.GetNumFreeSlots(), b.Supply);
+                int numSuppliesToPickup = RequestSupplyPickup((int)thisSoaActor.GetNumFreeSlots(), b.Supply);
                 b.Supply -= numSuppliesToPickup;
-                thisSoaActor.numSuppliesStored += numSuppliesToPickup;
+                thisSoaActor.numSuppliesStored = (uint) (thisSoaActor.numSuppliesStored + numSuppliesToPickup);
             }
         }
 
@@ -67,18 +67,18 @@ public class HeavyUAVSim : MonoBehaviour
             if (n != null)
             {
                 // Deliver specified # of supplies first
-                int numSuppliesToDeliver = RequestSupplyDelivery(thisSoaActor.numSuppliesStored, n.destination_id);
+                int numSuppliesToDeliver = RequestSupplyDelivery((int)thisSoaActor.numSuppliesStored, n.destination_id);
                 for (int i = 0; i < numSuppliesToDeliver; i++)
                 {
                     simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                 }
                 n.Supply += numSuppliesToDeliver;
-                thisSoaActor.numSuppliesStored -= numSuppliesToDeliver;
+                thisSoaActor.numSuppliesStored = (uint) (thisSoaActor.numSuppliesStored - numSuppliesToDeliver);
 
                 // Pickup specified # of casualties next
-                int numCasualtiesToPickup = RequestCasualtyPickup(thisSoaActor.GetNumFreeSlots(), n.Casualties, n.destination_id);
+                int numCasualtiesToPickup = RequestCasualtyPickup((int)thisSoaActor.GetNumFreeSlots(), n.Casualties, n.destination_id);
                 n.Casualties -= numCasualtiesToPickup;
-                thisSoaActor.numCasualtiesStored += numCasualtiesToPickup;
+                thisSoaActor.numCasualtiesStored = (uint)(thisSoaActor.numCasualtiesStored + numCasualtiesToPickup);
             }
         }
 
@@ -88,18 +88,18 @@ public class HeavyUAVSim : MonoBehaviour
             if (v != null)
             {
                 // Deliver specified # of supplies first
-                int numSuppliesToDeliver = RequestSupplyDelivery(thisSoaActor.numSuppliesStored, v.destination_id);
+                int numSuppliesToDeliver = RequestSupplyDelivery((int)thisSoaActor.numSuppliesStored, v.destination_id);
                 for (int i = 0; i < numSuppliesToDeliver; i++)
                 {
                     simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                 }
                 v.Supply += numSuppliesToDeliver;
-                thisSoaActor.numSuppliesStored -= numSuppliesToDeliver;
+                thisSoaActor.numSuppliesStored = (uint)(thisSoaActor.numSuppliesStored - numSuppliesToDeliver);
 
                 // Pickup specified # of casualties next twupy1
-                int numCasualtiesToPickup = RequestCasualtyPickup(thisSoaActor.GetNumFreeSlots(), v.Casualties, v.destination_id);
+                int numCasualtiesToPickup = RequestCasualtyPickup((int)thisSoaActor.GetNumFreeSlots(), v.Casualties, v.destination_id);
                 v.Casualties -= numCasualtiesToPickup;
-                thisSoaActor.numCasualtiesStored += numCasualtiesToPickup;
+                thisSoaActor.numCasualtiesStored = (uint)(thisSoaActor.numCasualtiesStored + numCasualtiesToPickup);
             }
         }
     }
@@ -155,7 +155,7 @@ public class HeavyUAVSim : MonoBehaviour
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
             // Floor the supply count
-            int flooredSupplyCount = (int)Math.Floor(availableSupplyCount);
+            int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
 
             // Get the pickup belief
             Belief_Supply_Pickup b = (Belief_Supply_Pickup)belief;
@@ -260,7 +260,7 @@ public class HeavyUAVSim : MonoBehaviour
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
             // Floor the supply count
-            int flooredSupplyCount = (int)Math.Floor(availableSupplyCount);
+            int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
 
             // Get the pickup belief
             Belief_Casualty_Pickup b = (Belief_Casualty_Pickup)belief;
@@ -281,7 +281,7 @@ public class HeavyUAVSim : MonoBehaviour
                 }
             }
 
-            if (b.getGreedy() || b.getMultiplicity() < 0)
+            if (b.getGreedy() || destinationMultiplicity < 0)
             {
                 // Greedy behavior, pickup as much as you can.  No information to update
                 // Negative multiplicity is also greedy
@@ -292,7 +292,7 @@ public class HeavyUAVSim : MonoBehaviour
             {
                 // Only pickup min of currentAvailableSlots, flooredSupplyCount, and multiplicity
                 int quantityToPickup = (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
-                quantityToPickup = (quantityToPickup < b.getMultiplicity()) ? quantityToPickup : b.getMultiplicity();
+                quantityToPickup = (quantityToPickup < destinationMultiplicity) ? quantityToPickup : destinationMultiplicity;
 
                 // Update the belief if we are picking up anything
                 if (quantityToPickup > 0)
@@ -300,7 +300,7 @@ public class HeavyUAVSim : MonoBehaviour
                     multiplicity[foundIdx] -= quantityToPickup;
                     Belief_Casualty_Pickup newBelief = new Belief_Casualty_Pickup(
                         b.getRequest_time(), b.getActor_id(),
-                        b.getGreedy(), id, multiplicity);
+                        b.getGreedy(), ids, multiplicity);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
                 }
 

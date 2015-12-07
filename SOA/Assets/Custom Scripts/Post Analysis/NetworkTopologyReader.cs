@@ -38,9 +38,6 @@ namespace soa
             fileStream.Read(intBuffer, 0, 4);
             N = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(intBuffer,0));
 
-            // Allocate space for NxN
-            byte[] adjMatrixBuffer = new byte[N * N];
-
             // Process each adjacency matrix
             int bytesRequested = (int)(Math.Round(1000.0f * (N*N) / 8.0f));
             byte[] byteBuffer = new byte[bytesRequested];

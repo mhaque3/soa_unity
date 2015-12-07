@@ -20,7 +20,7 @@ namespace soa
             ACTOR, 
             BASE,
             CASUALTY_DELIVERY,
-            CASUATLY_PICKUP,
+            CASUALTY_PICKUP,
             GRIDSPEC,
             MODE_COMMAND,
             NGOSITE, 
