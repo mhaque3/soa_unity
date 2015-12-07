@@ -141,22 +141,22 @@ public class HeavyUAVSim : MonoBehaviour
         }
         else
         {
-            // No entry exists, default behavior is to not take any action.  No information to update.
-            return 0;
+            // No entry exists, default to greedy behavior.
+            return currentInventory;
         }
     }
 
     // Checks current available slots and belief to determine the number of supplies to pickup
     private int RequestSupplyPickup(int currentAvailableSlots, float availableSupplyCount)
     {
+        // Floor the supply count
+        int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
+
         // Get the belief dictionary and belief
         SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_PICKUP];
         Belief belief;
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
-            // Floor the supply count
-            int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
-
             // Get the pickup belief
             Belief_Supply_Pickup b = (Belief_Supply_Pickup)belief;
             if (b.getGreedy() || b.getMultiplicity() < 0)
@@ -187,8 +187,8 @@ public class HeavyUAVSim : MonoBehaviour
         }
         else
         {
-            // No entry exists, default behavior is to not take any action.  No information to update.
-            return 0;
+            // No entry exists, default to greedy behavior.
+            return (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
         }
     }
 
@@ -246,22 +246,22 @@ public class HeavyUAVSim : MonoBehaviour
         }
         else
         {
-            // No entry exists, default behavior is to not take any action.  No information to update.
-            return 0;
+            // No entry exists, default to gredy behavior.
+            return currentInventory;
         }
     }
 
     // Request casualty pickup
     private int RequestCasualtyPickup(int currentAvailableSlots, float availableSupplyCount, int destinationId)
     {
+        // Floor the supply count
+        int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
+        
         // Get the belief dictionary and belief
         SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.CASUALTY_PICKUP];
         Belief belief;
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
-            // Floor the supply count
-            int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
-
             // Get the pickup belief
             Belief_Casualty_Pickup b = (Belief_Casualty_Pickup)belief;
 
@@ -310,8 +310,8 @@ public class HeavyUAVSim : MonoBehaviour
         }
         else
         {
-            // No entry exists, default behavior is to not take any action.  No information to update.
-            return 0;
+            // No entry exists, default to greedy behavior.  No information to update.
+            return (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
         }
     }
    
