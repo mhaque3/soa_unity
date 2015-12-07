@@ -5,7 +5,7 @@ using System.Text;
 
 namespace soa
 {
-    public class Belief_Supply_Delivery : Belief
+    public class Belief_Casualty_Pickup : Belief
     {
         // Members
         private ulong request_time;
@@ -15,7 +15,7 @@ namespace soa
         private int[] multiplicity;
 
         // Constructor
-        public Belief_Supply_Delivery(ulong request_time, int actor_id, bool greedy, int[] ids, int[] multiplicity)
+        public Belief_Casualty_Pickup(ulong request_time, int actor_id, bool greedy, int[] ids, int[] multiplicity)
             : base(actor_id)
         {
             this.request_time = request_time;
@@ -30,13 +30,13 @@ namespace soa
         // Type information
         public override BeliefType getBeliefType()
         {
-            return BeliefType.SUPPLY_DELIVERY;
+            return BeliefType.CASUALTY_PICKUP;
         }
 
         // String representation
         public override string ToString()
         {
-            string s = "Belief_Supply_Delivery {"
+            string s = "Belief_Casualty_Pickup {"
                 + "\n" + "  request_time: " + request_time
                 + "\n" + "  actor_id: " + actor_id
                 + "\n" + "  greedy: " + greedy

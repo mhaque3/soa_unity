@@ -43,6 +43,8 @@ namespace soa
             beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
             beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
@@ -50,6 +52,7 @@ namespace soa
             beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
+            beliefDictionary[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
             beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();

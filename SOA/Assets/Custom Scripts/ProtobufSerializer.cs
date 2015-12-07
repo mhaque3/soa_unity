@@ -19,12 +19,15 @@ namespace soa
             INVALID = 0,
             ACTOR, 
             BASE,
+            CASUALTY_DELIVERY,
+            CASUATLY_PICKUP,
             GRIDSPEC,
             MODE_COMMAND,
             NGOSITE, 
             ROADCELL, 
             SPOI, 
             SUPPLY_DELIVERY,
+            SUPPLY_PICKUP,
             TERRAIN,
             TIME,
             VILLAGE, 
@@ -106,6 +109,47 @@ namespace soa
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.BASE;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
+                case Belief.BeliefType.CASUALTY_DELIVERY:
+                    { // Casualty Delivery
+                        Gpb_CasualtyDelivery.Builder proto = Gpb_CasualtyDelivery.CreateBuilder();
+                        Belief_Casualty_Delivery b = (Belief_Casualty_Delivery)belief;
+                        proto.SetRequestTime(b.getRequest_time());
+                        proto.SetActorId(b.getActor_id());
+                        proto.SetGreedy(b.getGreedy());
+                        proto.SetMultiplicity(b.getMultiplicity());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
+                        // Form header + serialized message
+                        header = (byte)MessageType.CASUALTY_DELIVERY;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
+                case Belief.BeliefType.CASUALTY_PICKUP:
+                    { // Casualty Pickup
+                        Gpb_CasualtyPickup.Builder proto = Gpb_CasualtyPickup.CreateBuilder();
+                        Belief_Casualty_Pickup b = (Belief_Casualty_Pickup)belief;
+                        proto.SetRequestTime(b.getRequest_time());
+                        proto.SetActorId(b.getActor_id());
+                        proto.SetGreedy(b.getGreedy());
+                        // Copy contents of id list
+                        int[] ids = b.getIds();
+                        for (int i = 0; i < ids.Length; i++)
+                        {
+                            proto.AddIds(ids[i]);
+                        }
+                        // Copy contents of multiplicity list
+                        int[] multiplicity = b.getMultiplicity();
+                        for (int i = 0; i < multiplicity.Length; i++)
+                        {
+                            proto.AddMultiplicity(multiplicity[i]);
+                        }
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
+                        // Form header + serialized message
+                        header = (byte)MessageType.CASUALTY_PICKUP;
                         body = proto.Build().ToByteArray();
                         break;
                     }
@@ -203,17 +247,38 @@ namespace soa
                         Belief_Supply_Delivery b = (Belief_Supply_Delivery)belief;
                         proto.SetRequestTime(b.getRequest_time());
                         proto.SetActorId(b.getActor_id());
-                        proto.SetDeliverAnywhere(b.getDeliver_anywhere());
-                        // Copy contents of destination id list
-                        int[] destination_ids = b.getDestination_ids();
-                        for (int i = 0; i < destination_ids.Length; i++)
+                        proto.SetGreedy(b.getGreedy());
+                        // Copy contents of id list
+                        int[] ids = b.getIds();
+                        for (int i = 0; i < ids.Length; i++)
                         {
-                            proto.AddDestinationIds(destination_ids[i]);
+                            proto.AddIds(ids[i]);
                         }
+                        // Copy contents of multiplicity list
+                        int[] multiplicity = b.getMultiplicity();
+                        for (int i = 0; i < multiplicity.Length; i++)
+                        {
+                            proto.AddMultiplicity(multiplicity[i]);
+                        }                        
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
                         header = (byte)MessageType.SUPPLY_DELIVERY;
+                        body = proto.Build().ToByteArray();
+                        break;
+                    }
+                case Belief.BeliefType.SUPPLY_PICKUP:
+                    { // Supply Pickup
+                        Gpb_SupplyPickup.Builder proto = Gpb_SupplyPickup.CreateBuilder();
+                        Belief_Supply_Pickup b = (Belief_Supply_Pickup)belief;
+                        proto.SetRequestTime(b.getRequest_time());
+                        proto.SetActorId(b.getActor_id());
+                        proto.SetGreedy(b.getGreedy());
+                        proto.SetMultiplicity(b.getMultiplicity());
+                        // Add on belief time
+                        proto.SetBeliefTime(b.getBeliefTime());
+                        // Form header + serialized message
+                        header = (byte)MessageType.SUPPLY_PICKUP;
                         body = proto.Build().ToByteArray();
                         break;
                     }
@@ -392,6 +457,42 @@ namespace soa
                         b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
+                case MessageType.CASUALTY_DELIVERY:
+                    { // Casualty delivery
+                        Gpb_CasualtyDelivery proto = Gpb_CasualtyDelivery.CreateBuilder().MergeFrom(body).Build();
+                        b = new Belief_Casualty_Delivery(
+                            proto.RequestTime,
+                            proto.ActorId,
+                            proto.Greedy,
+                            proto.Multiplicity);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
+                        break;
+                    }
+
+                case MessageType.CASUALTY_PICKUP:
+                    { // Casualty pickup
+                        Gpb_CasualtyPickup proto = Gpb_CasualtyPickup.CreateBuilder().MergeFrom(body).Build();
+                        int[] ids = new int[proto.IdsCount];
+                        for (int i = 0; i < proto.IdsCount; i++)
+                        {
+                            ids[i] = proto.IdsList[i];
+                        }
+                        int[] multiplicity = new int[proto.MultiplicityCount];
+                        for (int i = 0; i < proto.MultiplicityCount; i++)
+                        {
+                            multiplicity[i] = proto.MultiplicityList[i];
+                        }
+                        b = new Belief_Casualty_Pickup(
+                            proto.RequestTime,
+                            proto.ActorId,
+                            proto.Greedy,
+                            ids,
+                            multiplicity);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
+                        break;
+                    }
                 case MessageType.GRIDSPEC:
                     { // Grid Specification
                         Gpb_GridSpec proto = Gpb_GridSpec.CreateBuilder().MergeFrom(body).Build();
@@ -460,16 +561,34 @@ namespace soa
                 case MessageType.SUPPLY_DELIVERY:
                     { // Supply delivery
                         Gpb_SupplyDelivery proto = Gpb_SupplyDelivery.CreateBuilder().MergeFrom(body).Build();
-                        int[] destination_ids = new int[proto.DestinationIdsCount];
-                        for (int i = 0; i < proto.DestinationIdsCount; i++)
+                        int[] ids = new int[proto.IdsCount];
+                        for (int i = 0; i < proto.IdsCount; i++)
                         {
-                            destination_ids[i] = proto.DestinationIdsList[i];
+                            ids[i] = proto.IdsList[i];
+                        }
+                        int[] multiplicity = new int[proto.MultiplicityCount];
+                        for (int i = 0; i < proto.MultiplicityCount; i++)
+                        {
+                            multiplicity[i] = proto.MultiplicityList[i];
                         }
                         b = new Belief_Supply_Delivery(
                             proto.RequestTime,
                             proto.ActorId,
-                            proto.DeliverAnywhere,
-                            destination_ids);
+                            proto.Greedy,
+                            ids,
+                            multiplicity);
+                        // Add on belief time
+                        b.setBeliefTime(proto.BeliefTime);
+                        break;
+                    }
+                case MessageType.SUPPLY_PICKUP:
+                    { // Supply pickup
+                        Gpb_SupplyPickup proto = Gpb_SupplyPickup.CreateBuilder().MergeFrom(body).Build();
+                        b = new Belief_Supply_Pickup(
+                            proto.RequestTime,
+                            proto.ActorId,
+                            proto.Greedy,
+                            proto.Multiplicity);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;

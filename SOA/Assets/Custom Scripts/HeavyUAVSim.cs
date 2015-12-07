@@ -36,8 +36,6 @@ public class HeavyUAVSim : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(transform.name + " collides with " + other.name);
-
         if (other.CompareTag("BlueBase"))
         {
             // Instant refuel
@@ -47,24 +45,19 @@ public class HeavyUAVSim : MonoBehaviour
             BlueBaseSim b = other.gameObject.GetComponent<BlueBaseSim>();
             if (b != null)
             {
-                if (thisSoaActor.numCasualtiesStored > 0)
+                // Deliver specified # of casualties first
+                int numCasualtiesToDeliver = RequestCasualtyDelivery(thisSoaActor.numCasualtiesStored);
+                for (int i = 0; i < numCasualtiesToDeliver; i++)
                 {
-                    // Log an event for each casualty delivered
-                    for (int i = 0; i < thisSoaActor.numCasualtiesStored; i++)
-                    {
-                        simControlScript.soaEventLogger.LogCasualtyDelivery(gameObject.name, other.name);
-                    }
-
-                    // Dump off all casualties at the base
-                    b.Casualties += thisSoaActor.numCasualtiesStored;
-                    thisSoaActor.numCasualtiesStored = 0;                       
+                    simControlScript.soaEventLogger.LogCasualtyDelivery(gameObject.name, other.name);
                 }
-                if (thisSoaActor.GetNumFreeSlots() > 0 && b.Supply >=1f)
-                {
-                    // Only pick up one supply for now, this has to change later twupy1
-                    b.Supply -= 1f;
-                    thisSoaActor.numSuppliesStored++;
-                }
+                b.Casualties += numCasualtiesToDeliver;
+                thisSoaActor.numCasualtiesStored -= numCasualtiesToDeliver;                       
+                
+                // Pick up specified # of supplies next
+                int numSuppliesToPickup = RequestSupplyPickup(thisSoaActor.GetNumFreeSlots(), b.Supply);
+                b.Supply -= numSuppliesToPickup;
+                thisSoaActor.numSuppliesStored += numSuppliesToPickup;
             }
         }
 
@@ -73,21 +66,19 @@ public class HeavyUAVSim : MonoBehaviour
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                if (thisSoaActor.numSuppliesStored > 0 && CheckSupplyDelivery(n.destination_id))
+                // Deliver specified # of supplies first
+                int numSuppliesToDeliver = RequestSupplyDelivery(thisSoaActor.numSuppliesStored, n.destination_id);
+                for (int i = 0; i < numSuppliesToDeliver; i++)
                 {
-                    // Only deliver one supply for now, this has to change later twupy1
-                    n.Supply += 1f;
-                    thisSoaActor.numSuppliesStored--;
-
-                    // Log event, need to change the multiplicity of this later twupy1
                     simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                 }
-                if (thisSoaActor.GetNumFreeSlots() > 0 && n.Casualties >= 1f)
-                {
-                    // Only pick up one casualty, this has to change later twupy1
-                    n.Casualties -= 1f;
-                    thisSoaActor.numCasualtiesStored++;
-                }
+                n.Supply += numSuppliesToDeliver;
+                thisSoaActor.numSuppliesStored -= numSuppliesToDeliver;
+
+                // Pickup specified # of casualties next
+                int numCasualtiesToPickup = RequestCasualtyPickup(thisSoaActor.GetNumFreeSlots(), n.Casualties, n.destination_id);
+                n.Casualties -= numCasualtiesToPickup;
+                thisSoaActor.numCasualtiesStored += numCasualtiesToPickup;
             }
         }
 
@@ -96,84 +87,233 @@ public class HeavyUAVSim : MonoBehaviour
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
-                if (thisSoaActor.numSuppliesStored > 0 && CheckSupplyDelivery(v.destination_id))
+                // Deliver specified # of supplies first
+                int numSuppliesToDeliver = RequestSupplyDelivery(thisSoaActor.numSuppliesStored, v.destination_id);
+                for (int i = 0; i < numSuppliesToDeliver; i++)
                 {
-                    // Only deliver one supply for now, this has to change later twupy1
-                    v.Supply += 1f;
-                    thisSoaActor.numSuppliesStored--;
-
-                    // Log event, need to change the multiplicity of this later twupy1
                     simControlScript.soaEventLogger.LogSupplyDelivered(gameObject.name, other.name);
                 }
-                if (thisSoaActor.GetNumFreeSlots() > 0 && v.Casualties >= 1f)
-                {
-                    v.Casualties -= 1f;
-                    thisSoaActor.numCasualtiesStored++;
-                }
+                v.Supply += numSuppliesToDeliver;
+                thisSoaActor.numSuppliesStored -= numSuppliesToDeliver;
+
+                // Pickup specified # of casualties next twupy1
+                int numCasualtiesToPickup = RequestCasualtyPickup(thisSoaActor.GetNumFreeSlots(), v.Casualties, v.destination_id);
+                v.Casualties -= numCasualtiesToPickup;
+                thisSoaActor.numCasualtiesStored += numCasualtiesToPickup;
             }
         }
     }
 
-    // Check if we are allowed to deliver supplies to the destination_id and remove it from the belief if it does exist
-    private bool CheckSupplyDelivery(int destination_id)
+    #region Casualty/Supply Pickup/Delivery Helper Functions
+    // Checks current inventory and belief to determine the number of casualties to deliver
+    private int RequestCasualtyDelivery(int currentInventory)
     {
-            // Get the belief dictionary and Supply_Delivery Belief
-            SortedDictionary<int, Belief> supplyDeliveryBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_DELIVERY];
-            Belief belief;
-            if (supplyDeliveryBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
+        // Get the belief dictionary and belief
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.CASUALTY_DELIVERY];
+        Belief belief;
+        if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
+        {
+            // Get the delivery belief
+            Belief_Casualty_Delivery b = (Belief_Casualty_Delivery)belief;
+            if (b.getGreedy() || b.getMultiplicity() < 0)
             {
-                Belief_Supply_Delivery bsd = (Belief_Supply_Delivery)belief;
-                if (bsd.getDeliver_anywhere())
-                {
-                    // Deliver anywhere
-                    return true;
-                }
-                else
-                {
-                    // Deliver to specific locations
-                    int[] allowed_ids = bsd.getDestination_ids();
-
-                    // Search for location of destination_id in array
-                    int foundIdx = -1;
-                    for (int i = 0; i < allowed_ids.Length; i++)
-                    {
-                        if (allowed_ids[i] == destination_id)
-                        {
-                            foundIdx = i;
-                            break;
-                        }
-                    }
-
-                    // Depending on if it was found or not
-                    if (foundIdx >= 0)
-                    {
-                        // Location was found, create a new belief with that entry removed and return true
-                        int[] new_allowed_ids = new int[allowed_ids.Length - 1];
-                        int j = 0;
-                        for (int i = 0; i < allowed_ids.Length; i++)
-                        {
-                            if (i != foundIdx)
-                            {
-                                new_allowed_ids[j++] = allowed_ids[i];
-                            }
-                        }
-                        Belief_Supply_Delivery newBsd = new Belief_Supply_Delivery(
-                            bsd.getRequest_time(), bsd.getActor_id(),
-                            bsd.getDeliver_anywhere(), new_allowed_ids);
-                        thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBsd);
-                        return true;
-                    }
-                    else
-                    {
-                        // Location was not found, leave belief as is and return false
-                        return false;
-                    }
-                }
+                // Greedy behavior, deliver all of current inventory.  No information to update
+                // Negative multiplicity is also greedy
+                return currentInventory;
             }
             else
             {
-                // No supply delivery belief, default behavior is to drop off no matter what
-                return true;
+                // Only deliver min of currentInventory and multiplicity
+                int quantityToDeliver = (currentInventory < b.getMultiplicity()) ? currentInventory : b.getMultiplicity();
+
+                // Update the belief if we are delivering anything
+                if (quantityToDeliver > 0)
+                {
+                    Belief_Casualty_Delivery newBelief = new Belief_Casualty_Delivery(
+                        b.getRequest_time(), b.getActor_id(),
+                        b.getGreedy(), b.getMultiplicity() - quantityToDeliver);
+                    thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                }
+
+                // Return the quantity to deliver
+                return quantityToDeliver;
             }
+        }
+        else
+        {
+            // No entry exists, default behavior is to not take any action.  No information to update.
+            return 0;
+        }
     }
+
+    // Checks current available slots and belief to determine the number of supplies to pickup
+    private int RequestSupplyPickup(int currentAvailableSlots, float availableSupplyCount)
+    {
+        // Get the belief dictionary and belief
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_PICKUP];
+        Belief belief;
+        if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
+        {
+            // Floor the supply count
+            int flooredSupplyCount = (int)Math.Floor(availableSupplyCount);
+
+            // Get the pickup belief
+            Belief_Supply_Pickup b = (Belief_Supply_Pickup)belief;
+            if (b.getGreedy() || b.getMultiplicity() < 0)
+            {
+                // Greedy behavior, pickup as much as you can.  No information to update
+                // Negative multiplicity is also greedy
+                // Amount to pick up is the min of currentAvailableSlots and flooredSupplyCount
+                return (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
+            }
+            else
+            {
+                // Only pickup min of currentAvailableSlots, flooredSupplyCount, and multiplicity
+                int quantityToPickup = (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
+                quantityToPickup = (quantityToPickup < b.getMultiplicity()) ? quantityToPickup : b.getMultiplicity();
+
+                // Update the belief if we are picking up anything
+                if (quantityToPickup > 0)
+                {
+                    Belief_Supply_Pickup newBelief = new Belief_Supply_Pickup(
+                        b.getRequest_time(), b.getActor_id(),
+                        b.getGreedy(), b.getMultiplicity() - quantityToPickup);
+                    thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                }
+
+                // Return the quantity to pickup
+                return quantityToPickup;
+            }
+        }
+        else
+        {
+            // No entry exists, default behavior is to not take any action.  No information to update.
+            return 0;
+        }
+    }
+
+    // Request supply delivery
+    private int RequestSupplyDelivery(int currentInventory, int destinationId)
+    {
+        // Get the belief dictionary and belief
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_DELIVERY];
+        Belief belief;
+        if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
+        {
+            // Get the delivery belief
+            Belief_Supply_Delivery b = (Belief_Supply_Delivery)belief;
+            
+            // Lookup destination id's multiplicity, no entry defaults to 0
+            int[] ids = b.getIds();
+            int[] multiplicity = b.getMultiplicity();
+            int destinationMultiplicity = 0;
+            int numEntries = (ids.Length < multiplicity.Length) ? ids.Length : multiplicity.Length;
+            int foundIdx = -1;
+            for (int i = 0; i < numEntries; i++)
+            {
+                if(ids[i] == destinationId)
+                {
+                    foundIdx = i;
+                    destinationMultiplicity = multiplicity[i];
+                    break;
+                }
+            }
+
+            if (b.getGreedy() || destinationMultiplicity < 0)
+            {
+                // Greedy behavior, deliver all of current inventory.  No information to update
+                // Negative multiplicity is also greedy
+                return currentInventory;
+            }
+            else
+            {
+                // Only deliver min of currentInventory and multiplicity
+                int quantityToDeliver = (currentInventory < destinationMultiplicity) ? currentInventory : destinationMultiplicity;
+
+                // Update the belief if we are delivering anything
+                if (quantityToDeliver > 0)
+                {
+                    multiplicity[foundIdx] -= quantityToDeliver;
+                    Belief_Supply_Delivery newBelief = new Belief_Supply_Delivery(
+                        b.getRequest_time(), b.getActor_id(),
+                        b.getGreedy(), ids, multiplicity);
+                    thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                }
+
+                // Return the quantity to deliver
+                return quantityToDeliver;
+            }
+        }
+        else
+        {
+            // No entry exists, default behavior is to not take any action.  No information to update.
+            return 0;
+        }
+    }
+
+    // Request casualty pickup
+    private int RequestCasualtyPickup(int currentAvailableSlots, float availableSupplyCount, int destinationId)
+    {
+        // Get the belief dictionary and belief
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.CASUALTY_PICKUP];
+        Belief belief;
+        if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
+        {
+            // Floor the supply count
+            int flooredSupplyCount = (int)Math.Floor(availableSupplyCount);
+
+            // Get the pickup belief
+            Belief_Casualty_Pickup b = (Belief_Casualty_Pickup)belief;
+
+            // Lookup destination id's multiplicity, no entry defaults to 0
+            int[] ids = b.getIds();
+            int[] multiplicity = b.getMultiplicity();
+            int destinationMultiplicity = 0;
+            int numEntries = (ids.Length < multiplicity.Length) ? ids.Length : multiplicity.Length;
+            int foundIdx = -1;
+            for (int i = 0; i < numEntries; i++)
+            {
+                if (ids[i] == destinationId)
+                {
+                    foundIdx = i;
+                    destinationMultiplicity = multiplicity[i];
+                    break;
+                }
+            }
+
+            if (b.getGreedy() || b.getMultiplicity() < 0)
+            {
+                // Greedy behavior, pickup as much as you can.  No information to update
+                // Negative multiplicity is also greedy
+                // Amount to pick up is the min of currentAvailableSlots and flooredSupplyCount
+                return (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
+            }
+            else
+            {
+                // Only pickup min of currentAvailableSlots, flooredSupplyCount, and multiplicity
+                int quantityToPickup = (currentAvailableSlots < flooredSupplyCount) ? currentAvailableSlots : flooredSupplyCount;
+                quantityToPickup = (quantityToPickup < b.getMultiplicity()) ? quantityToPickup : b.getMultiplicity();
+
+                // Update the belief if we are picking up anything
+                if (quantityToPickup > 0)
+                {
+                    multiplicity[foundIdx] -= quantityToPickup;
+                    Belief_Casualty_Pickup newBelief = new Belief_Casualty_Pickup(
+                        b.getRequest_time(), b.getActor_id(),
+                        b.getGreedy(), id, multiplicity);
+                    thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                }
+
+                // Return the quantity to pickup
+                return quantityToPickup;
+            }
+        }
+        else
+        {
+            // No entry exists, default behavior is to not take any action.  No information to update.
+            return 0;
+        }
+    }
+   
+    #endregion
 }

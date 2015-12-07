@@ -145,6 +145,8 @@ public class SoaActor : MonoBehaviour
         beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
         beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
@@ -152,6 +154,7 @@ public class SoaActor : MonoBehaviour
         beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
+        beliefDictionary[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -161,6 +164,8 @@ public class SoaActor : MonoBehaviour
         unmergedBeliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
         unmergedBeliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
+        unmergedBeliefDictionary[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
+        unmergedBeliefDictionary[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
@@ -168,6 +173,7 @@ public class SoaActor : MonoBehaviour
         unmergedBeliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
+        unmergedBeliefDictionary[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         unmergedBeliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -177,6 +183,8 @@ public class SoaActor : MonoBehaviour
         remoteBeliefs = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
         remoteBeliefs[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
+        remoteBeliefs[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
+        remoteBeliefs[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
@@ -184,6 +192,7 @@ public class SoaActor : MonoBehaviour
         remoteBeliefs[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
+        remoteBeliefs[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
@@ -761,9 +770,12 @@ public class SoaActor : MonoBehaviour
                 }
             }
             localBroadcastBeliefsOfType(Belief.BeliefType.ACTOR, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.CASUALTY_DELIVERY, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.CASUALTY_PICKUP, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.MODE_COMMAND, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.SPOI, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.SUPPLY_DELIVERY, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.SUPPLY_PICKUP, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
@@ -801,9 +813,12 @@ public class SoaActor : MonoBehaviour
     {
         //Broadcast types ACTOR, MODE_COMMAND, SPOI, WAYPOINT, WAYPOINT_OVERRIDE, BASE, NGOSITE, VILLAGE
         publishBeliefsOfType_old(Belief.BeliefType.ACTOR);
+        publishBeliefsOfType_old(Belief.BeliefType.CASUALTY_DELIVERY);
+        publishBeliefsOfType_old(Belief.BeliefType.CASUALTY_PICKUP);
         publishBeliefsOfType_old(Belief.BeliefType.MODE_COMMAND);
         publishBeliefsOfType_old(Belief.BeliefType.SPOI);
         publishBeliefsOfType_old(Belief.BeliefType.SUPPLY_DELIVERY);
+        publishBeliefsOfType_old(Belief.BeliefType.SUPPLY_PICKUP);
         publishBeliefsOfType_old(Belief.BeliefType.WAYPOINT);
         publishBeliefsOfType_old(Belief.BeliefType.WAYPOINT_OVERRIDE);
         publishBeliefsOfType_old(Belief.BeliefType.BASE);
