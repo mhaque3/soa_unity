@@ -801,7 +801,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a5e6e587e281243b583d540d847a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Civilian: 0
   CivilianIcon: {fileID: 194514}
   PathUpdateInterval: 30
 --- !u!114 &11475668
@@ -857,7 +856,7 @@ MonoBehaviour:
   maxAltitude_km: 0
   maxVerticalSpeed_m_s: 0
   isAlive: 0
-  numStorageSlots: 1
+  numStorageSlots: 0
   numCasualtiesStored: 0
   numSuppliesStored: 0
   numCiviliansStored: 0
@@ -950,7 +949,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: numStorageSlots
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

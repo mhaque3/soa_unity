@@ -17,14 +17,13 @@ public class RedDismountSim : MonoBehaviour
         simControlScript = GameObject.FindObjectOfType<SimControl>();
         waypointScript = gameObject.GetComponent<SoldierWaypointMotion>();
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
-
-        // Unlimited fuel tank
-        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
     }
 
     // Use this for initialization upon activation
     void Start()
     {
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
     }
 
     // Update is called once per frame
@@ -123,7 +122,8 @@ public class RedDismountSim : MonoBehaviour
                 new Optional<float>(), // beamwidth (use default)
                 new Optional<string>(),
                 new Optional<bool>(),
-                new Optional<float>());
+                new Optional<float>(),
+                new Optional<int>());
 
             // Instantiate and activate a replacement
             simControlScript.ActivateRedDismount(simControlScript.InstantiateRedDismount(c, true));
@@ -135,18 +135,12 @@ public class RedDismountSim : MonoBehaviour
             if (rb != null)
             {
                 // Drop off all civilians currently carried at the base
-                if (thisSoaActor.numCiviliansStored > 0)
+                for (int i = 0; i < thisSoaActor.numCiviliansStored; i++)
                 {
-                    // Log an event for each civilian dropped off
-                    for (int i = 0; i < thisSoaActor.numCiviliansStored; i++)
-                    {
-                        simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
-                    }
-
-                    // Update counts
-                    rb.Civilians += thisSoaActor.numCiviliansStored;
-                    thisSoaActor.numCiviliansStored = 0;
+                    simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
                 }
+                rb.Civilians += thisSoaActor.numCiviliansStored;
+                thisSoaActor.numCiviliansStored = 0;
 
                 // Assign a new target and return to closest base from that target
                 waypointScript.On = false;
@@ -172,13 +166,12 @@ public class RedDismountSim : MonoBehaviour
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-                // Only pick up one civilian at a time by design
-                if(thisSoaActor.GetNumFreeSlots() > 0)
-                {
-                    n.Civilians += 1f; // Keeps track of civlians taken from this site
-                    thisSoaActor.numCiviliansStored++;
-                }
+                // Act greedy and pick up as many civilians as you have room for
+                uint numFreeSlots = thisSoaActor.GetNumFreeSlots();
+                n.Civilians += numFreeSlots; // Keeps track of civilians taken from this site
+                thisSoaActor.numCiviliansStored += numFreeSlots;
 
+                // Only inflict one casualty and take one supply
                 n.Casualties += 1f;
                 n.Supply = (n.Supply > 1f) ? (n.Supply - 1f) : 0f; // Can't go negative
 
@@ -192,6 +185,7 @@ public class RedDismountSim : MonoBehaviour
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
+                // Only inflict one casualty and take one supply
                 v.Casualties += 1f;
                 v.Supply = (v.Supply > 1f) ? (v.Supply - 1f) : 0f; // Can't go negative
 

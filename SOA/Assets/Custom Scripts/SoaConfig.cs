@@ -44,9 +44,14 @@ namespace soa
         public Dictionary<string, float> defaultCommsRanges;
         public Dictionary<string, float> defaultJammerRanges;
 
-        // Fuel settings
-        public float heavyUAVFuelTankSize_s;
-        public float smallUAVFuelTankSize_s;
+        // Fuel default settings
+        public float defaultHeavyUAVFuelTankSize_s;
+        public float defaultSmallUAVFuelTankSize_s;
+
+        // Storage default settings
+        public int defaultHeavyUAVNumStorageSlots;
+        public int defaultRedDismountNumStorageSlots;
+        public int defaultRedTruckNumStorageSlots;
 
         public SoaConfig()
         {
@@ -182,16 +187,18 @@ namespace soa
     // Red dismount config
     public class RedDismountConfig : PlatformConfig
     {
-        public Optional<bool> hasWeapon;
         public Optional<string> initialWaypoint;
+        public Optional<bool> hasWeapon;
         public Optional<float> commsRange_km;
+        public Optional<int> numStorageSlots;
         public RedDismountConfig(float x_km, float y_km, float z_km, Optional<int> id, Optional<float> sensorBeamwidth_deg,
-            Optional<string> initialWaypoint, Optional<bool> hasWeapon, Optional<float> commsRange_km)
+            Optional<string> initialWaypoint, Optional<bool> hasWeapon, Optional<float> commsRange_km, Optional<int> numStorageSlots)
             : base(x_km, y_km, z_km, id, sensorBeamwidth_deg)
         {
-            this.commsRange_km = commsRange_km;
             this.initialWaypoint = initialWaypoint;
             this.hasWeapon = hasWeapon;
+            this.commsRange_km = commsRange_km;
+            this.numStorageSlots = numStorageSlots;
         }
         public override ConfigType GetConfigType() { return ConfigType.RED_DISMOUNT; }
     }
@@ -199,15 +206,17 @@ namespace soa
     // Red truck config
     public class RedTruckConfig : PlatformConfig
     {
+        public Optional<string> initialWaypoint;
         public Optional<bool> hasWeapon;
         public Optional<bool> hasJammer;
         public Optional<float> commsRange_km;
         public Optional<float> jammerRange_km;
-        public Optional<string> initialWaypoint;
+        public Optional<int> numStorageSlots;
         public RedTruckConfig(float x_km, float y_km, float z_km, Optional<int> id, 
             Optional<float> sensorBeamwidth_deg, Optional<string> initialWaypoint, 
             Optional<bool> hasWeapon, Optional<bool> hasJammer,  
-            Optional<float> commsRange_km, Optional<float> jammerRange_km)
+            Optional<float> commsRange_km, Optional<float> jammerRange_km,
+            Optional<int> numStorageSlots)
             : base(x_km, y_km, z_km, id, sensorBeamwidth_deg)
         {
             this.initialWaypoint = initialWaypoint;
@@ -215,6 +224,7 @@ namespace soa
             this.hasJammer = hasJammer;
             this.commsRange_km = commsRange_km;
             this.jammerRange_km = jammerRange_km;
+            this.numStorageSlots = numStorageSlots;
         }
         public override ConfigType GetConfigType() { return ConfigType.RED_TRUCK; }
     }
@@ -252,11 +262,13 @@ namespace soa
     {
         public Optional<float> commsRange_km;
         public Optional<float> fuelTankSize_s;
+        public Optional<int> numStorageSlots;
         public HeavyUAVConfig(float x_km, float y_km, float z_km, int id, Optional<float> sensorBeamwidth_deg,
-            Optional<float> commsRange_km, Optional<float> fuelTankSize_s)
+            Optional<float> commsRange_km, Optional<float> fuelTankSize_s, Optional<int> numStorageSlots)
             : base(x_km, y_km, z_km, new Optional<int>(id), sensorBeamwidth_deg) {
                 this.commsRange_km = commsRange_km;
                 this.fuelTankSize_s = fuelTankSize_s;
+                this.numStorageSlots = numStorageSlots;
         }
         public override ConfigType GetConfigType() { return ConfigType.HEAVY_UAV; }
     }

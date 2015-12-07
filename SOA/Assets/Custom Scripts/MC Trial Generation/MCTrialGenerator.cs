@@ -37,8 +37,13 @@ namespace soa
         const float probRedTruckHasJammer = 0.5f;
 
         /*********************** FUEL ************************/
-        const float heavyUAVFuelTankSize_s = 10000;
-        const float smallUAVFuelTankSize_s = 40000;
+        const float defaultHeavyUAVFuelTankSize_s = 10000;
+        const float defaultSmallUAVFuelTankSize_s = 40000;
+
+        /*********************** STORAGE ************************/
+        const int defaultHeavyUAVStorageSlots = 1;
+        const int defaultRedDismountStorageSlots = 1;
+        const int defaultRedTruckStorageSlots = 1;
 
         /******************** REMOTE ID **********************/
         const int remoteStartID = 100;
@@ -416,9 +421,14 @@ namespace soa
                 soaConfig.probRedTruckHasWeapon = probRedTruckHasWeapon;
                 soaConfig.probRedTruckHasJammer = probRedTruckHasJammer;
 
-                // Populate fuel
-                soaConfig.smallUAVFuelTankSize_s = smallUAVFuelTankSize_s;
-                soaConfig.heavyUAVFuelTankSize_s = heavyUAVFuelTankSize_s;
+                // Populate fuel defaults
+                soaConfig.defaultSmallUAVFuelTankSize_s = defaultSmallUAVFuelTankSize_s;
+                soaConfig.defaultHeavyUAVFuelTankSize_s = defaultHeavyUAVFuelTankSize_s;
+
+                // Populate storage defaults
+                soaConfig.defaultHeavyUAVNumStorageSlots = defaultHeavyUAVStorageSlots;
+                soaConfig.defaultRedDismountNumStorageSlots = defaultRedDismountStorageSlots;
+                soaConfig.defaultRedTruckNumStorageSlots = defaultRedTruckStorageSlots;
 
                 // Set sensor and classifier defaults
                 SetSensorDefaults(soaConfig);
@@ -447,7 +457,8 @@ namespace soa
                         new Optional<float>(), // sensorBeamwidth_deg
                         new Optional<string>(), // initialWaypoint
                         new Optional<bool>(), // hasWeapon
-                        new Optional<float>() // commsRange_km
+                        new Optional<float>(), // commsRange_km
+                        new Optional<int>() // numStorageSlots
                         ));
                 }
 
@@ -465,7 +476,8 @@ namespace soa
                         new Optional<bool>(), // hasWeapon
                         new Optional<bool>(), // hasJammer
                         new Optional<float>(), // commsRange_km
-                        new Optional<float>() // jammerRange_km
+                        new Optional<float>(), // jammerRange_km
+                        new Optional<int>() // numStorageSlots
                         ));
                 }
 
@@ -520,7 +532,8 @@ namespace soa
                         availableRemoteID++, // id
                         new Optional<float>(), // sensorBeamwidth_deg
                         new Optional<float>(), // commsRange_km
-                        new Optional<float>() // fuelTankSize_s
+                        new Optional<float>(), // fuelTankSize_s
+                        new Optional<int>() // numStorageSlots
                         ));
                 }
 

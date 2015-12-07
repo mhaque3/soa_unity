@@ -1113,7 +1113,10 @@ public class SimControl : MonoBehaviour
             
             // Set fuel tank size
             HeavyUAVSim h = g.GetComponent<HeavyUAVSim>();
-            h.fuelTankSize_s = Mathf.Max(c.fuelTankSize_s.GetIsSet() ? Mathf.Max(c.fuelTankSize_s.GetValue(),0) : soaConfig.heavyUAVFuelTankSize_s);
+            h.fuelTankSize_s = Mathf.Max(c.fuelTankSize_s.GetIsSet() ? c.fuelTankSize_s.GetValue() : soaConfig.defaultHeavyUAVFuelTankSize_s, 0);
+
+            // Set number of slots
+            a.numStorageSlots = (uint) Mathf.Max(c.numStorageSlots.GetIsSet() ? c.numStorageSlots.GetValue() : soaConfig.defaultHeavyUAVNumStorageSlots, 0);
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
@@ -1158,7 +1161,7 @@ public class SimControl : MonoBehaviour
 
             // Set fuel tank size
             SmallUAVSim s = g.GetComponent<SmallUAVSim>();
-            s.fuelTankSize_s = Mathf.Max(c.fuelTankSize_s.GetIsSet() ? Mathf.Max(c.fuelTankSize_s.GetValue(),0) : soaConfig.smallUAVFuelTankSize_s, 0);
+            s.fuelTankSize_s = Mathf.Max(c.fuelTankSize_s.GetIsSet() ? c.fuelTankSize_s.GetValue() : soaConfig.defaultSmallUAVFuelTankSize_s, 0);
 
             // Add to list of remote platforms
             RemotePlatforms.Add(g);
@@ -1336,6 +1339,9 @@ public class SimControl : MonoBehaviour
             // Set comms capabilities
             a.commsRange_km = Mathf.Max(c.commsRange_km.GetIsSet() ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["RedDismount"], 0);
 
+            // Set number of slots
+            a.numStorageSlots = (uint)Mathf.Max(c.numStorageSlots.GetIsSet() ? c.numStorageSlots.GetValue() : soaConfig.defaultRedDismountNumStorageSlots, 0);
+
             // Add to list of local platforms
             LocalPlatforms.Add(g);
             return g;
@@ -1410,6 +1416,9 @@ public class SimControl : MonoBehaviour
             jammers.Add(jammer);
             Debug.Log("Has jammer " + jammer.isOn + ", effective range " + jammer.effectiveRange_km);
             Debug.Log("Jammer list size: " + jammers.Count);
+
+            // Set number of slots
+            a.numStorageSlots = (uint)Mathf.Max(c.numStorageSlots.GetIsSet() ? c.numStorageSlots.GetValue() : soaConfig.defaultRedTruckNumStorageSlots, 0);
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "RedTruck");

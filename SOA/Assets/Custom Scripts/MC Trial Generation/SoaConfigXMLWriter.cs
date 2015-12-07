@@ -29,8 +29,11 @@ namespace soa
             // Populate "Simulation" node
             PopulateSimulation(xmlDoc, configNode, soaConfig);
 
-            // Populate "Fuel" node
-            PopulateFuel(xmlDoc, configNode, soaConfig);
+            // Populate "FuelDefaults" node
+            PopulateFuelDefaults(xmlDoc, configNode, soaConfig);
+
+            // Populate "StorageDefaults" node
+            PopulateStorageDefaults(xmlDoc, configNode, soaConfig);
 
             // Populate "SensorDefaults" node
             PopulateSensorDefaults(xmlDoc, configNode, soaConfig);
@@ -145,15 +148,27 @@ namespace soa
             AddAttribute(xmlDoc, node, "probRedTruckHasJammer",    soaConfig.probRedTruckHasJammer.ToString());
         }
 
-        private static void PopulateFuel(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
+        private static void PopulateFuelDefaults(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
         {
-            // Create "Fuel" node and append to configNode
-            XmlNode node = xmlDoc.CreateElement("Fuel");
+            // Create "FuelDefaults" node and append to configNode
+            XmlNode node = xmlDoc.CreateElement("FuelDefaults");
             configNode.AppendChild(node);
 
             // Add attributes
-            AddAttribute(xmlDoc, node, "heavyUAVFuelTankSize_s", soaConfig.heavyUAVFuelTankSize_s.ToString());
-            AddAttribute(xmlDoc, node, "smallUAVFuelTankSize_s", soaConfig.smallUAVFuelTankSize_s.ToString());
+            AddAttribute(xmlDoc, node, "heavyUAVFuelTankSize_s", soaConfig.defaultHeavyUAVFuelTankSize_s.ToString());
+            AddAttribute(xmlDoc, node, "smallUAVFuelTankSize_s", soaConfig.defaultSmallUAVFuelTankSize_s.ToString());
+        }
+
+        private static void PopulateStorageDefaults(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
+        {
+            // Create "StorageDefaults" node and append to configNode
+            XmlNode node = xmlDoc.CreateElement("StorageDefaults");
+            configNode.AppendChild(node);
+
+            // Add attributes
+            AddAttribute(xmlDoc, node, "heavyUAVNumStorageSlots", soaConfig.defaultHeavyUAVNumStorageSlots.ToString());
+            AddAttribute(xmlDoc, node, "redDismountNumStorageSlots", soaConfig.defaultRedDismountNumStorageSlots.ToString());
+            AddAttribute(xmlDoc, node, "redTruckNumStorageSlots", soaConfig.defaultRedTruckNumStorageSlots.ToString());
         }
 
         private static void PopulateSensorDefaults(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)
@@ -415,9 +430,10 @@ namespace soa
             AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
             AddOptionalAttribute(xmlDoc, node, "id", c.id);
             AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
-            AddOptionalAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon);
             AddOptionalAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
-            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km); 
+            AddOptionalAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon);
+            AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
+            AddOptionalAttribute(xmlDoc, node, "numStorageSlots", c.numStorageSlots);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -434,11 +450,12 @@ namespace soa
             AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
             AddOptionalAttribute(xmlDoc, node, "id", c.id);
             AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
+            AddOptionalAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
             AddOptionalAttribute(xmlDoc, node, "hasWeapon", c.hasWeapon);
             AddOptionalAttribute(xmlDoc, node, "hasJammer", c.hasJammer);
             AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
             AddOptionalAttribute(xmlDoc, node, "jammerRange_km", c.jammerRange_km);
-            AddOptionalAttribute(xmlDoc, node, "initialWaypoint", c.initialWaypoint);
+            AddOptionalAttribute(xmlDoc, node, "numStorageSlots", c.numStorageSlots);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -454,6 +471,7 @@ namespace soa
             AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
             AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
             AddOptionalAttribute(xmlDoc, node, "id", c.id);
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
             
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -469,6 +487,7 @@ namespace soa
             AddAttribute(xmlDoc, node, "x_km", c.x_km.ToString());
             AddAttribute(xmlDoc, node, "z_km", c.z_km.ToString());
             AddOptionalAttribute(xmlDoc, node, "id", c.id);
+            AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -506,6 +525,8 @@ namespace soa
             AddAttribute(xmlDoc, node, "id", c.id.ToString());
             AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
             AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
+            AddOptionalAttribute(xmlDoc, node, "fuelTankSize_s", c.fuelTankSize_s);
+            AddOptionalAttribute(xmlDoc, node, "numStorageSlots", c.numStorageSlots);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);
@@ -524,6 +545,7 @@ namespace soa
             AddAttribute(xmlDoc, node, "id", c.id.ToString());
             AddOptionalAttribute(xmlDoc, node, "sensorBeamwidth_deg", c.sensorBeamwidth_deg);
             AddOptionalAttribute(xmlDoc, node, "commsRange_km", c.commsRange_km);
+            AddOptionalAttribute(xmlDoc, node, "fuelTankSize_s", c.fuelTankSize_s);
 
             // Add perception override (if specified)
             AddPerceptionOverride(xmlDoc, node, c);

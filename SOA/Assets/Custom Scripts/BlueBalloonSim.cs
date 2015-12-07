@@ -12,13 +12,12 @@ public class BlueBalloonSim : MonoBehaviour
     {
         // Get pointer to SoaActor
         thisSoaActor = gameObject.GetComponent<SoaActor>();
-
-        // Unlimited fuel tank
-        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
     }
 
     // Use this for initialization upon activation
 	void Start () 
     {
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
     }
 }

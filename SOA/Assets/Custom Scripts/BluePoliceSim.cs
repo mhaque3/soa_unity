@@ -64,9 +64,6 @@ public class BluePoliceSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
-        // Unlimited fuel tank
-        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
-
         // Internal parameters
         clearPatrolRange = 0.50f; // Unity units
         transitionProbability = 1.0f;
@@ -83,6 +80,9 @@ public class BluePoliceSim : MonoBehaviour
     // Use this for initialization upon activation
 	void Start () 
     {
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
+        
         // Save references to Unity game objects for quick lookup of properties
         protectedSites = new List<GameObject>();
         protectedSites.AddRange(simControlScript.NgoSites);

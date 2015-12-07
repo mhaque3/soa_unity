@@ -16,15 +16,14 @@ public class HeavyUAVSim : MonoBehaviour
     {
         thisSoaActor = gameObject.GetComponent<SoaActor>();
         simControlScript = GameObject.FindObjectOfType<SimControl>();
-
-        // Start on a full tank
-        thisSoaActor.fuelRemaining_s = fuelTankSize_s;        
     }
 
 	// Use this for initialization upon activation
 	void Start () 
     {
-	}
+        // Start on a full tank
+        thisSoaActor.fuelRemaining_s = fuelTankSize_s;
+    }
 	
 	// Update is called once per frame
 	void Update () 

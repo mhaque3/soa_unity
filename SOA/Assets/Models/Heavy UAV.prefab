@@ -27133,7 +27133,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187476}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -27209,7 +27209,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168166}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33200,7 +33200,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168950}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -33596,7 +33596,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165692}
-  m_LocalRotation: {x: .703031063, y: -.701524019, z: .0824872032, w: -.0825070143}
+  m_LocalRotation: {x: .703031003, y: -.70152396, z: .0824871957, w: -.0825070068}
   m_LocalPosition: {x: -10.5952702, y: 70.7689972, z: 11.1677628}
   m_LocalScale: {x: .0226420518, y: .0226414185, z: .0226413701}
   m_Children:
@@ -61073,7 +61073,7 @@ MonoBehaviour:
   maxAltitude_km: .5
   maxVerticalSpeed_m_s: 2
   isAlive: 0
-  numStorageSlots: 1
+  numStorageSlots: 0
   numCasualtiesStored: 0
   numSuppliesStored: 0
   numCiviliansStored: 0
@@ -61147,8 +61147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fuelTankSize_s: 10000
-  Casuality: 0
-  Supply: 0
   SupplyIcon: {fileID: 135610}
   CasualtyIcon: {fileID: 160444}
 --- !u!114 &11484364
@@ -61273,7 +61271,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: numStorageSlots
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
