@@ -47,7 +47,7 @@ public class SimControl : MonoBehaviour
     // Unique IDs
     HashSet<int> TakenUniqueIDs;
     int smallestAvailableUniqueID = 200; // Start assigning IDs from here
-    int smallestAvailableDestinationID = 0;
+    int smallestAvailableDestinationID = 1;
     
     // Conversion Factor
     static public float KmToUnity;
