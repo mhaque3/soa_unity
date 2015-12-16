@@ -132,6 +132,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), b.getMultiplicity() - quantityToDeliver);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to deliver
@@ -178,6 +179,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), b.getMultiplicity() - quantityToPickup);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to pickup
@@ -237,6 +239,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), ids, multiplicity);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to deliver
@@ -301,6 +304,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), ids, multiplicity);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to pickup
