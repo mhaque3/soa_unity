@@ -14,6 +14,7 @@ public class NgoSim : MonoBehaviour
     public float Supply;
 
     public int destination_id;
+    public List<GridCell> gridCells;
 
     public Canvas uiCanvas;
     public Camera uiCamera;

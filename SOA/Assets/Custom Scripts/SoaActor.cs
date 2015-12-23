@@ -529,6 +529,15 @@ public class SoaActor : MonoBehaviour
         }
     }
 
+    // Used for saving site observation beliefs to ownship and forwarding to neighbors
+    public void RegisterSiteObservation(Belief b)
+    {
+        if (b is Belief_Base || b is Belief_NGOSite || b is Belief_Village)
+        {
+            addMyBeliefData(b);
+        }
+    }
+
     //Add data from the sensors of this actor (position updates, sensor data).  This goes to the belief dictionary and the remote beliefs to be sent.
     private void addMyBeliefData(Belief b)
     {

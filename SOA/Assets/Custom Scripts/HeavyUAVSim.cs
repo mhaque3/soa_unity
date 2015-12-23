@@ -57,6 +57,10 @@ public class HeavyUAVSim : MonoBehaviour
                 int numSuppliesToPickup = RequestSupplyPickup((int)thisSoaActor.GetNumFreeSlots(), b.Supply);
                 b.Supply -= numSuppliesToPickup;
                 thisSoaActor.numSuppliesStored = (uint) (thisSoaActor.numSuppliesStored + numSuppliesToPickup);
+
+                // Make a new observation about the site
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_Base(
+                    b.destination_id, b.gridCells, b.Supply));
             }
         }
 
@@ -78,6 +82,10 @@ public class HeavyUAVSim : MonoBehaviour
                 int numCasualtiesToPickup = RequestCasualtyPickup((int)thisSoaActor.GetNumFreeSlots(), n.Casualties, n.destination_id);
                 n.Casualties -= numCasualtiesToPickup;
                 thisSoaActor.numCasualtiesStored = (uint)(thisSoaActor.numCasualtiesStored + numCasualtiesToPickup);
+
+                // Make a new observation about the site
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_NGOSite(
+                    n.destination_id, n.gridCells, n.Supply, n.Casualties, n.Civilians));
             }
         }
 
@@ -99,6 +107,10 @@ public class HeavyUAVSim : MonoBehaviour
                 int numCasualtiesToPickup = RequestCasualtyPickup((int)thisSoaActor.GetNumFreeSlots(), v.Casualties, v.destination_id);
                 v.Casualties -= numCasualtiesToPickup;
                 thisSoaActor.numCasualtiesStored = (uint)(thisSoaActor.numCasualtiesStored + numCasualtiesToPickup);
+
+                // Make a new observation about the site
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_Village(
+                    v.destination_id, v.gridCells, v.Supply, v.Casualties));
             }
         }
     }

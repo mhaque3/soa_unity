@@ -353,9 +353,6 @@ public class SimControl : MonoBehaviour
     // Sends out initial map beliefs through the blue data manager
     void PushInitialMapBeliefs()
     {
-        GameObject g;
-        FlatHexPoint currentCell;
-
         b = new Belief_GridSpec(64, 36, gridOrigin_x, gridOrigin_z, gridToWorldScale);
         blueDataManager.addBeliefToAllActors(b, 0);
         blueDataManager.addInitializationBelief(b);
@@ -373,41 +370,26 @@ public class SimControl : MonoBehaviour
 
         for (int i = 0; i < BlueBases.Count; i++)
         {
-            g = BlueBases[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            BlueBaseSim s = g.GetComponent<BlueBaseSim>();
-            b = new Belief_Base(i, theseCells, s.Supply);
+            BlueBaseSim s = BlueBases[i].GetComponent<BlueBaseSim>();
+            b = new Belief_Base(s.destination_id, s.gridCells, s.Supply);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
-            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < NgoSites.Count; i++)
         {
-            g = NgoSites[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            NgoSim s = g.GetComponent<NgoSim>();
-            b = new Belief_NGOSite(s.destination_id, theseCells, s.Supply, s.Casualties, s.Civilians);
+            NgoSim s = NgoSites[i].GetComponent<NgoSim>();
+            b = new Belief_NGOSite(s.destination_id, s.gridCells, s.Supply, s.Casualties, s.Civilians);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
-            //Debug.Log(b.ToString());
         }
 
         for (int i = 0; i < Villages.Count; i++)
         {
-            g = Villages[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            VillageSim s = g.GetComponent<VillageSim>();
-            b = new Belief_Village(s.destination_id, theseCells, s.Supply, s.Casualties);
+            VillageSim s = Villages[i].GetComponent<VillageSim>();
+            b = new Belief_Village(s.destination_id, s.gridCells, s.Supply, s.Casualties);
             blueDataManager.addBeliefToAllActors(b, 0);
             blueDataManager.addInitializationBelief(b);
-            //Debug.Log(b.ToString());
         }
     }
 
@@ -760,39 +742,24 @@ public class SimControl : MonoBehaviour
 
     void UpdateSiteBeliefs()
     {
-        GameObject g;
-        FlatHexPoint currentCell = new FlatHexPoint(0, 0);
-
         for (int i = 0; i < BlueBases.Count; i++)
         {
-            g = BlueBases[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            BlueBaseSim s = g.GetComponent<BlueBaseSim>();
-            b = new Belief_Base(i, theseCells, s.Supply);
+            BlueBaseSim s = BlueBases[i].GetComponent<BlueBaseSim>();
+            b = new Belief_Base(s.destination_id, s.gridCells, s.Supply);
             AddBeliefToBlueBases(b);
         }
 
         for (int i = 0; i < NgoSites.Count; i++)
         {
-            g = NgoSites[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            NgoSim s = g.GetComponent<NgoSim>();
-            b = new Belief_NGOSite(s.destination_id, theseCells, s.Supply, s.Casualties, s.Civilians);
+            NgoSim s = NgoSites[i].GetComponent<NgoSim>();
+            b = new Belief_NGOSite(s.destination_id, s.gridCells, s.Supply, s.Casualties, s.Civilians);
             AddBeliefToBlueBases(b);
         }
 
         for (int i = 0; i < Villages.Count; i++)
         {
-            g = Villages[i];
-            List<GridCell> theseCells = new List<GridCell>();
-            currentCell = hexGrid.Map[g.transform.position];
-            theseCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            VillageSim s = g.GetComponent<VillageSim>();
-            b = new Belief_Village(s.destination_id, theseCells, s.Supply, s.Casualties);
+            VillageSim s = Villages[i].GetComponent<VillageSim>();
+            b = new Belief_Village(s.destination_id, s.gridCells, s.Supply, s.Casualties);
             AddBeliefToBlueBases(b);
         }
     }
@@ -974,6 +941,15 @@ public class SimControl : MonoBehaviour
             s.unique_id = 0;
             g.name = (c.name == null) ? "Blue Base" : c.name;
 
+            // Also assigned destination id 0 always
+            g.GetComponent<BlueBaseSim>().destination_id = 0;
+
+            // Specify grid cells it occupies
+            FlatHexPoint currentCell = hexGrid.Map[g.transform.position];
+            List<GridCell> myCells = new List<GridCell>();
+            myCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            g.GetComponent<BlueBaseSim>().gridCells = myCells; 
+
             // Set comms capabilties
             s.commsRange_km = Mathf.Max((c.commsRange_km.GetIsSet()) ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["BlueBase"], 0);
 
@@ -1035,6 +1011,12 @@ public class SimControl : MonoBehaviour
             // Assign a unique destination ID
             g.GetComponent<NgoSim>().destination_id = smallestAvailableDestinationID++;
 
+            // Specify grid cells it occupies
+            FlatHexPoint currentCell = hexGrid.Map[g.transform.position];
+            List<GridCell> myCells = new List<GridCell>();
+            myCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            g.GetComponent<NgoSim>().gridCells = myCells; 
+
             // Add to appropriate lists
             NgoSites.Add(g);
             return g;
@@ -1064,6 +1046,12 @@ public class SimControl : MonoBehaviour
 
             // Assign a unique destination ID
             g.GetComponent<VillageSim>().destination_id = smallestAvailableDestinationID++;
+
+            // Specify grid cells it occupies
+            FlatHexPoint currentCell = hexGrid.Map[g.transform.position];
+            List<GridCell> myCells = new List<GridCell>();
+            myCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            g.GetComponent<VillageSim>().gridCells = myCells; 
 
             // Add to appropriate lists
             Villages.Add(g);
