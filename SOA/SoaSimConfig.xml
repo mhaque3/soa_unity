@@ -136,11 +136,11 @@
 
   <!-- Communication Default Settings -->
   <CommsDefaults>
-     <Node tag="BlueBase"     commsRange_km="10.0"/>
+     <Node tag="BlueBase"     commsRange_km="50.0"/>
      <Node tag="RedDismount"  commsRange_km="5.0" />
      <Node tag="RedTruck"     commsRange_km="5.0" />
      <Node tag="BluePolice"   commsRange_km="10.0"/>
-     <Node tag="HeavyUAV"     commsRange_km="10.0"/>
+     <Node tag="HeavyUAV"     commsRange_km="50.0"/>
      <Node tag="SmallUAV"     commsRange_km="10.0"/>
      <!-- Entries for neutrals and blue balloon ignored -->
   </CommsDefaults>

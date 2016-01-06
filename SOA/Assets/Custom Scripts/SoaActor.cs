@@ -779,6 +779,7 @@ public class SoaActor : MonoBehaviour
                 }
             }
             localBroadcastBeliefsOfType(Belief.BeliefType.ACTOR, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.BASE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.CASUALTY_DELIVERY, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.CASUALTY_PICKUP, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.MODE_COMMAND, connectedActors);
