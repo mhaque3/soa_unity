@@ -58,6 +58,8 @@ public class SimControl : MonoBehaviour
  
     // Logging
     public SoaEventLogger soaEventLogger;
+    public SoaDetectionLogger soaDetectionLogger;
+    public SoaGridCellMoveLogger soaGridCellMoveLogger;
 
     // Misc
     public bool BroadcastOn;
@@ -272,6 +274,8 @@ public class SimControl : MonoBehaviour
         soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,
             ConfigFileName, soaConfig.enableLogToFile, soaConfig.enableLogEventsToFile, 
             soaConfig.enableLogToUnityConsole);
+        soaDetectionLogger = new SoaDetectionLogger(ConfigFileName + "_detection.out");
+        soaGridCellMoveLogger = new SoaGridCellMoveLogger(ConfigFileName + "_gridCellMoves.out");
 
         // Game duration
         gameDurationHr = soaConfig.gameDurationHr;
@@ -448,6 +452,7 @@ public class SimControl : MonoBehaviour
      *****************************************************************************************************/
     // Update is called once per frame
     private bool firstUpdate = true;
+    private System.UInt64 simTime = 0;
 	void Update () 
     {
         if (firstUpdate)
@@ -488,6 +493,7 @@ public class SimControl : MonoBehaviour
         updateTimer += dt;
         if (updateTimer > updateRateS)
         {
+            simTime++;
             bool terminationConditionsMet = false;
             // Check for game termination conditions
             if (gameClockHr >= gameDurationHr)
@@ -827,9 +833,14 @@ public class SimControl : MonoBehaviour
      *                                        UTILITY FUNCTIONS                                          *
      *****************************************************************************************************/
 
-    public void logDetectedActor(int unique_id, Belief_Actor detectedActor)
+    public void logDetectedActor(int uniqueId, Belief_Actor detectedActor)
     {
-        //TODO log detection made by unique_id
+        soaDetectionLogger.logDetection(simTime, uniqueId, detectedActor.getId());
+    }
+
+    public void logGridCellMove(int uniqueId, int gridU, int gridV)
+    {
+        soaGridCellMoveLogger.logDetection(simTime, gridU, gridV);
     }
 
     // Gets a never before assigned Unique ID and takes suggestions

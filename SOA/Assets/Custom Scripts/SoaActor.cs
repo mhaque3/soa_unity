@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using soa;
+using Gamelogic.Grids;
 
 public class SoaActor : MonoBehaviour 
 {
@@ -10,6 +11,12 @@ public class SoaActor : MonoBehaviour
     public int unique_id;
     public Affiliation affiliation;
     public int type;
+
+    //Hex Cell Movement logging
+    private SoaHexWorld hexGrid;
+    private FlatHexPoint currentCell;
+    private FlatHexPoint prevHexGridCell;
+   
 
     // Simulated altitude [km]
     public float simAltitude_km;
@@ -137,6 +144,7 @@ public class SoaActor : MonoBehaviour
         wpMotionScript = gameObject.GetComponent<WaypointMotion>();
         pcMotionScript = gameObject.GetComponent<PlanarCoordinateMotion>();
         navAgent = gameObject.GetComponent<NavMeshAgent>();
+        hexGrid = GameObject.Find("Grid").GetComponent<SoaHexWorld>();
 
         // Save reference to simControl
         simControlScript = GameObject.FindObjectOfType<SimControl>();
@@ -507,6 +515,23 @@ public class SoaActor : MonoBehaviour
                 
             }
             Detections.Clear();
+
+            //Evaluate if grid cell changed and log
+            if (prevHexGridCell != null)
+            {
+                currentCell = hexGrid.Map[transform.position];
+                if (prevHexGridCell != currentCell)
+                {
+                    prevHexGridCell = currentCell;
+                    simControlScript.logGridCellMove(unique_id, currentCell.X, currentCell.Y);
+                    //Debug.LogWarning("Actor " + unique_id + " Moved to cell " + prevHexGridCell.X + " " + prevHexGridCell.Y);
+                }
+            }
+            else
+            {
+                currentCell = hexGrid.Map[transform.position];
+                prevHexGridCell = currentCell;
+            }
 
             //TODO make this thread safe since collisions are done by collider in a separate thread????
             foreach (Belief_Actor belief_actor in killDetections)
