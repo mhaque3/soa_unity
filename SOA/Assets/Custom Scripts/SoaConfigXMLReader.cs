@@ -64,9 +64,13 @@ namespace soa
                         // Simulation configuration
                         ParseSimulation(c, soaConfig);
                         break;
-                    case "Fuel":
-                        // Fuel configuration
-                        ParseFuel(c, soaConfig);
+                    case "FuelDefaults":
+                        // Fuel default configuration
+                        ParseFuelDefaults(c, soaConfig);
+                        break;
+                    case "StorageDefaults":
+                        // Storage default configuration
+                        ParseStorageDefaults(c, soaConfig);
                         break;
                     case "SensorDefaults":
                         // Sensor default configuration
@@ -243,18 +247,34 @@ namespace soa
             } // End foreach
         }
 
-        // Fuel configuration category parsing
-        private static void ParseFuel(XmlNode node, SoaConfig soaConfig)
+        // Fuel default configuration category parsing
+        private static void ParseFuelDefaults(XmlNode node, SoaConfig soaConfig)
         {
             // Pull attributes directly from the node
             try
             {
-                soaConfig.heavyUAVFuelTankSize_s = GetFloatAttribute(node, "heavyUAVFuelTankSize_s", 10000);
-                soaConfig.smallUAVFuelTankSize_s = GetFloatAttribute(node, "smallUAVFuelTankSize_s", 40000);
+                soaConfig.defaultHeavyUAVFuelTankSize_s = GetFloatAttribute(node, "heavyUAVFuelTankSize_s", 10000);
+                soaConfig.defaultSmallUAVFuelTankSize_s = GetFloatAttribute(node, "smallUAVFuelTankSize_s", 40000);
             }
             catch (Exception)
             {
-                Debug.LogError("SoaConfigXMLReader::ParseFuel(): Error parsing " + node.Name);
+                Debug.LogError("SoaConfigXMLReader::ParseFuelDefaults(): Error parsing " + node.Name);
+            }
+        }
+
+        // Storage default configuration category parsing
+        private static void ParseStorageDefaults(XmlNode node, SoaConfig soaConfig)
+        {
+            // Pull attributes directly from the node
+            try
+            {
+                soaConfig.defaultHeavyUAVNumStorageSlots = GetIntAttribute(node, "heavyUAVNumStorageSlots", 1);
+                soaConfig.defaultRedDismountNumStorageSlots = GetIntAttribute(node, "redDismountNumStorageSlots", 1);
+                soaConfig.defaultRedTruckNumStorageSlots = GetIntAttribute(node, "redTruckNumStorageSlots", 1);
+            }
+            catch (Exception)
+            {
+                Debug.LogError("SoaConfigXMLReader::ParseStorageDefaults(): Error parsing " + node.Name);
             }
         }
 
@@ -436,7 +456,8 @@ namespace soa
                                     GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
                                     GetOptionalStringAttribute(c, "initialWaypoint"),
                                     GetOptionalBooleanAttribute(c, "hasWeapon"),
-                                    GetOptionalFloatAttribute(c, "commsRange_km")
+                                    GetOptionalFloatAttribute(c, "commsRange_km"),
+                                    GetOptionalIntAttribute(c, "numStorageSlots")
                                 );
                             }
                             break;
@@ -452,7 +473,8 @@ namespace soa
                                     GetOptionalBooleanAttribute(c, "hasWeapon"),
                                     GetOptionalBooleanAttribute(c, "hasJammer"),
                                     GetOptionalFloatAttribute(c, "commsRange_km"),
-                                    GetOptionalFloatAttribute(c, "jammerRange_km")
+                                    GetOptionalFloatAttribute(c, "jammerRange_km"),
+                                    GetOptionalIntAttribute(c, "numStorageSlots")
                                 );
                             }
                             break;
@@ -551,7 +573,8 @@ namespace soa
                                     GetIntAttribute(c, "id", -1), // Default -1 means runtime determined id field
                                     GetOptionalFloatAttribute(c, "sensorBeamwidth_deg"),
                                     GetOptionalFloatAttribute(c, "commsRange_km"),
-                                    GetOptionalFloatAttribute(c, "fuelTankSize_s")
+                                    GetOptionalFloatAttribute(c, "fuelTankSize_s"),
+                                    GetOptionalIntAttribute(c, "numStorageSlots")
                                 );
                             }
                             break;

@@ -16,15 +16,14 @@ public class HeavyUAVSim : MonoBehaviour
     {
         thisSoaActor = gameObject.GetComponent<SoaActor>();
         simControlScript = GameObject.FindObjectOfType<SimControl>();
-
-        // Start on a full tank
-        thisSoaActor.fuelRemaining_s = fuelTankSize_s;        
     }
 
 	// Use this for initialization upon activation
 	void Start () 
     {
-	}
+        // Start on a full tank
+        thisSoaActor.fuelRemaining_s = fuelTankSize_s;
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -58,6 +57,10 @@ public class HeavyUAVSim : MonoBehaviour
                 int numSuppliesToPickup = RequestSupplyPickup((int)thisSoaActor.GetNumFreeSlots(), b.Supply);
                 b.Supply -= numSuppliesToPickup;
                 thisSoaActor.numSuppliesStored = (uint) (thisSoaActor.numSuppliesStored + numSuppliesToPickup);
+
+                // Make a new observation about the site
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_Base(
+                    b.destination_id, b.gridCells, b.Supply));
             }
         }
 
@@ -79,6 +82,10 @@ public class HeavyUAVSim : MonoBehaviour
                 int numCasualtiesToPickup = RequestCasualtyPickup((int)thisSoaActor.GetNumFreeSlots(), n.Casualties, n.destination_id);
                 n.Casualties -= numCasualtiesToPickup;
                 thisSoaActor.numCasualtiesStored = (uint)(thisSoaActor.numCasualtiesStored + numCasualtiesToPickup);
+
+                // Make a new observation about the site
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_NGOSite(
+                    n.destination_id, n.gridCells, n.Supply, n.Casualties, n.Civilians));
             }
         }
 
@@ -100,6 +107,10 @@ public class HeavyUAVSim : MonoBehaviour
                 int numCasualtiesToPickup = RequestCasualtyPickup((int)thisSoaActor.GetNumFreeSlots(), v.Casualties, v.destination_id);
                 v.Casualties -= numCasualtiesToPickup;
                 thisSoaActor.numCasualtiesStored = (uint)(thisSoaActor.numCasualtiesStored + numCasualtiesToPickup);
+
+                // Make a new observation about the site
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_Village(
+                    v.destination_id, v.gridCells, v.Supply, v.Casualties));
             }
         }
     }
@@ -133,6 +144,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), b.getMultiplicity() - quantityToDeliver);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to deliver
@@ -179,6 +191,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), b.getMultiplicity() - quantityToPickup);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to pickup
@@ -238,6 +251,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), ids, multiplicity);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to deliver
@@ -302,6 +316,7 @@ public class HeavyUAVSim : MonoBehaviour
                         b.getRequest_time(), b.getActor_id(),
                         b.getGreedy(), ids, multiplicity);
                     thisSoaActor.addBeliefToUnmergedBeliefDictionary(newBelief);
+                    thisSoaActor.mergeBeliefDictionary();
                 }
 
                 // Return the quantity to pickup

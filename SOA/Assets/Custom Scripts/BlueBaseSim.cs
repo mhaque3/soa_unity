@@ -9,6 +9,9 @@ public class BlueBaseSim : MonoBehaviour
     public float SupplyRate;
     public float Supply;
 
+    public int destination_id;
+    public List<GridCell> gridCells;
+
     // Awake is called before anything else
     void Awake()
     {

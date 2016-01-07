@@ -22,11 +22,18 @@
        probRedTruckHasJammer    ="0.5"
   />
 
-  <!-- Fuel Settings -->
-  <Fuel
+  <!-- Fuel Default Settings -->
+  <FuelDefaults
        heavyUAVFuelTankSize_s   ="10000"
        smallUAVFuelTankSize_s   ="40000"
   />
+
+  <!-- Storage Default Settings -->
+  <StorageDefaults
+       heavyUAVNumStorageSlots     ="1"
+       redDismountNumStorageSlots  ="1"
+       redTruckNumStorageSlots     ="1"
+  /> 
 
   <!-- Sensor Default Settings -->
   <SensorDefaults>

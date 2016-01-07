@@ -12,8 +12,8 @@ public class NeutralDismountSim : MonoBehaviour
     List<GameObject> choices;
     SoaActor thisSoaActor;
 
-	// Use this for initialization
-	void Start () 
+    // Awake is called before anything else
+    void Awake()
     {
         // Get references to scripts
         simControlScript = GameObject.FindObjectOfType<SimControl>();
@@ -21,11 +21,15 @@ public class NeutralDismountSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
-        // Unlimited fuel tank
-        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
-
         // To hold source/destination choices during random selection
         choices = new List<GameObject>();
+    }
+
+	// Use this for initialization
+	void Start () 
+    {
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
 
         // Randomly assign a destination
         currDestination = ChooseRandomNeutralSite(true);

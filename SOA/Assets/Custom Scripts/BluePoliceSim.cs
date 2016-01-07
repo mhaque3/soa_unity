@@ -64,9 +64,6 @@ public class BluePoliceSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
         thisSoaActor = gameObject.GetComponent<SoaActor>();
 
-        // Unlimited fuel tank
-        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
-
         // Internal parameters
         clearPatrolRange = 0.50f; // Unity units
         transitionProbability = 1.0f;
@@ -83,6 +80,9 @@ public class BluePoliceSim : MonoBehaviour
     // Use this for initialization upon activation
 	void Start () 
     {
+        // Unlimited fuel tank
+        thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
+        
         // Save references to Unity game objects for quick lookup of properties
         protectedSites = new List<GameObject>();
         protectedSites.AddRange(simControlScript.NgoSites);
@@ -520,8 +520,6 @@ public class BluePoliceSim : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(transform.name + " collides with " + other.name);
-
         if (other.CompareTag("RedTruck"))
         {
             RedTruckSim r = other.gameObject.GetComponent<RedTruckSim>();
@@ -530,7 +528,6 @@ public class BluePoliceSim : MonoBehaviour
                 Debug.Log(transform.name + " intercepts " + other.name);
             }
         }
-
         if (other.CompareTag("RedDismount"))
         {
             RedDismountSim r = other.gameObject.GetComponent<RedDismountSim>();
@@ -539,22 +536,34 @@ public class BluePoliceSim : MonoBehaviour
                 Debug.Log(transform.name + " intercepts " + other.name);
             }
         }
-
+        if (other.CompareTag("BlueBase"))
+        {
+            // Get an observation about the blue base
+            BlueBaseSim b = other.gameObject.GetComponent<BlueBaseSim>();
+            if (b != null)
+            {
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_Base(
+                    b.destination_id, b.gridCells, b.Supply));
+            }
+        }
         if (other.CompareTag("NGO"))
         {
+            // Get an observation about the NGO
             NgoSim n = other.gameObject.GetComponent<NgoSim>();
             if (n != null)
             {
-
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_NGOSite(
+                    n.destination_id, n.gridCells, n.Supply, n.Casualties, n.Civilians));
             }
         }
-
         if (other.CompareTag("Village"))
         {
+            // Get an observation about the village
             VillageSim v = other.gameObject.GetComponent<VillageSim>();
             if (v != null)
             {
-
+                thisSoaActor.RegisterSiteObservation(new soa.Belief_Village(
+                    v.destination_id, v.gridCells, v.Supply, v.Casualties));
             }
         }
     }
