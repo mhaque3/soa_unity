@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: bee53ce53d9cf544f9af6a0cdbe7be22
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: longWings_StandardMissile polySurface14
     100002: longWings_StandardMissile polySurface7
@@ -18,6 +18,15 @@ ModelImporter:
     100024: StandardMissile_polySurface11
     100026: StandardMissile_polySurface12
     100028: StandardMissile_pPipe1
+    100030: longWings_StandardMissile_polySurface14
+    100032: longWings_StandardMissile_polySurface7
+    100034: longWings_StandardMissile_polySurface8
+    100036: longWings_StandardMissile_polySurface9
+    100038: polySurface13_longWings_StandardMissile
+    100040: StandardMissile_group2_pCube2_group4
+    100042: StandardMissile_group2_pCube2_group5
+    100044: StandardMissile_group2_pCube2_group6
+    100046: StandardMissile_pCube2_group3_group2
     400000: longWings_StandardMissile polySurface14
     400002: longWings_StandardMissile polySurface7
     400004: longWings_StandardMissile polySurface8
@@ -33,6 +42,15 @@ ModelImporter:
     400024: StandardMissile_polySurface11
     400026: StandardMissile_polySurface12
     400028: StandardMissile_pPipe1
+    400030: longWings_StandardMissile_polySurface14
+    400032: longWings_StandardMissile_polySurface7
+    400034: longWings_StandardMissile_polySurface8
+    400036: longWings_StandardMissile_polySurface9
+    400038: polySurface13_longWings_StandardMissile
+    400040: StandardMissile_group2_pCube2_group4
+    400042: StandardMissile_group2_pCube2_group5
+    400044: StandardMissile_group2_pCube2_group6
+    400046: StandardMissile_pCube2_group3_group2
     2300000: longWings_StandardMissile polySurface14
     2300002: longWings_StandardMissile polySurface7
     2300004: longWings_StandardMissile polySurface8
@@ -47,6 +65,15 @@ ModelImporter:
     2300022: StandardMissile_polySurface11
     2300024: StandardMissile_polySurface12
     2300026: StandardMissile_pPipe1
+    2300028: longWings_StandardMissile_polySurface14
+    2300030: longWings_StandardMissile_polySurface7
+    2300032: longWings_StandardMissile_polySurface8
+    2300034: longWings_StandardMissile_polySurface9
+    2300036: polySurface13_longWings_StandardMissile
+    2300038: StandardMissile_group2_pCube2_group4
+    2300040: StandardMissile_group2_pCube2_group5
+    2300042: StandardMissile_group2_pCube2_group6
+    2300044: StandardMissile_pCube2_group3_group2
     3300000: longWings_StandardMissile polySurface14
     3300002: longWings_StandardMissile polySurface7
     3300004: longWings_StandardMissile polySurface8
@@ -61,6 +88,15 @@ ModelImporter:
     3300022: StandardMissile_polySurface11
     3300024: StandardMissile_polySurface12
     3300026: StandardMissile_pPipe1
+    3300028: longWings_StandardMissile_polySurface14
+    3300030: longWings_StandardMissile_polySurface7
+    3300032: longWings_StandardMissile_polySurface8
+    3300034: longWings_StandardMissile_polySurface9
+    3300036: polySurface13_longWings_StandardMissile
+    3300038: StandardMissile_group2_pCube2_group4
+    3300040: StandardMissile_group2_pCube2_group5
+    3300042: StandardMissile_group2_pCube2_group6
+    3300044: StandardMissile_pCube2_group3_group2
     4300000: longWings_StandardMissile polySurface14
     4300002: longWings_StandardMissile polySurface7
     4300004: longWings_StandardMissile polySurface8
@@ -75,6 +111,15 @@ ModelImporter:
     4300022: StandardMissile_polySurface11
     4300024: StandardMissile_polySurface12
     4300026: StandardMissile_pPipe1
+    4300028: longWings_StandardMissile_polySurface14
+    4300030: longWings_StandardMissile_polySurface7
+    4300032: longWings_StandardMissile_polySurface8
+    4300034: longWings_StandardMissile_polySurface9
+    4300036: polySurface13_longWings_StandardMissile
+    4300038: StandardMissile_group2_pCube2_group4
+    4300040: StandardMissile_group2_pCube2_group5
+    4300042: StandardMissile_group2_pCube2_group6
+    4300044: StandardMissile_pCube2_group3_group2
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -83,12 +128,17 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleRotations: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations: []
@@ -103,30 +153,35 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

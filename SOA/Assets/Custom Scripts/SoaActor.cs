@@ -634,11 +634,18 @@ public class SoaActor : MonoBehaviour
         {
             Debug.LogWarning("SoaActor: Exception from beliefDictionary for " + gameObject.name);
         }
-        
-        SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
+
+        // Check if the belief dictionary even exists
+        if (!beliefDictionary.ContainsKey(b.getBeliefType()) || beliefDictionary[b.getBeliefType()] == null)
+        {
+            Debug.LogWarning("SoaActor::addBelief(): No beliefDictionary entry exists for belief type "
+                + b.getBeliefType() + ", dropping belief");
+            return false;
+        }                
+
         bool updateDictionary;
         Belief oldBelief;
-        if (tempTypeDict != null && beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief))
+        if (beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief))
         {
             // We are in here if a previous belief already exists and we have to merge
             if (b.getBeliefType() == Belief.BeliefType.ACTOR)

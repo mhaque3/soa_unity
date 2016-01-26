@@ -2,7 +2,7 @@
   <!-- Network Configuration Settings -->
   <Network 
        redRoom ="soa-apl-red" 
-       blueRoom="soa-testroom-blue" 
+       blueRoom="soa-apl-blue" 
   />
  
   <!-- Logger Configuration Settings -->

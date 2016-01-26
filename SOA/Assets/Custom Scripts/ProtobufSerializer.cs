@@ -372,14 +372,18 @@ namespace soa
                     }
                 case Belief.BeliefType.CUSTOM:
                     { // Custom
+                        Debug.Log("ProtobufSerializer.serializeBelief(): Trying to send a custom message");
                         Gpb_Custom.Builder proto = Gpb_Custom.CreateBuilder();
                         Belief_Custom b = (Belief_Custom)belief;
                         proto.SetData(Google.ProtocolBuffers.ByteString.CopyFrom(b.getData()));
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());
+
+                        Debug.Log("ProtobufSerializer.serializeBelief(): Serializing a custom message");
                         // Form header + serialized message
                         header = (byte)MessageType.CUSTOM;
                         body = proto.Build().ToByteArray();
+                        Debug.Log("ProtobufSerializer.serializeBelief(): Serialized a custom message");
                         break;
                     }
                 default:
@@ -662,11 +666,14 @@ namespace soa
                     }
                 case MessageType.CUSTOM:
                     { // Time
+                        Debug.Log("ProtobufSerializer.generateBelief(): Received a custom message!");
                         Gpb_Custom proto = Gpb_Custom.CreateBuilder().MergeFrom(body).Build();
+                        Debug.Log("ProtobufSerializer.generateBelief(): Deserialized a custom message!");
                         b = new Belief_Custom(
                             proto.Data.ToByteArray());
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
+                        Debug.Log("ProtobufSerializer.generateBelief(): Created a custom belief!");
                         break;
                     }
                 default:
