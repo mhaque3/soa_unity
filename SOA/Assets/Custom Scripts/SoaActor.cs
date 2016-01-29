@@ -595,6 +595,19 @@ public class SoaActor : MonoBehaviour
         return addBelief(b, beliefDictionary);
     }
 
+    public bool addCustomBelief(int sourceId, Belief b)
+    {
+        if (!customBeliefs.ContainsKey(sourceId))
+        {
+            customBeliefs.Add(sourceId, new SortedDictionary<int, Belief>());
+        }
+
+        SortedDictionary<int, Belief> actorCustomBeliefs = customBeliefs[sourceId];
+        actorCustomBeliefs[b.getId()] = b;
+
+        return true;
+    }
+
     /*
      * Add belief to the unmerged map
      */ 
@@ -794,7 +807,17 @@ public class SoaActor : MonoBehaviour
             entry.Value.Clear();
         }
 
-        //TODO Lock queue of custom beliefs, broadcast, empty queue
+        foreach (KeyValuePair<int, SortedDictionary<int, Belief>> entry in customBeliefs)
+        {
+            //Do not pass along custom beliefs that hte actor created back to itself
+            if (entry.Key != unique_id)
+            {
+                foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
+                {
+                    dataManager.broadcastBelief(beliefs.Value, unique_id, idArray);
+                }
+            }
+        }
     }
 
 
@@ -829,7 +852,7 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.VILLAGE, connectedActors);
 
-            //TODO create function to broadcast custom belief to local agents
+            localBroadcastCustomBeliefs(connectedActors);
         }
         else
         {
@@ -857,6 +880,25 @@ public class SoaActor : MonoBehaviour
                 }
             }
         
+    }
+
+    protected void localBroadcastCustomBeliefs(List<SoaActor> connectedActors)
+    {
+                foreach (SoaActor actor in connectedActors)
+                {
+                    foreach (KeyValuePair<int, SortedDictionary<int, Belief>> entry in customBeliefs)
+                    {
+                        //Do not pass along custom beliefs that hte actor created back to itself
+                        if (entry.Key != actor.unique_id)
+                        {
+                            foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
+                            {
+                                actor.addCustomBelief(unique_id, beliefs.Value);
+                            }
+                        }
+                    }
+                }
+
     }
 
     public void broadcastComms_old()

@@ -95,8 +95,15 @@ namespace soa
             soaActorDictionary.TryGetValue(sourceId, out a);
             if (a != null)
             {
-                // TODO Check if belief is custom. Call function to add custom belief
-                a.addBeliefToBeliefDictionary(b);
+
+                if (b.GetType().Equals(Belief.BeliefType.CUSTOM))
+                {
+                    a.addCustomBelief(sourceId, b);
+                }
+                else
+                {
+                    a.addBeliefToBeliefDictionary(b);
+                }
             }
         }
 
