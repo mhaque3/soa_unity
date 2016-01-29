@@ -90,10 +90,12 @@ namespace soa
         //Add incoming belief to correct agent
         public void addExternalBeliefToActor(Belief b, int sourceId)
         {
+
             SoaActor a;
             soaActorDictionary.TryGetValue(sourceId, out a);
             if (a != null)
             {
+                // TODO Check if belief is custom. Call function to add custom belief
                 a.addBeliefToBeliefDictionary(b);
             }
         }

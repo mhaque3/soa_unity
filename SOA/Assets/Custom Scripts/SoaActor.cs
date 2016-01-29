@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using soa;
 using Gamelogic.Grids;
 
+
 public class SoaActor : MonoBehaviour 
 {
 
@@ -80,6 +81,7 @@ public class SoaActor : MonoBehaviour
     protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
     protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> unmergedBeliefDictionary;
     protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> remoteBeliefs;
+    protected SortedDictionary<int, SortedDictionary<int, Belief>> customBeliefs;
 
     private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
 
@@ -206,6 +208,8 @@ public class SoaActor : MonoBehaviour
         remoteBeliefs[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
         remoteBeliefs[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
+
+        customBeliefs = new SortedDictionary<int, SortedDictionary<int, Belief>>();
 
         Debug.Log("SoaActor: Initialized all beliefDictionaries for " + gameObject.name);
 
@@ -789,6 +793,8 @@ public class SoaActor : MonoBehaviour
             }
             entry.Value.Clear();
         }
+
+        //TODO Lock queue of custom beliefs, broadcast, empty queue
     }
 
 
@@ -822,6 +828,8 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.VILLAGE, connectedActors);
+
+            //TODO create function to broadcast custom belief to local agents
         }
         else
         {
