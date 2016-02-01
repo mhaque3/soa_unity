@@ -817,6 +817,8 @@ public class SoaActor : MonoBehaviour
                     dataManager.broadcastBelief(beliefs.Value, unique_id, idArray);
                 }
             }
+
+            entry.Value.Clear();
         }
     }
 
