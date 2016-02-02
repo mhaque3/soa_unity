@@ -95,8 +95,7 @@ namespace soa
             soaActorDictionary.TryGetValue(sourceId, out a);
             if (a != null)
             {
-
-                if (b.GetType().Equals(Belief.BeliefType.CUSTOM))
+                if (b.getBeliefType().Equals(Belief.BeliefType.CUSTOM))
                 {
                     a.addCustomBelief(sourceId, b);
                 }
