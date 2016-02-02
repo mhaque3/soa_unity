@@ -55,6 +55,12 @@ public class SimControl : MonoBehaviour
     static public float gridOrigin_z;
     static public float gridToWorldScale;
     static public GridMath gridMath;
+
+    // Game board bounds
+    static public float unityMin_x;
+    static public float unityMax_x;
+    static public float unityMin_z;
+    static public float unityMax_z;
  
     // Logging
     public SoaEventLogger soaEventLogger;
@@ -117,11 +123,6 @@ public class SimControl : MonoBehaviour
         Villages = new List<GameObject>();
         RedBases = new List<GameObject>();
         BlueBases = new List<GameObject>();
-
-        // Set up mountain and water cells
-        WaterCells = new List<GridCell>();
-        MountainCells = new List<GridCell>();
-        LandCells = new List<GridCell>();
     }
 
     // Use this for initialization upon activation
@@ -140,20 +141,40 @@ public class SimControl : MonoBehaviour
         gridToWorldScale = 1.0f;
         gridMath = new GridMath(gridOrigin_x, gridOrigin_z, gridToWorldScale);
 
+        // Set up mountain and water cells
+        unityMin_x = float.PositiveInfinity;
+        unityMax_x = float.NegativeInfinity;
+        unityMin_z = float.PositiveInfinity;
+        unityMax_z = float.NegativeInfinity;
+        WaterCells = new List<GridCell>();
         Debug.Log(hexGrid.WaterHexes.Count + " water hexes to copy");
         foreach (FlatHexPoint point in hexGrid.WaterHexes)
         {
             WaterCells.Add(new GridCell(point.Y, point.X));
+            unityMin_x = (hexGrid.Map[point].x < unityMin_x) ? hexGrid.Map[point].x : unityMin_x;
+            unityMax_x = (hexGrid.Map[point].x > unityMax_x) ? hexGrid.Map[point].x : unityMax_x;
+            unityMin_z = (hexGrid.Map[point].z < unityMin_z) ? hexGrid.Map[point].z : unityMin_z;
+            unityMax_z = (hexGrid.Map[point].z > unityMax_z) ? hexGrid.Map[point].z : unityMax_z;
         }
+        MountainCells = new List<GridCell>();
         Debug.Log(hexGrid.MountainHexes.Count + " mountain hexes to copy");
         foreach (FlatHexPoint point in hexGrid.MountainHexes)
         {
             MountainCells.Add(new GridCell(point.Y, point.X));
+            unityMin_x = (hexGrid.Map[point].x < unityMin_x) ? hexGrid.Map[point].x : unityMin_x;
+            unityMax_x = (hexGrid.Map[point].x > unityMax_x) ? hexGrid.Map[point].x : unityMax_x;
+            unityMin_z = (hexGrid.Map[point].z < unityMin_z) ? hexGrid.Map[point].z : unityMin_z;
+            unityMax_z = (hexGrid.Map[point].z > unityMax_z) ? hexGrid.Map[point].z : unityMax_z;
         }
+        LandCells = new List<GridCell>();
         Debug.Log(hexGrid.LandHexes.Count + " land hexes to copy");
         foreach (FlatHexPoint point in hexGrid.LandHexes)
         {
             LandCells.Add(new GridCell(point.Y, point.X));
+            unityMin_x = (hexGrid.Map[point].x < unityMin_x) ? hexGrid.Map[point].x : unityMin_x;
+            unityMax_x = (hexGrid.Map[point].x > unityMax_x) ? hexGrid.Map[point].x : unityMax_x;
+            unityMin_z = (hexGrid.Map[point].z < unityMin_z) ? hexGrid.Map[point].z : unityMin_z;
+            unityMax_z = (hexGrid.Map[point].z > unityMax_z) ? hexGrid.Map[point].z : unityMax_z;
         }
 
         // Reset all existing local and remote configs as having unique id -1
@@ -927,6 +948,22 @@ public class SimControl : MonoBehaviour
         }
 
         return found;
+    }
+
+    public static Vector3 ConstrainUnityDestinationToBoard(Vector3 unityDestination)
+    {
+        // Constrain x
+        unityDestination.x = (unityDestination.x >= unityMin_x) ? unityDestination.x : unityMin_x;
+        unityDestination.x = (unityDestination.x <= unityMax_x) ? unityDestination.x : unityMax_x;
+    
+        // Leave y alone
+
+        // Constrain z
+        unityDestination.z = (unityDestination.z >= unityMin_z) ? unityDestination.z : unityMin_z;
+        unityDestination.z = (unityDestination.z <= unityMax_z) ? unityDestination.z : unityMax_z;
+
+        // Return reference
+        return unityDestination;
     }
 
     #endregion

@@ -406,10 +406,13 @@ public class SoaActor : MonoBehaviour
                 {
                     // Received a waypoint in km, transform to Unity coordinates and then use it to set the nav agent's destination
                     Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
-                    navAgent.SetDestination(new Vector3(
-                        newWaypoint.getPos_x() * SimControl.KmToUnity,
-                        newWaypoint.getPos_y() * SimControl.KmToUnity, // Nav agent ignores the y coordinate (altitude)
-                        newWaypoint.getPos_z() * SimControl.KmToUnity));
+                    navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
+                        new Vector3(
+                            newWaypoint.getPos_x() * SimControl.KmToUnity,
+                            transform.position.y, // Nav agent ignores the y coordinate (altitude)
+                            newWaypoint.getPos_z() * SimControl.KmToUnity
+                        )
+                    ));
 
                     // Set the desired altitude separately [km]
                     SetDesiredAltitude(newWaypoint.getPos_y());
@@ -417,7 +420,8 @@ public class SoaActor : MonoBehaviour
                 else
                 {
                     // Stay put
-                    navAgent.SetDestination(new Vector3(transform.position.x, transform.position.y, transform.position.z));
+                    navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
+                        new Vector3(transform.position.x, transform.position.y, transform.position.z)));
                 }
             }
             else if (motionScript != null)
