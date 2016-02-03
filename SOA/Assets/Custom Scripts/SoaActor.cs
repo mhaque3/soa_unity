@@ -609,6 +609,7 @@ public class SoaActor : MonoBehaviour
         SortedDictionary<int, Belief> actorCustomBeliefs = customBeliefs[sourceId];
         actorCustomBeliefs[b.getId()] = b;
 
+        Debug.Log("Added custom belief from " + sourceId + " to " + unique_id);
         return true;
     }
 
@@ -811,6 +812,7 @@ public class SoaActor : MonoBehaviour
             entry.Value.Clear();
         }
 
+
         foreach (KeyValuePair<int, SortedDictionary<int, Belief>> entry in customBeliefs)
         {
             //Do not pass along custom beliefs that hte actor created back to itself
@@ -819,7 +821,12 @@ public class SoaActor : MonoBehaviour
                 foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
                 {
                     dataManager.broadcastBelief(beliefs.Value, unique_id, idArray);
+                    Debug.Log("Forwarding custom belief to remote agent");
                 }
+            }
+            else
+            {
+                Debug.Log("Do not forward own custom belief to self");
             }
 
             entry.Value.Clear();
@@ -858,6 +865,7 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.VILLAGE, connectedActors);
 
+            Debug.Log("local broadcast of custom belief data " + customBeliefs.Keys.Count);
             localBroadcastCustomBeliefs(connectedActors);
         }
         else
@@ -899,8 +907,13 @@ public class SoaActor : MonoBehaviour
                         {
                             foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
                             {
+                                Debug.Log("Forwarding custom belief to local neighbor");
                                 actor.addCustomBelief(unique_id, beliefs.Value);
                             }
+                        }
+                        else
+                        {
+                            Debug.Log("not forwarding beliefs back to their original actor " + actor.unique_id);
                         }
                     }
                 }
