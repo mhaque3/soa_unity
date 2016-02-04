@@ -97,7 +97,10 @@ namespace soa
             {
                 if (b.getBeliefType().Equals(Belief.BeliefType.CUSTOM))
                 {
-                    a.addCustomBelief(sourceId, b);
+                    lock (dataManagerLock)
+                    {
+                        a.addCustomBelief(sourceId, b);
+                    }
                 }
                 else
                 {

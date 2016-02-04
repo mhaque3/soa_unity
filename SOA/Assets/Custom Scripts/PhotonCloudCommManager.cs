@@ -300,6 +300,11 @@ namespace soa
             }
 
             // Serialize the belief
+            if (b.getBeliefType().Equals(Belief.BeliefType.CUSTOM))
+            {
+                Debug.LogWarning("PUSING CUSTOM BELIEF to " + sourceID);
+            }
+
             Byte[] beliefBytes = serializer.serializeBelief(b);
 
             // Enqueue the serialized message if serialization was

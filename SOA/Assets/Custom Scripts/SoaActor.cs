@@ -821,12 +821,7 @@ public class SoaActor : MonoBehaviour
                 foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
                 {
                     dataManager.broadcastBelief(beliefs.Value, unique_id, idArray);
-                    Debug.Log("Forwarding custom belief to remote agent");
                 }
-            }
-            else
-            {
-                Debug.Log("Do not forward own custom belief to self");
             }
 
             entry.Value.Clear();
@@ -865,7 +860,6 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.VILLAGE, connectedActors);
 
-            Debug.Log("local broadcast of custom belief data " + customBeliefs.Keys.Count);
             localBroadcastCustomBeliefs(connectedActors);
         }
         else
@@ -907,13 +901,12 @@ public class SoaActor : MonoBehaviour
                         {
                             foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
                             {
-                                Debug.Log("Forwarding custom belief to local neighbor");
-                                actor.addCustomBelief(unique_id, beliefs.Value);
+                                actor.addCustomBelief(entry.Key, beliefs.Value);
                             }
                         }
                         else
                         {
-                            Debug.Log("not forwarding beliefs back to their original actor " + actor.unique_id);
+                            Debug.Log("not forwarding beliefs back to their original actor " + entry.Key);
                         }
                     }
                 }
