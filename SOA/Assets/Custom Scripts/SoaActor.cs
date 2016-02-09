@@ -609,7 +609,7 @@ public class SoaActor : MonoBehaviour
         SortedDictionary<int, Belief> actorCustomBeliefs = customBeliefs[sourceId];
         actorCustomBeliefs[b.getId()] = b;
 
-        Debug.Log("Added custom belief from " + sourceId + " to " + unique_id);
+        //Debug.Log("Added custom belief from " + sourceId + " to " + unique_id);
         return true;
     }
 
@@ -906,7 +906,7 @@ public class SoaActor : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log("not forwarding beliefs back to their original actor " + entry.Key);
+                            //Debug.Log("not forwarding beliefs back to their original actor " + entry.Key);
                         }
                     }
                 }
