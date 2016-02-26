@@ -224,11 +224,7 @@ public class SimControl : MonoBehaviour
         for (int i = 0; i < LocalPlatforms.Count; i++)
         {
             GameObject platform = LocalPlatforms[i];
-            if (platform.tag.Contains("BlueBase"))
-            {
-                ActivateBlueBase(platform);
-            }
-            else if (platform.tag.Contains("RedDismount"))
+            if (platform.tag.Contains("RedDismount"))
             {
                 ActivateRedDismount(platform);
             }
@@ -258,7 +254,11 @@ public class SimControl : MonoBehaviour
         for (int i = 0; i < RemotePlatforms.Count; i++)
         {
             GameObject platform = RemotePlatforms[i];
-            if (platform.tag.Contains("HeavyUAV"))
+            if (platform.tag.Contains("BlueBase"))
+            {
+                ActivateBlueBase(platform);
+            }
+            else if (platform.tag.Contains("HeavyUAV"))
             {
                 ActivateHeavyUAV(platform);
             }
@@ -616,17 +616,18 @@ public class SimControl : MonoBehaviour
 
                             for (int i = 0; i < RemotePlatforms.Count; i++)
                             {
+                                // Note: Blue base now counts as a remote platform
                                 GameObject platform = RemotePlatforms[i];
                                 SoaActor actor = platform.GetComponent<SoaActor>();
                                 actor.broadcastCommsLocal();
                             }
 
-                            for (int i = 0; i < BlueBases.Count; i++)
+                            /*for (int i = 0; i < BlueBases.Count; i++)
                             {
                                 GameObject platform = BlueBases[i];
                                 SoaSite site = platform.GetComponent<SoaSite>();
                                 site.broadcastCommsLocal();
-                            }
+                            }*/
 
 
                             //Merge in belief dictionary after round of comms
@@ -643,17 +644,19 @@ public class SimControl : MonoBehaviour
 
                             for (int i = 0; i < RemotePlatforms.Count; i++)
                             {
+                                // Note: Blue base now counts as a remote platform
                                 GameObject platform = RemotePlatforms[i];
                                 SoaActor actor = platform.GetComponent<SoaActor>();
                                 actor.mergeBeliefDictionary();
                             }
 
+                            /*
                             for (int i = 0; i < BlueBases.Count; i++)
                             {
                                 GameObject platform = BlueBases[i];
                                 SoaSite site = platform.GetComponent<SoaSite>();
                                 site.mergeBeliefDictionary();
-                            }
+                            }*/
                         }
                     }
                 }
@@ -867,7 +870,7 @@ public class SimControl : MonoBehaviour
         {
             g = BlueBases[i];
             SoaSite s = g.GetComponent<SoaSite>();
-            s.addBeliefToBeliefDictionary(b);
+            s.RegisterSiteObservation(b);
         }
     }
 
@@ -972,48 +975,6 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                        SITE INSTANTIATION                                         *
      *****************************************************************************************************/
-    public GameObject InstantiateBlueBase(BlueBaseConfig c)
-    {
-        // Proposed initial position
-        Vector3 newPos = new Vector3(c.x_km, 0.75f / KmToUnity, c.z_km);
-
-        // Blue base must exist on land
-        Vector3 snappedPos;
-        if (CheckInitialLocation(newPos, true, false, false, out snappedPos))
-        {
-            // Instantiate at the snapped position
-            GameObject g = (GameObject)Instantiate(BlueBasePrefab, newPos * KmToUnity, Quaternion.identity);
-
-            // Blue bases get id 0 always
-            SoaSite s = g.GetComponent<SoaSite>();
-            s.unique_id = 0;
-            g.name = (c.name == null) ? "Blue Base" : c.name;
-
-            // Also assigned destination id 0 always
-            g.GetComponent<BlueBaseSim>().destination_id = 0;
-
-            // Specify grid cells it occupies
-            FlatHexPoint currentCell = hexGrid.Map[g.transform.position];
-            List<GridCell> myCells = new List<GridCell>();
-            myCells.Add(new GridCell(currentCell.Y, currentCell.X));
-            g.GetComponent<BlueBaseSim>().gridCells = myCells; 
-
-            // Set comms capabilties
-            s.commsRange_km = Mathf.Max((c.commsRange_km.GetIsSet()) ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["BlueBase"], 0);
-
-            // Add to appropriate lists
-            LocalPlatforms.Add(g);
-            BlueBases.Add(g);
-            return g;
-        }
-        else
-        {
-            soaEventLogger.LogError("Fatal Error: Blue base not instantiated since initial position " + newPos + " not on land cell");
-            TerminateSimulation();
-            return null;
-        }
-    }
-
     public GameObject InstantiateRedBase(RedBaseConfig c)
     {
         // Proposed initial position
@@ -1118,6 +1079,52 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                  REMOTE PLATFORM INSTANTIATION                                    *
      *****************************************************************************************************/
+    public GameObject InstantiateBlueBase(BlueBaseConfig c)
+    {
+        // Proposed initial position
+        Vector3 newPos = new Vector3(c.x_km, 0.75f / KmToUnity, c.z_km);
+
+        // Blue base must exist on land
+        Vector3 snappedPos;
+        if (CheckInitialLocation(newPos, true, false, false, out snappedPos))
+        {
+            // Instantiate at the snapped position
+            GameObject g = (GameObject)Instantiate(BlueBasePrefab, newPos * KmToUnity, Quaternion.identity);
+
+            // Blue bases get id 0 always
+            SoaSite s = g.GetComponent<SoaSite>();
+            s.unique_id = 0;
+            g.name = (c.name == null) ? "Blue Base" : c.name;
+
+            // Set type and affiliation
+            s.type = 0;
+            s.affiliation = Affiliation.BLUE;
+
+            // Also assigned destination id 0 always
+            g.GetComponent<BlueBaseSim>().destination_id = 0;
+
+            // Specify grid cells it occupies
+            FlatHexPoint currentCell = hexGrid.Map[g.transform.position];
+            List<GridCell> myCells = new List<GridCell>();
+            myCells.Add(new GridCell(currentCell.Y, currentCell.X));
+            g.GetComponent<BlueBaseSim>().gridCells = myCells;
+
+            // Set comms capabilties
+            s.commsRange_km = Mathf.Max((c.commsRange_km.GetIsSet()) ? c.commsRange_km.GetValue() : soaConfig.defaultCommsRanges["BlueBase"], 0);
+
+            // Add to appropriate lists
+            RemotePlatforms.Add(g);
+            BlueBases.Add(g);
+            return g;
+        }
+        else
+        {
+            soaEventLogger.LogError("Fatal Error: Blue base not instantiated since initial position " + newPos + " not on land cell");
+            TerminateSimulation();
+            return null;
+        }
+    }
+    
     public GameObject InstantiateHeavyUAV(HeavyUAVConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
@@ -1138,8 +1145,13 @@ public class SimControl : MonoBehaviour
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Heavy UAV " + a.unique_id;
 
+            // Set type and affiliation
+            a.type = 2;
+            a.affiliation = Affiliation.BLUE;
+
             // Assign initial altitude
             a.SetSimAltitude(c.y_km);
+            a.SetDesiredAltitude(c.y_km);
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "HeavyUAV");
@@ -1186,8 +1198,13 @@ public class SimControl : MonoBehaviour
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Small UAV " + a.unique_id;
 
+            // Set type and affiliation
+            a.type = 1;
+            a.affiliation = Affiliation.BLUE;
+
             // Assign initial altitude
             a.SetSimAltitude(c.y_km);
+            a.SetDesiredAltitude(c.y_km);
 
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "SmallUAV");
@@ -1214,14 +1231,15 @@ public class SimControl : MonoBehaviour
     public GameObject InstantiateBlueBalloon(BlueBalloonConfig c, bool initialLocationCheckOverride)
     {
         // Proposed initial position
+        float blueBalloonFixedAltitude_km = 15;
         Vector3 newPos;
         if (c.waypoints_km.Count > 0)
         {
-            newPos = new Vector3(c.waypoints_km[0].first, 15, c.waypoints_km[0].second);
+            newPos = new Vector3(c.waypoints_km[0].first, blueBalloonFixedAltitude_km, c.waypoints_km[0].second);
         }
         else
         {
-            newPos = new Vector3(0, 15, 0);
+            newPos = new Vector3(0, blueBalloonFixedAltitude_km, 0);
         }
         
         // Balloon can traverse on land, water, and mountains
@@ -1234,9 +1252,14 @@ public class SimControl : MonoBehaviour
             SoaActor a = g.GetComponent<SoaActor>();
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Blue Balloon " + a.unique_id;
-                      
+
+            // Set type and affiliation
+            a.type = 6;
+            a.affiliation = Affiliation.BLUE;
+
             // Assign initial altitude
-            a.SetSimAltitude(15);
+            a.SetSimAltitude(blueBalloonFixedAltitude_km);
+            a.SetDesiredAltitude(blueBalloonFixedAltitude_km);
         
             // Set perception capabilities
             SetPerceptionCapabilities(g, c, "BlueBalloon");
@@ -1277,6 +1300,20 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                    REMOTE PLATFORM ACTIVATION                                     *
      *****************************************************************************************************/
+    private void ActivateBlueBase(GameObject platform)
+    {
+        // Add to mouse script
+        omcScript.AddPlatform(platform);
+
+        // ID 0 is reserved for blue base
+        SoaActor actor = platform.GetComponent<SoaActor>();
+        actor.unique_id = 0;
+
+        // Data manager
+        actor.dataManager = blueDataManager;
+        blueDataManager.addNewActor(actor);
+    }
+
     private void ActivateRemotePlatform(GameObject platform, bool useExternalWaypoint)
     {
         // Add to mouse script
@@ -1337,6 +1374,10 @@ public class SimControl : MonoBehaviour
             SoaActor a = g.GetComponent<SoaActor>();
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Red Dismount " + a.unique_id;
+
+            // Set type and affiliation
+            a.type = 3;
+            a.affiliation = Affiliation.RED;
 
             // Assign initial altitude
             a.SetSimAltitude(0); // Red dismounts stay on the ground
@@ -1409,6 +1450,10 @@ public class SimControl : MonoBehaviour
             SoaActor a = g.GetComponent<SoaActor>();
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Red Truck " + a.unique_id;
+
+            // Set type and affiliation
+            a.type = 4;
+            a.affiliation = Affiliation.RED;
 
             // Assign initial altitude
             a.SetSimAltitude(0); // Red trucks stay on the ground
@@ -1491,6 +1536,10 @@ public class SimControl : MonoBehaviour
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Neutral Dismount " + a.unique_id;
 
+            // Set type and affiliation
+            a.type = 3;
+            a.affiliation = Affiliation.NEUTRAL;
+
             // Assign initial altitude
             a.SetSimAltitude(0); // Neutral dismounts stay on the ground
 
@@ -1528,6 +1577,10 @@ public class SimControl : MonoBehaviour
             SoaActor a = g.GetComponent<SoaActor>();
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Neutral Truck " + a.unique_id;
+
+            // Set type and affiliation
+            a.type = 4;
+            a.affiliation = Affiliation.NEUTRAL;
 
             // Assign initial altitude
             a.SetSimAltitude(0); // Neutral trucks stay on the ground
@@ -1567,6 +1620,10 @@ public class SimControl : MonoBehaviour
             a.unique_id = RequestUniqueID(c.id.GetIsSet() ? c.id.GetValue() : -1);
             g.name = "Blue Police " + a.unique_id;
 
+            // Set type and affiliation
+            a.type = 5;
+            a.affiliation = Affiliation.BLUE;
+
             // Assign initial altitude
             a.SetSimAltitude(0); // Blue police stay on the ground
 
@@ -1593,20 +1650,6 @@ public class SimControl : MonoBehaviour
     /*****************************************************************************************************
      *                                     LOCAL PLATFORM ACTIVATION                                     *
      *****************************************************************************************************/
-    private void ActivateBlueBase(GameObject platform)
-    {
-        // Add to mouse script
-        omcScript.AddPlatform(platform);
-
-        // ID 0 is reserved for blue base
-        SoaActor actor = platform.GetComponent<SoaActor>();
-        actor.unique_id = 0;
-
-        // Data manager
-        actor.dataManager = blueDataManager;
-        blueDataManager.addNewActor(actor);
-    }
-
     private void ActivateLocalRedPlatform(GameObject platform)
     {
         // Add to mouse script

@@ -217,8 +217,8 @@ public class SoaActor : MonoBehaviour
         classificationDictionary = new Dictionary<int, bool>();
 
         // Initialize initial altitude to be average of min and max altitudes
-        simAltitude_km = 0.5f * (minAltitude_km + maxAltitude_km);
-        desiredAltitude_km = simAltitude_km;
+        //simAltitude_km = 0.5f * (minAltitude_km + maxAltitude_km);
+        //desiredAltitude_km = simAltitude_km;
 
         // Set to alive now, must be last thing done
         isAlive = true;
@@ -307,6 +307,7 @@ public class SoaActor : MonoBehaviour
                     simAltitude_km,
                     transform.position.z / SimControl.KmToUnity);
 
+                //addBeliefToUnmergedBeliefDictionary(newActorData);
                 addMyBeliefData(newActorData);
                 //addBeliefToBeliefDictionary(newActorData);
                 //addBelief(newActorData, remoteBeliefs);
@@ -431,7 +432,8 @@ public class SoaActor : MonoBehaviour
                     motionScript.targetPosition.x / SimControl.KmToUnity,
                     desiredAltitude_km,
                     motionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint);
+                //addMyBeliefData(newWaypoint);
+                addBeliefToUnmergedBeliefDictionary(newWaypoint);
             }
             else if (wpMotionScript != null)
             {
@@ -441,7 +443,8 @@ public class SoaActor : MonoBehaviour
                     wpMotionScript.targetPosition.x / SimControl.KmToUnity,
                     desiredAltitude_km,
                     wpMotionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint);
+                //addMyBeliefData(newWaypoint);
+                addBeliefToUnmergedBeliefDictionary(newWaypoint);
             }
             else
             {
@@ -451,7 +454,8 @@ public class SoaActor : MonoBehaviour
                     pcMotionScript.targetPosition.x / SimControl.KmToUnity,
                     desiredAltitude_km,
                     pcMotionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint);
+                //addMyBeliefData(newWaypoint);
+                addBeliefToUnmergedBeliefDictionary(newWaypoint);
             }
 
             // Convert position from Unity to km for Belief_Actor
@@ -468,7 +472,9 @@ public class SoaActor : MonoBehaviour
                 velocityYValid, velocityY,
                 velocityZValid, velocityZ);
 
-            addMyBeliefData(newActorData);
+            //addMyBeliefData(newActorData);
+            addBeliefToUnmergedBeliefDictionary(newActorData);
+
             if (dataManager != null)
                 dataManager.addBeliefToDataManager(newActorData, unique_id);
             
@@ -507,20 +513,20 @@ public class SoaActor : MonoBehaviour
                 else
                 {
                     // I have never classified this actor before, set as unclassified and give default isWeaponized info
+                    // Hide information about storage in order to not give any clues away on identity
                     detectedActor = new Belief_Actor(
                         soaActor.unique_id, (int)Affiliation.UNCLASSIFIED, soaActor.type, soaActor.isAlive,
-                        soaActor.numStorageSlots, soaActor.numCasualtiesStored,
-                        soaActor.numSuppliesStored, soaActor.numCiviliansStored,
+                        0, 0,
+                        0, 0,
                         false, false, soaActor.fuelRemaining_s,
                         gameObject.transform.position.x / SimControl.KmToUnity,
                         soaActor.simAltitude_km,
                         gameObject.transform.position.z / SimControl.KmToUnity);
                 }
 
-                addMyBeliefData(detectedActor);
+                //addMyBeliefData(detectedActor);
+                addBeliefToUnmergedBeliefDictionary(detectedActor);
                 simControlScript.logDetectedActor(unique_id, detectedActor);
-                
-                
             }
             Detections.Clear();
 
@@ -545,8 +551,16 @@ public class SoaActor : MonoBehaviour
             foreach (Belief_Actor belief_actor in killDetections)
             {
 
-                addMyBeliefData(new Belief_Actor(
+                /*addMyBeliefData(new Belief_Actor(
                     belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 
+                    belief_actor.getNumStorageSlots(), belief_actor.getNumCasualtiesStored(),
+                    belief_actor.getNumSuppliesStored(), belief_actor.getNumCiviliansStored(),
+                    belief_actor.getIsWeaponized(), belief_actor.getHasJammer(), belief_actor.getFuelRemaining(),
+                    belief_actor.getPos_x(),
+                    belief_actor.getPos_y(),
+                    belief_actor.getPos_z()));*/
+                addBeliefToUnmergedBeliefDictionary(new Belief_Actor(
+                    belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false,
                     belief_actor.getNumStorageSlots(), belief_actor.getNumCasualtiesStored(),
                     belief_actor.getNumSuppliesStored(), belief_actor.getNumCiviliansStored(),
                     belief_actor.getIsWeaponized(), belief_actor.getHasJammer(), belief_actor.getFuelRemaining(),
@@ -567,7 +581,8 @@ public class SoaActor : MonoBehaviour
     {
         if (b is Belief_Base || b is Belief_NGOSite || b is Belief_Village)
         {
-            addMyBeliefData(b);
+            //addMyBeliefData(b);
+            addBeliefToUnmergedBeliefDictionary(b);
         }
     }
 
@@ -677,43 +692,33 @@ public class SoaActor : MonoBehaviour
                 Belief_Actor incomingActorBelief = (Belief_Actor)b;
 
                 // To keep track of what to merge
-                bool useIncomingClassification = false;
-                bool useIncomingData = false;
+                bool incomingBeliefMoreRecent = !incomingActorBelief.getIsAlive() && oldActorBelief.getIsAlive() || 
+                    incomingActorBelief.getBeliefTime() > oldActorBelief.getBeliefTime();
+                bool onlyIncomingBeliefIsClassified = oldActorBelief.getAffiliation() == (int)Affiliation.UNCLASSIFIED &&
+                    incomingActorBelief.getAffiliation() != (int)Affiliation.UNCLASSIFIED;
+                bool onlyOldBeliefIsClassified = oldActorBelief.getAffiliation() != (int)Affiliation.UNCLASSIFIED &&
+                    incomingActorBelief.getAffiliation() == (int)Affiliation.UNCLASSIFIED;
 
-                // Check which classification to use
-                if (oldActorBelief.getAffiliation() == (int)Affiliation.UNCLASSIFIED &&
-                    incomingActorBelief.getAffiliation() != (int)Affiliation.UNCLASSIFIED)
+                // Merge policy
+                // 3 booleans, 8 possibilities but really 6 since we can't have both only*BeliefIsClassified as true
+                if (!incomingBeliefMoreRecent && !onlyIncomingBeliefIsClassified)
                 {
-                    // Incoming belief has new classification information
-                    useIncomingClassification = true;
-                }
-
-                // Check which data to use
-                if (incomingActorBelief.getBeliefTime() > oldActorBelief.getBeliefTime())
-                {
-                    // Incoming belief has new data information
-                    useIncomingData = true;
-                }
-
-                // Merge based on what was new
-                if (!useIncomingClassification && !useIncomingData)
-                {
-                    // No new classification or new data, just ignore the incoming belief
+                    // Drop incoming belief, it adds nothing new
                     updateDictionary = false;
                 }
-                else if (!useIncomingClassification && useIncomingData)
+                else if (incomingBeliefMoreRecent && onlyOldBeliefIsClassified)
                 {
-                    // Keep existing classification and just take incoming data
+                    // Keep existing classification and just take incoming other data
                     updateDictionary = true;
                     b = new Belief_Actor(
                         incomingActorBelief.getUnique_id(),
                         oldActorBelief.getAffiliation(),
                         incomingActorBelief.getType(),
                         incomingActorBelief.getIsAlive(),
-                        incomingActorBelief.getNumStorageSlots(),
-                        incomingActorBelief.getNumCasualtiesStored(),
-                        incomingActorBelief.getNumSuppliesStored(),
-                        incomingActorBelief.getNumCiviliansStored(),
+                        oldActorBelief.getNumStorageSlots(),
+                        oldActorBelief.getNumCasualtiesStored(),
+                        oldActorBelief.getNumSuppliesStored(),
+                        oldActorBelief.getNumCiviliansStored(),
                         oldActorBelief.getIsWeaponized(),
                         oldActorBelief.getHasJammer(),
                         incomingActorBelief.getFuelRemaining(),
@@ -728,7 +733,7 @@ public class SoaActor : MonoBehaviour
                         incomingActorBelief.getVelocity_z());
                     b.setBeliefTime(incomingActorBelief.getBeliefTime());
                 }
-                else if (useIncomingClassification && !useIncomingData)
+                else if (!incomingBeliefMoreRecent && onlyIncomingBeliefIsClassified)
                 {
                     // Use incoming classification but keep existing data
                     updateDictionary = true;
@@ -737,10 +742,10 @@ public class SoaActor : MonoBehaviour
                         incomingActorBelief.getAffiliation(),
                         oldActorBelief.getType(),
                         oldActorBelief.getIsAlive(),
-                        oldActorBelief.getNumStorageSlots(),
-                        oldActorBelief.getNumCasualtiesStored(),
-                        oldActorBelief.getNumSuppliesStored(),
-                        oldActorBelief.getNumCiviliansStored(),
+                        incomingActorBelief.getNumStorageSlots(),
+                        incomingActorBelief.getNumCasualtiesStored(),
+                        incomingActorBelief.getNumSuppliesStored(),
+                        incomingActorBelief.getNumCiviliansStored(),
                         incomingActorBelief.getIsWeaponized(),
                         incomingActorBelief.getHasJammer(),
                         oldActorBelief.getFuelRemaining(),
@@ -761,7 +766,7 @@ public class SoaActor : MonoBehaviour
                     updateDictionary = true;
                     b = incomingActorBelief;
                 }
-            }
+            } // end actor merge policy
             else
             {
                 // General merge policy (take newest belief) for every belief except actor  
@@ -803,6 +808,9 @@ public class SoaActor : MonoBehaviour
     //Broadcast new beliefs that have been added this update cycle and then clear them from remotebeliefs after they have been sent
     public void updateRemoteAgent()
     {
+        // Merge unmerged beliefs first and populate remote beliefs
+        mergeBeliefDictionary();
+
         foreach (KeyValuePair<Belief.BeliefType, SortedDictionary<int, Belief>> entry in remoteBeliefs)
         {
             foreach (KeyValuePair<int, Belief> beliefEntry in entry.Value)
