@@ -2,7 +2,7 @@
   <!-- Network Configuration Settings -->
   <Network 
        redRoom ="soa-apl-red" 
-       blueRoom="soa-testroom-blue" 
+       blueRoom="soa-apl-blue" 
   />
  
   <!-- Logger Configuration Settings -->
@@ -24,7 +24,7 @@
 
   <!-- Fuel Default Settings -->
   <FuelDefaults
-       heavyUAVFuelTankSize_s   ="10000"
+       heavyUAVFuelTankSize_s   ="40000"
        smallUAVFuelTankSize_s   ="40000"
   />
 

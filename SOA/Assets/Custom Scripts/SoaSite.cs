@@ -20,6 +20,6 @@ public class SoaSite : SoaActor
     {
         simX_km = transform.position.x / SimControl.KmToUnity;
         simZ_km = transform.position.z / SimControl.KmToUnity;
-        simAltitude_km = .725f / SimControl.KmToUnity;
+        simAltitude_km = 0;
     }
 }
