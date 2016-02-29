@@ -223,6 +223,36 @@ namespace soa
                     }
                 }
             }
+
+            // Get around the fact that balloon cannot communicate with anyone else custom beliefs
+            // are not forwarded and the balloon can only talk to the blue base
+            // This fix establishes a direct link between balloon and an actor that is one hop away from it
+            // WARNING: In the future this will not fix comms chain of Balloon -> SITE 1 -> SITE 2 -> ACTOR
+            foreach (SoaActor balloonActor in actors)
+            {
+                if (balloonActor.type == (int)SoaActor.ActorType.BALLOON)
+                {
+                    foreach (SoaActor siteActor in actors)
+                    {
+                        if (siteActor is SoaSite)
+                        {
+                            foreach (SoaActor twoHopActor in actors)
+                            {
+                                if (actorDistanceDictionary[balloonActor.unique_id][siteActor.unique_id] &&
+                                    actorDistanceDictionary[siteActor.unique_id][twoHopActor.unique_id])
+                                {
+                                    actorDistanceDictionary[balloonActor.unique_id][twoHopActor.unique_id] = true;
+                                }
+                                if (actorDistanceDictionary[twoHopActor.unique_id][siteActor.unique_id] &&
+                                    actorDistanceDictionary[siteActor.unique_id][balloonActor.unique_id])
+                                {
+                                    actorDistanceDictionary[twoHopActor.unique_id][balloonActor.unique_id] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /*
