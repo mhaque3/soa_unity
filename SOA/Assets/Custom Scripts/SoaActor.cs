@@ -478,7 +478,7 @@ public class SoaActor : MonoBehaviour
             if (dataManager != null)
                 dataManager.addBeliefToDataManager(newActorData, unique_id);
             
-            // Update classifications
+            // Clear and update classifications
             foreach (SoaClassifier c in Classifiers)
             {
                 c.UpdateClassifications(Detections);
@@ -500,7 +500,7 @@ public class SoaActor : MonoBehaviour
                 Belief_Actor detectedActor;
                 if (classificationDictionary.ContainsKey(soaActor.unique_id) && classificationDictionary[soaActor.unique_id])
                 {
-                    // I have classified this actor before, provide actual affiliation and isWeaponized info
+                    // Me or one of my peers has classified this actor before, provide actual affiliation, isWeaponized info, and storage
                     detectedActor = new Belief_Actor(
                         soaActor.unique_id, (int)soaActor.affiliation, soaActor.type, soaActor.isAlive, 
                         soaActor.numStorageSlots, soaActor.numCasualtiesStored,
@@ -512,8 +512,7 @@ public class SoaActor : MonoBehaviour
                 }
                 else
                 {
-                    // I have never classified this actor before, set as unclassified and give default isWeaponized info
-                    // Hide information about storage in order to not give any clues away on identity
+                    // No one that I'm aware of has classified this actor before, hide affiliation, weapon/jamming, and storage
                     detectedActor = new Belief_Actor(
                         soaActor.unique_id, (int)Affiliation.UNCLASSIFIED, soaActor.type, soaActor.isAlive,
                         0, 0,
@@ -679,6 +678,16 @@ public class SoaActor : MonoBehaviour
                 + b.getBeliefType() + ", dropping belief");
             return false;
         }                
+
+        // An actor is classified if me or any of my peers has ever classified it (for now at least)
+        if (b.getBeliefType() == Belief.BeliefType.ACTOR)
+        {
+            Belief_Actor actor = ((Belief_Actor)b);
+            if (actor.getAffiliation() != (int)Affiliation.UNCLASSIFIED)
+            {
+                setClassified(((Belief_Actor)b).getId());
+            }
+        }
 
         bool updateDictionary;
         Belief oldBelief;
