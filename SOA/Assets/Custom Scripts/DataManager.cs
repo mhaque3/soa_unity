@@ -90,7 +90,6 @@ namespace soa
         //Add incoming belief to correct agent
         public void addExternalBeliefToActor(Belief b, int sourceId)
         {
-
             SoaActor a;
             soaActorDictionary.TryGetValue(sourceId, out a);
             if (a != null)
@@ -224,30 +223,32 @@ namespace soa
                 }
             }
 
-            // Get around the fact that balloon cannot communicate with anyone else custom beliefs
-            // are not forwarded and the balloon can only talk to the blue base
-            // This fix establishes a direct link between balloon and an actor that is one hop away from it
-            // WARNING: In the future this will not fix comms chain of Balloon -> SITE 1 -> SITE 2 -> ACTOR
-            foreach (SoaActor balloonActor in actors)
+            // Allow direct connection between two actors if they can both communicate to the same site.  
+            // This is done to get around the fact that custom beliefs are not automatically forwarded
+            // and so we run into an issue if a UAV sends a custom belief to a base, base doesn't auto
+            // forward, and then the balloon who is only connected to the base never gets the message
+            // Note: This fix only allows for a single base relay node
+            foreach (SoaActor actor1 in actors)
             {
-                if (balloonActor.type == (int)SoaActor.ActorType.BALLOON)
+                foreach (SoaActor actor2 in actors)
                 {
+                    // Go through each site
                     foreach (SoaActor siteActor in actors)
                     {
                         if (siteActor is SoaSite)
                         {
-                            foreach (SoaActor twoHopActor in actors)
+                            // Relay from actor1 -> siteActor -> actor2
+                            if (actorDistanceDictionary[actor1.unique_id][siteActor.unique_id] &&
+                                actorDistanceDictionary[siteActor.unique_id][actor2.unique_id])
                             {
-                                if (actorDistanceDictionary[balloonActor.unique_id][siteActor.unique_id] &&
-                                    actorDistanceDictionary[siteActor.unique_id][twoHopActor.unique_id])
-                                {
-                                    actorDistanceDictionary[balloonActor.unique_id][twoHopActor.unique_id] = true;
-                                }
-                                if (actorDistanceDictionary[twoHopActor.unique_id][siteActor.unique_id] &&
-                                    actorDistanceDictionary[siteActor.unique_id][balloonActor.unique_id])
-                                {
-                                    actorDistanceDictionary[twoHopActor.unique_id][balloonActor.unique_id] = true;
-                                }
+                                actorDistanceDictionary[actor1.unique_id][actor2.unique_id] = true;
+                            }
+
+                            // Relay from actor2 -> siteActor -> actor1
+                            if (actorDistanceDictionary[actor2.unique_id][siteActor.unique_id] &&
+                                    actorDistanceDictionary[siteActor.unique_id][actor1.unique_id])
+                            {
+                                actorDistanceDictionary[actor2.unique_id][actor1.unique_id] = true;
                             }
                         }
                     }
