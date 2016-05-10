@@ -6,11 +6,12 @@ public class TrackOnGrid : MonoBehaviour
 {
     public SoaHexWorld hexGrid;
     public FlatHexPoint currentCell;
+    public SoaActor thisSoaActor;
 
 	// Use this for initialization
 	void Start () 
     {
-	
+        thisSoaActor = GetComponent<SoaActor>();
 	}
 	
 	// Update is called once per frame
@@ -20,6 +21,14 @@ public class TrackOnGrid : MonoBehaviour
         try
         {
             currentCell = hexGrid.Map[transform.position];
+
+            var block = hexGrid.Grid[currentCell];
+            if (block.transform.localScale.y > 1)
+            {
+                if (thisSoaActor != null)
+                    thisSoaActor.Kill("Mountain");
+            }
+
             hexGrid.HighlightCell(currentCell);
         }
         catch

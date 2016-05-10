@@ -18,7 +18,8 @@ public class SoldierWaypointMotion : MonoBehaviour
     {
         waypointIndex = 0;
         navAgent = GetComponent<NavMeshAgent>();
-        navAgent.SetAreaCost(NavMesh.GetAreaFromName("Road"), RoadCost);
+        if(navAgent != null)
+            navAgent.SetAreaCost(NavMesh.GetAreaFromName("Road"), RoadCost);
 
         if (waypoints.Count < 1)
         {
@@ -27,6 +28,7 @@ public class SoldierWaypointMotion : MonoBehaviour
 
             // Set destination as target waypoint position
             targetPosition = waypoints[waypointIndex].transform.position;
+            if(navAgent != null)
             navAgent.SetDestination(targetPosition);
         }
         else
@@ -34,7 +36,8 @@ public class SoldierWaypointMotion : MonoBehaviour
             // Set destination as target waypoint position
             targetPosition = waypoints[waypointIndex].transform.position;
             //navAgent.baseOffset = waypoints[waypointIndex].transform.position.y;
-            navAgent.SetDestination(targetPosition);
+            if(navAgent != null)
+                navAgent.SetDestination(targetPosition);
         }
     }
 
@@ -55,7 +58,8 @@ public class SoldierWaypointMotion : MonoBehaviour
                 if (waypoints.Count > waypointIndex)
                 {
                     targetPosition = waypoints[waypointIndex].transform.position;  // + new Vector3(0,transform.position.y,0);
-                    navAgent.SetDestination(targetPosition);
+                    if (navAgent != null)
+                        navAgent.SetDestination(targetPosition);
                     deltaV = (new Vector3(targetPosition.x, targetPosition.y, targetPosition.z)) - transform.position;
                     if (deltaV.magnitude < waypointEpsilon)
                     {
@@ -65,7 +69,8 @@ public class SoldierWaypointMotion : MonoBehaviour
                             waypointIndex = 0;
                         }
                         targetPosition = waypoints[waypointIndex].transform.position;
-                        navAgent.SetDestination(targetPosition);
+                        if(navAgent != null)
+                            navAgent.SetDestination(targetPosition);
 
                     }
                     else

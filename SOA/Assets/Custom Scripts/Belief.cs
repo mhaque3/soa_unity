@@ -26,6 +26,7 @@ namespace soa
             VILLAGE, 
             WAYPOINT, 
             WAYPOINT_OVERRIDE,
+            WAYPOINT_PATH,
             CUSTOM
         };
 

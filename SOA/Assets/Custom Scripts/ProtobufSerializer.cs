@@ -33,6 +33,7 @@ namespace soa
             VILLAGE, 
             WAYPOINT, 
             WAYPOINT_OVERRIDE,
+            WAYPOINT_PATH,
             CUSTOM
         };
 
@@ -370,12 +371,38 @@ namespace soa
                         body = proto.Build().ToByteArray();
                         break;
                     }
+                case Belief.BeliefType.WAYPOINT_PATH:
+                    {
+                        Gpb_WaypointPath.Builder proto = Gpb_WaypointPath.CreateBuilder();
+                        Belief_WaypointPath b = (Belief_WaypointPath)belief;
+                        proto.SetActorId(b.getId());
+                        proto.SetBeliefTime(b.getBeliefTime());
+                        proto.SetRequestTime(b.getRequestTime());
+
+                        foreach(Waypoint point in b.getWaypoints())
+                        {
+                            Gpb_SingleWaypoint.Builder pointBuilder = Gpb_SingleWaypoint.CreateBuilder();
+                            pointBuilder.SetX(point.x);
+                            pointBuilder.SetY(point.y);
+                            pointBuilder.SetZ(point.z);
+                            pointBuilder.SetHeading(point.heading);
+                            pointBuilder.SetVisited(point.visited);
+                            proto.AddWaypoints(pointBuilder.Build());
+                        }
+
+                        header = (byte)MessageType.WAYPOINT_PATH;
+                        body = proto.Build().ToByteArray();
+
+                        break;
+                    }
                 case Belief.BeliefType.CUSTOM:
                     { // Custom
                         Gpb_Custom.Builder proto = Gpb_Custom.CreateBuilder();
                         Belief_Custom b = (Belief_Custom)belief;
                         proto.SetData(Google.ProtocolBuffers.ByteString.CopyFrom(b.getData()));
                         // Add on belief time
+                        proto.SetCustomType(b.getCustomType());
+                        proto.SetActorId(b.getId());
                         proto.SetBeliefTime(b.getBeliefTime());
 
                         // Form header + serialized message
@@ -405,6 +432,8 @@ namespace soa
         {
             // New belief that we will return
             Belief b;
+
+            Debug.Log("Received a message with " + serial.Length + " bytes");
 
             // Break string into header and body
             MessageType headerType = (MessageType) serial[0];
@@ -661,10 +690,32 @@ namespace soa
                         b.setBeliefTime(proto.BeliefTime);
                         break;
                     }
+                case MessageType.WAYPOINT_PATH:
+                    {
+                        Gpb_WaypointPath proto = Gpb_WaypointPath.CreateBuilder().MergeFrom(body).Build();
+                        List<Waypoint> waypoints = new List<Waypoint>();
+                        for (int i = 0; i < proto.WaypointsCount; ++i)
+                        {
+                            Gpb_SingleWaypoint protoPoint = proto.WaypointsList[i];
+                            Waypoint waypoint = new Waypoint();
+                            waypoint.x = protoPoint.X;
+                            waypoint.y = protoPoint.Y;
+                            waypoint.z = protoPoint.Z;
+                            waypoint.heading = protoPoint.Heading;
+                            waypoint.visited = protoPoint.Visited;
+                            waypoints.Add(waypoint);
+                        }
+
+                        b = new Belief_WaypointPath(proto.RequestTime, proto.ActorId, waypoints);
+                        b.setBeliefTime(proto.BeliefTime);
+                        break;
+                    }
                 case MessageType.CUSTOM:
                     { // Time
                         Gpb_Custom proto = Gpb_Custom.CreateBuilder().MergeFrom(body).Build();
                         b = new Belief_Custom(
+                            proto.CustomType,
+                            proto.ActorId,
                             proto.Data.ToByteArray());
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);

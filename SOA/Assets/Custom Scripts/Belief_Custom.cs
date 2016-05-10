@@ -8,13 +8,20 @@ namespace soa
     public class Belief_Custom : Belief
     {
         // Members
+        private int customType;
         private byte[] data;
 
         // Constructor
-        public Belief_Custom(byte[] data)
-            : base(0)
+        public Belief_Custom(int customType, int actorID, byte[] data)
+            : base(actorID)
         {
+            this.customType = customType;
             this.data = (byte[]) data.Clone();
+        }
+
+        public int getCustomType()
+        {
+            return customType;
         }
 
         // Type information

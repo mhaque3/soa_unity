@@ -48,6 +48,10 @@ namespace autonomy_msg {
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Time, global::autonomy_msg.Gpb_Time.Builder> internal__static_autonomy_msg_Gpb_Time__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_RoadCell__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder> internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_SingleWaypoint__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SingleWaypoint, global::autonomy_msg.Gpb_SingleWaypoint.Builder> internal__static_autonomy_msg_Gpb_SingleWaypoint__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_WaypointPath__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_WaypointPath, global::autonomy_msg.Gpb_WaypointPath.Builder> internal__static_autonomy_msg_Gpb_WaypointPath__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_CasualtyDelivery__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_CasualtyDelivery, global::autonomy_msg.Gpb_CasualtyDelivery.Builder> internal__static_autonomy_msg_Gpb_CasualtyDelivery__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_autonomy_msg_Gpb_SupplyPickup__Descriptor;
@@ -92,26 +96,32 @@ namespace autonomy_msg {
           "aGFzX2phbW1lchgLIAIoCBIWCg5mdWVsX3JlbWFpbmluZxgMIAIoAhINCgVw" + 
           "b3NfeBgNIAIoAhINCgVwb3NfeRgOIAIoAhINCgVwb3NfehgPIAIoAhISCgp2" + 
           "ZWxvY2l0eV94GBAgASgCEhIKCnZlbG9jaXR5X3kYESABKAISEgoKdmVsb2Np" + 
-          "dHlfehgSIAEoAiIvCgpHcGJfQ3VzdG9tEhMKC2JlbGllZl90aW1lGAEgAigE" + 
-          "EgwKBGRhdGEYAiACKAwiaAoIR3BiX0Jhc2USEwoLYmVsaWVmX3RpbWUYASAC" + 
-          "KAQSCgoCaWQYAiACKAUSKQoFY2VsbHMYAyADKAsyGi5hdXRvbm9teV9tc2cu" + 
-          "R3BiX0dyaWRDZWxsEhAKCHN1cHBsaWVzGAQgAigCIlsKC0dwYl9UZXJyYWlu" + 
-          "EhMKC2JlbGllZl90aW1lGAEgAigEEgwKBHR5cGUYAiACKAUSKQoFY2VsbHMY" + 
-          "AyADKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxsImAKEEdwYl9Nb2Rl" + 
-          "X0NvbW1hbmQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1l" + 
-          "GAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg8KB21vZGVfaWQYBCACKAUieAoM" + 
-          "R3BiX1dheXBvaW50EhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3Rf" + 
-          "dGltZRgCIAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhIN" + 
-          "CgVwb3NfeRgFIAIoAhINCgVwb3NfehgGIAIoAiItCghHcGJfVGltZRITCgti" + 
-          "ZWxpZWZfdGltZRgBIAIoBBIMCgR0aW1lGAIgAigEImAKDEdwYl9Sb2FkQ2Vs" + 
-          "bBITCgtiZWxpZWZfdGltZRgBIAIoBBIRCglpc1JvYWRFbmQYAiACKAgSKAoE" + 
-          "Y2VsbBgDIAIoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwieQoUR3Bi" + 
-          "X0Nhc3VhbHR5RGVsaXZlcnkSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVx" + 
-          "dWVzdF90aW1lGAIgAigEEhAKCGFjdG9yX2lkGAMgAigFEg4KBmdyZWVkeRgE" + 
-          "IAIoCBIUCgxtdWx0aXBsaWNpdHkYBSACKAUidQoQR3BiX1N1cHBseVBpY2t1" + 
-          "cBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUYAiACKAQS" + 
-          "EAoIYWN0b3JfaWQYAyACKAUSDgoGZ3JlZWR5GAQgAigIEhQKDG11bHRpcGxp" + 
-          "Y2l0eRgFIAIoBQ==");
+          "dHlfehgSIAEoAiJWCgpHcGJfQ3VzdG9tEhMKC2N1c3RvbV90eXBlGAEgAigF" + 
+          "EhAKCGFjdG9yX2lkGAIgAigFEhMKC2JlbGllZl90aW1lGAMgAigEEgwKBGRh" + 
+          "dGEYBCACKAwiaAoIR3BiX0Jhc2USEwoLYmVsaWVmX3RpbWUYASACKAQSCgoC" + 
+          "aWQYAiACKAUSKQoFY2VsbHMYAyADKAsyGi5hdXRvbm9teV9tc2cuR3BiX0dy" + 
+          "aWRDZWxsEhAKCHN1cHBsaWVzGAQgAigCIlsKC0dwYl9UZXJyYWluEhMKC2Jl" + 
+          "bGllZl90aW1lGAEgAigEEgwKBHR5cGUYAiACKAUSKQoFY2VsbHMYAyADKAsy" + 
+          "Gi5hdXRvbm9teV9tc2cuR3BiX0dyaWRDZWxsImAKEEdwYl9Nb2RlX0NvbW1h" + 
+          "bmQSEwoLYmVsaWVmX3RpbWUYASACKAQSFAoMcmVxdWVzdF90aW1lGAIgAigE" + 
+          "EhAKCGFjdG9yX2lkGAMgAigFEg8KB21vZGVfaWQYBCACKAUieAoMR3BiX1dh" + 
+          "eXBvaW50EhMKC2JlbGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgC" + 
+          "IAIoBBIQCghhY3Rvcl9pZBgDIAIoBRINCgVwb3NfeBgEIAIoAhINCgVwb3Nf" + 
+          "eRgFIAIoAhINCgVwb3NfehgGIAIoAiItCghHcGJfVGltZRITCgtiZWxpZWZf" + 
+          "dGltZRgBIAIoBBIMCgR0aW1lGAIgAigEImAKDEdwYl9Sb2FkQ2VsbBITCgti" + 
+          "ZWxpZWZfdGltZRgBIAIoBBIRCglpc1JvYWRFbmQYAiACKAgSKAoEY2VsbBgD" + 
+          "IAIoCzIaLmF1dG9ub215X21zZy5HcGJfR3JpZENlbGwiVwoSR3BiX1Npbmds" + 
+          "ZVdheXBvaW50EgkKAXgYASACKAISCQoBeRgCIAIoAhIJCgF6GAMgAigCEg8K" + 
+          "B2hlYWRpbmcYBCACKAISDwoHdmlzaXRlZBgFIAIoCCKEAQoQR3BiX1dheXBv" + 
+          "aW50UGF0aBITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3RpbWUY" + 
+          "AiACKAQSEAoIYWN0b3JfaWQYAyACKAUSMwoJd2F5cG9pbnRzGAQgAygLMiAu" + 
+          "YXV0b25vbXlfbXNnLkdwYl9TaW5nbGVXYXlwb2ludCJ5ChRHcGJfQ2FzdWFs" + 
+          "dHlEZWxpdmVyeRITCgtiZWxpZWZfdGltZRgBIAIoBBIUCgxyZXF1ZXN0X3Rp" + 
+          "bWUYAiACKAQSEAoIYWN0b3JfaWQYAyACKAUSDgoGZ3JlZWR5GAQgAigIEhQK" + 
+          "DG11bHRpcGxpY2l0eRgFIAIoBSJ1ChBHcGJfU3VwcGx5UGlja3VwEhMKC2Jl" + 
+          "bGllZl90aW1lGAEgAigEEhQKDHJlcXVlc3RfdGltZRgCIAIoBBIQCghhY3Rv" + 
+          "cl9pZBgDIAIoBRIOCgZncmVlZHkYBCACKAgSFAoMbXVsdGlwbGljaXR5GAUg" + 
+          "AigF");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_autonomy_msg_Gpb_GridSpec__Descriptor = Descriptor.MessageTypes[0];
@@ -153,7 +163,7 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_Custom__Descriptor = Descriptor.MessageTypes[9];
         internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Custom, global::autonomy_msg.Gpb_Custom.Builder>(internal__static_autonomy_msg_Gpb_Custom__Descriptor,
-                new string[] { "BeliefTime", "Data", });
+                new string[] { "CustomType", "ActorId", "BeliefTime", "Data", });
         internal__static_autonomy_msg_Gpb_Base__Descriptor = Descriptor.MessageTypes[10];
         internal__static_autonomy_msg_Gpb_Base__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_Base, global::autonomy_msg.Gpb_Base.Builder>(internal__static_autonomy_msg_Gpb_Base__Descriptor,
@@ -178,11 +188,19 @@ namespace autonomy_msg {
         internal__static_autonomy_msg_Gpb_RoadCell__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_RoadCell, global::autonomy_msg.Gpb_RoadCell.Builder>(internal__static_autonomy_msg_Gpb_RoadCell__Descriptor,
                 new string[] { "BeliefTime", "IsRoadEnd", "Cell", });
-        internal__static_autonomy_msg_Gpb_CasualtyDelivery__Descriptor = Descriptor.MessageTypes[16];
+        internal__static_autonomy_msg_Gpb_SingleWaypoint__Descriptor = Descriptor.MessageTypes[16];
+        internal__static_autonomy_msg_Gpb_SingleWaypoint__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SingleWaypoint, global::autonomy_msg.Gpb_SingleWaypoint.Builder>(internal__static_autonomy_msg_Gpb_SingleWaypoint__Descriptor,
+                new string[] { "X", "Y", "Z", "Heading", "Visited", });
+        internal__static_autonomy_msg_Gpb_WaypointPath__Descriptor = Descriptor.MessageTypes[17];
+        internal__static_autonomy_msg_Gpb_WaypointPath__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_WaypointPath, global::autonomy_msg.Gpb_WaypointPath.Builder>(internal__static_autonomy_msg_Gpb_WaypointPath__Descriptor,
+                new string[] { "BeliefTime", "RequestTime", "ActorId", "Waypoints", });
+        internal__static_autonomy_msg_Gpb_CasualtyDelivery__Descriptor = Descriptor.MessageTypes[18];
         internal__static_autonomy_msg_Gpb_CasualtyDelivery__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_CasualtyDelivery, global::autonomy_msg.Gpb_CasualtyDelivery.Builder>(internal__static_autonomy_msg_Gpb_CasualtyDelivery__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "Greedy", "Multiplicity", });
-        internal__static_autonomy_msg_Gpb_SupplyPickup__Descriptor = Descriptor.MessageTypes[17];
+        internal__static_autonomy_msg_Gpb_SupplyPickup__Descriptor = Descriptor.MessageTypes[19];
         internal__static_autonomy_msg_Gpb_SupplyPickup__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::autonomy_msg.Gpb_SupplyPickup, global::autonomy_msg.Gpb_SupplyPickup.Builder>(internal__static_autonomy_msg_Gpb_SupplyPickup__Descriptor,
                 new string[] { "BeliefTime", "RequestTime", "ActorId", "Greedy", "Multiplicity", });
@@ -5102,8 +5120,8 @@ namespace autonomy_msg {
   public sealed partial class Gpb_Custom : pb::GeneratedMessage<Gpb_Custom, Gpb_Custom.Builder> {
     private Gpb_Custom() { }
     private static readonly Gpb_Custom defaultInstance = new Gpb_Custom().MakeReadOnly();
-    private static readonly string[] _gpbCustomFieldNames = new string[] { "belief_time", "data" };
-    private static readonly uint[] _gpbCustomFieldTags = new uint[] { 8, 18 };
+    private static readonly string[] _gpbCustomFieldNames = new string[] { "actor_id", "belief_time", "custom_type", "data" };
+    private static readonly uint[] _gpbCustomFieldTags = new uint[] { 16, 24, 8, 34 };
     public static Gpb_Custom DefaultInstance {
       get { return defaultInstance; }
     }
@@ -5124,7 +5142,27 @@ namespace autonomy_msg {
       get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_Custom__FieldAccessorTable; }
     }
     
-    public const int BeliefTimeFieldNumber = 1;
+    public const int CustomTypeFieldNumber = 1;
+    private bool hasCustomType;
+    private int customType_;
+    public bool HasCustomType {
+      get { return hasCustomType; }
+    }
+    public int CustomType {
+      get { return customType_; }
+    }
+    
+    public const int ActorIdFieldNumber = 2;
+    private bool hasActorId;
+    private int actorId_;
+    public bool HasActorId {
+      get { return hasActorId; }
+    }
+    public int ActorId {
+      get { return actorId_; }
+    }
+    
+    public const int BeliefTimeFieldNumber = 3;
     private bool hasBeliefTime;
     private ulong beliefTime_;
     public bool HasBeliefTime {
@@ -5135,7 +5173,7 @@ namespace autonomy_msg {
       get { return beliefTime_; }
     }
     
-    public const int DataFieldNumber = 2;
+    public const int DataFieldNumber = 4;
     private bool hasData;
     private pb::ByteString data_ = pb::ByteString.Empty;
     public bool HasData {
@@ -5147,6 +5185,8 @@ namespace autonomy_msg {
     
     public override bool IsInitialized {
       get {
+        if (!hasCustomType) return false;
+        if (!hasActorId) return false;
         if (!hasBeliefTime) return false;
         if (!hasData) return false;
         return true;
@@ -5156,11 +5196,17 @@ namespace autonomy_msg {
     public override void WriteTo(pb::ICodedOutputStream output) {
       int size = SerializedSize;
       string[] field_names = _gpbCustomFieldNames;
+      if (hasCustomType) {
+        output.WriteInt32(1, field_names[2], CustomType);
+      }
+      if (hasActorId) {
+        output.WriteInt32(2, field_names[0], ActorId);
+      }
       if (hasBeliefTime) {
-        output.WriteUInt64(1, field_names[0], BeliefTime);
+        output.WriteUInt64(3, field_names[1], BeliefTime);
       }
       if (hasData) {
-        output.WriteBytes(2, field_names[1], Data);
+        output.WriteBytes(4, field_names[3], Data);
       }
       UnknownFields.WriteTo(output);
     }
@@ -5172,11 +5218,17 @@ namespace autonomy_msg {
         if (size != -1) return size;
         
         size = 0;
+        if (hasCustomType) {
+          size += pb::CodedOutputStream.ComputeInt32Size(1, CustomType);
+        }
+        if (hasActorId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(2, ActorId);
+        }
         if (hasBeliefTime) {
-          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+          size += pb::CodedOutputStream.ComputeUInt64Size(3, BeliefTime);
         }
         if (hasData) {
-          size += pb::CodedOutputStream.ComputeBytesSize(2, Data);
+          size += pb::CodedOutputStream.ComputeBytesSize(4, Data);
         }
         size += UnknownFields.SerializedSize;
         memoizedSerializedSize = size;
@@ -5302,6 +5354,12 @@ namespace autonomy_msg {
       public override Builder MergeFrom(Gpb_Custom other) {
         if (other == global::autonomy_msg.Gpb_Custom.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasCustomType) {
+          CustomType = other.CustomType;
+        }
+        if (other.HasActorId) {
+          ActorId = other.ActorId;
+        }
         if (other.HasBeliefTime) {
           BeliefTime = other.BeliefTime;
         }
@@ -5352,10 +5410,18 @@ namespace autonomy_msg {
               break;
             }
             case 8: {
+              result.hasCustomType = input.ReadInt32(ref result.customType_);
+              break;
+            }
+            case 16: {
+              result.hasActorId = input.ReadInt32(ref result.actorId_);
+              break;
+            }
+            case 24: {
               result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
               break;
             }
-            case 18: {
+            case 34: {
               result.hasData = input.ReadBytes(ref result.data_);
               break;
             }
@@ -5368,6 +5434,46 @@ namespace autonomy_msg {
         return this;
       }
       
+      
+      public bool HasCustomType {
+        get { return result.hasCustomType; }
+      }
+      public int CustomType {
+        get { return result.CustomType; }
+        set { SetCustomType(value); }
+      }
+      public Builder SetCustomType(int value) {
+        PrepareBuilder();
+        result.hasCustomType = true;
+        result.customType_ = value;
+        return this;
+      }
+      public Builder ClearCustomType() {
+        PrepareBuilder();
+        result.hasCustomType = false;
+        result.customType_ = 0;
+        return this;
+      }
+      
+      public bool HasActorId {
+        get { return result.hasActorId; }
+      }
+      public int ActorId {
+        get { return result.ActorId; }
+        set { SetActorId(value); }
+      }
+      public Builder SetActorId(int value) {
+        PrepareBuilder();
+        result.hasActorId = true;
+        result.actorId_ = value;
+        return this;
+      }
+      public Builder ClearActorId() {
+        PrepareBuilder();
+        result.hasActorId = false;
+        result.actorId_ = 0;
+        return this;
+      }
       
       public bool HasBeliefTime {
         get { return result.hasBeliefTime; }
@@ -7854,6 +7960,891 @@ namespace autonomy_msg {
       }
     }
     static Gpb_RoadCell() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_SingleWaypoint : pb::GeneratedMessage<Gpb_SingleWaypoint, Gpb_SingleWaypoint.Builder> {
+    private Gpb_SingleWaypoint() { }
+    private static readonly Gpb_SingleWaypoint defaultInstance = new Gpb_SingleWaypoint().MakeReadOnly();
+    private static readonly string[] _gpbSingleWaypointFieldNames = new string[] { "heading", "visited", "x", "y", "z" };
+    private static readonly uint[] _gpbSingleWaypointFieldTags = new uint[] { 37, 40, 13, 21, 29 };
+    public static Gpb_SingleWaypoint DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_SingleWaypoint DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_SingleWaypoint ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SingleWaypoint__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_SingleWaypoint, Gpb_SingleWaypoint.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_SingleWaypoint__FieldAccessorTable; }
+    }
+    
+    public const int XFieldNumber = 1;
+    private bool hasX;
+    private float x_;
+    public bool HasX {
+      get { return hasX; }
+    }
+    public float X {
+      get { return x_; }
+    }
+    
+    public const int YFieldNumber = 2;
+    private bool hasY;
+    private float y_;
+    public bool HasY {
+      get { return hasY; }
+    }
+    public float Y {
+      get { return y_; }
+    }
+    
+    public const int ZFieldNumber = 3;
+    private bool hasZ;
+    private float z_;
+    public bool HasZ {
+      get { return hasZ; }
+    }
+    public float Z {
+      get { return z_; }
+    }
+    
+    public const int HeadingFieldNumber = 4;
+    private bool hasHeading;
+    private float heading_;
+    public bool HasHeading {
+      get { return hasHeading; }
+    }
+    public float Heading {
+      get { return heading_; }
+    }
+    
+    public const int VisitedFieldNumber = 5;
+    private bool hasVisited;
+    private bool visited_;
+    public bool HasVisited {
+      get { return hasVisited; }
+    }
+    public bool Visited {
+      get { return visited_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasX) return false;
+        if (!hasY) return false;
+        if (!hasZ) return false;
+        if (!hasHeading) return false;
+        if (!hasVisited) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbSingleWaypointFieldNames;
+      if (hasX) {
+        output.WriteFloat(1, field_names[2], X);
+      }
+      if (hasY) {
+        output.WriteFloat(2, field_names[3], Y);
+      }
+      if (hasZ) {
+        output.WriteFloat(3, field_names[4], Z);
+      }
+      if (hasHeading) {
+        output.WriteFloat(4, field_names[0], Heading);
+      }
+      if (hasVisited) {
+        output.WriteBool(5, field_names[1], Visited);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasX) {
+          size += pb::CodedOutputStream.ComputeFloatSize(1, X);
+        }
+        if (hasY) {
+          size += pb::CodedOutputStream.ComputeFloatSize(2, Y);
+        }
+        if (hasZ) {
+          size += pb::CodedOutputStream.ComputeFloatSize(3, Z);
+        }
+        if (hasHeading) {
+          size += pb::CodedOutputStream.ComputeFloatSize(4, Heading);
+        }
+        if (hasVisited) {
+          size += pb::CodedOutputStream.ComputeBoolSize(5, Visited);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_SingleWaypoint ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_SingleWaypoint ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_SingleWaypoint MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_SingleWaypoint prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_SingleWaypoint, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_SingleWaypoint cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_SingleWaypoint result;
+      
+      private Gpb_SingleWaypoint PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_SingleWaypoint original = result;
+          result = new Gpb_SingleWaypoint();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_SingleWaypoint MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_SingleWaypoint.Descriptor; }
+      }
+      
+      public override Gpb_SingleWaypoint DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_SingleWaypoint.DefaultInstance; }
+      }
+      
+      public override Gpb_SingleWaypoint BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_SingleWaypoint) {
+          return MergeFrom((Gpb_SingleWaypoint) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_SingleWaypoint other) {
+        if (other == global::autonomy_msg.Gpb_SingleWaypoint.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasX) {
+          X = other.X;
+        }
+        if (other.HasY) {
+          Y = other.Y;
+        }
+        if (other.HasZ) {
+          Z = other.Z;
+        }
+        if (other.HasHeading) {
+          Heading = other.Heading;
+        }
+        if (other.HasVisited) {
+          Visited = other.Visited;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbSingleWaypointFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbSingleWaypointFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 13: {
+              result.hasX = input.ReadFloat(ref result.x_);
+              break;
+            }
+            case 21: {
+              result.hasY = input.ReadFloat(ref result.y_);
+              break;
+            }
+            case 29: {
+              result.hasZ = input.ReadFloat(ref result.z_);
+              break;
+            }
+            case 37: {
+              result.hasHeading = input.ReadFloat(ref result.heading_);
+              break;
+            }
+            case 40: {
+              result.hasVisited = input.ReadBool(ref result.visited_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasX {
+        get { return result.hasX; }
+      }
+      public float X {
+        get { return result.X; }
+        set { SetX(value); }
+      }
+      public Builder SetX(float value) {
+        PrepareBuilder();
+        result.hasX = true;
+        result.x_ = value;
+        return this;
+      }
+      public Builder ClearX() {
+        PrepareBuilder();
+        result.hasX = false;
+        result.x_ = 0F;
+        return this;
+      }
+      
+      public bool HasY {
+        get { return result.hasY; }
+      }
+      public float Y {
+        get { return result.Y; }
+        set { SetY(value); }
+      }
+      public Builder SetY(float value) {
+        PrepareBuilder();
+        result.hasY = true;
+        result.y_ = value;
+        return this;
+      }
+      public Builder ClearY() {
+        PrepareBuilder();
+        result.hasY = false;
+        result.y_ = 0F;
+        return this;
+      }
+      
+      public bool HasZ {
+        get { return result.hasZ; }
+      }
+      public float Z {
+        get { return result.Z; }
+        set { SetZ(value); }
+      }
+      public Builder SetZ(float value) {
+        PrepareBuilder();
+        result.hasZ = true;
+        result.z_ = value;
+        return this;
+      }
+      public Builder ClearZ() {
+        PrepareBuilder();
+        result.hasZ = false;
+        result.z_ = 0F;
+        return this;
+      }
+      
+      public bool HasHeading {
+        get { return result.hasHeading; }
+      }
+      public float Heading {
+        get { return result.Heading; }
+        set { SetHeading(value); }
+      }
+      public Builder SetHeading(float value) {
+        PrepareBuilder();
+        result.hasHeading = true;
+        result.heading_ = value;
+        return this;
+      }
+      public Builder ClearHeading() {
+        PrepareBuilder();
+        result.hasHeading = false;
+        result.heading_ = 0F;
+        return this;
+      }
+      
+      public bool HasVisited {
+        get { return result.hasVisited; }
+      }
+      public bool Visited {
+        get { return result.Visited; }
+        set { SetVisited(value); }
+      }
+      public Builder SetVisited(bool value) {
+        PrepareBuilder();
+        result.hasVisited = true;
+        result.visited_ = value;
+        return this;
+      }
+      public Builder ClearVisited() {
+        PrepareBuilder();
+        result.hasVisited = false;
+        result.visited_ = false;
+        return this;
+      }
+    }
+    static Gpb_SingleWaypoint() {
+      object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Gpb_WaypointPath : pb::GeneratedMessage<Gpb_WaypointPath, Gpb_WaypointPath.Builder> {
+    private Gpb_WaypointPath() { }
+    private static readonly Gpb_WaypointPath defaultInstance = new Gpb_WaypointPath().MakeReadOnly();
+    private static readonly string[] _gpbWaypointPathFieldNames = new string[] { "actor_id", "belief_time", "request_time", "waypoints" };
+    private static readonly uint[] _gpbWaypointPathFieldTags = new uint[] { 24, 8, 16, 34 };
+    public static Gpb_WaypointPath DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override Gpb_WaypointPath DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override Gpb_WaypointPath ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_WaypointPath__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<Gpb_WaypointPath, Gpb_WaypointPath.Builder> InternalFieldAccessors {
+      get { return global::autonomy_msg.Autonomy.internal__static_autonomy_msg_Gpb_WaypointPath__FieldAccessorTable; }
+    }
+    
+    public const int BeliefTimeFieldNumber = 1;
+    private bool hasBeliefTime;
+    private ulong beliefTime_;
+    public bool HasBeliefTime {
+      get { return hasBeliefTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong BeliefTime {
+      get { return beliefTime_; }
+    }
+    
+    public const int RequestTimeFieldNumber = 2;
+    private bool hasRequestTime;
+    private ulong requestTime_;
+    public bool HasRequestTime {
+      get { return hasRequestTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public ulong RequestTime {
+      get { return requestTime_; }
+    }
+    
+    public const int ActorIdFieldNumber = 3;
+    private bool hasActorId;
+    private int actorId_;
+    public bool HasActorId {
+      get { return hasActorId; }
+    }
+    public int ActorId {
+      get { return actorId_; }
+    }
+    
+    public const int WaypointsFieldNumber = 4;
+    private pbc::PopsicleList<global::autonomy_msg.Gpb_SingleWaypoint> waypoints_ = new pbc::PopsicleList<global::autonomy_msg.Gpb_SingleWaypoint>();
+    public scg::IList<global::autonomy_msg.Gpb_SingleWaypoint> WaypointsList {
+      get { return waypoints_; }
+    }
+    public int WaypointsCount {
+      get { return waypoints_.Count; }
+    }
+    public global::autonomy_msg.Gpb_SingleWaypoint GetWaypoints(int index) {
+      return waypoints_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasBeliefTime) return false;
+        if (!hasRequestTime) return false;
+        if (!hasActorId) return false;
+        foreach (global::autonomy_msg.Gpb_SingleWaypoint element in WaypointsList) {
+          if (!element.IsInitialized) return false;
+        }
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _gpbWaypointPathFieldNames;
+      if (hasBeliefTime) {
+        output.WriteUInt64(1, field_names[1], BeliefTime);
+      }
+      if (hasRequestTime) {
+        output.WriteUInt64(2, field_names[2], RequestTime);
+      }
+      if (hasActorId) {
+        output.WriteInt32(3, field_names[0], ActorId);
+      }
+      if (waypoints_.Count > 0) {
+        output.WriteMessageArray(4, field_names[3], waypoints_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasBeliefTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(1, BeliefTime);
+        }
+        if (hasRequestTime) {
+          size += pb::CodedOutputStream.ComputeUInt64Size(2, RequestTime);
+        }
+        if (hasActorId) {
+          size += pb::CodedOutputStream.ComputeInt32Size(3, ActorId);
+        }
+        foreach (global::autonomy_msg.Gpb_SingleWaypoint element in WaypointsList) {
+          size += pb::CodedOutputStream.ComputeMessageSize(4, element);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static Gpb_WaypointPath ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static Gpb_WaypointPath ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private Gpb_WaypointPath MakeReadOnly() {
+      waypoints_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(Gpb_WaypointPath prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<Gpb_WaypointPath, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(Gpb_WaypointPath cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private Gpb_WaypointPath result;
+      
+      private Gpb_WaypointPath PrepareBuilder() {
+        if (resultIsReadOnly) {
+          Gpb_WaypointPath original = result;
+          result = new Gpb_WaypointPath();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override Gpb_WaypointPath MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::autonomy_msg.Gpb_WaypointPath.Descriptor; }
+      }
+      
+      public override Gpb_WaypointPath DefaultInstanceForType {
+        get { return global::autonomy_msg.Gpb_WaypointPath.DefaultInstance; }
+      }
+      
+      public override Gpb_WaypointPath BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is Gpb_WaypointPath) {
+          return MergeFrom((Gpb_WaypointPath) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(Gpb_WaypointPath other) {
+        if (other == global::autonomy_msg.Gpb_WaypointPath.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasBeliefTime) {
+          BeliefTime = other.BeliefTime;
+        }
+        if (other.HasRequestTime) {
+          RequestTime = other.RequestTime;
+        }
+        if (other.HasActorId) {
+          ActorId = other.ActorId;
+        }
+        if (other.waypoints_.Count != 0) {
+          result.waypoints_.Add(other.waypoints_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_gpbWaypointPathFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _gpbWaypointPathFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasBeliefTime = input.ReadUInt64(ref result.beliefTime_);
+              break;
+            }
+            case 16: {
+              result.hasRequestTime = input.ReadUInt64(ref result.requestTime_);
+              break;
+            }
+            case 24: {
+              result.hasActorId = input.ReadInt32(ref result.actorId_);
+              break;
+            }
+            case 34: {
+              input.ReadMessageArray(tag, field_name, result.waypoints_, global::autonomy_msg.Gpb_SingleWaypoint.DefaultInstance, extensionRegistry);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasBeliefTime {
+        get { return result.hasBeliefTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong BeliefTime {
+        get { return result.BeliefTime; }
+        set { SetBeliefTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetBeliefTime(ulong value) {
+        PrepareBuilder();
+        result.hasBeliefTime = true;
+        result.beliefTime_ = value;
+        return this;
+      }
+      public Builder ClearBeliefTime() {
+        PrepareBuilder();
+        result.hasBeliefTime = false;
+        result.beliefTime_ = 0UL;
+        return this;
+      }
+      
+      public bool HasRequestTime {
+        get { return result.hasRequestTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public ulong RequestTime {
+        get { return result.RequestTime; }
+        set { SetRequestTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetRequestTime(ulong value) {
+        PrepareBuilder();
+        result.hasRequestTime = true;
+        result.requestTime_ = value;
+        return this;
+      }
+      public Builder ClearRequestTime() {
+        PrepareBuilder();
+        result.hasRequestTime = false;
+        result.requestTime_ = 0UL;
+        return this;
+      }
+      
+      public bool HasActorId {
+        get { return result.hasActorId; }
+      }
+      public int ActorId {
+        get { return result.ActorId; }
+        set { SetActorId(value); }
+      }
+      public Builder SetActorId(int value) {
+        PrepareBuilder();
+        result.hasActorId = true;
+        result.actorId_ = value;
+        return this;
+      }
+      public Builder ClearActorId() {
+        PrepareBuilder();
+        result.hasActorId = false;
+        result.actorId_ = 0;
+        return this;
+      }
+      
+      public pbc::IPopsicleList<global::autonomy_msg.Gpb_SingleWaypoint> WaypointsList {
+        get { return PrepareBuilder().waypoints_; }
+      }
+      public int WaypointsCount {
+        get { return result.WaypointsCount; }
+      }
+      public global::autonomy_msg.Gpb_SingleWaypoint GetWaypoints(int index) {
+        return result.GetWaypoints(index);
+      }
+      public Builder SetWaypoints(int index, global::autonomy_msg.Gpb_SingleWaypoint value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.waypoints_[index] = value;
+        return this;
+      }
+      public Builder SetWaypoints(int index, global::autonomy_msg.Gpb_SingleWaypoint.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.waypoints_[index] = builderForValue.Build();
+        return this;
+      }
+      public Builder AddWaypoints(global::autonomy_msg.Gpb_SingleWaypoint value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.waypoints_.Add(value);
+        return this;
+      }
+      public Builder AddWaypoints(global::autonomy_msg.Gpb_SingleWaypoint.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.waypoints_.Add(builderForValue.Build());
+        return this;
+      }
+      public Builder AddRangeWaypoints(scg::IEnumerable<global::autonomy_msg.Gpb_SingleWaypoint> values) {
+        PrepareBuilder();
+        result.waypoints_.Add(values);
+        return this;
+      }
+      public Builder ClearWaypoints() {
+        PrepareBuilder();
+        result.waypoints_.Clear();
+        return this;
+      }
+    }
+    static Gpb_WaypointPath() {
       object.ReferenceEquals(global::autonomy_msg.Autonomy.Descriptor, null);
     }
   }

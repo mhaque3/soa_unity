@@ -419,6 +419,7 @@ public class SoaActor : MonoBehaviour
                     SetDesiredAltitude(newWaypoint.getPos_y());
                 }
                 else
+                if(navAgent != null)
                 {
                     // Stay put
                     navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
