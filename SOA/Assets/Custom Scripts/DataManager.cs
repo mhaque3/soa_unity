@@ -17,11 +17,10 @@ namespace soa
         public List<SoaActor> actors = new List<SoaActor>();
         public List<Belief> initializationBeliefs = new List<Belief>();
         public SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
-
         public SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int,SortedDictionary<int,bool>>();
 
         //Dictionary of belief data
-        protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
+        protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > beliefDictionary;
         public System.Object dataManagerLock = new System.Object();
         private PhotonCloudCommManager cm;
 
@@ -40,24 +39,7 @@ namespace soa
              cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
-            beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
-            beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
-            beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
+            beliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
 
             // Note: Comms manager must be started manually after all initial belief processing is done
         }
@@ -94,17 +76,7 @@ namespace soa
             soaActorDictionary.TryGetValue(sourceId, out a);
             if (a != null)
             {
-                if (b.getBeliefType().Equals(Belief.BeliefType.CUSTOM))
-                {
-                    lock (dataManagerLock)
-                    {
-                        a.addCustomBelief(sourceId, b);
-                    }
-                }
-                else
-                {
-                    a.addBeliefToBeliefDictionary(b);
-                }
+                a.addBeliefToBeliefDictionary(b);
             }
         }
 
@@ -130,18 +102,18 @@ namespace soa
                 //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b.ToString());
 #endif
                 
-                SortedDictionary<int, Belief> tempTypeDict = beliefDictionary[b.getBeliefType()];
+                SortedDictionary<int, Belief> tempTypeDict = getBeliefsFor(b.getTypeKey());
                 if (tempTypeDict != null)
                 {
                     Belief oldBelief;
-                    if (!beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief) || oldBelief.getBeliefTime() < b.getBeliefTime())
+                    if (!getBeliefsFor(b.getTypeKey()).TryGetValue(b.getId(), out oldBelief) || oldBelief.getBeliefTime() < b.getBeliefTime())
                     {
-                        beliefDictionary[b.getBeliefType()][b.getId()] = b;
+                        getBeliefsFor(b.getTypeKey())[b.getId()] = b;
                     }
                 }
                 else
                 {
-                    beliefDictionary[b.getBeliefType()][b.getId()] = b;
+                    getBeliefsFor(b.getTypeKey())[b.getId()] = b;
                 }
 
                 /*
@@ -308,7 +280,7 @@ namespace soa
             }
         }
 
-        public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > getActorWorldView(int actorId)
+        public SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > getActorWorldView(int actorId)
         {
 
             SoaActor soaActor = soaActorDictionary[actorId];
@@ -323,7 +295,7 @@ namespace soa
             }
         }
 
-        public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getGodsEyeView()
+        public SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> getGodsEyeView()
         {
             return beliefDictionary;
         }
@@ -346,6 +318,22 @@ namespace soa
         public List<Belief> getInitializationBeliefs()
         {
             return initializationBeliefs;
+        }
+
+        private SortedDictionary<int, Belief> getBeliefsFor(Belief.BeliefType type)
+        {
+            return getBeliefsFor(Belief.keyOf(type));
+        }
+
+        private SortedDictionary<int, Belief> getBeliefsFor(Belief.Key key)
+        {
+            SortedDictionary<int, Belief> beliefs;
+            if (!beliefDictionary.TryGetValue(key, out beliefs))
+            {
+                beliefs = new SortedDictionary<int, Belief>();
+                beliefDictionary[key] = beliefs;
+            }
+            return beliefs;
         }
     }
 }

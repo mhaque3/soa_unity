@@ -106,9 +106,6 @@ public class SimControl : MonoBehaviour
     float sensorClock = 0f;
     public float sensorUpdatePeriod;
 
-    // Only access this when you have the DataManager lock
-    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayBeliefDictionary;
-
     #region Initialization
     /*****************************************************************************************************
      *                                        INITIALIZATION                                             *
@@ -216,9 +213,6 @@ public class SimControl : MonoBehaviour
         // Create data managers
         redDataManager = new DataManager(networkRedRoom);
         blueDataManager = new DataManager(networkBlueRoom);
-
-        // Get gods eye view
-        displayBeliefDictionary = blueDataManager.getGodsEyeView();
 
         // Activate local platforms (both pre-existing and instantiated from config)
         for (int i = 0; i < LocalPlatforms.Count; i++)
@@ -552,7 +546,6 @@ public class SimControl : MonoBehaviour
             
             lock(blueDataManager.dataManagerLock)
             {
-                displayBeliefDictionary = blueDataManager.getGodsEyeView();
                 for (int i = 0; i < LocalPlatforms.Count; i++)
                 {
                     GameObject platform = LocalPlatforms[i];

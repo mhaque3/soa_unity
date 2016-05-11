@@ -1,8 +1,8 @@
 <SoaConfig>
   <!-- Network Configuration Settings -->
   <Network 
-       redRoom ="soa-testroom-red" 
-       blueRoom="soa-testroom-blue" 
+       redRoom ="soa-testroom-red-isc" 
+       blueRoom="soa-testroom-blue-isc" 
   />
  
   <!-- Logger Configuration Settings -->

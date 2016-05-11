@@ -31,7 +31,7 @@ public class SoaSensor : MonoBehaviour
         if (soaActor.type == (int)SoaActor.ActorType.BALLOON)
         {
             // Get the belief dictionary and SPOI Belief
-            SortedDictionary<int, Belief> spoiBeliefDictionary = soaActor.getBeliefDictionary()[soa.Belief.BeliefType.SPOI];
+            SortedDictionary<int, Belief> spoiBeliefDictionary = soaActor.getDictionaryFor(soa.Belief.BeliefType.SPOI);
             Belief belief;
             if (spoiBeliefDictionary.TryGetValue(soaActor.unique_id, out belief))
             {

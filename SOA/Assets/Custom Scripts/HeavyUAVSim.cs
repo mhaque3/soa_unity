@@ -120,7 +120,7 @@ public class HeavyUAVSim : MonoBehaviour
     private int RequestCasualtyDelivery(int currentInventory)
     {
         // Get the belief dictionary and belief
-        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.CASUALTY_DELIVERY];
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getDictionaryFor(soa.Belief.BeliefType.CASUALTY_DELIVERY);
         Belief belief;
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
@@ -165,7 +165,7 @@ public class HeavyUAVSim : MonoBehaviour
         int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
 
         // Get the belief dictionary and belief
-        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_PICKUP];
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getDictionaryFor(soa.Belief.BeliefType.SUPPLY_PICKUP);
         Belief belief;
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
@@ -209,7 +209,7 @@ public class HeavyUAVSim : MonoBehaviour
     private int RequestSupplyDelivery(int currentInventory, int destinationId)
     {
         // Get the belief dictionary and belief
-        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.SUPPLY_DELIVERY];
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getDictionaryFor(soa.Belief.BeliefType.SUPPLY_DELIVERY);
         Belief belief;
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {
@@ -272,7 +272,7 @@ public class HeavyUAVSim : MonoBehaviour
         int flooredSupplyCount = (int)Mathf.Floor(availableSupplyCount);
         
         // Get the belief dictionary and belief
-        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getBeliefDictionary()[soa.Belief.BeliefType.CASUALTY_PICKUP];
+        SortedDictionary<int, Belief> specificBeliefDictionary = thisSoaActor.getDictionaryFor(soa.Belief.BeliefType.CASUALTY_PICKUP);
         Belief belief;
         if (specificBeliefDictionary.TryGetValue(thisSoaActor.unique_id, out belief))
         {

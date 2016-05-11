@@ -40,7 +40,8 @@ public class WaypointMotion : MonoBehaviour
         {
             float dt = Time.deltaTime;
             float motion = currentSpeed * dt;
-            transform.Translate(motion * Vector3.forward);
+
+            transform.Translate(motion * Vector3.zero);
 
             timeInterval += dt;
 

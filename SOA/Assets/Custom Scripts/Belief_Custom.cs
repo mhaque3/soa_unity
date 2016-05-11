@@ -30,6 +30,11 @@ namespace soa
             return BeliefType.CUSTOM;
         }
 
+        public override Belief.Key getTypeKey()
+        {
+            return new Key(customType);
+        }
+
         public byte[] getData()
         {
             return (byte[]) data.Clone();

@@ -78,10 +78,9 @@ public class SoaActor : MonoBehaviour
 
     public Dictionary<int, bool> classificationDictionary;
 
-    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief> > beliefDictionary;
-    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> unmergedBeliefDictionary;
-    protected SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> remoteBeliefs;
-    protected SortedDictionary<int, SortedDictionary<int, Belief>> customBeliefs;
+    protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > beliefDictionary;
+    protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> unmergedBeliefDictionary;
+    protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> remoteBeliefs;
 
     private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
 
@@ -152,64 +151,9 @@ public class SoaActor : MonoBehaviour
         simControlScript = GameObject.FindObjectOfType<SimControl>();
 
         // Initialize the belief dictionary
-        beliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
-        beliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
-        beliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
-
-        unmergedBeliefDictionary = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
-        unmergedBeliefDictionary[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
-        unmergedBeliefDictionary[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
-
-        remoteBeliefs = new SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>>();
-        remoteBeliefs[Belief.BeliefType.ACTOR] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.BASE] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.CASUALTY_DELIVERY] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.CASUALTY_PICKUP] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.GRIDSPEC] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.INVALID] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.MODE_COMMAND] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.NGOSITE] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.ROADCELL] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.SPOI] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.SUPPLY_DELIVERY] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.SUPPLY_PICKUP] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.TERRAIN] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.TIME] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.VILLAGE] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.WAYPOINT] = new SortedDictionary<int, Belief>();
-        remoteBeliefs[Belief.BeliefType.WAYPOINT_OVERRIDE] = new SortedDictionary<int, Belief>();
-
-        customBeliefs = new SortedDictionary<int, SortedDictionary<int, Belief>>();
+        beliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
+        unmergedBeliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
+        remoteBeliefs = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
 
         Debug.Log("SoaActor: Initialized all beliefDictionaries for " + gameObject.name);
 
@@ -225,6 +169,21 @@ public class SoaActor : MonoBehaviour
         nma = GetComponent<NavMeshAgent>();
 	}
 
+    SortedDictionary<int, Belief> lookup(Belief.BeliefType key, SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> dictionary)
+    {
+        return lookup(Belief.keyOf(key), dictionary);
+    }
+
+    SortedDictionary<int, Belief> lookup(Belief.Key key, SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> dictionary)
+    {
+        SortedDictionary<int, Belief> beliefs;
+        if (!dictionary.TryGetValue(key, out beliefs))
+        {
+            beliefs = new SortedDictionary<int, Belief>();
+            dictionary[key] = beliefs;
+        }
+        return beliefs;
+    }
 
     // Update is called once per frame
     void Update() 
@@ -403,7 +362,7 @@ public class SoaActor : MonoBehaviour
                 Belief newBelief;
                 //Debug.Log(name);
                 motionScript.On = false;
-                if (beliefDictionary[Belief.BeliefType.WAYPOINT].TryGetValue(unique_id, out newBelief))
+                if (lookup(Belief.BeliefType.WAYPOINT, beliefDictionary).TryGetValue(unique_id, out newBelief))
                 {
                     // Received a waypoint in km, transform to Unity coordinates and then use it to set the nav agent's destination
                     Belief_Waypoint newWaypoint = (Belief_Waypoint)newBelief;
@@ -614,20 +573,6 @@ public class SoaActor : MonoBehaviour
         return addBelief(b, beliefDictionary);
     }
 
-    public bool addCustomBelief(int sourceId, Belief b)
-    {
-        if (!customBeliefs.ContainsKey(sourceId))
-        {
-            customBeliefs.Add(sourceId, new SortedDictionary<int, Belief>());
-        }
-
-        SortedDictionary<int, Belief> actorCustomBeliefs = customBeliefs[sourceId];
-        actorCustomBeliefs[b.getId()] = b;
-
-        //Debug.Log("Added custom belief from " + sourceId + " to " + unique_id);
-        return true;
-    }
-
     /*
      * Add belief to the unmerged map
      */ 
@@ -638,7 +583,7 @@ public class SoaActor : MonoBehaviour
 
     public void mergeBeliefDictionary()
     {
-        foreach (KeyValuePair<Belief.BeliefType, SortedDictionary<int, Belief>> entry in unmergedBeliefDictionary)
+        foreach (KeyValuePair<Belief.Key, SortedDictionary<int, Belief>> entry in unmergedBeliefDictionary)
         {
             foreach(KeyValuePair<int, Belief> beliefs in entry.Value)
             {
@@ -652,7 +597,7 @@ public class SoaActor : MonoBehaviour
 
     // Check if belief is newer than current belief of matching type and id, if so,
     // replace old belief with b.
-    public virtual bool addBelief(Belief b, SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> beliefDictionary)
+    public virtual bool addBelief(Belief b, SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> beliefDictionary)
     {
         #if(UNITY_STANDALONE)
             //Debug.Log("SoaActor - DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b);
@@ -662,23 +607,10 @@ public class SoaActor : MonoBehaviour
         #endif
 
         // Get the dictionary for that belief type
-        Belief.BeliefType bt = b.getBeliefType();
-        try
-        {
-            int i = beliefDictionary.Count;
-        }
-        catch (Exception)
+        if (beliefDictionary == null)
         {
             Debug.LogWarning("SoaActor: Exception from beliefDictionary for " + gameObject.name);
-        }
-
-        // Check if the belief dictionary even exists
-        if (!beliefDictionary.ContainsKey(b.getBeliefType()) || beliefDictionary[b.getBeliefType()] == null)
-        {
-            Debug.LogWarning("SoaActor::addBelief(): No beliefDictionary entry exists for belief type "
-                + b.getBeliefType() + ", dropping belief");
-            return false;
-        }                
+        }     
 
         // An actor is classified if me or any of my peers has ever classified it (for now at least)
         if (b.getBeliefType() == Belief.BeliefType.ACTOR)
@@ -692,7 +624,7 @@ public class SoaActor : MonoBehaviour
 
         bool updateDictionary;
         Belief oldBelief;
-        if (beliefDictionary[b.getBeliefType()].TryGetValue(b.getId(), out oldBelief))
+        if (lookup(b.getTypeKey(), beliefDictionary).TryGetValue(b.getId(), out oldBelief))
         {
             // We are in here if a previous belief already exists and we have to merge
             if (b.getBeliefType() == Belief.BeliefType.ACTOR)
@@ -803,13 +735,23 @@ public class SoaActor : MonoBehaviour
             //TODO find out which photon comm manager this agent is listening on and only send to that one
 
             //dataManager.broadcastBelief(b,unique_id, null);
-            beliefDictionary[b.getBeliefType()][b.getId()] = b;
+            beliefDictionary[b.getTypeKey()][b.getId()] = b;
         }
 
         return updateDictionary;
     }
 
-    public SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> getBeliefDictionary()
+    public SortedDictionary<int, Belief> getDictionaryFor(Belief.BeliefType type)
+    {
+        return getDictionaryFor(Belief.keyOf(type));
+    }
+
+    public SortedDictionary<int, Belief> getDictionaryFor(Belief.Key key)
+    {
+        return lookup(key, beliefDictionary);
+    }
+
+    public SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> getBeliefDictionary()
     {
         return beliefDictionary;
     }
@@ -821,27 +763,12 @@ public class SoaActor : MonoBehaviour
         // Merge unmerged beliefs first and populate remote beliefs
         mergeBeliefDictionary();
 
-        foreach (KeyValuePair<Belief.BeliefType, SortedDictionary<int, Belief>> entry in remoteBeliefs)
+        foreach (KeyValuePair<Belief.Key, SortedDictionary<int, Belief>> entry in remoteBeliefs)
         {
             foreach (KeyValuePair<int, Belief> beliefEntry in entry.Value)
             {
                 dataManager.broadcastBelief(beliefEntry.Value, unique_id, idArray);
             }
-            entry.Value.Clear();
-        }
-
-
-        foreach (KeyValuePair<int, SortedDictionary<int, Belief>> entry in customBeliefs)
-        {
-            //Do not pass along custom beliefs that hte actor created back to itself
-            if (entry.Key != unique_id)
-            {
-                foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
-                {
-                    dataManager.broadcastBelief(beliefs.Value, unique_id, idArray);
-                }
-            }
-
             entry.Value.Clear();
         }
     }
@@ -894,41 +821,40 @@ public class SoaActor : MonoBehaviour
 
     protected void localBroadcastBeliefsOfType(Belief.BeliefType type, List<SoaActor> connectedActors)
     {
-        if (beliefDictionary.ContainsKey(type))
+        Belief.Key key = Belief.keyOf(type);
+        localBroadcastBeliefsOfType(key, connectedActors);
+    }
+
+    protected void localBroadcastBeliefsOfType(Belief.Key key, List<SoaActor> connectedActors)
+    {
+        if (beliefDictionary.ContainsKey(key))
+        {
+            SortedDictionary<int, Belief> typeDict = beliefDictionary[key];
+            foreach (KeyValuePair<int, Belief> entry in typeDict)
             {
-                SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
-                foreach (KeyValuePair<int, Belief> entry in typeDict)
+                foreach(SoaActor actor in connectedActors)
                 {
-                    foreach(SoaActor actor in connectedActors)
-                    {
-                        actor.addBeliefToUnmergedBeliefDictionary(entry.Value);
-                    }
+                    actor.addBeliefToUnmergedBeliefDictionary(entry.Value);
                 }
             }
-        
+        }
     }
 
     protected void localBroadcastCustomBeliefs(List<SoaActor> connectedActors)
     {
-                foreach (SoaActor actor in connectedActors)
+        foreach (KeyValuePair<Belief.Key, SortedDictionary<int, Belief>> entry in beliefDictionary)
+        {
+            if (entry.Key.getType() == Belief.BeliefType.CUSTOM)
+            {
+                foreach (KeyValuePair<int, Belief> belief in entry.Value)
                 {
-                    foreach (KeyValuePair<int, SortedDictionary<int, Belief>> entry in customBeliefs)
+                    foreach (SoaActor actor in connectedActors)
                     {
-                        //Do not pass along custom beliefs that hte actor created back to itself
-                        if (entry.Key != actor.unique_id)
-                        {
-                            foreach (KeyValuePair<int, Belief> beliefs in entry.Value)
-                            {
-                                actor.addCustomBelief(entry.Key, beliefs.Value);
-                            }
-                        }
-                        else
-                        {
-                            //Debug.Log("not forwarding beliefs back to their original actor " + entry.Key);
-                        }
+                        actor.addBeliefToUnmergedBeliefDictionary(belief.Value);
                     }
                 }
-
+            }
+        }
     }
 
     public void broadcastComms_old()
@@ -952,9 +878,9 @@ public class SoaActor : MonoBehaviour
     {
         // Only publish beliefs if still alive
         if(isAlive){
-            if (beliefDictionary.ContainsKey(type))
+            if (beliefDictionary.ContainsKey(Belief.keyOf(type)))
             {
-                SortedDictionary<int, Belief> typeDict = beliefDictionary[type];
+                SortedDictionary<int, Belief> typeDict = beliefDictionary[Belief.keyOf(type)];
                 foreach (KeyValuePair<int, Belief> entry in typeDict)
                 {
                     /*if (type == Belief.BeliefType.NGOSITE)

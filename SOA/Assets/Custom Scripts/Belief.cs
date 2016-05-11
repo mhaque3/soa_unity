@@ -7,6 +7,62 @@ namespace soa
 {
     public class Belief
     {
+
+        public static Key keyOf(BeliefType type)
+        {
+            return new Key(type);
+        }
+
+        public class Key : IComparable<Key>
+        {
+            private int customType;
+            private BeliefType type;
+
+            public Key(BeliefType type)
+            {
+                this.type = type;
+                this.customType = 0;
+            }
+
+            public Key(int customType) 
+            {
+                this.type = BeliefType.CUSTOM;
+                this.customType = customType;
+            }
+
+            public BeliefType getType()
+            {
+                return type;
+            }
+
+            public int CompareTo(Key other)
+            {
+                if (type == other.type)
+                {
+                    return customType.CompareTo(other.customType);
+                }
+
+                return type.CompareTo(other.type);
+            }
+
+            public override int GetHashCode()
+            {
+                int hashCode = (int)type;
+                hashCode += customType + 100;
+                return hashCode;
+            }
+
+            public override bool Equals(object obj)
+            {
+                Key other = obj as Key;
+                if (other == null)
+                    return false;
+
+                return other.type == type 
+                        && other.customType == customType;
+            }
+        };
+
         public enum BeliefType
         {
             INVALID = 0,
@@ -42,6 +98,11 @@ namespace soa
         public virtual BeliefType getBeliefType()
         {
             return BeliefType.INVALID;
+        }
+
+        public virtual Key getTypeKey()
+        {
+            return new Key(getBeliefType());
         }
 
         public int getId()
