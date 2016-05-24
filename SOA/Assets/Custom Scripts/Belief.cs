@@ -105,7 +105,7 @@ namespace soa
             return new Key(getBeliefType());
         }
 
-        public int getId()
+        public virtual int getId()
         {
             return id;
         }
