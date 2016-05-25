@@ -7,50 +7,22 @@ using System.Text;
 
 namespace soa
 {
-    class UdpNetwork : AbstractNetwork
+    class UdpNetwork : INetwork
     {
-        private Serializer serializer;
         private UdpClient socket;
-        private IPEndPoint server;
-        private bool connected;
 
-        public UdpNetwork(Serializer serializer, IPEndPoint server)
+        public UdpNetwork()
         {
-            this.serializer = serializer;
-            this.server = server;
             this.socket = new UdpClient();
-
-            try
-            {
-                socket.Connect(server);
-                connected = true;
-            } catch (Exception e)
-            {
-                Console.Error.WriteLine(e.ToString());
-                connected = false;
-            }
         }
-
-        public void connect(IPEndPoint server)
+        
+        public Message Receive()
         {
             try
             {
-                this.socket.Connect(server);
-                this.server = server;
-                this.connected = true;
-            }
-            catch (SocketException exp)
-            {
-                Console.Error.WriteLine(exp.ToString());
-                this.connected = false;
-            }
-        }
-
-        public override byte[] Receive()
-        {
-            try
-            {
-                return socket.Receive(ref server);
+                IPEndPoint connectionAddress = new IPEndPoint(IPAddress.Any, 8080);
+                byte[] messageData = socket.Receive(ref connectionAddress);
+                return new Message(connectionAddress, messageData);
             }
             catch(Exception e)
             {
@@ -59,11 +31,11 @@ namespace soa
             }
         }
 
-        public override void Send(byte[] buffer, int lenght)
+        public void Send(Message message)
         {
             try
             {
-                socket.Send(buffer, buffer.Length);
+                socket.Send(message.data, message.data.Length, message.address);
             } 
             catch(Exception exp)
             {

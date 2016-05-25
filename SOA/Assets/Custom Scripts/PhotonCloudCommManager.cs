@@ -16,7 +16,7 @@ namespace soa
     /// <summary>
     /// Facilitates communication of Belief objects over Photon Cloud network.
     /// </summary>
-    public class PhotonCloudCommManager : LoadBalancingClient
+    public class PhotonCloudCommManager : LoadBalancingClient, ICommManager
     {
         // Reference to data manager
         private DataManager dataManager;

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace soa
 {
-    public class DataManager
+    public class DataManager : IDataManager
     {
         //public float updateRateMs;
         //List of all actors in this scenario
@@ -22,7 +22,7 @@ namespace soa
         //Dictionary of belief data
         protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > beliefDictionary;
         public System.Object dataManagerLock = new System.Object();
-        private PhotonCloudCommManager cm;
+        private ICommManager cm;
 
         private string room;
 
@@ -36,7 +36,8 @@ namespace soa
             
             Serializer ps = new ProtobufSerializer();
 
-             cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
+            cm = new LocalCommManager(this, ps, new UdpNetwork());
+            //cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             beliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();

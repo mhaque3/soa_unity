@@ -1,47 +1,97 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
 namespace soa
 {
-    public class LocalCommManager
+    public class LocalCommManager : ICommManager
     {
-        private DataManager dataManager;
-        private Dictionary<int, ClientConnection> sockets;
-        private AbstractNetwork discoveryPort;
-        private Thread connectionThread;
-        private bool alive;
+        private IDataManager dataManager;
+        private Dictionary<int, IPEndPoint> agentIPs;
+        private INetwork network;
+        private readonly MessageReader reader;
+        private readonly MessageWriter writer;
+        private readonly Serializer serializer;
+        private ConnectionProtocol protocol;
 
-        public LocalCommManager(DataManager dataManager, AbstractNetwork network) : base()
+        public LocalCommManager(IDataManager dataManager, Serializer serializer, INetwork network)
         {
             this.dataManager = dataManager;
-            this.sockets = new Dictionary<int, ClientConnection>();
-            this.discoveryPort = network;
+            this.network = network;
+            this.serializer = serializer;
+            this.agentIPs = new Dictionary<int, IPEndPoint>();
+            this.writer = new MessageWriter(network);
+            this.reader = new MessageReader(handleRequest, network);
+            this.protocol = new ConnectionProtocol();
         }
 
-        public void Start()
+        public void start()
         {
-            this.alive = true;
-            this.connectionThread = new Thread(handleConnections);
-            connectionThread.Name = "Connection Thread";
-            connectionThread.Start();
+            reader.Start();
+            writer.Start();
         }
 
-        public void Stop()
+        public void terminate()
         {
-            alive = false;
-            connectionThread.Join();
+            reader.Stop();
+            writer.Stop();
         }
 
-        private void handleConnections()
+        public void addOutgoing(List<Belief> beliefs, int sourceID, params int[] targetIDs)
         {
-            while(alive)
+            foreach(Belief belief in beliefs)
             {
-                byte[] messageData = discoveryPort.Receive();
-                string messageText = System.Text.Encoding.Default.GetString(messageData);
+                addOutgoing(belief, sourceID, targetIDs);
             }
+        }
+
+        public void addOutgoing(Belief b, int sourceID, int[] targetActorIDs)
+        {
+            foreach (int agentID in targetActorIDs)
+            {
+                ConnectionProtocol.RequestData msgData = new ConnectionProtocol.RequestData();
+                IPEndPoint address = null;
+                if (agentIPs.TryGetValue(agentID, out address))
+                {
+                    msgData.address = address;
+                    msgData.sourceID = sourceID;
+                    msgData.type = ConnectionProtocol.RequestType.POST;
+                    msgData.messageData = serializer.serializeBelief(b);
+
+                    Message message = protocol.formatMessage(msgData);
+                    writer.write(message);
+                }
+            }
+        }
+
+        private void handleRequest(ConnectionProtocol.RequestData request)
+        {
+            switch (request.type)
+            {
+                case ConnectionProtocol.RequestType.CONNECT:
+                    handleConnection(request);
+                    break;
+                case ConnectionProtocol.RequestType.POST:
+                    handlePost(request);
+                    break;
+            }
+        }
+
+        private void handleConnection(ConnectionProtocol.RequestData connectionRequest)
+        {
+            agentIPs.Add(connectionRequest.sourceID, connectionRequest.address);
+
+            List<Belief> initializationBeliefs = dataManager.getInitializationBeliefs();
+            addOutgoing(initializationBeliefs, ConnectionProtocol.SERVER_ID,connectionRequest.sourceID);
+        }
+
+        private void handlePost(ConnectionProtocol.RequestData postRequest)
+        {
+            Belief belief = serializer.generateBelief(postRequest.messageData);
+            dataManager.addExternalBeliefToActor(belief, postRequest.sourceID);
         }
     }
 }
