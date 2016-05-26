@@ -93,7 +93,7 @@ namespace soa
             localQueue = new Queue<Byte[]>();
 
             // Initialize photon listener peer
-            peer = new PhotonPeer(this, ConnectionProtocol.Udp);
+            peer = new PhotonPeer(this, ExitGames.Client.Photon.ConnectionProtocol.Udp);
             peer.DebugOut = DebugLevel.INFO;
 
             // Initialize internal state

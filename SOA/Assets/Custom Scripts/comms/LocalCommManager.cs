@@ -36,6 +36,7 @@ namespace soa
 
         public void terminate()
         {
+            network.Stop();
             reader.Stop();
             writer.Stop();
         }
@@ -50,6 +51,12 @@ namespace soa
 
         public void addOutgoing(Belief b, int sourceID, int[] targetActorIDs)
         {
+            if (targetActorIDs == null)
+            {
+                targetActorIDs = new int[agentIPs.Count];
+                agentIPs.Keys.CopyTo(targetActorIDs, 0);
+            }
+
             foreach (int agentID in targetActorIDs)
             {
                 ConnectionProtocol.RequestData msgData = new ConnectionProtocol.RequestData();

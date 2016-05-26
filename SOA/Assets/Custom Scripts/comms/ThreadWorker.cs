@@ -9,29 +9,30 @@ namespace soa
     public abstract class ThreadWorker
     {
         private readonly Thread thread;
-        protected readonly CancellationTokenSource cancelled;
+        protected bool alive;
 
         public ThreadWorker()
         {
             this.thread = new Thread(doWork);
-            this.cancelled = new CancellationTokenSource();
+            this.alive = false;
         }
 
         protected abstract void doWork();
 
         public bool isAlive()
         {
-            return !cancelled.IsCancellationRequested;
+            return alive;
         }
 
-        public void Start()
+        public virtual void Start()
         {
+            alive = true;
             thread.Start();
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
-            cancelled.Cancel();
+            alive = false;
             thread.Join();
         }
     }

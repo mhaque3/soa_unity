@@ -15,13 +15,25 @@ namespace soa
         {
             this.socket = new UdpClient();
         }
-        
+
+        public void Start()
+        {}
+
+        public void Stop()
+        {
+            this.socket.Close();
+        }
+
         public Message Receive()
         {
             try
             {
                 IPEndPoint connectionAddress = new IPEndPoint(IPAddress.Any, 8080);
                 byte[] messageData = socket.Receive(ref connectionAddress);
+
+                if (messageData == null || messageData.Length == 0)
+                    return null;
+
                 return new Message(connectionAddress, messageData);
             }
             catch(Exception e)

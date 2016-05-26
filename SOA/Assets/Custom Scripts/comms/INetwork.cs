@@ -20,6 +20,10 @@ namespace soa
 
     public interface INetwork
     {
+        void Start();
+
+        void Stop();
+
         void Send(Message message);
         
         Message Receive();
