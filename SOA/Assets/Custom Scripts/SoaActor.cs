@@ -431,8 +431,8 @@ public class SoaActor : MonoBehaviour
                 velocityXValid, velocityX,
                 velocityYValid, velocityY,
                 velocityZValid, velocityZ);
-
-            //addMyBeliefData(newActorData);
+            
+           // addMyBeliefData(newActorData);
             addBeliefToUnmergedBeliefDictionary(newActorData);
 
             if (dataManager != null)

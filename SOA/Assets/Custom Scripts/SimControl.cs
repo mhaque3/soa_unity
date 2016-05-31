@@ -211,8 +211,8 @@ public class SimControl : MonoBehaviour
         NavMesh.pathfindingIterationsPerFrame = 50;
 
         // Create data managers
-        redDataManager = new DataManager(networkRedRoom);
-        blueDataManager = new DataManager(networkBlueRoom);
+        redDataManager = new DataManager(networkRedRoom, 5054);
+        blueDataManager = new DataManager(networkBlueRoom, 5055);
 
         // Activate local platforms (both pre-existing and instantiated from config)
         for (int i = 0; i < LocalPlatforms.Count; i++)
@@ -719,6 +719,7 @@ public class SimControl : MonoBehaviour
                 if (hit.collider.transform.parent != null)
                 {
                     GameObject thisGameObject = hit.collider.transform.parent.gameObject;
+                    
                     string thisObjectName = hit.collider.transform.parent.name;
                     if (thisObjectName != null)
                     {
@@ -731,6 +732,11 @@ public class SimControl : MonoBehaviour
                             labels[1].enabled = true;
                             //labels[1].text = (thisNavAgent.remainingDistance / KmToUnity).ToString("n2") + " km path:" + thisNavAgent.hasPath;
                             labels[1].text = thisActor.motionScript.waypoints[thisActor.motionScript.waypointIndex].name;
+                        }
+                        else if (thisActor)
+                        {
+                            labels[1].enabled = true;
+                            labels[1].text = blueDataManager.getConnectionInfoForAgent(thisActor.unique_id);
                         }
                         else
                         {

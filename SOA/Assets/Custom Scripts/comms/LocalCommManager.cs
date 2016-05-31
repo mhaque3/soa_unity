@@ -30,6 +30,7 @@ namespace soa
 
         public void start()
         {
+            network.Start();
             reader.Start();
             writer.Start();
         }
@@ -39,6 +40,16 @@ namespace soa
             network.Stop();
             reader.Stop();
             writer.Stop();
+        }
+
+        public string getConnectionForAgent(int agentID)
+        {
+            IPEndPoint agentEndPoint = getActorIPAddres(agentID);
+            if (agentEndPoint != null)
+            {
+                return agentEndPoint.ToString();
+            }
+            return "Not Connected";
         }
 
         public void addOutgoing(List<Belief> beliefs, int sourceID, params int[] targetIDs)
@@ -53,18 +64,17 @@ namespace soa
         {
             if (targetActorIDs == null)
             {
-                targetActorIDs = new int[agentIPs.Count];
-                agentIPs.Keys.CopyTo(targetActorIDs, 0);
+                targetActorIDs = getAllActorIDs();
             }
-
+            
             foreach (int agentID in targetActorIDs)
             {
                 ConnectionProtocol.RequestData msgData = new ConnectionProtocol.RequestData();
-                IPEndPoint address = null;
-                if (agentIPs.TryGetValue(agentID, out address))
+                IPEndPoint address = getActorIPAddres(agentID);
+                if (address != null)
                 {
                     msgData.address = address;
-                    msgData.sourceID = sourceID;
+                    msgData.sourceID = agentID;
                     msgData.type = ConnectionProtocol.RequestType.POST;
                     msgData.messageData = serializer.serializeBelief(b);
 
@@ -89,7 +99,10 @@ namespace soa
 
         private void handleConnection(ConnectionProtocol.RequestData connectionRequest)
         {
-            agentIPs.Add(connectionRequest.sourceID, connectionRequest.address);
+            lock(agentIPs)
+            {
+                agentIPs[connectionRequest.sourceID] = connectionRequest.address;
+            }
 
             List<Belief> initializationBeliefs = dataManager.getInitializationBeliefs();
             addOutgoing(initializationBeliefs, ConnectionProtocol.SERVER_ID,connectionRequest.sourceID);
@@ -99,6 +112,26 @@ namespace soa
         {
             Belief belief = serializer.generateBelief(postRequest.messageData);
             dataManager.addExternalBeliefToActor(belief, postRequest.sourceID);
+        }
+
+        private int[] getAllActorIDs()
+        {
+            lock(agentIPs)
+            {
+                int[] targetActorIDs = new int[agentIPs.Count];
+                agentIPs.Keys.CopyTo(targetActorIDs, 0);
+                return targetActorIDs;
+            }
+        }
+
+        private IPEndPoint getActorIPAddres(int agentID)
+        {
+            lock(agentIPs)
+            {
+                IPEndPoint address = null;
+                agentIPs.TryGetValue(agentID, out address);
+                return address;
+            }
         }
     }
 }

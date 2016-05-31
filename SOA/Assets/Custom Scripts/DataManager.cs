@@ -27,7 +27,7 @@ namespace soa
         private string room;
 
         // Constructor
-        public DataManager(string roomName)
+        public DataManager(string roomName, int port=5055)
         {
             room = roomName;
             
@@ -36,7 +36,7 @@ namespace soa
             
             Serializer ps = new ProtobufSerializer();
 
-            cm = new LocalCommManager(this, ps, new UdpNetwork());
+            cm = new LocalCommManager(this, ps, new UdpNetwork(port));
             //cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
@@ -48,7 +48,9 @@ namespace soa
         public void startComms()
         {
             if (cm != null)
-            cm.start();
+            {
+                cm.start();
+            }
         }
 
         public void broadcastBelief(Belief b, int sourceId, int[] recipients)
@@ -58,6 +60,11 @@ namespace soa
                 cm.addOutgoing(b, sourceId, null);
                 
             }
+        }
+
+        public string getConnectionInfoForAgent(int agentID)
+        {
+            return cm.getConnectionForAgent(agentID);
         }
 
         /*public void addAndBroadcastBelief(Belief b, int sourceId, int[] recipients)

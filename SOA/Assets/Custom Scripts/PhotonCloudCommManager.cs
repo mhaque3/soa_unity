@@ -105,6 +105,11 @@ namespace soa
             this.MasterServerAddress = ipAddress;
         }
 
+        public string getConnectionForAgent(int agentID)
+        {
+            return "";
+        }
+
         /// <summary>
         /// Starts the communication manager 
         /// </summary>
