@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using soa;
 using Gamelogic.Grids;
+using System.Net;
 
 public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
 
@@ -209,10 +210,10 @@ public class SimControl : MonoBehaviour
 
         // NavMesh
         NavMesh.pathfindingIterationsPerFrame = 50;
-
+        
         // Create data managers
-        redDataManager = new DataManager(networkRedRoom, 5054);
-        blueDataManager = new DataManager(networkBlueRoom, 5055);
+        redDataManager = new DataManager(networkRedRoom, parsePortNumber(networkRedRoom, 5054));
+        blueDataManager = new DataManager(networkBlueRoom, parsePortNumber(networkBlueRoom, 5055));
 
         // Activate local platforms (both pre-existing and instantiated from config)
         for (int i = 0; i < LocalPlatforms.Count; i++)
@@ -275,6 +276,27 @@ public class SimControl : MonoBehaviour
         redDataManager.startComms();
         blueDataManager.startComms();
 	} // End Start()
+
+    private int parsePortNumber(string roomName, int defaultValue)
+    {
+        if (roomName != null)
+        {
+            string[] parts = roomName.Split(':');
+            if (parts != null && parts.Length == 2)
+            {
+                string portText = parts[1];
+                try
+                {
+                    return int.Parse(portText);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError(e.ToString());
+                }
+            }
+        }
+        return defaultValue;
+    }
 
     // Reads in the XML config file
     void LoadConfigFile()
