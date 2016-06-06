@@ -105,7 +105,7 @@ namespace soa
             }
 
             List<Belief> initializationBeliefs = dataManager.getInitializationBeliefs();
-            addOutgoing(initializationBeliefs, ConnectionProtocol.SERVER_ID,connectionRequest.sourceID);
+            addOutgoing(initializationBeliefs, connectionRequest.sourceID, connectionRequest.sourceID);
         }
 
         private void handlePost(ConnectionProtocol.RequestData postRequest)

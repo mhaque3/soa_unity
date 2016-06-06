@@ -79,7 +79,7 @@ namespace soa
             {
                 byte[] intBuff = new byte[4];
                 System.Buffer.BlockCopy(buffer, startIndex, intBuff, 0, 4);
-                return BitConverter.ToInt32(intBuff, 0);
+                return BitConverter.ToInt32(intBuff, startIndex);
             }
             return BitConverter.ToInt32(buffer, startIndex);
         }

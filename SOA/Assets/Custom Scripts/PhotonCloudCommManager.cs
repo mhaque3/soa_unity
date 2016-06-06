@@ -249,35 +249,7 @@ namespace soa
                 System.Threading.Thread.Sleep(updateSleepTime_ms);
             }
         }
-
-        /// <summary>
-        /// Adds information from data manager to outgoing queue using default source ID
-        /// and broadcasts message to everyone
-        /// </summary>
-        /*public void addOutgoing(Belief b)
-        {
-            addOutgoing(b, defaultSourceID, null);
-        }
-
-        /// <summary>
-        /// Adds multiple beliefs from data manager to outgoing queue using default source ID
-        /// for broadcast to everyone
-        /// </summary>
-        public void addOutgoing(List<Belief> l)
-        {
-            addOutgoing(l, null);
-        }*/
-
-        /// <summary>
-        /// Adds multiple beliefs from data manager to outgoing queue using default source ID
-        /// directed for specified actor
-        /// Use null for targetActorIDs if broadcast
-        /// </summary>
-        public void addOutgoing(List<Belief> l, int[] targetActorIDs)
-        {
-            addOutgoing(l, defaultSourceID, targetActorIDs);
-        }
-
+        
         /// <summary>
         /// Adds multiple beliefs from data manager to outgoing queue using specified source ID
         /// directed for specified actor
