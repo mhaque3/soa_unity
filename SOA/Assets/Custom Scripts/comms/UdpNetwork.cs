@@ -10,13 +10,17 @@ namespace soa
     class UdpNetwork : INetwork
     {
         private UdpClient socket;
-		private int port;
+        private int port;
 
-		public UdpNetwork(int port = 0)
+        public UdpNetwork(int port = 0)
         {
             this.socket = new UdpClient(port);
-			this.port = ((IPEndPoint)socket.Client.LocalEndPoint).Port;
-			Console.WriteLine ("Port number: " + this.port);
+            this.port = ((IPEndPoint)socket.Client.LocalEndPoint).Port;
+#if (NOT_UNITY)
+            Console.WriteLine("Listening on port: " + this.port);
+#else
+            UnityEngine.Debug.Log("Listening on port: " + this.port);
+#endif
         }
 
 		public int getPort()
@@ -38,7 +42,7 @@ namespace soa
             {
                 IPEndPoint connectionAddress = new IPEndPoint(IPAddress.Any, 0);
                 byte[] messageData = socket.Receive(ref connectionAddress);
-
+                
                 if (messageData == null || messageData.Length == 0)
                     return null;
 
