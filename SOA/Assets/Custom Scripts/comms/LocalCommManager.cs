@@ -30,6 +30,7 @@ namespace soa
 
         public void start()
         {
+			network.Start ();
             reader.Start();
             writer.Start();
         }

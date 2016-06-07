@@ -41,13 +41,10 @@ namespace soa
         {
             while (isAlive())
             {
-                lock(messages)
+                Message message = take();
+                if (message != null)
                 {
-                    Message message = take();
-                    if (message != null)
-                    {
-                        network.Send(message);
-                    }
+                    network.Send(message);
                 }
             }
         }
