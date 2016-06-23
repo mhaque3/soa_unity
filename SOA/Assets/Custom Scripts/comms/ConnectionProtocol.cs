@@ -40,6 +40,7 @@ namespace soa
             byte[] messageData = new byte[HEADER_LENGTH + data.messageData.Length];
             writeInt32(messageData, HEADER_TYPE_OFFSET, (int)data.type);
             writeInt32(messageData, HEADER_SOURCE_OFFSET, data.sourceID);
+            
             System.Buffer.BlockCopy(data.messageData, 0, messageData, HEADER_LENGTH, data.messageData.Length);
 
             return new Message(data.address, messageData);
@@ -75,22 +76,15 @@ namespace soa
 
         private int parseInt32(byte[] buffer, int startIndex)
         {
-            if (BitConverter.IsLittleEndian)
-            {
-                byte[] intBuff = new byte[4];
-                System.Buffer.BlockCopy(buffer, startIndex, intBuff, 0, 4);
-                return BitConverter.ToInt32(intBuff, startIndex);
-            }
-            return BitConverter.ToInt32(buffer, startIndex);
+            int value = BitConverter.ToInt32(buffer, startIndex);
+            return IPAddress.NetworkToHostOrder(value);
         }
 
         private void writeInt32(byte[] buffer, int startIndex, int value)
         {
+            value = IPAddress.HostToNetworkOrder(value);
             byte[] bytes = BitConverter.GetBytes(value);
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(bytes);
-            }
+            
             for (int i = 0;i < bytes.Length; ++i)
             {
                 buffer[i + startIndex] = bytes[i];

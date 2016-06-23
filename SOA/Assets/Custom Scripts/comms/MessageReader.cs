@@ -32,7 +32,7 @@ namespace soa
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine(e.ToString());
+                    Log.error(e.ToString());
                 }
             }
         }
@@ -46,6 +46,10 @@ namespace soa
                 if (isValid(data))
                 {
                     callback(data);
+                }
+                else
+                {
+                    Log.warning("Received invalid message");
                 }
             }
         }
