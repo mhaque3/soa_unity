@@ -797,6 +797,7 @@ public class SoaActor : MonoBehaviour
             localBroadcastBeliefsOfType(Belief.BeliefType.SUPPLY_DELIVERY, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.SUPPLY_PICKUP, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT, connectedActors);
+            localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT_PATH, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.WAYPOINT_OVERRIDE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.NGOSITE, connectedActors);
             localBroadcastBeliefsOfType(Belief.BeliefType.VILLAGE, connectedActors);
