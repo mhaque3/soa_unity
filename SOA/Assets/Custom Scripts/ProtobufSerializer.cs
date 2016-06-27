@@ -412,11 +412,7 @@ namespace soa
                     }
                 default:
                     // Unrecognized type, return empty array
-                    #if(UNITY_STANDALONE)
-                        Debug.Log("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
-                    #else
-                        Console.Error.WriteLine("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
-                    #endif
+                    Log.debug("ProtobufSerializer.serializeBelief(): Unrecognized Belief type");
                     return new byte[0];
             }
 
@@ -723,11 +719,7 @@ namespace soa
                     }
                 default:
                     // Unrecognized type
-                    #if(UNITY_STANDALONE)
-                        Debug.Log("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
-                    #else
-                        Console.Error.WriteLine("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
-                    #endif
+                    Log.debug("ProtobufSerializer.generateBelief(): Unrecognized header type " + headerType);
                     // Don't create a new belief object and return to caller
                     return null;
             }

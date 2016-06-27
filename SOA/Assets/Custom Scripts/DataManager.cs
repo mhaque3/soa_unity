@@ -103,12 +103,6 @@ namespace soa
         {
             lock (dataManagerLock)
             {
-#if(NOT_UNITY)
-            Console.WriteLine("DataManager: Received belief of type "
-                + (int)b.getBeliefType() + "\n" + b);
-#else
-                //Debug.Log("DataManager: Received belief of type " + (int)b.getBeliefType() + "\n" + b.ToString());
-#endif
                 
                 SortedDictionary<int, Belief> tempTypeDict = getBeliefsFor(b.getTypeKey());
                 if (tempTypeDict != null)

@@ -87,13 +87,14 @@ namespace soa
 
         private int parseInt32(byte[] buffer, int startIndex)
         {
-	    int value = BitConverter.ToInt32(buffer, startIndex);
-	    return IPAddress.NetworkToHostOrder (value);
+            int value = BitConverter.ToInt32(buffer, startIndex);
+            return IPAddress.NetworkToHostOrder(value);
         }
 
         private void writeInt32(byte[] buffer, int startIndex, int value)
         {
-	    byte[] bytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value));
+            value = IPAddress.HostToNetworkOrder(value);
+            byte[] bytes = BitConverter.GetBytes(value);
 
             for (int i = 0;i < bytes.Length; ++i)
             {
