@@ -19,6 +19,11 @@ namespace soa
             Log.debug("Listening on port: " + this.port);
         }
 
+		public int getPort()
+		{
+			return port;
+		}
+
         public void Start()
         {}
 

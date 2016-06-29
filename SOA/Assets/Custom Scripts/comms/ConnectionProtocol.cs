@@ -35,30 +35,41 @@ namespace soa
             UNKNOWN=-1
         }
         
-        public Message formatMessage(RequestData data)
-        {
-            byte[] messageData = new byte[HEADER_LENGTH + data.messageData.Length];
-            writeInt32(messageData, HEADER_TYPE_OFFSET, (int)data.type);
-            writeInt32(messageData, HEADER_SOURCE_OFFSET, data.sourceID);
-            
-            System.Buffer.BlockCopy(data.messageData, 0, messageData, HEADER_LENGTH, data.messageData.Length);
+        public Message formatMessage (RequestData data)
+		{
+			if (data == null) {
+				Console.Error.WriteLine ("Could not format null data");
+				return null;
+			}
 
+			int messageLength = data.messageData == null ? 0 : data.messageData.Length;
+			byte[] messageData = new byte[HEADER_LENGTH + messageLength];
+			writeInt32 (messageData, HEADER_TYPE_OFFSET, (int)data.type);
+			writeInt32 (messageData, HEADER_SOURCE_OFFSET, data.sourceID);
+
+			if (data.messageData != null) {
+				System.Buffer.BlockCopy (data.messageData, 0, messageData, HEADER_LENGTH, data.messageData.Length);
+			}
+		
             return new Message(data.address, messageData);
         }
 
         public RequestData parse(Message message)
         {
+			if (message == null) {
+				Console.Error.WriteLine ("Could not parse null message");
+				return null;
+			}
+
             RequestData data = new RequestData();
             data.address = message.address;
 
-            if (message.data.Length < HEADER_LENGTH)
-            {
+            if (message.data.Length < HEADER_LENGTH) {
                 throw new Exception("Invalid message: " + System.Text.Encoding.Default.GetString(message.data));
             }
 
             int messageType = parseInt32(message.data, HEADER_TYPE_OFFSET);
-            if (Enum.IsDefined(typeof(RequestType), messageType))
-            {
+            if (Enum.IsDefined(typeof(RequestType), messageType)) {
                 data.type = (RequestType)messageType;
             }
 
@@ -66,8 +77,8 @@ namespace soa
 
             int bytesRemaining = message.data.Length - HEADER_LENGTH;
             data.messageData = new byte[bytesRemaining];
-            if (bytesRemaining > 0)
-            {   
+
+            if (bytesRemaining > 0) {   
                 System.Buffer.BlockCopy(message.data, HEADER_LENGTH, data.messageData, 0, bytesRemaining);
             }
 
@@ -84,10 +95,10 @@ namespace soa
         {
             value = IPAddress.HostToNetworkOrder(value);
             byte[] bytes = BitConverter.GetBytes(value);
-            
+
             for (int i = 0;i < bytes.Length; ++i)
             {
-                buffer[i + startIndex] = bytes[i];
+				buffer[startIndex + i] = bytes[i];
             }
         }
     }
