@@ -120,14 +120,17 @@ public class SoaSensor : MonoBehaviour
 
     public void logKill(SoaActor killedActor)
     {
-        soaActor.killDetections.Add(new soa.Belief_Actor(
-            killedActor.unique_id, (int)killedActor.affiliation, killedActor.type, false, 
-            killedActor.numStorageSlots, killedActor.numCasualtiesStored,
-            killedActor.numSuppliesStored, killedActor.numCiviliansStored,
-            killedActor.isWeaponized, killedActor.hasJammer, killedActor.fuelRemaining_s,
-            killedActor.transform.position.x / SimControl.KmToUnity,
-            killedActor.simAltitude_km,
-            killedActor.transform.position.z / SimControl.KmToUnity));
+        lock(soaActor.killDetections)
+        {
+            soaActor.killDetections.Add(new soa.Belief_Actor(
+                killedActor.unique_id, (int)killedActor.affiliation, killedActor.type, false,
+                killedActor.numStorageSlots, killedActor.numCasualtiesStored,
+                killedActor.numSuppliesStored, killedActor.numCiviliansStored,
+                killedActor.isWeaponized, killedActor.hasJammer, killedActor.fuelRemaining_s,
+                killedActor.transform.position.x / SimControl.KmToUnity,
+                killedActor.simAltitude_km,
+                killedActor.transform.position.z / SimControl.KmToUnity));
+        }
     }
 
     void LogDetection(GameObject detectedObject)

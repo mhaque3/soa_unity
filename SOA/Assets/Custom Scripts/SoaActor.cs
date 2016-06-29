@@ -376,7 +376,7 @@ public class SoaActor : MonoBehaviour
                             )
                         ));
                     }
-
+                    
                     // Set the desired altitude separately [km]
                     SetDesiredAltitude(newWaypoint.getPos_y());
                 }
@@ -508,19 +508,16 @@ public class SoaActor : MonoBehaviour
                 currentCell = hexGrid.Map[transform.position];
                 prevHexGridCell = currentCell;
             }
-
-            //TODO make this thread safe since collisions are done by collider in a separate thread????
-            foreach (Belief_Actor belief_actor in killDetections)
+            
+            List<Belief_Actor> localKillDetections = new List<Belief_Actor>();
+            lock(killDetections)
             {
+                localKillDetections.AddRange(killDetections);
+                killDetections.Clear();
+            }
 
-                /*addMyBeliefData(new Belief_Actor(
-                    belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false, 
-                    belief_actor.getNumStorageSlots(), belief_actor.getNumCasualtiesStored(),
-                    belief_actor.getNumSuppliesStored(), belief_actor.getNumCiviliansStored(),
-                    belief_actor.getIsWeaponized(), belief_actor.getHasJammer(), belief_actor.getFuelRemaining(),
-                    belief_actor.getPos_x(),
-                    belief_actor.getPos_y(),
-                    belief_actor.getPos_z()));*/
+            foreach (Belief_Actor belief_actor in localKillDetections)
+            {
                 addBeliefToUnmergedBeliefDictionary(new Belief_Actor(
                     belief_actor.getId(), (int)belief_actor.getAffiliation(), belief_actor.getType(), false,
                     belief_actor.getNumStorageSlots(), belief_actor.getNumCasualtiesStored(),
@@ -529,9 +526,7 @@ public class SoaActor : MonoBehaviour
                     belief_actor.getPos_x(),
                     belief_actor.getPos_y(),
                     belief_actor.getPos_z()));
-
             }
-            killDetections.Clear();
 
             // ???
             useGhostModel = false;           

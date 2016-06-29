@@ -45,6 +45,7 @@ namespace soa
                 ConnectionProtocol.RequestData data = protocol.parse(message);
                 if (isValid(data))
                 {
+                    Log.debug("Received message with " + message.data.Length + " bytes");
                     callback(data);
                 }
                 else
