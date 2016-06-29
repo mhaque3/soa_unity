@@ -62,11 +62,17 @@ namespace soa
 
         public void addOutgoing(Belief b, int sourceID, int[] targetActorIDs)
         {
+            CachedBelief cached = new CachedBelief(b, serializer.serializeBelief(b), null);
+            addOutgoing(cached, sourceID, targetActorIDs);
+        }
+
+        public void addOutgoing(CachedBelief b, int sourceID, int[] targetActorIDs)
+        {
             if (targetActorIDs == null)
             {
                 targetActorIDs = getAllActorIDs();
             }
-            
+
             foreach (int agentID in targetActorIDs)
             {
                 ConnectionProtocol.RequestData msgData = new ConnectionProtocol.RequestData();
@@ -76,7 +82,7 @@ namespace soa
                     msgData.address = address;
                     msgData.sourceID = agentID;
                     msgData.type = ConnectionProtocol.RequestType.POST;
-                    msgData.messageData = serializer.serializeBelief(b);
+                    msgData.messageData = b.GetSerializedBelief();
 
                     Message message = protocol.formatMessage(msgData);
                     writer.write(message);
@@ -111,6 +117,12 @@ namespace soa
         private void handlePost(ConnectionProtocol.RequestData postRequest)
         {
             Belief belief = serializer.generateBelief(postRequest.messageData);
+
+            if (belief.getBeliefType() == Belief.BeliefType.CUSTOM)
+            {
+                Log.debug("Received a custom belief from agent " + postRequest.sourceID);
+            }
+
             dataManager.addExternalBeliefToActor(belief, postRequest.sourceID);
         }
 

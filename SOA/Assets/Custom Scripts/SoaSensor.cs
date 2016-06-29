@@ -31,15 +31,14 @@ public class SoaSensor : MonoBehaviour
         if (soaActor.type == (int)SoaActor.ActorType.BALLOON)
         {
             // Get the belief dictionary and SPOI Belief
-            SortedDictionary<int, Belief> spoiBeliefDictionary = soaActor.getDictionaryFor(soa.Belief.BeliefType.SPOI);
-            Belief belief;
-            if (spoiBeliefDictionary.TryGetValue(soaActor.unique_id, out belief))
+            Belief_SPOI b = soaActor.Find<Belief_SPOI>(soa.Belief.BeliefType.SPOI, soaActor.unique_id);
+            if (b != null)
             {
                 // Extract SPOI (x,y,z) in sim coordinates [km]
                 Vector3 spoi_km = new Vector3(
-                    ((Belief_SPOI)belief).getPos_x(),
-                    ((Belief_SPOI)belief).getPos_y(),
-                    ((Belief_SPOI)belief).getPos_z());
+                    b.getPos_x(),
+                    b.getPos_y(),
+                    b.getPos_z());
 
                 // Update the sensor boresight vector
                 boresightUnitVector.x = spoi_km.x - transform.position.x / SimControl.KmToUnity; // [km]

@@ -636,42 +636,6 @@ public class SimControl : MonoBehaviour
                                 SoaActor actor = platform.GetComponent<SoaActor>();
                                 actor.broadcastCommsLocal();
                             }
-
-                            /*for (int i = 0; i < BlueBases.Count; i++)
-                            {
-                                GameObject platform = BlueBases[i];
-                                SoaSite site = platform.GetComponent<SoaSite>();
-                                site.broadcastCommsLocal();
-                            }*/
-
-
-                            //Merge in belief dictionary after round of comms
-                            for (int i = 0; i < LocalPlatforms.Count; i++)
-                            {
-                                GameObject platform = LocalPlatforms[i];
-                                SoaActor actor = platform.GetComponent<SoaActor>();
-                                if (actor.affiliation != Affiliation.NEUTRAL)
-                                {
-                                    actor.mergeBeliefDictionary();
-                                }
-                                
-                            }
-
-                            for (int i = 0; i < RemotePlatforms.Count; i++)
-                            {
-                                // Note: Blue base now counts as a remote platform
-                                GameObject platform = RemotePlatforms[i];
-                                SoaActor actor = platform.GetComponent<SoaActor>();
-                                actor.mergeBeliefDictionary();
-                            }
-
-                            /*
-                            for (int i = 0; i < BlueBases.Count; i++)
-                            {
-                                GameObject platform = BlueBases[i];
-                                SoaSite site = platform.GetComponent<SoaSite>();
-                                site.mergeBeliefDictionary();
-                            }*/
                         }
                     }
                 }

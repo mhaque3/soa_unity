@@ -239,6 +239,11 @@ namespace soa
             }
         }
 
+        public void addOutgoing(CachedBelief b, int sourceID, int[] targetActorIDs)
+        {
+            addOutgoing(b.GetBelief(), sourceID, targetActorIDs);
+        }
+
         /// <summary>
         /// Adds information from data manager to outgoing queue using specified source ID
         /// Use null for targetActorIDs if broadcast

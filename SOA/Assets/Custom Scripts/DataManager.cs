@@ -53,6 +53,14 @@ namespace soa
             }
         }
 
+        public void broadcastBelief(CachedBelief b, int sourceId)
+        {
+            if (cm != null)
+            {
+                cm.addOutgoing(b, sourceId, null);
+            }
+        }
+
         public void broadcastBelief(Belief b, int sourceId, int[] recipients)
         {
             if (cm != null)
@@ -92,7 +100,7 @@ namespace soa
         {
             foreach (KeyValuePair<int, SoaActor> entry in soaActorDictionary)
             {
-                entry.Value.addBeliefToUnmergedBeliefDictionary(b);
+                entry.Value.addBeliefToBeliefDictionary(b);
             }
         }
 
@@ -279,21 +287,6 @@ namespace soa
             else
             {
                 Debug.LogError("TRIED TO REMOVE ACTOR FROM DATA MANAGER THAT DOESN'T EXIST: " + actor.unique_id);
-            }
-        }
-
-        public SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > getActorWorldView(int actorId)
-        {
-
-            SoaActor soaActor = soaActorDictionary[actorId];
-            if (soaActor != null)
-            {
-                return soaActor.getBeliefDictionary();
-            }
-            else
-            {
-                Debug.LogError("getActorWorldView actor id " + actorId + " does not exist.");
-                return null;
             }
         }
 
