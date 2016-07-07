@@ -13,6 +13,8 @@ namespace soa
 
         string getConnectionForAgent(int agentID);
 
+		void addNewActor(SoaActor actor);
+
         void addOutgoing(List<Belief> l, int sourceID, int[] targetActorIDs);
 
         void addOutgoing(Belief b, int sourceID, int[] targetActorIDs);

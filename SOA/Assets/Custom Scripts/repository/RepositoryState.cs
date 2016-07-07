@@ -9,11 +9,18 @@ namespace soa
     {
 
         private readonly HashSet<RepositoryObject> objects;
+		private int revisionNumber;
 
-        public RepositoryState()
+        public RepositoryState(int revisionNumber)
         {
-            objects = new HashSet<RepositoryObject>();
+            this.objects = new HashSet<RepositoryObject>();
+			this.revisionNumber = revisionNumber;
         }
+
+		public int RevisionNumber()
+		{
+			return revisionNumber;
+		}
 
         public void Add(CacheKey key, Hash hash)
         {

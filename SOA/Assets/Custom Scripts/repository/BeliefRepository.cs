@@ -11,7 +11,6 @@ namespace soa
         private Serializer serializer;
         private IHashFunction hashFunction;
         private RepositoryState currentState;
-        private long revision;
 
         public BeliefRepository() : this(new ProtobufSerializer(), new SHA1_Hash())
         { }
@@ -21,7 +20,7 @@ namespace soa
             this.beliefCache = new SortedDictionary<CacheKey, CachedBelief>();
             this.serializer = serializer;
             this.hashFunction = hashFunction;
-            this.revision = 0;
+			this.currentState = new RepositoryState(0);
         }
         
         public void SyncWith(BeliefRepository other)
@@ -69,11 +68,6 @@ namespace soa
             }
         }
 
-        public long CurrentRevision()
-        {
-            return revision;
-        }
-
         public RepositoryState CurrentState()
         {
             return currentState;
@@ -100,7 +94,6 @@ namespace soa
                 Hash hash = hashFunction.generateHash(serialized);
                 CachedBelief cached = new CachedBelief(belief, serialized, hash);
                 beliefCache[key] = cached;
-                ++revision;
                 currentState = RegenerateState();
                 return true;
             }
@@ -125,7 +118,7 @@ namespace soa
         {
             lock (this)
             {
-                RepositoryState state = new RepositoryState();
+				RepositoryState state = new RepositoryState(currentState.RevisionNumber() + 1);
                 foreach (KeyValuePair<CacheKey, CachedBelief> entry in beliefCache)
                 {
                     state.Add(entry.Key, entry.Value.GetHash());

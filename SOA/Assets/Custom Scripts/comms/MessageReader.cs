@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace soa
 {
     public class MessageReader : ThreadWorker
     {
-        public delegate void Callback(ConnectionProtocol.RequestData data);
+		public delegate void Callback(Message message);
 
         private readonly Callback callback;
         private readonly INetwork network;
@@ -19,7 +18,6 @@ namespace soa
         {
             this.callback = callback;
             this.network = network;
-            this.protocol = new ConnectionProtocol();
         }
 
         protected override void doWork()
@@ -42,16 +40,7 @@ namespace soa
             Message message = network.Receive();
             if (message != null)
             {
-                ConnectionProtocol.RequestData data = protocol.parse(message);
-                if (isValid(data))
-                {
-                    Log.debug("Received message with " + message.data.Length + " bytes");
-                    callback(data);
-                }
-                else
-                {
-                    Log.warning("Received invalid message");
-                }
+				callback(message);
             }
         }
 

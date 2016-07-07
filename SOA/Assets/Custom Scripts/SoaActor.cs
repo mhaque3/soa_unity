@@ -99,6 +99,11 @@ public class SoaActor : MonoBehaviour
 
     NavMeshAgent nma;
 
+	public BeliefRepository getRepository()
+	{
+		return beliefRepo;
+	}
+
     // Use this for initialization
     void Start()
     {
@@ -536,7 +541,10 @@ public class SoaActor : MonoBehaviour
     //Add data from the sensors of this actor (position updates, sensor data).  This goes to the belief dictionary and the remote beliefs to be sent.
     private void addMyBeliefData(Belief b)
     {
-        beliefRepo.Commit(b);
+		if (beliefRepo.Commit(b))
+		{
+			dataManager.synchronizeBelief(b, unique_id);
+		}
     }
 
     public bool checkClassified(int uniqueId)
@@ -550,29 +558,20 @@ public class SoaActor : MonoBehaviour
         classificationDictionary[uniqueId] = true;
     }
 
-    public bool addBeliefToBeliefDictionary(Belief b)
+	public void addExternalBelief(Belief b)
+	{
+		beliefRepo.Commit(b);
+	}
+
+    public void addBeliefToBeliefDictionary(Belief b)
     {
-        return beliefRepo.Commit(b);
+		addMyBeliefData(b);
     }
 
     //Broadcast new beliefs that have been added this update cycle and then clear them from remotebeliefs after they have been sent
     public void updateRemoteAgent()
     {
-        // Merge unmerged beliefs first and populate remote beliefs
-        IEnumerable<CachedBelief> toSend = null;
-        if (lastKnownState == null)
-        {
-            toSend = beliefRepo.GetAllBeliefs();
-        }
-        else
-        {
-            toSend = beliefRepo.Diff(lastKnownState);
-        }
-
-        foreach(CachedBelief belief in toSend)
-        {
-            dataManager.broadcastBelief(belief, unique_id);
-        }
+		dataManager.synchronizeRepository(unique_id);
     }
 
     public BeliefType Find<BeliefType> (Belief.BeliefType type, int id) where BeliefType : Belief

@@ -22,7 +22,7 @@ namespace soa
         //Dictionary of belief data
         protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > beliefDictionary;
         public System.Object dataManagerLock = new System.Object();
-        private ICommManager cm;
+		private LocalCommManager cm;
 
         private string room;
 
@@ -53,22 +53,15 @@ namespace soa
             }
         }
 
-        public void broadcastBelief(CachedBelief b, int sourceId)
-        {
-            if (cm != null)
-            {
-                cm.addOutgoing(b, sourceId, null);
-            }
-        }
+		public void synchronizeRepository(int sourceID)
+		{
+			cm.synchronizeBeliefsFor(sourceID);
+		}
 
-        public void broadcastBelief(Belief b, int sourceId, int[] recipients)
-        {
-            if (cm != null)
-            {
-                cm.addOutgoing(b, sourceId, null);
-                
-            }
-        }
+		public void synchronizeBelief(Belief b, int sourceID)
+		{
+			cm.synchronizeBelief(b, sourceID);
+		}
 
         public string getConnectionInfoForAgent(int agentID)
         {
@@ -92,7 +85,7 @@ namespace soa
             soaActorDictionary.TryGetValue(sourceId, out a);
             if (a != null)
             {
-                a.addBeliefToBeliefDictionary(b);
+				a.addExternalBelief(b);
             }
         }
 
@@ -100,7 +93,7 @@ namespace soa
         {
             foreach (KeyValuePair<int, SoaActor> entry in soaActorDictionary)
             {
-                entry.Value.addBeliefToBeliefDictionary(b);
+				entry.Value.addExternalBelief(b);
             }
         }
 

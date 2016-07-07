@@ -1,0 +1,57 @@
+﻿using System;
+namespace soa
+{
+	public class SyncMessageHandler : IMessageHandler
+	{
+		private readonly BeliefRepository repo;
+		private readonly AgentMessageHandler protocol;
+		private RepositoryState remoteState;
+
+		public SyncMessageHandler(BeliefRepository repo, AgentMessageHandler protocol)
+		{
+			this.repo = repo;
+			this.protocol = protocol;
+		}
+
+		public void handleMessage(BSPMessage message)
+		{
+			RepositoryStateSerializer serializer = new RepositoryStateSerializer();
+			RepositoryState incomingState = serializer.deserialize(message.getData());
+			if (incomingState.RevisionNumber() > remoteState.RevisionNumber())
+			{
+				this.remoteState = incomingState;
+				IEnumerable<CachedBelief> changedBeliefs = repo.Diff(remoteState);
+				foreach (CachedBelief belief in changedBeliefs)
+				{
+					protocol.post(belief);
+				}
+			}
+		}
+
+		public void synchronizeAllBeliefs()
+		{
+			RepositoryStateSerializer serializer = new RepositoryStateSerializer();
+			NetworkBuffer buffer = serializer.serializer(repo.CurrentState());
+			BSPMessage message = new BSPMessage(protocol.getConnection().getAddress(),
+			                                    BSPMessageType.SYNC,
+			                                    protocol.getAgentID(),
+			                                    buffer);
+			protocol.getConnection().send(message);
+		}
+
+		public void synchronizeBelief(Belief belief)
+		{
+			IEnumerable<CachedBelief> changedBeliefs = repo.Diff(remoteState);
+			foreach (CachedBelief cached in changedBeliefs)
+			{
+				if (cached.GetBelief().getTypeKey() == belief.getTypeKey()
+				    && cached.GetBelief().getId() == belief.getId())
+				{
+					protocol.post(belief);
+					break;
+				}
+			}
+		}
+	}
+}
+

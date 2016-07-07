@@ -6,7 +6,12 @@ using System.Threading;
 
 namespace soa
 {
-    public class MessageWriter : ThreadWorker
+	public interface IMessageWriter
+	{
+		void write(Message message);
+	}
+
+    public class MessageWriter : ThreadWorker, IMessageWriter
     {
         private const int MSG_QUEUE_MAX_SIZE = 1024;
         private readonly Queue<Message> messages;
