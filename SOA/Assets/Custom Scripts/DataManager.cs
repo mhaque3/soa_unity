@@ -17,7 +17,6 @@ namespace soa
         public List<SoaActor> actors = new List<SoaActor>();
         public List<Belief> initializationBeliefs = new List<Belief>();
         public SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
-        public SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int,SortedDictionary<int,bool>>();
 
         //Dictionary of belief data
         protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > beliefDictionary;
@@ -25,6 +24,7 @@ namespace soa
 		private LocalCommManager cm;
 
         private string room;
+        public readonly IPhysicalLayer<int> physicalNetworkLayer;
 
         // Constructor
         public DataManager(string roomName, int port=5055)
@@ -41,6 +41,7 @@ namespace soa
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             beliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
+            physicalNetworkLayer = new IdealizedNetworkLayer();
 
             // Note: Comms manager must be started manually after all initial belief processing is done
         }
@@ -142,93 +143,7 @@ namespace soa
          */
         public void calculateDistances()
         {
-            foreach (SoaActor soaActor in actors)
-            {                
-                // Get own truth coordinates in km
-                Vector3 actorPos_km = new Vector3(
-                    soaActor.gameObject.transform.position.x / SimControl.KmToUnity,
-                    soaActor.simAltitude_km,
-                    soaActor.gameObject.transform.position.z / SimControl.KmToUnity);
-
-                float jammerNoiseSummation = 0;
-                foreach (SoaJammer jammerActor in SimControl.jammers) 
-                {
-                    // Get jammer truth coordinates in km
-                    Vector3 jammerPos_km = new Vector3(
-                        jammerActor.gameObject.transform.position.x / SimControl.KmToUnity,
-                        jammerActor.GetComponentInParent<SoaActor>().simAltitude_km,
-                        jammerActor.gameObject.transform.position.z / SimControl.KmToUnity);
-                    float jammerToActorDist_km = Vector3.Distance(actorPos_km, jammerPos_km);
-
-                    // Sum jammer's noise contribution to actor's SNR
-                    jammerNoiseSummation += (jammerActor.effectiveRange_km * jammerActor.effectiveRange_km) / (jammerToActorDist_km * jammerToActorDist_km);
-                }
-
-                foreach (SoaActor neighborActor in actors)
-                {
-                    // Add in exception for balloons
-                    if (soaActor.type == (int)SoaActor.ActorType.BALLOON || neighborActor.type == (int)SoaActor.ActorType.BALLOON)
-                    {
-                        if (soaActor is SoaSite || neighborActor is SoaSite)
-                        {
-                            // Balloon and blue base comms always established (blue base is the only soasite)
-                            actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = true;
-                        }
-                        else
-                        {
-                            // Balloons cant talk to anyone else except for blue base
-                            actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = false;
-                        }
-                    }
-                    else
-                    {
-                        // Get neighbor truth coordinates in km
-                        Vector3 neighborPos_km = new Vector3(
-                            neighborActor.gameObject.transform.position.x / SimControl.KmToUnity,
-                            neighborActor.simAltitude_km,
-                            neighborActor.gameObject.transform.position.z / SimControl.KmToUnity);
-
-                        float rx_tx_range_km = Vector3.Distance(actorPos_km, neighborPos_km);
-                        float rangeSquared_km2 = rx_tx_range_km * rx_tx_range_km;
-                        float snr = (soaActor.commsRange_km * soaActor.commsRange_km) / (rangeSquared_km2 * (1 + jammerNoiseSummation));
-
-                        // Compare calculated SNR value to 1.  Comms are 100% reliable at 1
-                        actorDistanceDictionary[soaActor.unique_id][neighborActor.unique_id] = (snr >= 1);
-                    }
-                }
-            }
-
-            // Allow direct connection between two actors if they can both communicate to the same site.  
-            // This is done to get around the fact that custom beliefs are not automatically forwarded
-            // and so we run into an issue if a UAV sends a custom belief to a base, base doesn't auto
-            // forward, and then the balloon who is only connected to the base never gets the message
-            // Note: This fix only allows for a single base relay node
-            foreach (SoaActor actor1 in actors)
-            {
-                foreach (SoaActor actor2 in actors)
-                {
-                    // Go through each site
-                    foreach (SoaActor siteActor in actors)
-                    {
-                        if (siteActor is SoaSite)
-                        {
-                            // Relay from actor1 -> siteActor -> actor2
-                            if (actorDistanceDictionary[actor1.unique_id][siteActor.unique_id] &&
-                                actorDistanceDictionary[siteActor.unique_id][actor2.unique_id])
-                            {
-                                actorDistanceDictionary[actor1.unique_id][actor2.unique_id] = true;
-                            }
-
-                            // Relay from actor2 -> siteActor -> actor1
-                            if (actorDistanceDictionary[actor2.unique_id][siteActor.unique_id] &&
-                                    actorDistanceDictionary[siteActor.unique_id][actor1.unique_id])
-                            {
-                                actorDistanceDictionary[actor2.unique_id][actor1.unique_id] = true;
-                            }
-                        }
-                    }
-                }
-            }
+            physicalNetworkLayer.Update();
         }
 
         /*
@@ -239,9 +154,9 @@ namespace soa
             if (!actors.Contains(actor))
             {
                 actors.Add(actor);
+                physicalNetworkLayer.AddActor(actor);
                 //Debug.Log("Adding actor " + actor.unique_id + " to actor dictionary");
                 soaActorDictionary[actor.unique_id] = actor;
-                actorDistanceDictionary[actor.unique_id] = new SortedDictionary<int,bool>();
 
                 addBeliefToDataManager(
                     new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, actor.isAlive, 
@@ -267,15 +182,9 @@ namespace soa
             if (actors.Contains(actor))
             {
                 actors.Remove(actor);
+                physicalNetworkLayer.RemoveActor(actor);
                 Debug.Log("Removing actor " + actor.unique_id + " from actor dictionary");
                 soaActorDictionary.Remove(actor.unique_id);
-
-                // Remove from both source and destination of distance dictionary
-                actorDistanceDictionary.Remove(actor.unique_id);
-                foreach (SortedDictionary<int,bool> d in actorDistanceDictionary.Values)
-                {
-                    d.Remove(actor.unique_id);
-                }
             }
             else
             {

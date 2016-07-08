@@ -6,7 +6,11 @@ namespace soa
 {
 	public class BeliefSyncProtocol
 	{
-		private Dictionary<int, AgentMessageHandler> handlers;
+        private const int HEADER_LENGTH = 8;
+        private const int HEADER_TYPE_OFFSET = 0;
+        private const int HEADER_SOURCE_OFFSET = 4;
+
+        private Dictionary<int, AgentMessageHandler> handlers;
 		private IMessageWriter messageWriter;
 
 		public BeliefSyncProtocol(IMessageWriter messageWriter)
@@ -26,10 +30,10 @@ namespace soa
 
 		public void synchronizeBelief(Belief belief, int sourceID)
 		{
-			AgentMessageHandler handler = findHandler(actorID);
+			AgentMessageHandler handler = findHandler(sourceID);
 			if (handler != null)
 			{
-				handler.synchronizeBelief(Belief);
+				handler.synchronizeBelief(belief);
 			}
 		}
 
@@ -38,7 +42,7 @@ namespace soa
 			AgentMessageHandler handler = findHandler(actorID);
 			if (handler != null)
 			{
-				IPEndPoint address = handler.getConnection().getAddress();
+				IPEndPoint address = handler.getConnection().getRemoteAddress();
 				if (address != null)
 				{
 					return address.ToString();
@@ -50,14 +54,14 @@ namespace soa
 		public void addActor(SoaActor actor)
 		{
 			INetworkConnection connection = new AgentConnection(this);
-			handlers.Item[actor.unique_id] = new AgentMessageHandler(actor.getRepository(), connection);
+			handlers[actor.unique_id] = new AgentMessageHandler(actor.unique_id, actor.getRepository(), connection);
 		}
 
 		public void handleMessage(Message message)
 		{
 			BSPMessage bspMessage = parse(message);
 			AgentMessageHandler handler = null;
-			if (handler.TryGetValue(bspMessage.getSourceID(), out handler))
+			if (handlers.TryGetValue(bspMessage.getSourceID(), out handler))
 			{
 				handler.handleMessage(bspMessage);
 			}
@@ -77,16 +81,16 @@ namespace soa
 				return null;
 			}
 
-			int messageLength = data.messageData == null ? 0 : data.messageData.Length;
+			int messageLength = data.getData().size();
 			NetworkBuffer messageData = new NetworkBuffer(HEADER_LENGTH + messageLength);
-			messageData.writeInt32 (HEADER_TYPE_OFFSET, (int)data.type);
-			messageData.writeInt32 (HEADER_SOURCE_OFFSET, data.sourceID);
+			messageData.writeInt32 (HEADER_TYPE_OFFSET, (int)data.getType());
+			messageData.writeInt32 (HEADER_SOURCE_OFFSET, data.getSourceID());
 
-			if (data.messageData != null) {
+			if (data.getData().size() > 0) {
 				messageData.writeBytes(data.getData().getBuffer(), 0, HEADER_LENGTH, data.getData().size());
 			}
 		
-            return new Message(data.address, messageData);
+            return new Message(data.getAddress(), messageData.getBuffer());
         }
 
         private BSPMessage parse(Message message)
@@ -96,23 +100,25 @@ namespace soa
 				return null;
 			}
 
-            if (message.data.Length < HEADER_LENGTH) {
-                throw new Exception("Invalid message: " + System.Text.Encoding.Default.GetString(message.data));
+            NetworkBuffer buffer = new NetworkBuffer(message.data);
+
+            if (buffer.size() < HEADER_LENGTH) {
+                throw new Exception("Invalid message: " + System.Text.Encoding.Default.GetString(buffer.getBuffer()));
             }
 
-            int messageType = parseInt32(message.data, HEADER_TYPE_OFFSET);
+            int messageType = buffer.parseInt32(HEADER_TYPE_OFFSET);
 			BSPMessageType type = BSPMessageType.UNKNOWN;
             if (Enum.IsDefined(typeof(BSPMessageType), messageType)) {
                 type = (BSPMessageType)messageType;
             }
 
-            int sourceID = parseInt32(message.data, HEADER_SOURCE_OFFSET);
+            int sourceID = buffer.parseInt32(HEADER_SOURCE_OFFSET);
 
-            int bytesRemaining = message.data.Length - HEADER_LENGTH;
+            int bytesRemaining = buffer.size() - HEADER_LENGTH;
 			NetworkBuffer data = new NetworkBuffer(bytesRemaining);
 
-            if (bytesRemaining > 0) {   
-				data.writeBytes(message.data, HEADER_LENGTH, 0, bytesRemaining);
+            if (bytesRemaining > 0) {
+                data.writeBytes(buffer.getBuffer(), HEADER_LENGTH, 0, bytesRemaining);
             }
 
 			return new BSPMessage(message.address, type, sourceID, data);
@@ -140,7 +146,7 @@ namespace soa
 
 			public void send(BSPMessage bspMessage)
 			{
-				Message message = protocol.format(bspMessage);
+				Message message = protocol.formatMessage(bspMessage);
 				protocol.messageWriter.write(message);
 			}
 		}

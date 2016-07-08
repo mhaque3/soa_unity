@@ -35,6 +35,11 @@ namespace soa
                 return type;
             }
 
+            public int getCustomType()
+            {
+                return customType;
+            }
+
             public int CompareTo(Key other)
             {
                 if (type == other.type)

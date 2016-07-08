@@ -23,7 +23,7 @@ namespace soa
 		public void post(CachedBelief belief)
 		{
 			byte[] bufferData = serializer.serializeBelief(belief.GetBelief());
-			BSPMessage message = new BSPMessage(protocol.getConnection().getAddress(),
+			BSPMessage message = new BSPMessage(protocol.getConnection().getRemoteAddress(),
 			                                    BSPMessageType.POST,
 			                                    protocol.getAgentID(),
 			                                    new NetworkBuffer(bufferData));

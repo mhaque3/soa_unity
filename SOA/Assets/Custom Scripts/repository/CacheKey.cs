@@ -16,6 +16,21 @@ namespace soa
             this.id = id;
         }
         
+        public Belief.BeliefType getBeliefType()
+        {
+            return key.getType();
+        }
+
+        public int getCustomType()
+        {
+            return key.getCustomType();
+        }
+
+        public int getBeliefID()
+        {
+            return id;
+        }
+
         public int CompareTo(CacheKey other)
         {
             int comparison = key.CompareTo(other.key);

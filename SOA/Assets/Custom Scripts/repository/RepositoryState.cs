@@ -16,7 +16,15 @@ namespace soa
             this.objects = new HashSet<RepositoryObject>();
 			this.revisionNumber = revisionNumber;
         }
-
+        
+        public IEnumerable<RepositoryObject> GetObjects()
+        {
+            return objects;
+        }
+        public int Size()
+        {
+            return objects.Count;
+        }
 		public int RevisionNumber()
 		{
 			return revisionNumber;
@@ -42,7 +50,7 @@ namespace soa
             return diffSet;
         }
 
-        private class RepositoryObject
+        public class RepositoryObject
         {
             public CacheKey key;
             public Hash hash;

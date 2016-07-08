@@ -10,7 +10,7 @@ namespace soa
     {
         public readonly IPEndPoint address;
         public readonly byte[] data;
-
+        
         public Message(IPEndPoint address, byte[] data)
         {
             this.address = address;

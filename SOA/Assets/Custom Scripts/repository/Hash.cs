@@ -19,6 +19,11 @@ namespace soa
             this.hashCode = hashCode;
         }
 
+        public byte[] GetBytes()
+        {
+            return hashCode;
+        }
+
         public int CompareTo(Hash other)
         {
             if (hashCode.Length != other.hashCode.Length)

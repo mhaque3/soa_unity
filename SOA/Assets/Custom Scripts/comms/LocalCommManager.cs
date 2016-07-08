@@ -42,9 +42,14 @@ namespace soa
             writer.Stop();
         }
 
+        public void addNewActor(SoaActor actor)
+        {
+            protocol.addActor(actor);
+        }
+
 		public void synchronizeBeliefsFor(int agentID)
 		{
-			protocol.synchronizeBeliefsFor(agentID);
+			protocol.synchronizeAllBeliefsFor(agentID);
 		}
 
 		public void synchronizeBelief(Belief b, int sourceID)

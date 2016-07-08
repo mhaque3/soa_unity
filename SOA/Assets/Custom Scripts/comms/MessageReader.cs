@@ -12,7 +12,6 @@ namespace soa
 
         private readonly Callback callback;
         private readonly INetwork network;
-        private readonly ConnectionProtocol protocol;
 
         public MessageReader(Callback callback, INetwork network)
         {
@@ -42,14 +41,6 @@ namespace soa
             {
 				callback(message);
             }
-        }
-
-        private bool isValid(ConnectionProtocol.RequestData data)
-        {
-            if (data == null)
-                return false;
-
-            return data.type != ConnectionProtocol.RequestType.UNKNOWN && data.sourceID >= 0;
         }
     }
 }

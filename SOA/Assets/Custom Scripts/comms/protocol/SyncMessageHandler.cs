@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace soa
 {
 	public class SyncMessageHandler : IMessageHandler
@@ -31,8 +33,8 @@ namespace soa
 		public void synchronizeAllBeliefs()
 		{
 			RepositoryStateSerializer serializer = new RepositoryStateSerializer();
-			NetworkBuffer buffer = serializer.serializer(repo.CurrentState());
-			BSPMessage message = new BSPMessage(protocol.getConnection().getAddress(),
+			NetworkBuffer buffer = serializer.serialize(repo.CurrentState());
+			BSPMessage message = new BSPMessage(protocol.getConnection().getRemoteAddress(),
 			                                    BSPMessageType.SYNC,
 			                                    protocol.getAgentID(),
 			                                    buffer);
@@ -47,7 +49,7 @@ namespace soa
 				if (cached.GetBelief().getTypeKey() == belief.getTypeKey()
 				    && cached.GetBelief().getId() == belief.getId())
 				{
-					protocol.post(belief);
+					protocol.post(cached);
 					break;
 				}
 			}

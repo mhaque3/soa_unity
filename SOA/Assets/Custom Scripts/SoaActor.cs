@@ -587,26 +587,10 @@ public class SoaActor : MonoBehaviour
     public virtual void broadcastCommsLocal()
     {
         if (dataManager == null) return;
-        List<SoaActor> connectedActors = new List<SoaActor>();
-        SortedDictionary<int, bool> actorCommDictionary;
-        if (dataManager.actorDistanceDictionary.TryGetValue(unique_id, out actorCommDictionary))
+
+        foreach (CachedBelief b in beliefRepo.GetAllBeliefs())
         {
-            foreach (KeyValuePair<int, bool> entry in actorCommDictionary)
-            {
-                if (entry.Value)
-                {
-                    SoaActor neighborActor;
-                    if (dataManager.soaActorDictionary.TryGetValue(entry.Key, out neighborActor))
-                    {
-                        connectedActors.Add(neighborActor);
-                        beliefRepo.SyncWith(neighborActor.beliefRepo);
-                    }
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("[SoaActor.BroadcastLocalComms] Actor " + unique_id + "not in dictionary");
+            dataManager.physicalNetworkLayer.BuildCommunicatorFor(unique_id).Broadcast(b.GetBelief());
         }
     }
 

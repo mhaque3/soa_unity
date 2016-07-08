@@ -105,6 +105,10 @@ namespace soa
             this.MasterServerAddress = ipAddress;
         }
 
+        public void addNewActor(SoaActor actor)
+        {
+
+        }
         public string getConnectionForAgent(int agentID)
         {
             return "";

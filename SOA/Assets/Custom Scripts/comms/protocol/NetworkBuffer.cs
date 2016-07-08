@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace soa
 {
@@ -17,8 +18,11 @@ namespace soa
 			data = new byte[bufferLength];
 		}
 
-		public uint size() 
+		public int size() 
 		{
+            if (data == null)
+                return 0;
+
 			return data.Length;
 		}
 
@@ -27,10 +31,27 @@ namespace soa
 			return data;
 		}
 
+        public void writeByte(int offset, byte value)
+        {
+            data[offset] = value;
+        }
+
+        public byte readByte(int offset)
+        {
+            return data[offset];
+        }
+
 		public void writeBytes(byte[] source, int sourceIndex, int destIndex, int length)
 		{
 			System.Buffer.BlockCopy(source, sourceIndex, data, destIndex, length);
 		}
+
+        public byte[] readBytes(int offset, int length)
+        {
+            byte[] subArray = new byte[length];
+            System.Buffer.BlockCopy(data, offset, subArray, 0, length);
+            return subArray;
+        }
 
 		public int parseInt32(int startIndex)
         {
