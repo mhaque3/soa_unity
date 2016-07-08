@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace soa
 {
@@ -10,20 +7,10 @@ namespace soa
         private ConnectivityGraph connectivity;
         private Dictionary<int, AgentCommunicator> communicators;
 
-        public IdealizedNetworkLayer()
+		public IdealizedNetworkLayer(IWorld world)
         {
-            this.connectivity = new ConnectivityGraph();
-            this.communicators = new Dictionary<int, AgentCommunicator>();
-        }
-
-        public void AddActor(SoaActor actor)
-        {
-            connectivity.addActor(actor);
-        }
-
-        public void RemoveActor(SoaActor actor)
-        {
-            connectivity.RemoveActor(actor);
+			connectivity = new ConnectivityGraph(world);
+            communicators = new Dictionary<int, AgentCommunicator>();
         }
 
         public Communicator<int> BuildCommunicatorFor(int actorID)
@@ -85,15 +72,15 @@ namespace soa
 
             public void Send(Belief belief, int address)
             {
-                sendToAll(belief, actorID, parent.GetCommunicatorsInRange(actorID, address));
+				sendToAll(belief, actorID, parent.GetCommunicatorsInRange(actorID, address));
             }
 
-            public void Broadcast(Belief belief)
+			public void Broadcast(Belief belief)
             {
                 sendToAll(belief, actorID, parent.GetCommunicatorsInRange(actorID));
             }
 
-            private void sendToAll(Belief belief, int sourceID, IEnumerable<AgentCommunicator> comms)
+			private void sendToAll(Belief belief, int sourceID, IEnumerable<AgentCommunicator> comms)
             {
                 foreach (AgentCommunicator comm in comms)
                 {

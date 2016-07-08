@@ -10,7 +10,7 @@ using System.Net;
 
 public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
 
-public class SimControl : MonoBehaviour 
+public class SimControl : MonoBehaviour, IWorld
 {
     // Game duration
     public float gameDurationHr = 12.0f; // Measured in simulated time
@@ -277,7 +277,22 @@ public class SimControl : MonoBehaviour
         blueDataManager.startComms();
 	} // End Start()
 
-    private int parsePortNumber(string roomName, int defaultValue)
+	public IEnumerable<ISoaActor> getRedActors()
+	{
+		return redDataManager.actors;
+	}
+
+	public IEnumerable<ISoaActor> getBlueActors()
+	{
+		return blueDataManager.actors;
+	}
+
+	IEnumerable<ISoaActor> getRedJammers()
+	{
+		return jammers;
+	}
+
+	private int parsePortNumber(string roomName, int defaultValue)
     {
         if (roomName != null)
         {

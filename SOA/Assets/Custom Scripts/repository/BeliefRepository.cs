@@ -38,7 +38,7 @@ namespace soa
 
         public IEnumerable<BeliefType> FindAll<BeliefType>(Belief.BeliefType type) where BeliefType : Belief
         {
-            return GetAllBeliefs()
+            return GetAllCachedBeliefs()
                     .Where(belief => belief.GetBelief() as BeliefType != null && belief.GetBelief().getBeliefType() == type)
                     .Select(cached => (BeliefType)cached.GetBelief());
         }
@@ -60,7 +60,12 @@ namespace soa
             return null;
         }
 
-        public IEnumerable<CachedBelief> GetAllBeliefs()
+		public IEnumerable<Belief> GetAllBeliefs()
+		{
+			return GetAllCachedBeliefs().Select(cached => cached.GetBelief());
+		}
+
+		public List<CachedBelief> GetAllCachedBeliefs()
         {
             lock(this)
             {

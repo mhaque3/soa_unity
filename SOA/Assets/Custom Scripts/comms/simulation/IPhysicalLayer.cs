@@ -12,9 +12,5 @@ namespace soa
         Communicator<AddressType> BuildCommunicatorFor(int actorID);
 
         void Update();
-
-        void AddActor(SoaActor actor);
-
-        void RemoveActor(SoaActor actor);
     }
 }

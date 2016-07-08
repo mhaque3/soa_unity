@@ -1,58 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace soa
 {
     class ConnectivityGraph
     {
-        private const int MAX_DEPTH = 10000;
-        private readonly List<SoaActor> actors;
+		private const int MAX_HOPS = 5;
+		private readonly IWorld world;
         private Dictionary<int, ActorNode> nodes;
-        private SortedDictionary<int, SortedDictionary<int, bool>> actorDistanceDictionary = new SortedDictionary<int, SortedDictionary<int, bool>>();
 
-        public ConnectivityGraph()
+		public ConnectivityGraph(IWorld world)
         {
-            this.actors = new List<SoaActor>();
-            this.nodes = new Dictionary<int, ActorNode>();
-        }
-
-        public void addActor(SoaActor actor)
-        {
-            if (!actors.Contains(actor))
-            {
-                actors.Add(actor);
-            }
-        }
-
-        public void RemoveActor(SoaActor actor)
-        {
-            actors.Remove(actor);
+			this.world = world;
+            nodes = new Dictionary<int, ActorNode>();
         }
 
         public void UpdateConnectivity()
         {
             lock(nodes)
             {
-                initializeNodes();
-                computeNeighbors();
+				//Step 1: Rebuild nodes for all actors
+				InitializeNodes();
+				//Step 2: Compute who can talk based on SNR
+				ComputeNeighbors();
+				//Step 3: Cache the cliques for each node
+				BuildCliques();
             }
         }
 
-        public IEnumerable<SoaActor> GetActorsInCliqueOf(int actorID)
+        public IEnumerable<ISoaActor> GetActorsInCliqueOf(int actorID)
         {
-            HashSet<SoaActor> clique = new HashSet<SoaActor>();
-            ActorNode node = nodes[actorID];
-            BuildClique(clique, node, 0);
-            return clique;
-
+			lock (nodes)
+			{
+				ActorNode node = null;
+				if (nodes.TryGetValue(actorID, out node))
+				{
+					return node.clique;
+				}
+				return new List<ISoaActor>(0);
+			}
         }
 
-        private void BuildClique(HashSet<SoaActor> clique, ActorNode node, int depth)
+		private void BuildCliques()
+		{
+			foreach (ActorNode node in nodes.Values)
+			{
+				HashSet<ISoaActor> clique = new HashSet<ISoaActor>();
+				clique.Add(node.actor);
+				BuildClique(clique, node, 0);
+				node.clique = new List<ISoaActor>(clique);
+			}	
+		}
+
+        private void BuildClique(HashSet<ISoaActor> clique, ActorNode node, int depth)
         {
-            if (depth > MAX_DEPTH)
+            if (depth > MAX_HOPS)
             {
                 return;
             }
@@ -66,35 +67,49 @@ namespace soa
             }
         }
 
-        private void initializeNodes()
+        private void InitializeNodes()
         {
             nodes.Clear();
-            foreach (SoaActor actor in actors)
-            {
-                nodes.Add(actor.unique_id, new ActorNode(actor));
-            }
+			initializeNodes(world.getBlueActors());
+			initializeNodes(world.getRedActors());
         }
 
-        private void computeNeighbors()
+		private void initializeNodes(IEnumerable<ISoaActor> actors)
+		{
+			foreach (ISoaActor actor in actors)
+			{
+				ActorNode node = new ActorNode(actor);
+				computeJammerNoise(node);
+				nodes.Add(actor.getID(), node);
+			}
+		}
+
+        private void ComputeNeighbors()
         {
-            foreach (SoaActor soaActor in actors)
-            {
-                ActorNode node = nodes[soaActor.unique_id];
-
-                foreach (SoaActor neighborActor in actors)
-                {
-                    if (soaActor == neighborActor)
-                        continue;
-
-                    ActorNode neighborNode = nodes[neighborActor.unique_id];
-
-                    if (canCommunicate(node, neighborNode))
-                    {
-                        node.addNeighbor(neighborNode);
-                    }
-                }
-            }
+			computeNeighbors(world.getRedActors());
+			computeNeighbors(world.getBlueActors());
         }
+
+		private void computeNeighbors(IEnumerable<ISoaActor> team)
+		{
+			foreach (ISoaActor soaActor in team)
+			{
+				ActorNode node = nodes[soaActor.getID()];
+
+				foreach (ISoaActor neighborActor in team)
+				{
+					if (soaActor == neighborActor)
+						continue;
+
+					ActorNode neighborNode = nodes[neighborActor.getID()];
+
+					if (canCommunicate(node, neighborNode))
+					{
+						node.addNeighbor(neighborNode);
+					}
+				}
+			}
+		}
 
         private bool canCommunicate(ActorNode actor, ActorNode neighbor)
         {
@@ -103,12 +118,25 @@ namespace soa
                 return true;
             }
             
-            float rx_tx_range_km = Vector3.Distance(actor.actorPos_km, neighbor.actorPos_km);
+			float rx_tx_range_km = actor.actorPos_km.distance(neighbor.actorPos_km);
             float rangeSquared_km2 = rx_tx_range_km * rx_tx_range_km;
-            float commsRange_km = actor.actor.commsRange_km;
-            float snr = (commsRange_km * commsRange_km) / (rangeSquared_km2 * (1 + actor.jammerNoiseSummation));
+			float commsRange_km = actor.actor.getCommsRangeKM();
+            float snr = (commsRange_km * commsRange_km) / (rangeSquared_km2 * (1 + actor.totalNoise));
             return snr >= 1;
         }
+
+		private void computeJammerNoise(ActorNode actor)
+		{
+			actor.totalNoise = 0;
+			foreach (ISoaJammer jammerActor in world.getJammers())
+			{
+				PositionKM jammerPos_km = jammerActor.getActor().getPositionInKilometers();
+				float jammerToActorDist_km = actor.actorPos_km.distance(jammerPos_km);
+				float effRangeSq = jammerActor.getEffectiveRangeKm() * jammerActor.getEffectiveRangeKm();
+				float distSq = jammerToActorDist_km * jammerToActorDist_km;
+				actor.totalNoise += effRangeSq / distSq;
+			}
+		}
 
         private bool hasWiredConnection(ActorNode actor, ActorNode neighbor)
         {
@@ -118,20 +146,19 @@ namespace soa
 
         private class ActorNode
         {
-            public readonly SoaActor actor;
+            public readonly ISoaActor actor;
             public readonly List<ActorNode> neighbors;//list because iterating is more important than insertion
-            public readonly Vector3 actorPos_km;
-            public readonly float jammerNoiseSummation;
+			public readonly PositionKM actorPos_km;
+            public float totalNoise;
+			public List<ISoaActor> clique;
 
-            public ActorNode(SoaActor actor)
+			public ActorNode(ISoaActor actor)
             {
                 this.actor = actor;
-                this.neighbors = new List<ActorNode>();
-                this.actorPos_km = new Vector3(
-                    actor.gameObject.transform.position.x / SimControl.KmToUnity,
-                    actor.simAltitude_km,
-                    actor.gameObject.transform.position.z / SimControl.KmToUnity);
-                this.jammerNoiseSummation = computeJammerNoise();
+                neighbors = new List<ActorNode>();
+				actorPos_km = actor.getPositionInKilometers();
+				totalNoise = float.MaxValue;
+				clique = new List<ISoaActor>(0);
             }
 
             public void addNeighbor(ActorNode node)
@@ -144,30 +171,12 @@ namespace soa
 
             public bool isBalloon()
             {
-                return actor.type == (int)SoaActor.ActorType.BALLOON;
+				return actor.isBalloon();
             }
 
             public bool isBaseStation()
             {
-                return actor is SoaSite;
-            }
-
-            private float computeJammerNoise()
-            {
-                float jammerNoiseSummation = 0;
-                foreach (SoaJammer jammerActor in SimControl.jammers)
-                {
-                    // Get jammer truth coordinates in km
-                    Vector3 jammerPos_km = new Vector3(
-                        jammerActor.gameObject.transform.position.x / SimControl.KmToUnity,
-                        jammerActor.GetComponentInParent<SoaActor>().simAltitude_km,
-                        jammerActor.gameObject.transform.position.z / SimControl.KmToUnity);
-                    float jammerToActorDist_km = Vector3.Distance(actorPos_km, jammerPos_km);
-
-                    // Sum jammer's noise contribution to actor's SNR
-                    jammerNoiseSummation += (jammerActor.effectiveRange_km * jammerActor.effectiveRange_km) / (jammerToActorDist_km * jammerToActorDist_km);
-                }
-                return jammerNoiseSummation;
+				return actor.isBaseStation();
             }
         }
     }

@@ -6,7 +6,7 @@ using soa;
 using Gamelogic.Grids;
 
 
-public class SoaActor : MonoBehaviour 
+public class SoaActor : MonoBehaviour, ISoaActor
 {
 
     public int unique_id;
@@ -98,6 +98,33 @@ public class SoaActor : MonoBehaviour
     private bool velocityZValid = false;
 
     NavMeshAgent nma;
+
+	public int getID()
+	{
+		return unique_id;
+	}
+
+	public PositionKM getPositionInKilometers()
+	{
+		return new PositionKM(gameObject.transform.position.x / SimControl.KmToUnity,
+							  simAltitude_km,
+							  gameObject.transform.position.z / SimControl.KmToUnity);
+	}
+
+	public bool isBalloon()
+	{
+		return type == (int)SoaActor.ActorType.BALLOON;
+	}
+
+	public bool isBaseStation()
+	{
+		return this is SoaSite; //base station? Base Station?? THIS IS SOA SITE!!!
+	}
+
+	public float getCommsRangeKM()
+	{
+		return commsRange_km;
+	}
 
 	public BeliefRepository getRepository()
 	{
@@ -588,9 +615,9 @@ public class SoaActor : MonoBehaviour
     {
         if (dataManager == null) return;
 
-        foreach (CachedBelief b in beliefRepo.GetAllBeliefs())
+		foreach (Belief b in beliefRepo.GetAllBeliefs())
         {
-            dataManager.physicalNetworkLayer.BuildCommunicatorFor(unique_id).Broadcast(b.GetBelief());
+            dataManager.physicalNetworkLayer.BuildCommunicatorFor(unique_id).Broadcast(b);
         }
     }
 
