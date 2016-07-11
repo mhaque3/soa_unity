@@ -104,21 +104,21 @@ namespace soa
 
 					ActorNode neighborNode = nodes[neighborActor.getID()];
 
-					if (canCommunicate(node, neighborNode))
+					if (canReceiveSignal(node, neighborNode))
 					{
-						node.addNeighbor(neighborNode);
+						neighborNode.canSendTo(node);
 					}
 				}
 			}
 		}
 
-        private bool canCommunicate(ActorNode actor, ActorNode neighbor)
+		private bool canReceiveSignal(ActorNode actor, ActorNode neighbor)
         {
             if (hasWiredConnection(actor, neighbor))
             {
                 return true;
             }
-            
+
 			float rx_tx_range_km = actor.actorPos_km.distance(neighbor.actorPos_km);
             float rangeSquared_km2 = rx_tx_range_km * rx_tx_range_km;
 			float commsRange_km = actor.actor.getCommsRangeKM();
@@ -162,7 +162,7 @@ namespace soa
 				clique = new List<ISoaActor>(0);
             }
 
-            public void addNeighbor(ActorNode node)
+            public void canSendTo(ActorNode node)
             {
                 if (!neighbors.Contains(node))
                 {
