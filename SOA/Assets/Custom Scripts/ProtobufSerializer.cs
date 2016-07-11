@@ -429,7 +429,7 @@ namespace soa
             // New belief that we will return
             Belief b;
 
-            Debug.Log("Received a message with " + serial.Length + " bytes");
+			Log.debug("Received a message with " + serial.Length + " bytes");
 
             // Break string into header and body
             MessageType headerType = (MessageType) serial[0];

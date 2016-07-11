@@ -25,7 +25,7 @@ namespace soa
             this.agentIPs = new Dictionary<int, IPEndPoint>();
             this.writer = new MessageWriter(network);
             this.reader = new MessageReader(handleRequest, network);
-			this.protocol = new BeliefSyncProtocol(writer);
+			this.protocol = new BeliefSyncProtocol(writer, serializer);
         }
 
         public void start()
@@ -42,9 +42,9 @@ namespace soa
             writer.Stop();
         }
 
-        public void addNewActor(SoaActor actor)
+		public void addNewActor(int actorID, BeliefRepository repo)
         {
-            protocol.addActor(actor);
+			protocol.addActor(actorID, repo);
         }
 
 		public void synchronizeBeliefsFor(int agentID)

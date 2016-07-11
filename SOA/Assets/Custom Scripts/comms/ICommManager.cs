@@ -13,6 +13,6 @@ namespace soa
 
         string getConnectionForAgent(int agentID);
 
-		void addNewActor(SoaActor actor);
+		void addNewActor(int actorID, BeliefRepository repo);
     }
 }

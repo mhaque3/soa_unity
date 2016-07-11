@@ -8,8 +8,6 @@ using soa;
 using Gamelogic.Grids;
 using System.Net;
 
-public enum Affiliation { BLUE = 0, RED = 1, NEUTRAL = 2 , UNCLASSIFIED = 3 };
-
 public class SimControl : MonoBehaviour, IWorld
 {
     // Game duration

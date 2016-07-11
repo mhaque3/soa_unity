@@ -26,9 +26,9 @@ namespace soa
         private IEnumerable<AgentCommunicator> GetCommunicatorsInRange(int actorID, int filterID=-1)
         {
             List<AgentCommunicator> comms = new List<AgentCommunicator>();
-            foreach (SoaActor actor in connectivity.GetActorsInCliqueOf(actorID))
+            foreach (ISoaActor actor in connectivity.GetActorsInCliqueOf(actorID))
             {
-                AgentCommunicator neighborComm = GetCommsInternal(actor.unique_id);
+				AgentCommunicator neighborComm = GetCommsInternal(actor.getID());
                 if (neighborComm.callback != null && filterID == -1 || filterID == neighborComm.actorID)
                 {
                     comms.Add(neighborComm);

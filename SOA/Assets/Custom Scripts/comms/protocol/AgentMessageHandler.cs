@@ -9,11 +9,11 @@ namespace soa
 		private PostMessageHandler postHandler;
 		private SyncMessageHandler syncHandler;
 
-		public AgentMessageHandler(int agentID, BeliefRepository repo, INetworkConnection connection)
+		public AgentMessageHandler(int agentID, BeliefRepository repo, INetworkConnection connection, Serializer serializer)
 		{
 			this.agentID = agentID;
 			this.connectHandler = new ConnectMessageHandler(repo, this);
-			this.postHandler = new PostMessageHandler(repo, this);
+			this.postHandler = new PostMessageHandler(repo, this, serializer);
 			this.syncHandler = new SyncMessageHandler(repo, this);
 		}
 

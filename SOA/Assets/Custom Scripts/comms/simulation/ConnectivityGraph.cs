@@ -4,7 +4,7 @@ namespace soa
 {
     class ConnectivityGraph
     {
-		private const int MAX_HOPS = 5;
+		private const int MAX_HOPS = int.MaxValue;
 		private readonly IWorld world;
         private Dictionary<int, ActorNode> nodes;
 
@@ -27,7 +27,7 @@ namespace soa
             }
         }
 
-        public IEnumerable<ISoaActor> GetActorsInCliqueOf(int actorID)
+        public IReadOnlyCollection<ISoaActor> GetActorsInCliqueOf(int actorID)
         {
 			lock (nodes)
 			{
@@ -47,6 +47,7 @@ namespace soa
 				HashSet<ISoaActor> clique = new HashSet<ISoaActor>();
 				clique.Add(node.actor);
 				BuildClique(clique, node, 0);
+				clique.Remove(node.actor);//Don't talk to yourself
 				node.clique = new List<ISoaActor>(clique);
 			}	
 		}

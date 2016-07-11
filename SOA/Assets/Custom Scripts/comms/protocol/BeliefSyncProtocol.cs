@@ -12,11 +12,13 @@ namespace soa
 
         private Dictionary<int, AgentMessageHandler> handlers;
 		private IMessageWriter messageWriter;
+		private readonly Serializer serializer;
 
-		public BeliefSyncProtocol(IMessageWriter messageWriter)
+		public BeliefSyncProtocol(IMessageWriter messageWriter, Serializer serializer)
 		{
 			this.handlers = new Dictionary<int, AgentMessageHandler>();
 			this.messageWriter = messageWriter;
+			this.serializer = serializer;
 		}
 
 		public void synchronizeAllBeliefsFor(int actorID)
@@ -51,10 +53,10 @@ namespace soa
 			return "Not Connected";
 		}
 
-		public void addActor(SoaActor actor)
+		public void addActor(int actorID, BeliefRepository repo)
 		{
 			INetworkConnection connection = new AgentConnection(this);
-			handlers[actor.unique_id] = new AgentMessageHandler(actor.unique_id, actor.getRepository(), connection);
+			handlers[actorID] = new AgentMessageHandler(actorID, repo, connection, serializer);
 		}
 
 		public void handleMessage(Message message)

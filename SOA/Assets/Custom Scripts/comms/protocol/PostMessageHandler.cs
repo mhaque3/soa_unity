@@ -7,11 +7,11 @@ namespace soa
 		private readonly AgentMessageHandler protocol;
 		private readonly Serializer serializer;
 
-		public PostMessageHandler(BeliefRepository repo, AgentMessageHandler protocol)
+		public PostMessageHandler(BeliefRepository repo, AgentMessageHandler protocol, Serializer serializer)
 		{
 			this.repo = repo;
 			this.protocol = protocol;
-			this.serializer = new ProtobufSerializer();
+			this.serializer = serializer;
 		}
 
 		public void handleMessage(BSPMessage message)

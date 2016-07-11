@@ -12,10 +12,7 @@ namespace soa
         private IHashFunction hashFunction;
         private RepositoryState currentState;
 
-        public BeliefRepository() : this(new ProtobufSerializer(), new SHA1_Hash())
-        { }
-
-        public BeliefRepository(Serializer serializer, IHashFunction hashFunction)
+	    public BeliefRepository(Serializer serializer, IHashFunction hashFunction)
         {
             this.beliefCache = new SortedDictionary<CacheKey, CachedBelief>();
             this.serializer = serializer;
