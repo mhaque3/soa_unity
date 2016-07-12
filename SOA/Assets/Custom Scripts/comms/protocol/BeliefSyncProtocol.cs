@@ -55,14 +55,14 @@ namespace soa
 
 		public void addActor(int actorID, BeliefRepository repo)
 		{
-			INetworkConnection connection = new AgentConnection(this);
+			INetworkConnection connection = new AgentConnection(this, actorID);
 			handlers[actorID] = new AgentMessageHandler(actorID, repo, connection, serializer);
 		}
 
 		public void handleMessage(Message message)
 		{
 			BSPMessage bspMessage = parse(message);
-			AgentMessageHandler handler = null;
+            AgentMessageHandler handler = null;
 			if (handlers.TryGetValue(bspMessage.getSourceID(), out handler))
 			{
 				handler.handleMessage(bspMessage);
@@ -129,11 +129,13 @@ namespace soa
 		private class AgentConnection : INetworkConnection
 		{
 			private readonly BeliefSyncProtocol protocol;
+            private readonly int agentID;
 			private IPEndPoint agentAddress;
 
-			public AgentConnection(BeliefSyncProtocol protocol)
+			public AgentConnection(BeliefSyncProtocol protocol, int agentID)
 			{
 				this.protocol = protocol;
+                this.agentID = agentID;
 			}
 
 			public void setRemoteAddress(IPEndPoint address)

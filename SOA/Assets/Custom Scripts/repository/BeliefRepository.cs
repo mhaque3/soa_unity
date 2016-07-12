@@ -17,7 +17,7 @@ namespace soa
             this.beliefCache = new SortedDictionary<CacheKey, CachedBelief>();
             this.serializer = serializer;
             this.hashFunction = hashFunction;
-			this.currentState = new RepositoryState(0);
+            this.currentState = new RepositoryState(0);
         }
         
         public void SyncWith(BeliefRepository other)
@@ -90,6 +90,7 @@ namespace soa
                     {
                         return false;
                     }
+                    belief = merged;
                 }
 
                 byte[] serialized = serializer.serializeBelief(belief);
@@ -97,6 +98,7 @@ namespace soa
                 CachedBelief cached = new CachedBelief(belief, serialized, hash);
                 beliefCache[key] = cached;
                 currentState = RegenerateState();
+                
                 return true;
             }
         }
@@ -111,7 +113,8 @@ namespace soa
                 List<CachedBelief> beliefs = new List<CachedBelief>();
                 foreach (CacheKey key in diffKeys)
                 {
-                    beliefs.Add(beliefCache[key]);
+                    CachedBelief cachedBelief = beliefCache[key];
+                    beliefs.Add(cachedBelief);
                 }
                 return beliefs;
             }

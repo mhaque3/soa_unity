@@ -8,7 +8,7 @@ using soa;
 using Gamelogic.Grids;
 using System.Net;
 
-public class SimControl : MonoBehaviour, IWorld
+public class SimControl : MonoBehaviour
 {
     // Game duration
     public float gameDurationHr = 12.0f; // Measured in simulated time
@@ -274,21 +274,6 @@ public class SimControl : MonoBehaviour, IWorld
         redDataManager.startComms();
         blueDataManager.startComms();
 	} // End Start()
-
-	public IEnumerable<ISoaActor> getRedActors()
-	{
-		return redDataManager.actors;
-	}
-
-	public IEnumerable<ISoaActor> getBlueActors()
-	{
-		return blueDataManager.actors;
-	}
-
-	IEnumerable<ISoaActor> getRedJammers()
-	{
-		return jammers;
-	}
 
 	private int parsePortNumber(string roomName, int defaultValue)
     {

@@ -78,7 +78,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
 
     public Dictionary<int, bool> classificationDictionary;
 
-    protected BeliefRepository beliefRepo;
+    protected BeliefRepository beliefRepo = new BeliefRepository(new ProtobufSerializer(), new SHA1_Hash());
     protected RepositoryState lastKnownState;
 
     private static System.DateTime epoch = new System.DateTime(1970, 1, 1);
@@ -96,6 +96,8 @@ public class SoaActor : MonoBehaviour, ISoaActor
     private bool velocityXValid = false;
     private bool velocityYValid = false;
     private bool velocityZValid = false;
+
+    private Communicator<int> communicator;
 
     NavMeshAgent nma;
 
@@ -180,10 +182,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
 
         // Save reference to simControl
         simControlScript = GameObject.FindObjectOfType<SimControl>();
-
-        // Initialize the belief dictionary
-        beliefRepo = new BeliefRepository();
-
+        
         Debug.Log("SoaActor: Initialized all beliefDictionaries for " + gameObject.name);
 
         // Initialize a new classification dictionary
@@ -217,6 +216,12 @@ public class SoaActor : MonoBehaviour, ISoaActor
     // Update is called once per frame
     void Update() 
     {
+        if (dataManager != null && communicator == null)
+        {
+            communicator = dataManager.physicalNetworkLayer.BuildCommunicatorFor(unique_id);
+            communicator.RegisterCallback(handleBeliefReceivedFrom);
+        } 
+
         if (isAlive)
         {
             // Compute time since last frame
@@ -253,6 +258,11 @@ public class SoaActor : MonoBehaviour, ISoaActor
             }
         }
 	}
+
+    public void handleBeliefReceivedFrom(Belief b, int agentID)
+    {
+        beliefRepo.Commit(b);
+    }
 
     // Set simulated altitude but enforce min/max constraints
     public void SetSimAltitude(float simAltitude_km)
@@ -613,12 +623,9 @@ public class SoaActor : MonoBehaviour, ISoaActor
 
     public virtual void broadcastCommsLocal()
     {
-        if (dataManager == null) return;
+        if (communicator == null) return;
 
-		foreach (Belief b in beliefRepo.GetAllBeliefs())
-        {
-            dataManager.physicalNetworkLayer.BuildCommunicatorFor(unique_id).Broadcast(b);
-        }
+        communicator.Broadcast(beliefRepo.GetAllBeliefs());
     }
 
     //

@@ -7,19 +7,24 @@ namespace soa
 {
     public class RepositoryState
     {
-
-        private readonly HashSet<RepositoryObject> objects;
+        
+        private readonly Dictionary<CacheKey, Hash> objects;
 		private int revisionNumber;
 
         public RepositoryState(int revisionNumber)
         {
-            this.objects = new HashSet<RepositoryObject>();
+            this.objects = new Dictionary<CacheKey, Hash>();
 			this.revisionNumber = revisionNumber;
         }
         
         public IEnumerable<RepositoryObject> GetObjects()
         {
-            return objects;
+            List<RepositoryObject> repoObjects = new List<RepositoryObject>();
+            foreach (KeyValuePair<CacheKey, Hash> entry in objects)
+            {
+                repoObjects.Add(new RepositoryObject(entry.Key, entry.Value));
+            }
+            return repoObjects;
         }
         public int Size()
         {
@@ -32,19 +37,27 @@ namespace soa
 
         public void Add(CacheKey key, Hash hash)
         {
-            objects.Add(new RepositoryObject(key, hash));
+            objects[key] = hash;
+        }
+
+        public Hash Find(CacheKey key)
+        {
+            Hash hash = null;
+            objects.TryGetValue(key, out hash);
+            return hash;
         }
 
         public ICollection<CacheKey> Diff(RepositoryState other)
         {
             HashSet<CacheKey> diffSet = new HashSet<CacheKey>();
-
-            HashSet<RepositoryObject> copy = new HashSet<RepositoryObject>(objects);
-            copy.ExceptWith(other.objects);
-
-            foreach(RepositoryObject obj in copy)
+            
+            foreach(RepositoryObject obj in GetObjects())
             {
-                diffSet.Add(obj.key);
+                Hash otherHash = other.Find(obj.key);
+                if (otherHash == null || !obj.hash.Equals(otherHash))
+                {
+                    diffSet.Add(obj.key);
+                }
             }
 
             return diffSet;

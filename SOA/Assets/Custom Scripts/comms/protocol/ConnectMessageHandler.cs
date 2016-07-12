@@ -15,8 +15,12 @@ namespace soa
 		public void handleMessage(BSPMessage message)
 		{
 			protocol.getConnection().setRemoteAddress(message.getAddress());
-			protocol.synchronizeAllBeliefs();
-		}
+            
+            foreach(CachedBelief belief in repo.GetAllCachedBeliefs())
+            {
+                protocol.post(belief);
+            }
+        }
 	}
 }
 

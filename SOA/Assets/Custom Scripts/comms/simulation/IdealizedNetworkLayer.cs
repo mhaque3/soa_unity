@@ -43,6 +43,7 @@ namespace soa
             if (!communicators.TryGetValue(actorID, out comms))
             {
                 comms = new AgentCommunicator(this, actorID);
+                communicators[actorID] = comms;
             }
             
             return comms;
@@ -58,6 +59,7 @@ namespace soa
             {
                 this.parent = parent;
                 this.actorID = actorID;
+                this.callback = (belief, id) => { };
             }
 
             public int GetBandwidth()
@@ -72,19 +74,24 @@ namespace soa
 
             public void Send(Belief belief, int address)
             {
-				sendToAll(belief, actorID, parent.GetCommunicatorsInRange(actorID, address));
+                List<Belief> beliefs = new List<Belief>(1);
+                beliefs.Add(belief);
+				sendToAll(beliefs, actorID, parent.GetCommunicatorsInRange(actorID, address));
             }
-
-			public void Broadcast(Belief belief)
+            
+            public void Broadcast(IEnumerable<Belief> beliefs)
             {
-                sendToAll(belief, actorID, parent.GetCommunicatorsInRange(actorID));
+                sendToAll(beliefs, actorID, parent.GetCommunicatorsInRange(actorID));
             }
 
-			private void sendToAll(Belief belief, int sourceID, IEnumerable<AgentCommunicator> comms)
+			private void sendToAll(IEnumerable<Belief> beliefs, int sourceID, IEnumerable<AgentCommunicator> comms)
             {
                 foreach (AgentCommunicator comm in comms)
                 {
-                    comm.callback(belief, sourceID);
+                    foreach (Belief belief in beliefs)
+                    {
+                        comm.callback(belief, sourceID);
+                    }
                 }
             }
         }

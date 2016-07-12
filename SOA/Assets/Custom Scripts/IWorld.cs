@@ -8,10 +8,8 @@ namespace soa
 
 	public interface IWorld
 	{
-		IEnumerable<ISoaActor> getRedActors();
-		
-		IEnumerable<ISoaActor> getBlueActors();
-		
-		IEnumerable<ISoaJammer> getJammers();	
+        IEnumerable<ISoaActor> getActors();
+
+        IEnumerable<ISoaJammer> getJammers();	
 	}
 }

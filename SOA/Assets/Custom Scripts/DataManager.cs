@@ -41,7 +41,7 @@ namespace soa
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
 
             beliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
-            physicalNetworkLayer = new IdealizedNetworkLayer();
+            physicalNetworkLayer = new IdealizedNetworkLayer(new DataManagerWorld(this));
 
             // Note: Comms manager must be started manually after all initial belief processing is done
         }
@@ -154,10 +154,9 @@ namespace soa
             if (!actors.Contains(actor))
             {
                 actors.Add(actor);
-                physicalNetworkLayer.AddActor(actor);
                 //Debug.Log("Adding actor " + actor.unique_id + " to actor dictionary");
                 soaActorDictionary[actor.unique_id] = actor;
-
+                cm.addNewActor(actor.unique_id, actor.getRepository());
                 addBeliefToDataManager(
                     new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, actor.isAlive, 
                         actor.numStorageSlots, actor.numCasualtiesStored,
@@ -182,7 +181,6 @@ namespace soa
             if (actors.Contains(actor))
             {
                 actors.Remove(actor);
-                physicalNetworkLayer.RemoveActor(actor);
                 Debug.Log("Removing actor " + actor.unique_id + " from actor dictionary");
                 soaActorDictionary.Remove(actor.unique_id);
             }
@@ -231,6 +229,27 @@ namespace soa
                 beliefDictionary[key] = beliefs;
             }
             return beliefs;
+        }
+
+        private class DataManagerWorld : IWorld
+        {
+            private readonly DataManager manager;
+
+            public DataManagerWorld(DataManager manager)
+            {
+                this.manager = manager;
+            }
+
+            public IEnumerable<ISoaActor> getActors()
+            {
+                //.Net 2.0 is terrible at generics
+                return manager.actors.Cast<ISoaActor>();
+            }
+
+            public IEnumerable<ISoaJammer> getJammers()
+            {
+                return SimControl.jammers.Cast<ISoaJammer>();
+            }
         }
     }
 }

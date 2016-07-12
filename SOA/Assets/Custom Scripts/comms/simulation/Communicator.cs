@@ -12,8 +12,8 @@ namespace soa
     {
 
         int GetBandwidth();
-
-        void Broadcast(Belief belief);
+        
+        void Broadcast(IEnumerable<Belief> beliefs);
 
         void Send(Belief belief, AddressType address);
 

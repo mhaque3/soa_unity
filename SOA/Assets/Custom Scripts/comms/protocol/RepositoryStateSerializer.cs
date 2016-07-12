@@ -42,11 +42,15 @@ namespace soa
             int baseOffset = HEADER_SIZE;
             for (int i = 0; i < numberOfBeliefs; ++i, baseOffset += BELIEF_SIZE)
             {
-                int typeVal = buffer.parseInt32(baseOffset + TYPE_OFFSET);
+                int typeVal = buffer.readByte(baseOffset + TYPE_OFFSET);
                 Belief.BeliefType type = Belief.BeliefType.INVALID;
                 if (Enum.IsDefined(typeof(Belief.BeliefType), typeVal))
                 {
                     type = (Belief.BeliefType)typeVal;
+                }
+                else
+                {
+                    Log.error("Invalid belief type: " + typeVal);
                 }
 
                 int customType = buffer.parseInt32(baseOffset + CUSTOM_TYPE_OFFSET);

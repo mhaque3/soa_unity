@@ -27,7 +27,7 @@ namespace soa
             }
         }
 
-        public IReadOnlyCollection<ISoaActor> GetActorsInCliqueOf(int actorID)
+        public ICollection<ISoaActor> GetActorsInCliqueOf(int actorID)
         {
 			lock (nodes)
 			{
@@ -71,8 +71,7 @@ namespace soa
         private void InitializeNodes()
         {
             nodes.Clear();
-			initializeNodes(world.getBlueActors());
-			initializeNodes(world.getRedActors());
+			initializeNodes(world.getActors());
         }
 
 		private void initializeNodes(IEnumerable<ISoaActor> actors)
@@ -87,8 +86,7 @@ namespace soa
 
         private void ComputeNeighbors()
         {
-			computeNeighbors(world.getRedActors());
-			computeNeighbors(world.getBlueActors());
+			computeNeighbors(world.getActors());
         }
 
 		private void computeNeighbors(IEnumerable<ISoaActor> team)

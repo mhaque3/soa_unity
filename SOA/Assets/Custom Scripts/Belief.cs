@@ -66,6 +66,15 @@ namespace soa
                 return other.type == type 
                         && other.customType == customType;
             }
+
+            public override string ToString()
+            {
+                if (type == BeliefType.CUSTOM)
+                {
+                    return "custom:" + customType;
+                }
+                return type.ToString();
+            }
         };
 
         public enum BeliefType

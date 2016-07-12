@@ -69,5 +69,15 @@ namespace soa
             }
             return equal;
         }
+
+        public override string ToString()
+        {
+            string hashString = "";
+            for (int i = 0; i < hashCode.Length; ++i)
+            {
+                hashString += String.Format("{0:X2}", hashCode[i]);
+            }
+            return hashString;
+        }
     }
 }

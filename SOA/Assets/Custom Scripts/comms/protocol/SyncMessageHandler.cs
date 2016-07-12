@@ -13,15 +13,16 @@ namespace soa
 		{
 			this.repo = repo;
 			this.protocol = protocol;
+            remoteState = new RepositoryState(-1);
 		}
 
 		public void handleMessage(BSPMessage message)
 		{
-			RepositoryStateSerializer serializer = new RepositoryStateSerializer();
+            RepositoryStateSerializer serializer = new RepositoryStateSerializer();
 			RepositoryState incomingState = serializer.deserialize(message.getData());
 			if (incomingState.RevisionNumber() > remoteState.RevisionNumber())
 			{
-				this.remoteState = incomingState;
+                this.remoteState = incomingState;
 				IEnumerable<CachedBelief> changedBeliefs = repo.Diff(remoteState);
 				foreach (CachedBelief belief in changedBeliefs)
 				{
@@ -32,7 +33,12 @@ namespace soa
 
 		public void synchronizeAllBeliefs()
 		{
-			RepositoryStateSerializer serializer = new RepositoryStateSerializer();
+            if (protocol.getConnection().getRemoteAddress() == null)
+            {
+                return;
+            }
+            
+ 			RepositoryStateSerializer serializer = new RepositoryStateSerializer();
 			NetworkBuffer buffer = serializer.serialize(repo.CurrentState());
 			BSPMessage message = new BSPMessage(protocol.getConnection().getRemoteAddress(),
 			                                    BSPMessageType.SYNC,

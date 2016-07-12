@@ -105,7 +105,7 @@ namespace soa
             this.MasterServerAddress = ipAddress;
         }
 
-        public void addNewActor(SoaActor actor)
+        public void addNewActor(int actorID, BeliefRepository repo)
         {
 
         }

@@ -56,5 +56,10 @@ namespace soa
             return other.key.Equals(key)
                     && other.id == id;
         }
+
+        public override string ToString()
+        {
+            return "key=" + key + " id=" + id;
+        }
     };
 }
