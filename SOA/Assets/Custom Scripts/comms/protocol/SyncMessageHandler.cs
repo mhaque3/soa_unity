@@ -52,7 +52,7 @@ namespace soa
 			IEnumerable<CachedBelief> changedBeliefs = repo.Diff(remoteState);
 			foreach (CachedBelief cached in changedBeliefs)
 			{
-				if (cached.GetBelief().getTypeKey() == belief.getTypeKey()
+				if (cached.GetBelief().getTypeKey().Equals(belief.getTypeKey())
 				    && cached.GetBelief().getId() == belief.getId())
 				{
 					protocol.post(cached);

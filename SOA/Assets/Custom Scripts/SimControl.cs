@@ -713,24 +713,27 @@ public class SimControl : MonoBehaviour
                         labels[0].text = thisObjectName;
 
                         SoaActor thisActor = thisGameObject.GetComponent<SoaActor>();
-                        bool wasDown = mouseDown;
-                        mouseDown = Input.GetMouseButtonDown(0);
-                        if (wasDown != mouseDown && mouseDown)//left click
+                        if (thisActor != null)
                         {
-                            foreach (SoaActor actor in redDataManager.actors)
+                            bool wasDown = mouseDown;
+                            mouseDown = Input.GetMouseButtonDown(0);
+                            if (wasDown != mouseDown && mouseDown)//left click
                             {
-                                if (actor != thisActor)
-                                    actor.selected(false);
-                            }
+                                foreach (SoaActor actor in redDataManager.actors)
+                                {
+                                    if (actor != thisActor)
+                                        actor.selected(false);
+                                }
 
-                            foreach (SoaActor actor in blueDataManager.actors)
-                            {
-                                if (actor != thisActor)
-                                    actor.selected(false);
-                            }
+                                foreach (SoaActor actor in blueDataManager.actors)
+                                {
+                                    if (actor != thisActor)
+                                        actor.selected(false);
+                                }
 
-                            thisActor.toggleSelection();
-                        }
+                                thisActor.toggleSelection();
+                            }
+                        }                        
 
                         NavMeshAgent thisNavAgent = thisGameObject.GetComponentInChildren<NavMeshAgent>();
                         if (thisNavAgent)

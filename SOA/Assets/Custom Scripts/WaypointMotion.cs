@@ -68,9 +68,12 @@ public class WaypointMotion : MonoBehaviour
                     currentSpeed = Mathf.Lerp(currentSpeed, speed, dt / 3);
                     Vector3 deltaV = (new Vector3(target.x, target.y, target.z)) - transform.position;
                     deltaV.y = 0;//don't simulate changing height
-                    deltaV.Normalize();
-                    transform.rotation = Quaternion.LookRotation(new Vector3(deltaV.x, deltaV.y, deltaV.z));
-                    transform.position = transform.position + (currentSpeed * dt * deltaV);
+                    if (deltaV.magnitude > 0.001)
+                    {
+                        deltaV.Normalize();
+                        transform.rotation = Quaternion.LookRotation(new Vector3(deltaV.x, deltaV.y, deltaV.z));
+                        transform.position = transform.position + (currentSpeed * dt * deltaV);
+                    }
                 }
                 else
                 {
@@ -92,7 +95,9 @@ public class WaypointMotion : MonoBehaviour
                 
                 foreach (soa.Waypoint waypoint in belief.getWaypoints())
                 {
-                    Vector3 location = new Vector3(waypoint.x, transform.position.y, waypoint.z);
+                    Vector3 location = new Vector3(waypoint.x * SimControl.KmToUnity, 
+                                                    transform.position.y, 
+                                                    waypoint.z * SimControl.KmToUnity);
                     waypoints.Add(location);
                 }
                 
@@ -111,7 +116,9 @@ public class WaypointMotion : MonoBehaviour
             if (belief != lastBelief && belief != null)
             {
                 this.waypoints.Clear();
-                Vector3 location = new Vector3(belief.getPos_x(), transform.position.y, belief.getPos_z());
+                Vector3 location = new Vector3(belief.getPos_x() * SimControl.KmToUnity, 
+                                               transform.position.y, 
+                                               belief.getPos_z() * SimControl.KmToUnity);
                 waypoints.Add(location);
                 waypointIndex = 0;
                 lastBelief = belief;
