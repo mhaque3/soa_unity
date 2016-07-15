@@ -123,6 +123,12 @@ public class SimControl : MonoBehaviour
         BlueBases = new List<GameObject>();
     }
 
+    [ContextMenu("Show Network Topography")]
+    public static void HideShowNetworkConnectivity()
+    {
+        Log.debug("User wants to see the network topography");
+    }
+    
     // Use this for initialization upon activation
 	void Start () 
     {

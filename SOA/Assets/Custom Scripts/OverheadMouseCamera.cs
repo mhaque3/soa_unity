@@ -44,6 +44,47 @@ public class OverheadMouseCamera : MonoBehaviour
 		}
 	}
 
+    public void TrackObjectWithID(int unique_id)
+    {
+        for (int i = 0; i < Platforms.Count; ++i)
+        {
+            GameObject platform = Platforms[i];
+            SoaActor actor = platform.GetComponent<SoaActor>();
+            if (actor != null && actor.unique_id == unique_id)
+            {
+                trackedPlatformIndex = i;
+                trackingOn = true;
+                break;
+            }
+        }
+    }
+
+    public void TrackNextObject()
+    {
+        trackingOn = true;
+        if (trackedPlatformIndex < Platforms.Count - 1)
+        {
+            trackedPlatformIndex++;
+        }
+        else
+        {
+            trackedPlatformIndex = 0;
+        }
+    }
+
+    public void TrackPrevObject()
+    {
+        trackingOn = true;
+        if (trackedPlatformIndex > 0)
+        {
+            trackedPlatformIndex--;
+        }
+        else
+        {
+            trackedPlatformIndex = Platforms.Count - 1;
+        }
+    }
+
 	float dx, dy, dz;
 	public Vector3 mouseWorldPoint;
 	// Update is called once per frame
@@ -62,16 +103,8 @@ public class OverheadMouseCamera : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Switch Camera Target"))
 		{
-			trackingOn = true;
-			if(trackedPlatformIndex < Platforms.Count-1)
-			{
-				trackedPlatformIndex++;
-			}
-			else
-			{
-				trackedPlatformIndex = 0;
-			}
-		}
+            TrackNextObject();
+        }
 
 		// Mouse panning...
 		Vector3 mouseVector = GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
