@@ -17,6 +17,10 @@ namespace soa
 		public void handleMessage(BSPMessage message)
 		{
 			Belief belief = serializer.generateBelief(message.getData().getBuffer());
+            if (belief.getBeliefType() == Belief.BeliefType.WAYPOINT_PATH)
+            {
+                Log.debug("Received waypoint path");
+            }
 			repo.Commit(belief);
 		}
 

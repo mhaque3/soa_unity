@@ -540,6 +540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexGrid: {fileID: 0}
+  thisSoaActor: {fileID: 0}
 --- !u!114 &11474416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -555,13 +556,15 @@ MonoBehaviour:
   GroundHugger: 0
   AltitudeOffset: 2
   speed: 1.2
-  WaypointSlowFactor: 0
-  maxTurn: 1
+  maxTurn: 90
   waypointEpsilon: 1
   waypoints: []
+  displayedPoints: []
+  prefabWaypoint: {fileID: 134114, guid: b819451210d988f46b64091f8c22e6b5, type: 2}
   waypointIndex: 0
   TeleportFromLastWaypoint: 0
   targetPosition: {x: 0, y: 0, z: 0}
+  targetIsValid: 0
 --- !u!114 &11489222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -600,9 +603,10 @@ MonoBehaviour:
   displayTruePosition: 1
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 0}
-  wpMotionScript: {fileID: 0}
+  wpMotionScript: {fileID: 11474416}
   pcMotionScript: {fileID: 0}
   navAgent: {fileID: 0}
+  pointAhead: {fileID: 0}
 --- !u!114 &11492882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -723,7 +727,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxTurn
-      value: 1
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: waypointEpsilon
@@ -733,6 +737,18 @@ Prefab:
       propertyPath: On
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: prefabPoint
+      value: 
+      objectReference: {fileID: 134114, guid: b819451210d988f46b64091f8c22e6b5, type: 2}
+    - target: {fileID: 0}
+      propertyPath: wpMotionScript
+      value: 
+      objectReference: {fileID: 11474416}
+    - target: {fileID: 0}
+      propertyPath: prefabWaypoint
+      value: 
+      objectReference: {fileID: 134114, guid: b819451210d988f46b64091f8c22e6b5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 136436}

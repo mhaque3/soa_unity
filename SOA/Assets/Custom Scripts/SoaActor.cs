@@ -62,6 +62,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
     public SoaClassifier[] Classifiers;
     public List<GameObject> Detections;
     public List<GameObject> Tracks;
+    public bool isSelected;
 
     public List<Belief_Actor> killDetections = new List<Belief_Actor>();
 
@@ -87,6 +88,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
     public WaypointMotion wpMotionScript;
     public PlanarCoordinateMotion pcMotionScript;
     public NavMeshAgent navAgent;
+    public GameObject pointAhead;
     SimControl simControlScript;
 
     private float velocityX = 0;
@@ -105,6 +107,23 @@ public class SoaActor : MonoBehaviour, ISoaActor
 	{
 		return unique_id;
 	}
+
+    public void toggleSelection()
+    {
+        selected(!isSelected);
+    }
+
+    public void selected(bool selected)
+    {
+        if (isSelected != selected)
+        {
+            this.isSelected = selected;
+            if (wpMotionScript != null)
+            {
+                wpMotionScript.setDisplay(selected);
+            }
+        }
+    }
 
 	public PositionKM getPositionInKilometers()
 	{
@@ -136,6 +155,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
     // Use this for initialization
     void Start()
     {
+        isSelected = false;
         //Initialize id array for photon
         idArray[0] = unique_id;
 
@@ -221,7 +241,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
             communicator = dataManager.physicalNetworkLayer.BuildCommunicatorFor(unique_id);
             communicator.RegisterCallback(handleBeliefReceivedFrom);
         } 
-
+        
         if (isAlive)
         {
             // Compute time since last frame
@@ -399,9 +419,33 @@ public class SoaActor : MonoBehaviour, ISoaActor
             if (useExternalWaypoint)
             {
                 Belief_Waypoint newWaypoint = beliefRepo.Find<Belief_Waypoint>(Belief.BeliefType.WAYPOINT, unique_id);
-                //Debug.Log(name);
+                Belief_WaypointPath newPath = beliefRepo.Find<Belief_WaypointPath>(Belief.BeliefType.WAYPOINT_PATH, unique_id);
+
                 motionScript.On = false;
-                if (newWaypoint != null)
+                if (wpMotionScript != null)
+                {
+                    if (newPath != null && newWaypoint != null)
+                    {
+                        //If we have a path and a waypoint choose the newest one
+                        if (newPath.getBeliefTime() < newWaypoint.getBeliefTime()) {
+                            newPath = null;
+                        } else {
+                            newWaypoint = null;
+                        }
+                    }
+
+                    if (newPath != null)
+                    {
+                        wpMotionScript.SetWaypointBelief(newPath);
+                        wpMotionScript.On = true;
+                    }
+                    else if(newWaypoint != null)
+                    {
+                        wpMotionScript.SetWaypointBelief(newWaypoint);
+                        wpMotionScript.On = true;
+                    }
+                }
+                else if (newWaypoint != null)
                 {
                     // Received a waypoint in km, transform to Unity coordinates and then use it to set the nav agent's destination
                     if (navAgent != null)
@@ -414,12 +458,11 @@ public class SoaActor : MonoBehaviour, ISoaActor
                             )
                         ));
                     }
-                    
+
                     // Set the desired altitude separately [km]
                     SetDesiredAltitude(newWaypoint.getPos_y());
                 }
-                else
-                if(navAgent != null)
+                else if (navAgent != null)
                 {
                     // Stay put
                     navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
@@ -439,11 +482,18 @@ public class SoaActor : MonoBehaviour, ISoaActor
             {
                 // Special case for blue balloon
                 // Convert position coordinates from unity to km before making new belief waypoint
+                /*
                 Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
                     wpMotionScript.targetPosition.x / SimControl.KmToUnity,
                     desiredAltitude_km,
                     wpMotionScript.targetPosition.z / SimControl.KmToUnity);
                 addMyBeliefData(newWaypoint);
+                */
+                Belief_WaypointPath waypointPath = beliefRepo.Find<Belief_WaypointPath>(Belief.BeliefType.WAYPOINT_PATH, unique_id);
+                if (waypointPath != null)
+                {
+                    wpMotionScript.SetWaypointBelief(waypointPath);
+                }
             }
             else
             {

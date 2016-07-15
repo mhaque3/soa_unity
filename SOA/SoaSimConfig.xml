@@ -1,8 +1,8 @@
 <SoaConfig>
   <!-- Network Configuration Settings -->
   <Network 
-       redRoom ="soa-testroom-red-isc" 
-       blueRoom="soa-testroom-blue-isc" 
+       redRoom ="localhost:45678" 
+       blueRoom="localhost:56789" 
   />
  
   <!-- Logger Configuration Settings -->

@@ -105,6 +105,8 @@ public class SimControl : MonoBehaviour
     float sensorClock = 0f;
     public float sensorUpdatePeriod;
 
+    private bool mouseDown;
+
     #region Initialization
     /*****************************************************************************************************
      *                                        INITIALIZATION                                             *
@@ -124,6 +126,7 @@ public class SimControl : MonoBehaviour
     // Use this for initialization upon activation
 	void Start () 
     {
+        mouseDown = false;
         // Scale factor (this must be the first thing called)
         KmToUnity = hexGrid.KmToUnity();
         Debug.Log("Km to Unity = " + KmToUnity);
@@ -670,7 +673,7 @@ public class SimControl : MonoBehaviour
             }
         }
 	}
-
+    
     void UpdateMouseOver()
     {
         mouseVector = thisCamera.ScreenToViewportPoint(Input.mousePosition);
@@ -710,6 +713,25 @@ public class SimControl : MonoBehaviour
                         labels[0].text = thisObjectName;
 
                         SoaActor thisActor = thisGameObject.GetComponent<SoaActor>();
+                        bool wasDown = mouseDown;
+                        mouseDown = Input.GetMouseButtonDown(0);
+                        if (wasDown != mouseDown && mouseDown)//left click
+                        {
+                            foreach (SoaActor actor in redDataManager.actors)
+                            {
+                                if (actor != thisActor)
+                                    actor.selected(false);
+                            }
+
+                            foreach (SoaActor actor in blueDataManager.actors)
+                            {
+                                if (actor != thisActor)
+                                    actor.selected(false);
+                            }
+
+                            thisActor.toggleSelection();
+                        }
+
                         NavMeshAgent thisNavAgent = thisGameObject.GetComponentInChildren<NavMeshAgent>();
                         if (thisNavAgent)
                         {

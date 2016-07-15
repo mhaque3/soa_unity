@@ -5,13 +5,13 @@ using System.Text;
 
 namespace soa
 {
-    class Waypoint
+    public class Waypoint
     {
         public float x, y, z, heading;
         public bool visited;
     }
 
-	class Belief_WaypointPath : Belief
+	public class Belief_WaypointPath : Belief
 	{
 
         private List<Waypoint> waypoints;

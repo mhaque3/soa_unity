@@ -27133,7 +27133,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187476}
-  m_LocalRotation: {x: 0.703031, y: -0.70152396, z: 0.082487196, w: -0.08250701}
+  m_LocalRotation: {x: 0.70303106, y: -0.701524, z: 0.0824872, w: -0.082507014}
   m_LocalPosition: {x: -10.59527, y: 70.769, z: 11.167763}
   m_LocalScale: {x: 0.022642052, y: 0.022641419, z: 0.02264137}
   m_Children:
@@ -27209,7 +27209,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168166}
-  m_LocalRotation: {x: 0.703031, y: -0.70152396, z: 0.082487196, w: -0.08250701}
+  m_LocalRotation: {x: 0.70303106, y: -0.701524, z: 0.0824872, w: -0.082507014}
   m_LocalPosition: {x: -10.59527, y: 70.769, z: 11.167763}
   m_LocalScale: {x: 0.022642052, y: 0.022641419, z: 0.02264137}
   m_Children:
@@ -33200,7 +33200,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168950}
-  m_LocalRotation: {x: 0.703031, y: -0.70152396, z: 0.082487196, w: -0.08250701}
+  m_LocalRotation: {x: 0.70303106, y: -0.701524, z: 0.0824872, w: -0.082507014}
   m_LocalPosition: {x: -10.59527, y: 70.769, z: 11.167763}
   m_LocalScale: {x: 0.022642052, y: 0.022641419, z: 0.02264137}
   m_Children:
@@ -33596,7 +33596,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165692}
-  m_LocalRotation: {x: 0.703031, y: -0.70152396, z: 0.082487196, w: -0.08250701}
+  m_LocalRotation: {x: 0.70303106, y: -0.701524, z: 0.0824872, w: -0.082507014}
   m_LocalPosition: {x: -10.59527, y: 70.769, z: 11.167763}
   m_LocalScale: {x: 0.022642052, y: 0.022641419, z: 0.02264137}
   m_Children:
@@ -62532,9 +62532,10 @@ MonoBehaviour:
   displayTruePosition: 1
   displayPosition: {x: 0, y: 0, z: 0}
   motionScript: {fileID: 11404066}
-  wpMotionScript: {fileID: 0}
+  wpMotionScript: {fileID: 11480362}
   pcMotionScript: {fileID: 0}
   navAgent: {fileID: 0}
+  pointAhead: {fileID: 0}
 --- !u!114 &11446526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -62591,13 +62592,15 @@ MonoBehaviour:
   GroundHugger: 0
   AltitudeOffset: 1
   speed: 1.5
-  WaypointSlowFactor: 0
-  maxTurn: 1
+  maxTurn: 90
   waypointEpsilon: 1
   waypoints: []
+  displayedPoints: []
+  prefabWaypoint: {fileID: 134114, guid: b819451210d988f46b64091f8c22e6b5, type: 2}
   waypointIndex: 0
   TeleportFromLastWaypoint: 0
   targetPosition: {x: 0, y: 0, z: 0}
+  targetIsValid: 0
 --- !u!114 &11482774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -62738,7 +62741,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxTurn
-      value: 1
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: waypointEpsilon
@@ -62748,6 +62751,14 @@ Prefab:
       propertyPath: On
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: wpMotionScript
+      value: 
+      objectReference: {fileID: 11480362}
+    - target: {fileID: 0}
+      propertyPath: prefabWaypoint
+      value: 
+      objectReference: {fileID: 134114, guid: b819451210d988f46b64091f8c22e6b5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158962}
