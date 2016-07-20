@@ -550,7 +550,7 @@ public class SimControl : MonoBehaviour
                 TerminateSimulation();
                 return;
             }
-
+            
             // Compute distances between blue/red units for comms purposes
             blueDataManager.calculateDistances();
             redDataManager.calculateDistances();
@@ -572,8 +572,8 @@ public class SimControl : MonoBehaviour
                     }
                 }
             }
-            
-            lock(blueDataManager.dataManagerLock)
+
+            lock (blueDataManager.dataManagerLock)
             {
                 for (int i = 0; i < LocalPlatforms.Count; i++)
                 {
@@ -610,7 +610,7 @@ public class SimControl : MonoBehaviour
                 updateTimer = 0f;
             }
 
-
+            
             if (BroadcastOn)
             {
                 int count = 1;
@@ -625,7 +625,6 @@ public class SimControl : MonoBehaviour
                         {
                             //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
                             //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
-
                             for (int i = 0; i < LocalPlatforms.Count; i++)
                             {
                                 GameObject platform = LocalPlatforms[i];
