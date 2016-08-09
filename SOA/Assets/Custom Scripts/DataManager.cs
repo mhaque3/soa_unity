@@ -17,9 +17,7 @@ namespace soa
         public List<SoaActor> actors = new List<SoaActor>();
         public List<Belief> initializationBeliefs = new List<Belief>();
         public SortedDictionary<int, SoaActor> soaActorDictionary = new SortedDictionary<int,SoaActor>();
-
-        //Dictionary of belief data
-        protected SortedDictionary<Belief.Key, SortedDictionary<int, Belief> > beliefDictionary;
+        
         public System.Object dataManagerLock = new System.Object();
 		private LocalCommManager cm;
 
@@ -39,8 +37,7 @@ namespace soa
             cm = new LocalCommManager(this, ps, new UdpNetwork(port));
             //cm = new PhotonCloudCommManager(this, ps, "app-us.exitgamescloud.com:5055", roomName, 0, 0);
             //cm = new PhotonCloudCommManager(dm, ps, "10.101.5.25:5055", "soa");
-
-            beliefDictionary = new SortedDictionary<Belief.Key, SortedDictionary<int, Belief>>();
+            
             physicalNetworkLayer = new IdealizedNetworkLayer(new DataManagerWorld(this));
 
             // Note: Comms manager must be started manually after all initial belief processing is done
@@ -97,46 +94,7 @@ namespace soa
 				entry.Value.addExternalBelief(b);
             }
         }
-
-
-        // Check if belief is newer than current belief of matching type and id, if so,
-        // replace old belief with b.
-        public void addBeliefToDataManager(Belief b, int sourceId)
-        {
-            lock (dataManagerLock)
-            {
-                
-                SortedDictionary<int, Belief> tempTypeDict = getBeliefsFor(b.getTypeKey());
-                if (tempTypeDict != null)
-                {
-                    Belief oldBelief;
-                    if (!getBeliefsFor(b.getTypeKey()).TryGetValue(b.getId(), out oldBelief) || oldBelief.getBeliefTime() < b.getBeliefTime())
-                    {
-                        getBeliefsFor(b.getTypeKey())[b.getId()] = b;
-                    }
-                }
-                else
-                {
-                    getBeliefsFor(b.getTypeKey())[b.getId()] = b;
-                }
-
-                /*
-                 * Do not update actors in this function
-                SortedDictionary<int, bool> sourceDistanceDictionary;
-                if (actorDistanceDictionary.TryGetValue(sourceId, out sourceDistanceDictionary))
-                {
-                    foreach (KeyValuePair<int, bool> entry in sourceDistanceDictionary)
-                    {
-                        SoaActor destActor = soaActorDictionary[entry.Key];
-                        if (entry.Value)
-                        {
-                            destActor.addBelief(b, sourceId);
-                        }
-                    }
-                }*/
-            }
-        }
-
+        
         /*
          * Call this function once every update of the simulation time step to refresh the true position data for all the actors
          * A pair of actors actorDistanceDictionary[destId][sourceId] = true if the source comms range is large enough to reach the destination.
@@ -157,15 +115,13 @@ namespace soa
                 //Debug.Log("Adding actor " + actor.unique_id + " to actor dictionary");
                 soaActorDictionary[actor.unique_id] = actor;
                 cm.addNewActor(actor.unique_id, actor.getRepository());
-                addBeliefToDataManager(
-                    new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, actor.isAlive, 
+                actor.addBeliefToBeliefDictionary(new Belief_Actor(actor.unique_id, (int)actor.affiliation, actor.type, actor.isAlive,
                         actor.numStorageSlots, actor.numCasualtiesStored,
                         actor.numSuppliesStored, actor.numCiviliansStored,
                         actor.isWeaponized, actor.hasJammer, actor.fuelRemaining_s,
                         actor.transform.position.x / SimControl.KmToUnity,
                         actor.simAltitude_km,
-                        actor.transform.position.z / SimControl.KmToUnity), 
-                        actor.unique_id);
+                        actor.transform.position.z / SimControl.KmToUnity));
             }
             else
             {
@@ -189,12 +145,7 @@ namespace soa
                 Debug.LogError("TRIED TO REMOVE ACTOR FROM DATA MANAGER THAT DOESN'T EXIST: " + actor.unique_id);
             }
         }
-
-        public SortedDictionary<Belief.Key, SortedDictionary<int, Belief>> getGodsEyeView()
-        {
-            return beliefDictionary;
-        }
-
+        
         public void stopPhoton()
         {
             if (cm != null)
@@ -214,23 +165,7 @@ namespace soa
         {
             return initializationBeliefs;
         }
-
-        private SortedDictionary<int, Belief> getBeliefsFor(Belief.BeliefType type)
-        {
-            return getBeliefsFor(Belief.keyOf(type));
-        }
-
-        private SortedDictionary<int, Belief> getBeliefsFor(Belief.Key key)
-        {
-            SortedDictionary<int, Belief> beliefs;
-            if (!beliefDictionary.TryGetValue(key, out beliefs))
-            {
-                beliefs = new SortedDictionary<int, Belief>();
-                beliefDictionary[key] = beliefs;
-            }
-            return beliefs;
-        }
-
+      
         private class DataManagerWorld : IWorld
         {
             private readonly DataManager manager;

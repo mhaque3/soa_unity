@@ -69,6 +69,7 @@ public class SimControl : MonoBehaviour
     // Misc
     public bool BroadcastOn;
     public float updateRateS;
+    public float updateControlSeconds;
     private bool showTruePositions = true;
     public OverheadMouseCamera omcScript;
     public SoaHexWorld hexGrid;
@@ -517,6 +518,19 @@ public class SimControl : MonoBehaviour
 
         // Update timer
         updateTimer += dt;
+        if (updateTimer > updateControlSeconds)
+        {
+            lock (blueDataManager.dataManagerLock)
+            {
+                for (int i = 0; i < RemotePlatforms.Count; i++)
+                {
+                    GameObject platform = RemotePlatforms[i];
+                    SoaActor actor = platform.GetComponent<SoaActor>();
+                    actor.ControlUpdate();
+                }
+            }
+        }
+
         if (updateTimer > updateRateS)
         {
             simTime++;
@@ -568,6 +582,7 @@ public class SimControl : MonoBehaviour
                         //If showing true position, first arg gets ignored
                         //Otherwise, the data in the first arg is represented in the display.
                         //If null the actor is no longer visible.
+                        actor.ControlUpdate();
                         actor.updateActor();
                     }
                 }
@@ -584,6 +599,7 @@ public class SimControl : MonoBehaviour
                         //If showing true position, first arg gets ignored
                         //Otherwise, the data in the first arg is represented in the display.
                         //If null the actor is no longer visible.
+                        actor.ControlUpdate();
                         actor.updateActor();
 
 
@@ -601,6 +617,7 @@ public class SimControl : MonoBehaviour
                     //Otherwise, the data in the first arg is represented in the display.
                     //If null the actor is no longer visible.
                     actor.updateActor();
+                    //actor.ControlUpdate(); Updates at a higher rate earlier in this method ^
                 }
 
                 // Push new site beliefs into each blue base
@@ -613,35 +630,31 @@ public class SimControl : MonoBehaviour
             
             if (BroadcastOn)
             {
-                int count = 1;
-                while (count < 2)
+               
+                //TODO create separate lists for local blue and local red so that we do not need the nested data manager locks
+                //This lock keeps the comms manager from adding data while we pushing out comms
+                lock (redDataManager.dataManagerLock)
                 {
-                    count++;
-                    //TODO create separate lists for local blue and local red so that we do not need the nested data manager locks
-                    //This lock keeps the comms manager from adding data while we pushing out comms
-                    lock (redDataManager.dataManagerLock)
+                    lock (blueDataManager.dataManagerLock)
                     {
-                        lock (blueDataManager.dataManagerLock)
+                        //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
+                        //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
+                        for (int i = 0; i < LocalPlatforms.Count; i++)
                         {
-                            //Get the current belief map to display.  Default is the data managers map which is the gods eye view.
-                            //SortedDictionary<Belief.BeliefType, SortedDictionary<int, Belief>> displayMap = redDataManager.getGodsEyeView();
-                            for (int i = 0; i < LocalPlatforms.Count; i++)
+                            GameObject platform = LocalPlatforms[i];
+                            SoaActor actor = platform.GetComponent<SoaActor>();
+                            if (actor.affiliation != Affiliation.NEUTRAL)
                             {
-                                GameObject platform = LocalPlatforms[i];
-                                SoaActor actor = platform.GetComponent<SoaActor>();
-                                if (actor.affiliation != Affiliation.NEUTRAL)
-                                {
-                                    actor.broadcastCommsLocal();
-                                }
-                            }
-
-                            for (int i = 0; i < RemotePlatforms.Count; i++)
-                            {
-                                // Note: Blue base now counts as a remote platform
-                                GameObject platform = RemotePlatforms[i];
-                                SoaActor actor = platform.GetComponent<SoaActor>();
                                 actor.broadcastCommsLocal();
                             }
+                        }
+
+                        for (int i = 0; i < RemotePlatforms.Count; i++)
+                        {
+                            // Note: Blue base now counts as a remote platform
+                            GameObject platform = RemotePlatforms[i];
+                            SoaActor actor = platform.GetComponent<SoaActor>();
+                            actor.broadcastCommsLocal();
                         }
                     }
                 }
@@ -678,7 +691,7 @@ public class SimControl : MonoBehaviour
             }
         }
 	}
-    
+        
     void UpdateMouseOver()
     {
         mouseVector = thisCamera.ScreenToViewportPoint(Input.mousePosition);

@@ -20,12 +20,15 @@ public class WaypointMotion : MonoBehaviour
     private soa.Belief lastBelief;
     public bool displayWaypoints;
     public RaycastHit hit;
+    public Vector3 velocity;
+    public bool velocityValid;
 
     public WaypointMotion()
     {
         waypoints = new List<Vector3>();
         displayedPoints = new List<GameObject>();
         On = false;
+        velocityValid = false;
     }
 
     public void setDisplay(bool display)
@@ -72,12 +75,21 @@ public class WaypointMotion : MonoBehaviour
                     {
                         deltaV.Normalize();
                         transform.rotation = Quaternion.LookRotation(new Vector3(deltaV.x, deltaV.y, deltaV.z));
-                        transform.position = transform.position + (currentSpeed * dt * deltaV);
+                        velocity = currentSpeed * deltaV;
+                        velocityValid = true;
+                        transform.position = transform.position + (velocity * dt);
+                    }
+                    else
+                    {
+                        velocity = new Vector3(0, 0, 0);
+                        velocityValid = true;
                     }
                 }
                 else
                 {
                     currentSpeed = 0;
+                    velocity = new Vector3(0, 0, 0);
+                    velocityValid = true;
                 }
                 
                 timeInterval = 0;

@@ -248,7 +248,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
             float dt_s = Time.deltaTime * 60; // Time.deltaTime returns sec, recall 1 sec real time = 60 sec in sim world
             
             // Simulate altitude state
-            if (simAltitude_km != desiredAltitude_km)
+            if (simulateMotion && Math.Abs(simAltitude_km - desiredAltitude_km) > 1e-6)
             {
                 float diffAltitude_km = desiredAltitude_km - simAltitude_km;
                 if (Mathf.Abs(diffAltitude_km) <= maxVerticalSpeed_m_s / 1000.0f * dt_s)
@@ -376,6 +376,133 @@ public class SoaActor : MonoBehaviour, ISoaActor
 
     }
 
+    public virtual void ControlUpdate()
+    {
+        if (!isAlive || !simulateMotion)
+        {
+            return;
+        }
+        
+        displayActor = true;
+
+        // Setup waypoint belief
+        if (useExternalWaypoint)
+        {
+            Belief_Waypoint newWaypoint = beliefRepo.Find<Belief_Waypoint>(Belief.BeliefType.WAYPOINT, unique_id);
+            Belief_WaypointPath newPath = beliefRepo.Find<Belief_WaypointPath>(Belief.BeliefType.WAYPOINT_PATH, unique_id);
+
+            motionScript.On = false;
+            if (wpMotionScript != null)
+            {
+                if (newPath != null && newWaypoint != null)
+                {
+                    //If we have a path and a waypoint choose the newest one
+                    if (newPath.getBeliefTime() < newWaypoint.getBeliefTime())
+                    {
+                        newPath = null;
+                    }
+                    else
+                    {
+                        newWaypoint = null;
+                    }
+                }
+
+                if (newPath != null)
+                {
+                    wpMotionScript.SetWaypointBelief(newPath);
+                    wpMotionScript.On = true;
+                }
+                else if (newWaypoint != null)
+                {
+                    wpMotionScript.SetWaypointBelief(newWaypoint);
+                    wpMotionScript.On = true;
+                }
+
+                Vector3 velocity = wpMotionScript.velocity;
+                bool valid = wpMotionScript.velocityValid;
+                velocityX = velocity.x;
+                velocityY = velocity.y;
+                velocityZ = velocity.z;
+                velocityXValid = velocityYValid = velocityZValid = valid;
+            }
+            else if (newWaypoint != null)
+            {
+                // Received a waypoint in km, transform to Unity coordinates and then use it to set the nav agent's destination
+                if (navAgent != null)
+                {
+                    navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
+                        new Vector3(
+                            newWaypoint.getPos_x() * SimControl.KmToUnity,
+                            transform.position.y, // Nav agent ignores the y coordinate (altitude)
+                            newWaypoint.getPos_z() * SimControl.KmToUnity
+                        )
+                    ));
+                }
+
+                // Set the desired altitude separately [km]
+                SetDesiredAltitude(newWaypoint.getPos_y());
+            }
+            else if (navAgent != null)
+            {
+                // Stay put
+                navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z)));
+
+                velocityX = (navAgent.velocity.x / SimControl.KmToUnity) / 60f * 1000f;
+                velocityXValid = true;
+                velocityY = (navAgent.velocity.y / SimControl.KmToUnity) / 60f * 1000f;
+                velocityYValid = true;
+                velocityZ = (navAgent.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
+                velocityZValid = true;
+            }
+        }
+        else if (motionScript != null)
+        {
+            // Convert position coordinates from unity to km before making new belief waypoint
+            Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
+                motionScript.targetPosition.x / SimControl.KmToUnity,
+                desiredAltitude_km,
+                motionScript.targetPosition.z / SimControl.KmToUnity);
+            addMyBeliefData(newWaypoint);
+        }
+        else if (wpMotionScript != null)
+        {
+            // Special case for blue balloon
+            // Convert position coordinates from unity to km before making new belief waypoint
+            Belief_WaypointPath waypointPath = beliefRepo.Find<Belief_WaypointPath>(Belief.BeliefType.WAYPOINT_PATH, unique_id);
+            if (waypointPath != null)
+            {
+                wpMotionScript.SetWaypointBelief(waypointPath);
+            }
+        }
+        else
+        {
+            // Special case for blue balloon
+            // Convert position coordinates from unity to km before making new belief waypoint
+            Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
+                pcMotionScript.targetPosition.x / SimControl.KmToUnity,
+                desiredAltitude_km,
+                pcMotionScript.targetPosition.z / SimControl.KmToUnity);
+            addMyBeliefData(newWaypoint);
+        }
+
+        // Convert position from Unity to km for Belief_Actor
+        simX_km = transform.position.x / SimControl.KmToUnity;
+        simZ_km = transform.position.z / SimControl.KmToUnity;
+
+        Belief_Actor newActorData = new Belief_Actor(
+            unique_id, (int)affiliation, type, isAlive,
+            numStorageSlots, numCasualtiesStored,
+            numSuppliesStored, numCiviliansStored,
+            isWeaponized, hasJammer, fuelRemaining_s,
+            simX_km, simAltitude_km, simZ_km,
+            velocityXValid, velocityX,
+            velocityYValid, velocityY,
+            velocityZValid, velocityZ);
+
+        addMyBeliefData(newActorData);
+    }
+    
     /**
      * Update the position of the actor vectors.  This function is called when in simulation mode
      * If Sim is in charge of waypoints, get the current target from the motion script and add to 
@@ -399,132 +526,8 @@ public class SoaActor : MonoBehaviour, ISoaActor
             return;
         }
 
-        if (nma != null)
-        {
-            velocityX = (nma.velocity.x / SimControl.KmToUnity) / 60f * 1000f;
-            velocityXValid = true;
-            velocityY = (nma.velocity.y / SimControl.KmToUnity) / 60f * 1000f;
-            velocityYValid = true;
-            velocityZ = (nma.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
-            velocityZValid = true;
-
-            //Debug.Log("VELOCITY " + unique_id + " " + (nma.velocity.magnitude / 60f * 1000f));
-        }
-
         if (simulateMotion)
-        {
-            displayActor = true;
-
-            // Setup waypoint belief
-            if (useExternalWaypoint)
-            {
-                Belief_Waypoint newWaypoint = beliefRepo.Find<Belief_Waypoint>(Belief.BeliefType.WAYPOINT, unique_id);
-                Belief_WaypointPath newPath = beliefRepo.Find<Belief_WaypointPath>(Belief.BeliefType.WAYPOINT_PATH, unique_id);
-
-                motionScript.On = false;
-                if (wpMotionScript != null)
-                {
-                    if (newPath != null && newWaypoint != null)
-                    {
-                        //If we have a path and a waypoint choose the newest one
-                        if (newPath.getBeliefTime() < newWaypoint.getBeliefTime()) {
-                            newPath = null;
-                        } else {
-                            newWaypoint = null;
-                        }
-                    }
-
-                    if (newPath != null)
-                    {
-                        wpMotionScript.SetWaypointBelief(newPath);
-                        wpMotionScript.On = true;
-                    }
-                    else if(newWaypoint != null)
-                    {
-                        wpMotionScript.SetWaypointBelief(newWaypoint);
-                        wpMotionScript.On = true;
-                    }
-                }
-                else if (newWaypoint != null)
-                {
-                    // Received a waypoint in km, transform to Unity coordinates and then use it to set the nav agent's destination
-                    if (navAgent != null)
-                    {
-                        navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
-                            new Vector3(
-                                newWaypoint.getPos_x() * SimControl.KmToUnity,
-                                transform.position.y, // Nav agent ignores the y coordinate (altitude)
-                                newWaypoint.getPos_z() * SimControl.KmToUnity
-                            )
-                        ));
-                    }
-
-                    // Set the desired altitude separately [km]
-                    SetDesiredAltitude(newWaypoint.getPos_y());
-                }
-                else if (navAgent != null)
-                {
-                    // Stay put
-                    navAgent.SetDestination(SimControl.ConstrainUnityDestinationToBoard(
-                        new Vector3(transform.position.x, transform.position.y, transform.position.z)));
-                }
-            }
-            else if (motionScript != null)
-            {
-                // Convert position coordinates from unity to km before making new belief waypoint
-                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
-                    motionScript.targetPosition.x / SimControl.KmToUnity,
-                    desiredAltitude_km,
-                    motionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint);
-            }
-            else if (wpMotionScript != null)
-            {
-                // Special case for blue balloon
-                // Convert position coordinates from unity to km before making new belief waypoint
-                /*
-                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
-                    wpMotionScript.targetPosition.x / SimControl.KmToUnity,
-                    desiredAltitude_km,
-                    wpMotionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint);
-                */
-                Belief_WaypointPath waypointPath = beliefRepo.Find<Belief_WaypointPath>(Belief.BeliefType.WAYPOINT_PATH, unique_id);
-                if (waypointPath != null)
-                {
-                    wpMotionScript.SetWaypointBelief(waypointPath);
-                }
-            }
-            else
-            {
-                // Special case for blue balloon
-                // Convert position coordinates from unity to km before making new belief waypoint
-                Belief_Waypoint newWaypoint = new Belief_Waypoint((ulong)(System.DateTime.UtcNow - epoch).Milliseconds, unique_id,
-                    pcMotionScript.targetPosition.x / SimControl.KmToUnity,
-                    desiredAltitude_km,
-                    pcMotionScript.targetPosition.z / SimControl.KmToUnity);
-                addMyBeliefData(newWaypoint);
-            }
-
-            // Convert position from Unity to km for Belief_Actor
-            simX_km = transform.position.x / SimControl.KmToUnity;
-            simZ_km = transform.position.z / SimControl.KmToUnity;
-
-            Belief_Actor newActorData = new Belief_Actor(
-                unique_id, (int)affiliation, type, isAlive, 
-                numStorageSlots, numCasualtiesStored,
-                numSuppliesStored, numCiviliansStored,
-                isWeaponized, hasJammer, fuelRemaining_s,
-                simX_km, simAltitude_km, simZ_km,
-                velocityXValid, velocityX,
-                velocityYValid, velocityY,
-                velocityZValid, velocityZ);
-            
-            addMyBeliefData(newActorData);
-
-            if (dataManager != null)
-                dataManager.addBeliefToDataManager(newActorData, unique_id);
-            
+        {         
             // Clear and update classifications
             foreach (SoaClassifier c in Classifiers)
             {
