@@ -697,6 +697,7 @@ namespace soa
                             waypoint.x = protoPoint.X;
                             waypoint.y = protoPoint.Y;
                             waypoint.z = protoPoint.Z;
+                            Debug.Log("Waypoint Altitude: " + waypoint.y);
                             waypoint.heading = protoPoint.Heading;
                             waypoint.visited = protoPoint.Visited;
                             waypoints.Add(waypoint);

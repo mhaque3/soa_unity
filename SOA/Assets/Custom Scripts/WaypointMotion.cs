@@ -9,6 +9,7 @@ public class WaypointMotion : MonoBehaviour
     public float AltitudeOffset;
     public float speed;
     public float angle;
+    public float desiredAltitude;
     float currentSpeed;
     public float maxTurn;
     public float waypointEpsilon;
@@ -65,6 +66,7 @@ public class WaypointMotion : MonoBehaviour
                 Vector3 target = GetTargetPosition();
                 if (target != null)
                 {
+                    desiredAltitude = target.y;
                     currentSpeed = Mathf.Lerp(currentSpeed, speed, dt / 3);
                     Vector3 deltaV = (new Vector3(target.x, target.y, target.z)) - transform.position;
                     deltaV.y = 0;//don't simulate changing height
@@ -96,7 +98,7 @@ public class WaypointMotion : MonoBehaviour
                 foreach (soa.Waypoint waypoint in belief.getWaypoints())
                 {
                     Vector3 location = new Vector3(waypoint.x * SimControl.KmToUnity, 
-                                                    transform.position.y, 
+                                                    waypoint.y * SimControl.KmToUnity, 
                                                     waypoint.z * SimControl.KmToUnity);
                     waypoints.Add(location);
                 }

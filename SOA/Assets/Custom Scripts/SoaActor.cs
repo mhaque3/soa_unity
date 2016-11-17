@@ -444,6 +444,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
                         wpMotionScript.SetWaypointBelief(newWaypoint);
                         wpMotionScript.On = true;
                     }
+                    desiredAltitude_km = wpMotionScript.desiredAltitude;
                 }
                 else if (newWaypoint != null)
                 {
