@@ -21,7 +21,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
 
     // Simulated altitude [km]
     public float simAltitude_km;
-    private float desiredAltitude_km;
+    public float desiredAltitude_km;
 
     //Simulated position [km]
     protected float simX_km;
@@ -444,7 +444,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
                         wpMotionScript.SetWaypointBelief(newWaypoint);
                         wpMotionScript.On = true;
                     }
-                    desiredAltitude_km = wpMotionScript.desiredAltitude;
+                    SetDesiredAltitude(wpMotionScript.desiredAltitude_km);
                 }
                 else if (newWaypoint != null)
                 {

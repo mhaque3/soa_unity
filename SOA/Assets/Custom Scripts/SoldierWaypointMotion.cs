@@ -84,6 +84,10 @@ public class SoldierWaypointMotion : MonoBehaviour
                 timeInterval = 0;
             }
     	}
+        else
+        {
+            navAgent.ResetPath();
+        }
     }
 
     public float GetSpeed()

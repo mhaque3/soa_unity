@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class WaypointMotion : MonoBehaviour 
 {
+    private static double KM_PER_M = 1 / 1000.0;
+    private static double REALSEC_PER_UNITYSEC = 60.0 / 1.0;
+
     public bool On;
     public bool GroundHugger = false;
     public float AltitudeOffset;
-    public float speed;
+    public float speed_mps;//meters per second
     public float angle;
-    public float desiredAltitude;
+    public float desiredAltitude_km;
     float currentSpeed;
     public float maxTurn;
     public float waypointEpsilon;
@@ -66,8 +70,10 @@ public class WaypointMotion : MonoBehaviour
                 Vector3 target = GetTargetPosition();
                 if (target != null)
                 {
-                    desiredAltitude = target.y;
-                    currentSpeed = Mathf.Lerp(currentSpeed, speed, dt / 3);
+                    desiredAltitude_km = target.y / SimControl.KmToUnity;
+                    double unitySpeed = speed_mps * KM_PER_M * REALSEC_PER_UNITYSEC * SimControl.KmToUnity;//UnityDistance / UnitySecond
+                    //currentSpeed = Mathf.Lerp(currentSpeed, (float)unitySpeed, dt / 3);
+                    currentSpeed = (float)unitySpeed;
                     Vector3 deltaV = (new Vector3(target.x, target.y, target.z)) - transform.position;
                     deltaV.y = 0;//don't simulate changing height
                     if (deltaV.magnitude > 0.001)
@@ -119,7 +125,7 @@ public class WaypointMotion : MonoBehaviour
             {
                 this.waypoints.Clear();
                 Vector3 location = new Vector3(belief.getPos_x() * SimControl.KmToUnity, 
-                                               transform.position.y, 
+                                              belief.getPos_y() * SimControl.KmToUnity, 
                                                belief.getPos_z() * SimControl.KmToUnity);
                 waypoints.Add(location);
                 waypointIndex = 0;
@@ -152,7 +158,7 @@ public class WaypointMotion : MonoBehaviour
         Vector3 target = waypoints[waypointIndex];
 
         Vector3 deltaV = target - transform.position;
-        deltaV.y = 0;
+        //deltaV.y = 0;
 
         if (deltaV.magnitude < waypointEpsilon) {
             waypointIndex++;
