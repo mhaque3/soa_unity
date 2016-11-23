@@ -72,10 +72,10 @@
      </HeavyUAV>
 
      <SmallUAV beamwidth_deg="20">
-        <Mode tag="RedDismount"     RangeP1_km="1.0"   RangeMax_km="5.0" />
-        <Mode tag="RedTruck"        RangeP1_km="2.0"   RangeMax_km="7.0" />
-        <Mode tag="NeutralDismount" RangeP1_km="1.0"   RangeMax_km="5.0" />
-        <Mode tag="NeutralTruck"    RangeP1_km="2.0"   RangeMax_km="7.0" />
+        <Mode tag="RedDismount"     RangeP1_km="1.0"   RangeMax_km="3.5" />
+        <Mode tag="RedTruck"        RangeP1_km="2.0"   RangeMax_km="3.5" />
+        <Mode tag="NeutralDismount" RangeP1_km="1.0"   RangeMax_km="3.5" />
+        <Mode tag="NeutralTruck"    RangeP1_km="2.0"   RangeMax_km="3.5" />
      </SmallUAV>
 
      <BlueBalloon beamwidth_deg="4">

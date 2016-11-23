@@ -312,7 +312,7 @@ public class SimControl : MonoBehaviour
         soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
 
         // Set random number generator seed
-        Random.seed = soaConfig.simulationRandomSeed;
+        Random.InitState(soaConfig.simulationRandomSeed);
 
         // Logger settings
         soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,

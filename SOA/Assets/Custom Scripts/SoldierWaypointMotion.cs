@@ -86,12 +86,15 @@ public class SoldierWaypointMotion : MonoBehaviour
     	}
         else
         {
-            navAgent.ResetPath();
+            if (navAgent != null)
+                navAgent.ResetPath();
         }
     }
 
     public float GetSpeed()
     {
-        return navAgent.speed;
+        if (navAgent != null)
+            return navAgent.speed;
+        return 0.0f;
     }
 }
