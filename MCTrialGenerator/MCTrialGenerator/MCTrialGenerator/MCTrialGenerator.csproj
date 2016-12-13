@@ -46,6 +46,9 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\GridMath.cs">
       <Link>GridMath.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfig.cs">
       <Link>EnvConfig.cs</Link>
     </Compile>
