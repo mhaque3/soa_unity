@@ -52,8 +52,11 @@ namespace soa
             List<PrimitiveTriple<float, float, float>> posList = new List<PrimitiveTriple<float, float, float>>();
 
             // First determine the # of units
-            int numUnits = (int)Math.Round(RandN(numMean, numStdDev, (float)numMin, (float)numMax, rand));
-
+            int numUnits = (int) Math.Ceiling(numMean);
+            if (numStdDev > 0)
+            {
+                numUnits = (int)Math.Round(RandN(numMean, numStdDev, (float)numMin, (float)numMax, rand));
+            }
             // For each unit
             PrimitivePair<float, float> tempPos = new PrimitivePair<float, float>(0, 0);
             PrimitivePair<float, float> anchor;

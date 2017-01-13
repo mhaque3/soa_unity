@@ -829,6 +829,7 @@ public class SimControl : MonoBehaviour
      *****************************************************************************************************/
     private void TerminateSimulation()
     {
+        Log.debug("Shutting down simulation");
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
         #else
@@ -839,11 +840,15 @@ public class SimControl : MonoBehaviour
     void OnApplicationQuit()
     {
         // Stop data managers / comms managers
+        Log.debug("Stopping red communication manager");
         redDataManager.stopPhoton();
+        Log.debug("stopping blue communication manager");
         blueDataManager.stopPhoton();
 
+        Log.debug("stopping logging");
         // Stop logger and write output to file
         soaEventLogger.TerminateLogging();
+        Log.debug("Finished!");
     }
     #endregion
 
