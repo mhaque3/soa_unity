@@ -1,8 +1,8 @@
 <SoaConfig>
   <!-- Network Configuration Settings -->
   <Network 
-       redRoom ="localhost:45678" 
-       blueRoom="localhost:56789" 
+       redRoom ="localhost:11511" 
+       blueRoom="localhost:11411" 
   />
  
   <!-- Logger Configuration Settings -->
@@ -20,6 +20,7 @@
        probRedDismountHasWeapon ="0.5"
        probRedTruckHasWeapon    ="0.5" 
        probRedTruckHasJammer    ="0.5"
+       controlUpdateRate_s      ="0.1"
   />
 
   <!-- Fuel Default Settings -->
@@ -71,7 +72,7 @@
         <Mode tag="NeutralTruck"    RangeP1_km="0.5"   RangeMax_km="0.5" />
      </HeavyUAV>
 
-     <SmallUAV beamwidth_deg="20">
+     <SmallUAV beamwidth_deg="90">
         <Mode tag="RedDismount"     RangeP1_km="1.0"   RangeMax_km="3.5" />
         <Mode tag="RedTruck"        RangeP1_km="2.0"   RangeMax_km="3.5" />
         <Mode tag="NeutralDismount" RangeP1_km="1.0"   RangeMax_km="3.5" />

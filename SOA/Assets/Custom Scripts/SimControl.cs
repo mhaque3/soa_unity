@@ -69,6 +69,8 @@ public class SimControl : MonoBehaviour
     // Misc
     public bool BroadcastOn;
     public float updateRateS;
+    public float sensorUpdatePeriod;
+    public float poseUpdatePeriod;
     private bool showTruePositions = true;
     public OverheadMouseCamera omcScript;
     public SoaHexWorld hexGrid;
@@ -103,7 +105,8 @@ public class SimControl : MonoBehaviour
     float messageTimer = 0f;
     float updateTimer = 0f;
     float sensorClock = 0f;
-    public float sensorUpdatePeriod;
+    float poseTimer = 0f;
+    
 
     private bool mouseDown;
 
@@ -328,6 +331,7 @@ public class SimControl : MonoBehaviour
         probRedTruckHasWeapon = soaConfig.probRedTruckHasWeapon;
         probRedDismountHasWeapon = soaConfig.probRedDismountHasWeapon;
         probRedTruckHasJammer = soaConfig.probRedTruckHasJammer;
+        poseUpdatePeriod = soaConfig.controlUpdateRate_s;
 
         // Comms and jammer range defaults
         defaultCommsRanges = soaConfig.defaultCommsRanges;
@@ -496,6 +500,17 @@ public class SimControl : MonoBehaviour
 
         // Update game clock
         gameClockHr += (dt / 60); // Note: 1 min real time = 1 hr simulated time
+
+        poseTimer += dt;
+        if (poseTimer > poseUpdatePeriod)
+        {
+            poseTimer = 0;
+            foreach (GameObject platform in RemotePlatforms)
+            {
+                SoaActor actor = platform.GetComponent<SoaActor>();
+                actor.UpdatePose();
+            }
+        }
 
         // Update sensor clock
         sensorClock += dt;
@@ -814,6 +829,7 @@ public class SimControl : MonoBehaviour
      *****************************************************************************************************/
     private void TerminateSimulation()
     {
+        Log.debug("Shutting down simulation");
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // For when running in editor 
         #else
@@ -824,11 +840,15 @@ public class SimControl : MonoBehaviour
     void OnApplicationQuit()
     {
         // Stop data managers / comms managers
+        Log.debug("Stopping red communication manager");
         redDataManager.stopPhoton();
+        Log.debug("stopping blue communication manager");
         blueDataManager.stopPhoton();
 
+        Log.debug("stopping logging");
         // Stop logger and write output to file
         soaEventLogger.TerminateLogging();
+        Log.debug("Finished!");
     }
     #endregion
 

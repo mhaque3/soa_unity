@@ -5995,7 +5995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd46d399b999e947b573551314997a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  On: 0
+  On: 1
   RoadCost: 1
   waypointEpsilon: 1
   PATROL: 0

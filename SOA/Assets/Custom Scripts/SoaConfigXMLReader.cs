@@ -167,6 +167,7 @@ namespace soa
                 soaConfig.probRedDismountHasWeapon = GetFloatAttribute(node, "probRedDismountHasWeapon", 0.5f);
                 soaConfig.probRedTruckHasWeapon = GetFloatAttribute(node, "probRedTruckHasWeapon", 0.5f);
                 soaConfig.probRedTruckHasJammer = GetFloatAttribute(node, "probRedTruckHasJammer", 0.5f);
+                soaConfig.controlUpdateRate_s = GetFloatAttribute(node, "controlUpdateRate_s", 0.1f);
             }
             catch (Exception)
             {

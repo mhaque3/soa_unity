@@ -46,6 +46,12 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\GridMath.cs">
       <Link>GridMath.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\CommsRangeGenerator.cs">
+      <Link>CommsRangeGenerator.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfig.cs">
       <Link>EnvConfig.cs</Link>
     </Compile>
@@ -54,6 +60,12 @@
     </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfigXMLWriter.cs">
       <Link>EnvConfigXMLWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\CommsRangeExperiment.cs">
+      <Link>Experiments\CommsRangeExperiment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\IExperiment.cs">
+      <Link>Experiments\IExperiment.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\MCTrialGenerator.cs">
       <Link>MCTrialGenerator.cs</Link>
@@ -84,6 +96,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

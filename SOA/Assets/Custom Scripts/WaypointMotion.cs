@@ -13,6 +13,7 @@ public class WaypointMotion : MonoBehaviour
     public float AltitudeOffset;
     public float speed_mps;//meters per second
     public float angle;
+    public SoaActor actor;
     public float desiredAltitude_km;
     float currentSpeed;
     public float maxTurn;
@@ -50,6 +51,8 @@ public class WaypointMotion : MonoBehaviour
         On = false;
         displayWaypoints = false;
 
+        actor = gameObject.GetComponent<SoaActor>();
+
         transform.position = new Vector3(transform.position.x, AltitudeOffset, transform.position.z);
 
         if(GetComponent<Animation>() != null)
@@ -70,7 +73,7 @@ public class WaypointMotion : MonoBehaviour
                 Vector3 target = GetTargetPosition();
                 if (target != null)
                 {
-                    desiredAltitude_km = target.y / SimControl.KmToUnity;
+                    actor.SetDesiredAltitude(target.y / SimControl.KmToUnity);
                     double unitySpeed = speed_mps * KM_PER_M * REALSEC_PER_UNITYSEC * SimControl.KmToUnity;//UnityDistance / UnitySecond
                     //currentSpeed = Mathf.Lerp(currentSpeed, (float)unitySpeed, dt / 3);
                     currentSpeed = (float)unitySpeed;
@@ -80,7 +83,7 @@ public class WaypointMotion : MonoBehaviour
                     {
                         deltaV.Normalize();
                         transform.rotation = Quaternion.LookRotation(new Vector3(deltaV.x, deltaV.y, deltaV.z));
-                        transform.position = transform.position + (currentSpeed * dt * deltaV);
+                        transform.position = transform.position + (currentSpeed * timeInterval * deltaV);
                     }
                 }
                 else
@@ -157,7 +160,10 @@ public class WaypointMotion : MonoBehaviour
     {
         Vector3 target = waypoints[waypointIndex];
 
-        Vector3 deltaV = target - transform.position;
+        Vector3 currentPosition = transform.position;
+        currentPosition.y = actor.simAltitude_km * SimControl.KmToUnity;
+
+        Vector3 deltaV = target - currentPosition;
         //deltaV.y = 0;
 
         if (deltaV.magnitude < waypointEpsilon) {

@@ -91,8 +91,8 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("SIMULATION (" + timeStamp + "): Loading config file " + configFile);
-                Debug.Log("SIMULATION (" + timeStamp + "): Start date/time " + now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
+                Log.debug("SIMULATION (" + timeStamp + "): Loading config file " + configFile);
+                Log.debug("SIMULATION (" + timeStamp + "): Start date/time " + now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
             }
         }
  
@@ -137,16 +137,16 @@ namespace soa
             if (logToConsole)
             {
                 // Output current time
-                Debug.Log("SIMULATION (" + timeStamp + "): Terminate date/time " + now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
+                Log.debug("SIMULATION (" + timeStamp + "): Terminate date/time " + now.ToString("MM\\/dd\\/yyyy hh\\:mm\\:ss.ffffff"));
 
                 // Output counts
-                Debug.Log("SIMULATION (" + timeStamp + "): Supplies delivered: " + countSupplyDelivery.ToString());
-                Debug.Log("SIMULATION (" + timeStamp + "): Red trucks captured: " + countRedTruckCaptured.ToString());
-                Debug.Log("SIMULATION (" + timeStamp + "): Red dismounts captured: " + countRedDismountCaptured.ToString());
-                Debug.Log("SIMULATION (" + timeStamp + "): Casualties delivered: " + countCasualtyDelivered.ToString());
-                Debug.Log("SIMULATION (" + timeStamp + "): Heavy UAVs lost: " + countHeavyUAVLost.ToString());
-                Debug.Log("SIMULATION (" + timeStamp + "): Small UAVs lost: " + countSmallUAVLost.ToString());
-                Debug.Log("SIMULATION (" + timeStamp + "): Civilians in red custody: " + countCivilianInRedCustody.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Supplies delivered: " + countSupplyDelivery.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Red trucks captured: " + countRedTruckCaptured.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Red dismounts captured: " + countRedDismountCaptured.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Casualties delivered: " + countCasualtyDelivered.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Heavy UAVs lost: " + countHeavyUAVLost.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Small UAVs lost: " + countSmallUAVLost.ToString());
+                Log.debug("SIMULATION (" + timeStamp + "): Civilians in red custody: " + countCivilianInRedCustody.ToString());
             }
         }
 
@@ -176,7 +176,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Supply delivered by " + deliverer + " to " + destination);
+                Log.debug("EVENT (" + timeStamp + "): Supply delivered by " + deliverer + " to " + destination);
             }
         }
 
@@ -205,7 +205,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Red truck " + captured + " captured by " + capturer);
+                Log.debug("EVENT (" + timeStamp + "): Red truck " + captured + " captured by " + capturer);
             }
         }
 
@@ -234,7 +234,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Red dismount " + captured + " captured by " + capturer);
+                Log.debug("EVENT (" + timeStamp + "): Red dismount " + captured + " captured by " + capturer);
             }
         }
 
@@ -263,7 +263,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Casualty delivered by " + deliverer + " to " + destination);
+                Log.debug("EVENT (" + timeStamp + "): Casualty delivered by " + deliverer + " to " + destination);
             }
         }
 
@@ -292,7 +292,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Heavy UAV " + victim + " killed by " + killer);
+                Log.debug("EVENT (" + timeStamp + "): Heavy UAV " + victim + " killed by " + killer);
             }
         }
 
@@ -321,7 +321,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Small UAV " + victim + " killed by " + killer);
+                Log.debug("EVENT (" + timeStamp + "): Small UAV " + victim + " killed by " + killer);
             }
         }
 
@@ -350,7 +350,7 @@ namespace soa
             }
             if (logToConsole)
             {
-                Debug.Log("EVENT (" + timeStamp + "): Civilian transported by " + capturer + " to custody of " + destination);
+                Log.debug("EVENT (" + timeStamp + "): Civilian transported by " + capturer + " to custody of " + destination);
             }
         }
 
@@ -375,7 +375,7 @@ namespace soa
             }
 
             // Also output to unity debug console
-            Debug.LogError(message);
+            Log.error(message);
         }
     }
 }

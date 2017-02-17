@@ -146,6 +146,7 @@ namespace soa
             AddAttribute(xmlDoc, node, "probRedDismountHasWeapon", soaConfig.probRedDismountHasWeapon.ToString());
             AddAttribute(xmlDoc, node, "probRedTruckHasWeapon",    soaConfig.probRedTruckHasWeapon.ToString());
             AddAttribute(xmlDoc, node, "probRedTruckHasJammer",    soaConfig.probRedTruckHasJammer.ToString());
+            AddAttribute(xmlDoc, node, "controlUpdateRate_s",      soaConfig.controlUpdateRate_s.ToString());
         }
 
         private static void PopulateFuelDefaults(XmlDocument xmlDoc, XmlNode configNode, SoaConfig soaConfig)

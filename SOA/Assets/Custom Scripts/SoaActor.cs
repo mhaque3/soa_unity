@@ -376,6 +376,36 @@ public class SoaActor : MonoBehaviour, ISoaActor
 
     }
 
+    public virtual void UpdatePose()
+    {
+        simX_km = transform.position.x / SimControl.KmToUnity;
+        simZ_km = transform.position.z / SimControl.KmToUnity;
+
+        if (nma != null)
+        {
+            velocityX = (nma.velocity.x / SimControl.KmToUnity) / 60f * 1000f;
+            velocityXValid = true;
+            velocityY = (nma.velocity.y / SimControl.KmToUnity) / 60f * 1000f;
+            velocityYValid = true;
+            velocityZ = (nma.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
+            velocityZValid = true;
+
+            //Debug.Log("VELOCITY " + unique_id + " " + (nma.velocity.magnitude / 60f * 1000f));
+        }
+
+        Belief_Actor newActorData = new Belief_Actor(
+            unique_id, (int)affiliation, type, isAlive,
+            numStorageSlots, numCasualtiesStored,
+            numSuppliesStored, numCiviliansStored,
+            isWeaponized, hasJammer, fuelRemaining_s,
+            simX_km, simAltitude_km, simZ_km,
+            velocityXValid, velocityX,
+            velocityYValid, velocityY,
+            velocityZValid, velocityZ);
+
+        addMyBeliefData(newActorData);
+    }
+
     /**
      * Update the position of the actor vectors.  This function is called when in simulation mode
      * If Sim is in charge of waypoints, get the current target from the motion script and add to 
@@ -397,18 +427,6 @@ public class SoaActor : MonoBehaviour, ISoaActor
         {
             Debug.LogError("Update Actor " + unique_id + " has invalid id " + myActor.getId());
             return;
-        }
-
-        if (nma != null)
-        {
-            velocityX = (nma.velocity.x / SimControl.KmToUnity) / 60f * 1000f;
-            velocityXValid = true;
-            velocityY = (nma.velocity.y / SimControl.KmToUnity) / 60f * 1000f;
-            velocityYValid = true;
-            velocityZ = (nma.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
-            velocityZValid = true;
-
-            //Debug.Log("VELOCITY " + unique_id + " " + (nma.velocity.magnitude / 60f * 1000f));
         }
 
         if (simulateMotion)
@@ -444,7 +462,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
                         wpMotionScript.SetWaypointBelief(newWaypoint);
                         wpMotionScript.On = true;
                     }
-                    SetDesiredAltitude(wpMotionScript.desiredAltitude_km);
+                    //SetDesiredAltitude(wpMotionScript.desiredAltitude_km);
                 }
                 else if (newWaypoint != null)
                 {
@@ -506,26 +524,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
                     pcMotionScript.targetPosition.z / SimControl.KmToUnity);
                 addMyBeliefData(newWaypoint);
             }
-
-            // Convert position from Unity to km for Belief_Actor
-            simX_km = transform.position.x / SimControl.KmToUnity;
-            simZ_km = transform.position.z / SimControl.KmToUnity;
-
-            Belief_Actor newActorData = new Belief_Actor(
-                unique_id, (int)affiliation, type, isAlive, 
-                numStorageSlots, numCasualtiesStored,
-                numSuppliesStored, numCiviliansStored,
-                isWeaponized, hasJammer, fuelRemaining_s,
-                simX_km, simAltitude_km, simZ_km,
-                velocityXValid, velocityX,
-                velocityYValid, velocityY,
-                velocityZValid, velocityZ);
-            
-            addMyBeliefData(newActorData);
-
-            if (dataManager != null)
-                dataManager.addBeliefToDataManager(newActorData, unique_id);
-            
+          
             // Clear and update classifications
             foreach (SoaClassifier c in Classifiers)
             {
