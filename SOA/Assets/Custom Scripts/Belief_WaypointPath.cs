@@ -7,7 +7,7 @@ namespace soa
 {
     public class Waypoint
     {
-        public float x, y, z, heading;
+        public float x, y, z, heading, speed;
         public bool visited;
     }
 

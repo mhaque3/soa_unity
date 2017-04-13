@@ -348,6 +348,7 @@ namespace soa
                         proto.SetPosX(b.getPos_x());
                         proto.SetPosY(b.getPos_y());
                         proto.SetPosZ(b.getPos_z());
+                        proto.SetSpeed(b.getSpeed());
                         // Add on belief time
                         proto.SetBeliefTime(b.getBeliefTime());
                         // Form header + serialized message
@@ -387,6 +388,7 @@ namespace soa
                             pointBuilder.SetZ(point.z);
                             pointBuilder.SetHeading(point.heading);
                             pointBuilder.SetVisited(point.visited);
+                            pointBuilder.SetSpeed(point.speed);
                             proto.AddWaypoints(pointBuilder.Build());
                         }
 
@@ -668,7 +670,8 @@ namespace soa
                             proto.ActorId,
                             proto.PosX,
                             proto.PosY,
-                            proto.PosZ);
+                            proto.PosZ,
+                            proto.Speed);
                         // Add on belief time
                         b.setBeliefTime(proto.BeliefTime);
                         break;
@@ -697,9 +700,9 @@ namespace soa
                             waypoint.x = protoPoint.X;
                             waypoint.y = protoPoint.Y;
                             waypoint.z = protoPoint.Z;
-                            Debug.Log("Waypoint Altitude: " + waypoint.y);
                             waypoint.heading = protoPoint.Heading;
                             waypoint.visited = protoPoint.Visited;
+                            waypoint.speed = protoPoint.Speed;
                             waypoints.Add(waypoint);
                         }
 

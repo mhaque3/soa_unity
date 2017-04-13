@@ -18,7 +18,7 @@ public class WaypointMotion : MonoBehaviour
     float currentSpeed;
     public float maxTurn;
     public float waypointEpsilon;
-    public List<Vector3> waypoints;
+    public List<Waypoint> waypoints;
     public List<GameObject> displayedPoints;
     public GameObject prefabWaypoint;
     public int waypointIndex;
@@ -29,7 +29,7 @@ public class WaypointMotion : MonoBehaviour
 
     public WaypointMotion()
     {
-        waypoints = new List<Vector3>();
+        waypoints = new List<Waypoint>();
         displayedPoints = new List<GameObject>();
         On = false;
     }
@@ -70,14 +70,14 @@ public class WaypointMotion : MonoBehaviour
                         
             if (timeInterval > .01)
             {
-                Vector3 target = GetTargetPosition();
+                Waypoint target = GetTargetPosition();
                 if (target != null)
                 {
-                    actor.SetDesiredAltitude(target.y / SimControl.KmToUnity);
-                    double unitySpeed = speed_mps * KM_PER_M * REALSEC_PER_UNITYSEC * SimControl.KmToUnity;//UnityDistance / UnitySecond
-                    //currentSpeed = Mathf.Lerp(currentSpeed, (float)unitySpeed, dt / 3);
+                    actor.SetDesiredAltitude(target.direction.y / SimControl.KmToUnity);
+                    double speed_command = Math.Max(0, Math.Min(speed_mps, target.speed));
+                    double unitySpeed = speed_command * KM_PER_M * REALSEC_PER_UNITYSEC * SimControl.KmToUnity;//UnityDistance / UnitySecond
                     currentSpeed = (float)unitySpeed;
-                    Vector3 deltaV = (new Vector3(target.x, target.y, target.z)) - transform.position;
+                    Vector3 deltaV = (new Vector3(target.direction.x, target.direction.y, target.direction.z)) - transform.position;
                     deltaV.y = 0;//don't simulate changing height
                     if (deltaV.magnitude > 0.001)
                     {
@@ -109,7 +109,7 @@ public class WaypointMotion : MonoBehaviour
                     Vector3 location = new Vector3(waypoint.x * SimControl.KmToUnity, 
                                                     waypoint.y * SimControl.KmToUnity, 
                                                     waypoint.z * SimControl.KmToUnity);
-                    waypoints.Add(location);
+                    waypoints.Add(new Waypoint(location, waypoint.speed));
                 }
                 
                 this.waypointIndex = 0;
@@ -130,7 +130,7 @@ public class WaypointMotion : MonoBehaviour
                 Vector3 location = new Vector3(belief.getPos_x() * SimControl.KmToUnity, 
                                               belief.getPos_y() * SimControl.KmToUnity, 
                                                belief.getPos_z() * SimControl.KmToUnity);
-                waypoints.Add(location);
+                waypoints.Add(new Waypoint(location, belief.getSpeed()));
                 waypointIndex = 0;
                 lastBelief = belief;
                 UpdateDisplay();
@@ -138,7 +138,7 @@ public class WaypointMotion : MonoBehaviour
         }
     }
 
-    private Vector3 GetTargetPosition()
+    private Waypoint GetTargetPosition()
     {
         lock (waypoints)
         {
@@ -147,7 +147,7 @@ public class WaypointMotion : MonoBehaviour
                 return GetTargetPositionFromPath();
             }
             
-            return transform.position;
+            return new Waypoint(transform.position, 0);
         }
     }
 
@@ -156,14 +156,14 @@ public class WaypointMotion : MonoBehaviour
         return !(waypointIndex < 0 || waypointIndex >= waypoints.Count);
     }
 
-    private Vector3 GetTargetPositionFromPath()
+    private Waypoint GetTargetPositionFromPath()
     {
-        Vector3 target = waypoints[waypointIndex];
+        Waypoint target = waypoints[waypointIndex];
 
         Vector3 currentPosition = transform.position;
         currentPosition.y = actor.simAltitude_km * SimControl.KmToUnity;
 
-        Vector3 deltaV = target - currentPosition;
+        Vector3 deltaV = target.direction - currentPosition;
         //deltaV.y = 0;
 
         if (deltaV.magnitude < waypointEpsilon) {
@@ -185,12 +185,24 @@ public class WaypointMotion : MonoBehaviour
 
             if (displayWaypoints && prefabWaypoint != null)
             {
-                foreach(Vector3 location in waypoints)
+                foreach(Waypoint location in waypoints)
                 {
-                    GameObject waypointDisplay = (GameObject)GameObject.Instantiate(prefabWaypoint, location, Quaternion.identity);
+                    GameObject waypointDisplay = (GameObject)GameObject.Instantiate(prefabWaypoint, location.direction, Quaternion.identity);
                     displayedPoints.Add(waypointDisplay);
                 }
             }
+        }
+    }
+
+    public class Waypoint
+    {
+        public Vector3 direction { get; private set; }
+        public float speed { get; private set; }
+
+        public Waypoint(Vector3 direction, float speed)
+        {
+            this.direction = direction;
+            this.speed = speed;
         }
     }
 }

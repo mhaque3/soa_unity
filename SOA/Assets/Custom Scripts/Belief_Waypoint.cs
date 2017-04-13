@@ -5,14 +5,17 @@ using System.Text;
 
 namespace soa
 {
+
     public class Belief_Waypoint : Belief
     {
+        public const float MAX_SPEED = 20;
         // Members
         private ulong request_time;
         private int actor_id;
         private float pos_x;
         private float pos_y;
         private float pos_z;
+        private float speed; // m/s
 
         // Constructor
         public Belief_Waypoint(ulong request_time, int actor_id, float pos_x, float pos_y, float pos_z)
@@ -23,6 +26,18 @@ namespace soa
             this.pos_x = pos_x;
             this.pos_y = pos_y;
             this.pos_z = pos_z;
+            this.speed = Belief_Waypoint.MAX_SPEED;
+        }
+
+        public Belief_Waypoint(ulong request_time, int actor_id, float pos_x, float pos_y, float pos_z, float speed)
+            : base(actor_id)
+        {
+            this.request_time = request_time;
+            this.actor_id = actor_id;
+            this.pos_x = pos_x;
+            this.pos_y = pos_y;
+            this.pos_z = pos_z;
+            this.speed = speed;
         }
 
         // Type information
@@ -50,5 +65,7 @@ namespace soa
         public float getPos_x() { return pos_x; }
         public float getPos_y() { return pos_y; }
         public float getPos_z() { return pos_z; }
+
+        public float getSpeed() { return speed; }
     }
 }
