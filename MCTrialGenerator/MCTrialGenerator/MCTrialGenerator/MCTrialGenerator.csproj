@@ -49,9 +49,6 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\Log.cs">
       <Link>Log.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\CommsRangeGenerator.cs">
-      <Link>CommsRangeGenerator.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\EnvConfig.cs">
       <Link>EnvConfig.cs</Link>
     </Compile>
@@ -62,10 +59,10 @@
       <Link>EnvConfigXMLWriter.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\CommsRangeExperiment.cs">
-      <Link>Experiments\CommsRangeExperiment.cs</Link>
+      <Link>CommsRangeExperiment.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\IExperiment.cs">
-      <Link>Experiments\IExperiment.cs</Link>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\Experiment.cs">
+      <Link>Experiment.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\MCTrialGenerator.cs">
       <Link>MCTrialGenerator.cs</Link>
