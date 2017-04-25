@@ -14,7 +14,7 @@ namespace soa
 
         public override string GetTrialName()
         {
-            return "Comms_" + GetTrialMin().ToString("F1") + "_" + GetTrialMax().ToString("F1");
+            return "Comms_" + GetTrialMin().ToString("F1") + "_" + GetTrialMax().ToString("F1"); //F1 -- 1 d.p.
         }
 
         public override float GetCommsRange()

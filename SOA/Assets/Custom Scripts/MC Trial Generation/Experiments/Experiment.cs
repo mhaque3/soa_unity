@@ -15,17 +15,28 @@ namespace soa
         
         protected int trialNumber = 0;
 
-        protected float CommsRangeDefault_Km = 10f;
-        protected float JammerRangeDefault_Km = 2f;
+        //Default comms and jammer ranges
+        protected float CommsRangeDefault_Km;
+        protected float JammerRangeDefault_Km;
 
-        protected int NumberRedDismountDefault = 3;
-        protected int NumberRedTrucksDefault = 3;
-        protected int NumberNeutralDismountDefault = 3;
-        protected int NumberNeutralTrucksDefault = 3;
-        protected int NumberBluePoliceDefault = 1;
-        protected int NumberHeavyUAVDefault = 3;
-        protected int NumberSmallUAVDefault = 3;
+        // Default blue and neutral numbers
+        protected int NumberNeutralDismountDefault;
+        protected int NumberNeutralTrucksDefault;
+        protected int NumberBluePoliceDefault;
+        protected int NumberHeavyUAVDefault;
+        protected int NumberSmallUAVDefault;
 
+        //Default red dismounts and trucks and the total
+        protected int NumberRedDefault;
+        protected int NumberRedDismountDefault;
+        protected int NumberRedTrucksDefault;
+
+        // Experimental red numbers
+        protected float fractionRedDismount;
+        protected int NumberRed;
+        protected int NumberRedDismount;
+        protected int NumberRedTrucks;
+        
         protected List<PrimitiveTriple<float, float, float>> RedDismountPositions;
         protected List<PrimitiveTriple<float, float, float>> RedTruckPositions;
         protected List<PrimitiveTriple<float, float, float>> NeutralDismountPositions;
@@ -36,7 +47,7 @@ namespace soa
 
         public DefaultExperiment(MCTrialGenerator trialGenerator)
         {
-            this.trialGenerator = trialGenerator;
+            this.trialGenerator = trialGenerator;   
         }
 
         /**
@@ -47,17 +58,62 @@ namespace soa
          */
         public void StartNewRun()
         {
-            List<PrimitivePair<float, float>> redBases = trialGenerator.GetRedBaseLocations();
+            trialNumber = 1;
+
+            //Default comms and jammer ranges
+            CommsRangeDefault_Km = 10f;
+            JammerRangeDefault_Km = 2f;
+
+            //Default red dismounts and trucks and the total
+            NumberRedDefault = 6;
+            NumberRedDismountDefault = 3;
+            NumberRedTrucksDefault = 3;
+
+            // Default blue and neutral numbers
+            NumberNeutralDismountDefault = 3;
+            NumberNeutralTrucksDefault = 3;
+            NumberBluePoliceDefault = 1;
+            NumberHeavyUAVDefault = 3;
+            NumberSmallUAVDefault = 3;
+          
+            GetBlueAndNeutralPositions();
+            GetRedPositions();
+        }
+
+        /**
+         * Called at the start of a new trial. This
+         * method should be overriden in subclasses
+         * to do an initialization necessary between
+         * trials.
+         */
+        public virtual void StartNewTrial()
+        {
+            ++trialNumber;
+        }
+
+        /**
+         * Generates a name for the folder that
+         * the trial config folder lives in. The
+         * name should be relevant to the variable
+         * under test.
+         */
+        public virtual string GetTrialName()
+        {
+            int numTrialDigits = trialGenerator.NumTrialsPerRun().ToString().Length;
+            string trialNumberFormat = "D" + numTrialDigits.ToString();
+            return "Trial_" + trialNumber.ToString(trialNumberFormat);
+        }
+
+        /**
+         * Called at the start of a new run.
+         */
+        public void GetBlueAndNeutralPositions()
+        {
+            //Generate red, blue, and neutral positions
             List<PrimitivePair<float, float>> blueBases = trialGenerator.GetBlueBaseLocations();
             List<PrimitivePair<float, float>> neutralSites = trialGenerator.GetNeutralSiteLocations();
             HashSet<PrimitivePair<int, int>> landCells = trialGenerator.GetLandCells();
             HashSet<PrimitivePair<int, int>> landAndWaterCells = trialGenerator.GetLandAndWaterCells();
-
-            Platform2DLaydown redVehicleLaydown = new Platform2DLaydown();
-            redVehicleLaydown.fromAnchorStdDev_km = 1;
-            redVehicleLaydown.fromAnchorMax_km = 2;
-            redVehicleLaydown.anchors = redBases;
-            redVehicleLaydown.allowedCells = landCells;
 
             Platform2DLaydown neutralVehicleLaydown = new Platform2DLaydown();
             neutralVehicleLaydown.fromAnchorStdDev_km = 2;
@@ -81,45 +137,69 @@ namespace soa
             uavLaydown.anchors = blueBases;
             uavLaydown.allowedCells = landAndWaterCells;
 
-            RedDismountPositions = GenerateGroundPositions(NumberRedDismountDefault, redVehicleLaydown);
-            RedTruckPositions = GenerateGroundPositions(NumberRedTrucksDefault, redVehicleLaydown);
             NeutralDismountPositions = GenerateGroundPositions(NumberNeutralDismountDefault, neutralVehicleLaydown);
             NeutralTruckPositions = GenerateGroundPositions(NumberNeutralDismountDefault, neutralVehicleLaydown);
             BluePolicePositions = GenerateGroundPositions(NumberBluePoliceDefault, bluePoliceLaydown);
             HeavyUAVPositions = GenerateGroundPositions(NumberHeavyUAVDefault, uavLaydown);
             SmallUAVPositions = GenerateGroundPositions(NumberSmallUAVDefault, uavLaydown);
-
-            trialNumber = 1;
         }
 
         /**
-         * Called at the start of a new trial. This
-         * method should be overriden in subclasses
-         * to do an initialization necessary between
-         * trials.
+         * Called at the start of a new run of a comms experiment 
+         * Called at the start of a new trial of a red size experiment
          */
-        public virtual void StartNewTrial()
+        public void GetRedPositions()
         {
-            ++trialNumber;
+            //Experimental red dismounts and trucks and the total
+            fractionRedDismount = 0.50f;
+            NumberRed = GetNumberRed();
+            NumberRedDismount = GetNumberRedDismount(NumberRed, fractionRedDismount);
+            NumberRedTrucks = GetNumberRedTruck(NumberRed, NumberRedDismount);
+
+            HashSet<PrimitivePair<int, int>> landCells = trialGenerator.GetLandCells();
+            List<PrimitivePair<float, float>> redBases = trialGenerator.GetRedBaseLocations();
+
+            Platform2DLaydown redVehicleLaydown = new Platform2DLaydown();
+            redVehicleLaydown.fromAnchorStdDev_km = 1;
+            redVehicleLaydown.fromAnchorMax_km = 2;
+            redVehicleLaydown.anchors = redBases;
+            redVehicleLaydown.allowedCells = landCells;
+
+            RedDismountPositions = GenerateGroundPositions(NumberRedDismount, redVehicleLaydown);    //redVehicleLaydown
+            RedTruckPositions = GenerateGroundPositions(NumberRedTrucks, redVehicleLaydown);         //redVehicleLaydown
         }
 
         /**
-         * Generates a name for the folder that
-         * the trial config folder lives in. The
-         * name should be relevant to the variable
-         * under test.
-         */ 
-        public virtual string GetTrialName()
+         * Returns the default number of Red Agents (dismount + trucks)
+         * for the current trial.
+         */
+        public virtual int GetNumberRed()
         {
-            int numTrialDigits = trialGenerator.NumTrialsPerRun().ToString().Length;
-            string trialNumberFormat = "D" + numTrialDigits.ToString();
-            return "Trial_" + trialNumber.ToString(trialNumberFormat);
+            return NumberRedDefault;
+        }
+
+        /**
+         * Returns the deafult number of Red Dismounts
+         * for the current trial.
+         */
+        public virtual int GetNumberRedDismount(int total, float fraction)
+        {
+            return NumberRedDismountDefault;
+        }
+
+        /**
+         * Returns the default number of Red Trucks (dismount + trucks)
+         * for the current trial.
+         */
+        public virtual int GetNumberRedTruck(int total, int other)
+        {
+            return NumberRedTrucksDefault;
         }
 
         /**
          * Returns the communication range in Km for all vehicles
          * for the current trial.
-         */ 
+         */
         public virtual float GetCommsRange()
         {
             return CommsRangeDefault_Km;
@@ -140,7 +220,7 @@ namespace soa
          */
         public virtual List<PrimitiveTriple<float, float, float>> GetRedDismountPositions()
         {
-            return RedTruckPositions;
+            return RedDismountPositions;
         }
 
         /**
@@ -197,7 +277,7 @@ namespace soa
             return SmallUAVPositions;
         }
 
-        private List<PrimitiveTriple<float, float, float>> GenerateGroundPositions(int numPositions, Platform2DLaydown laydown)
+        public List<PrimitiveTriple<float, float, float>> GenerateGroundPositions(int numPositions, Platform2DLaydown laydown)
         {
             laydown.numMean = numPositions;
             laydown.numStdDev = 0;

@@ -4,13 +4,20 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+//Two types 
+enum ExperimentType
+{
+    COMMS_RANGE,
+    RED_AGENT_NUM
+}
+
 namespace soa
 {
     public class MCTrialGenerator
     {
         /********************* GENERATOR *********************/
         // Random seed for MC trial generation (not runtime computations)
-        int generatorRandomSeed = (int) System.DateTime.Now.Ticks;
+        int generatorRandomSeed = (int)System.DateTime.Now.Ticks;
 
         /******************** MONTE CARLO ********************/
         const int numMCRuns = 100;
@@ -18,6 +25,9 @@ namespace soa
         const string soaConfigOutputPath = "../../../../GeneratedFiles";
         const string soaConfigFileHeader = "MCConfig_";
 
+        /******************** EXPERIMENT TYPE ********************/
+        private ExperimentType experimentType = ExperimentType.COMMS_RANGE;
+        //private ExperimentType experimentType = ExperimentType.RED_AGENT_NUM;
         private DefaultExperiment experiment;
 
         /******************** ENVIRONMENT ********************/
@@ -38,8 +48,8 @@ namespace soa
         const float probRedDismountHasWeapon = 0.5f;
         const float probRedTruckHasWeapon = 0.5f;
         const float probRedTruckHasJammer = 0.5f;
-        const float min_comms_range_km = 0f;
-        const float max_comms_range_km = 25f;
+        //const float min_comms_range_km = 0f;
+        //const float max_comms_range_km = 25f;
 
         /*********************** FUEL ************************/
         const float defaultHeavyUAVFuelTankSize_s = 10000;
@@ -89,8 +99,17 @@ namespace soa
             // Random generator for determining whether a unit has weapons or jammers etc.
             rand = new Random(generatorRandomSeed);
 
-            experiment = new CommsRangeExperiment(this);
+            // Type of experiment that will be run
+            switch (experimentType) {
+                case ExperimentType.COMMS_RANGE:
+                    experiment = new CommsRangeExperiment(this);
+                    break;
 
+                case ExperimentType.RED_AGENT_NUM:
+                    experiment = new RedAgentNumberExperiment(this);
+                    break;
+            }
+            
             // Blue Base
             blueBases = new List<SiteConfig>();
             blueBases.Add(new BlueBaseConfig(-3.02830208f, -9.7492255f, "Blue Base", new Optional<float>()));
@@ -300,7 +319,8 @@ namespace soa
         #endregion
 
         #region Comms Defaults
-        public void SetCommsDefaults(SoaConfig soaConfig, float min, float max, int trial)
+        //public void SetCommsDefaults(SoaConfig soaConfig, float min, float max, int trial)
+        public void SetCommsDefaults(SoaConfig soaConfig)
         {
             float randDist = experiment.GetCommsRange();
             soaConfig.defaultCommsRanges["BlueBase"] = randDist;
@@ -371,7 +391,8 @@ namespace soa
             SetClassifierDefaults(soaConfig);
 
             // Set comms and jammer defaults
-            SetCommsDefaults(soaConfig, min_comms_range_km, max_comms_range_km, trial);
+            //SetCommsDefaults(soaConfig, min_comms_range_km, max_comms_range_km, trial);
+            SetCommsDefaults(soaConfig);
             SetJammerDefaults(soaConfig);
 
             // Initialize and set site locations
@@ -516,6 +537,10 @@ namespace soa
             string configName = Path.Combine(trialFolder, "SoaSimConfig.xml");
             Log.debug("Generating File: " + configName);
 
+            Log.debug("***");
+            Log.debug(generatorRandomSeed.ToString());
+            Log.debug("***");
+
             SoaConfigXMLWriter.Write(config, configName);
         }
 
@@ -540,6 +565,7 @@ namespace soa
             MCTrialGenerator mcTrialGenerator = new MCTrialGenerator();
 
             mcTrialGenerator.GenerateConfigFiles();
+            
         }
         #endregion
     }
