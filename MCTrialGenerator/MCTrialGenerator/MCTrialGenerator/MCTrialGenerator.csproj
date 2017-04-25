@@ -64,6 +64,9 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\Experiment.cs">
       <Link>Experiment.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\RedAgentNumberExperiment.cs">
+      <Link>RedAgentNumberExperiment.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\MCTrialGenerator.cs">
       <Link>MCTrialGenerator.cs</Link>
     </Compile>
