@@ -1,14 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using soa;
 
-public class RedTruckSim : MonoBehaviour 
+public class RedTruckSim : MonoBehaviour
 {
     SimControl simControlScript;
     SoldierWaypointMotion waypointScript;
     NavMeshAgent thisNavAgent;
     SoaActor thisSoaActor;
     public GameObject CivilianIcon;
+    public List<GameObject> fakeTargets;
+
+    GameObject target;
+    GameObject closestBaseFromTarget;
+
+    // Rails behavior
+    bool rails;
+    GameObject railsTarget;
+    bool assignRailsTarget = true;  // Red base's first assignment is stored, then assignRailsTarget is irreversibly set to false for rest of game 
+
+    // Zigzag behavior
+    GameObject fakeWaypoint;        // A GameObject is plopped in relation to actor's heading to achieve zigzag behavior
+    bool zig = true;                // Heading toward target when true (as oppoed to closestBaseFromTarget)
+    int zigzagIndex = 1;            // Indexes waypointScript during zigzag behavior
+    float zigzagTimer = 5.00f;      // "Frequency" of swerves
+    float zigzagAmplitude = 2.00f;  // Amplitude of swerves
+    float zigzigOffRadius = 4.00f;  // Stop zigzag behavior when close to either targer or closestBaseFromTarget
+    float zigzagStuck = 0.00f;      // Measures how long actor is stuck
+
+    // Pump fake behavior
+    bool insertFakeTarget = false;  // Not used, but interesting for future
+    bool removeFakeTarget = false;  // Not used, but interesting for future
 
     // Awake is called before anything else
     void Awake()
@@ -19,30 +42,120 @@ public class RedTruckSim : MonoBehaviour
         thisNavAgent = gameObject.GetComponent<NavMeshAgent>();
     }
 
-	// Use this for initialization upon activation
-	void Start() 
+    // Use this for initialization upon activation
+    void Start()
     {
         // Unlimited fuel tank
         thisSoaActor.fuelRemaining_s = float.PositiveInfinity;
+
+        fakeWaypoint = new GameObject();
     }
-	
-	// Update is called once per frame
+
+    // Update is called once per frame
     public float PathUpdateInterval;
-    float PathUpdateClock = 0f;
-	void Update() 
+    float PathUpdateClock = 0.00f;
+
+    void Update()
     {
         float dt = Time.deltaTime;
+        PathUpdateClock += dt;
+        zigzagStuck += dt;
 
         CivilianIcon.SetActive(thisSoaActor.numCiviliansStored > 0);
 
-        PathUpdateClock += dt;
-        if (PathUpdateClock > PathUpdateInterval)
+        deceptiveBehaviorSelection();
+
+    }
+
+    /*
+     *  Assign deceptive behavior based on predRedMovement level
+     *  prescribed in soaSimConfig
+     */
+    void deceptiveBehaviorSelection()
+    {
+        switch (simControlScript.predRedMovement)
         {
-            thisNavAgent.ResetPath();
-            PathUpdateClock = Random.value * PathUpdateInterval * 0.5f;
-            //thisNavAgent.SetDestination(waypointScript.targetPosition);
+            case (0):
+                //On rails: ferry between a fixed target and the closestBaseFromTarget
+                rails = true;
+                break;
+
+            case (1):
+                //On "rails" + zigzag 
+                rails = true;
+                zigzag(zigzagAmplitude = Random.Range(2.00f, 3.00f), zigzagTimer);
+                break;
+
+            case (3):
+                //Random target + zigzag
+                rails = false;
+                zigzag(zigzagAmplitude = Random.Range(2.00f, 3.00f), zigzagTimer);
+                break;
+
+            default:
+                //What we've always had...
+                rails = false;
+                break;
         }
-	}
+    }
+
+    void zigzag(float amplitude, float timer)
+    {
+        if (target != null)
+        {
+            if (PathUpdateClock > timer)
+            {
+                /*
+                 * If zig is true, actor is heading toward target
+                 * vel is the vector pointing in the direction of the target or the closest base 
+                 */
+                Vector3 vel = new Vector3(0f, 0f, 0f);
+                if (zig)
+                {
+                    vel = target.transform.position;
+                }
+                else
+                {
+                    vel = closestBaseFromTarget.transform.position;
+                }
+                vel = vel - thisSoaActor.transform.position;
+
+                /*
+                 * Zigzag behavior realized by plopping fakeWaypoint: vector transform.right scaled by (-1)^z 
+                 */
+
+                fakeWaypoint.transform.position = thisSoaActor.transform.position + (amplitude * Mathf.Pow(-1.00f, zigzagIndex) * thisSoaActor.transform.right) + amplitude/Random.Range(2.00f, 4.00f) * vel.normalized;
+                /*
+                 * Possible zigzag behavior through Mathf.Sin() -- not used 
+                 */
+                //fakeWaypoint.transform.position = thisSoaActor.transform.position + (4.00f * Mathf.Sin(PathUpdateClock) * thisSoaActor.transform.right) + vel.normalized;
+
+                if (zig)
+                {
+                    waypointScript.waypoints.Insert(0, fakeWaypoint);
+                }
+                else
+                {
+                    waypointScript.waypoints.Insert(waypointScript.waypoints.Count - 1, fakeWaypoint);
+                }
+                PathUpdateClock = 0.00f;
+                zigzagIndex++;
+            }
+        }
+        // RefreshZigzag
+        //refreshZigzag();
+    }
+
+    void refreshZigzag()
+    {
+        
+        //if (zigzagStuck > PathUpdateInterval)
+        //{
+        //    waypointScript.waypoints.Clear();
+        //    waypointScript.waypoints.Add(closestBaseFromTarget);
+        //    zigzagStuck = 0.00f;
+        //}
+    }
 
     float PathLength(NavMeshPath path)
     {
@@ -62,6 +175,12 @@ public class RedTruckSim : MonoBehaviour
         return lengthSoFar;
     }
 
+    // Calculate distance to target
+    float CalculateDistTarget(GameObject v)
+    {
+        return (thisSoaActor.transform.position - v.transform.position).magnitude;
+    }
+
     GameObject GetRetreatRedBase(BluePoliceSim threat)
     {
         GameObject selectedRedBase = simControlScript.RedBases[0];
@@ -69,13 +188,13 @@ public class RedTruckSim : MonoBehaviour
         foreach (GameObject redBase in simControlScript.RedBases)
         {
             NavMeshPath thisPath = new NavMeshPath();
-            if(thisNavAgent.CalculatePath(redBase.transform.position, thisPath))
+            if (thisNavAgent.CalculatePath(redBase.transform.position, thisPath)) //true if result exists; result is stored in thisPath
             {
                 float thisLength = PathLength(thisPath);
                 float threatRange = threat.GetRangeTo(redBase);
                 if (threatRange > 0f)
                 {
-                    float thisRatio = thisLength/threatRange;
+                    float thisRatio = thisLength / threatRange;
                     if (thisRatio < minRangeRatio)
                     {
                         minRangeRatio = thisRatio;
@@ -99,7 +218,7 @@ public class RedTruckSim : MonoBehaviour
 
             // Log event
             simControlScript.soaEventLogger.LogRedTruckCaptured(other.name, gameObject.name);
-            
+
             // Find out where to retreat to
             BluePoliceSim b = other.gameObject.GetComponent<BluePoliceSim>();
             Vector3 retreatBasePosition = GetRetreatRedBase(b).transform.position;
@@ -136,23 +255,46 @@ public class RedTruckSim : MonoBehaviour
                     simControlScript.soaEventLogger.LogCivilianInRedCustody(gameObject.name, other.name);
                 }
                 rb.Civilians += thisSoaActor.numCiviliansStored;
-                thisSoaActor.numCiviliansStored = 0; 
-             
-                // Assign a new target and return to closest base from that target
+                thisSoaActor.numCiviliansStored = 0;
+
+                // Assign a (target, closestBaseFromThatTarget) pair
                 waypointScript.On = false;
-                thisNavAgent.ResetPath(); 
+                thisNavAgent.ResetPath();
                 waypointScript.waypointIndex = 0;
                 waypointScript.waypoints.Clear();
-                GameObject target = rb.AssignTarget();
+
+                // Nearest red base to intitial position assigns target
+                target = rb.AssignTarget();
+
+                // Store the initial target assignment in railsTarget, regardless of predRedMovement level 
+                if (assignRailsTarget)
+                {
+                    railsTarget = target;
+                    assignRailsTarget = false; //so that we don't do this again
+                }
+
+                // On rails, so set target back to initial assignment
+                if (rails)
+                {
+                    target = railsTarget;
+                }
+
+                // Find red base closest to target
+                closestBaseFromTarget = simControlScript.FindClosestInList(target, simControlScript.RedBases);
+
+                // Add (target, closestBaseFromTarget) pair to waypointScript
                 waypointScript.waypoints.Add(target);
-                waypointScript.waypoints.Add(simControlScript.FindClosestInList(target, simControlScript.RedBases));
+                waypointScript.waypoints.Add(closestBaseFromTarget);
                 waypointScript.On = true;
 
+                // Weapon
                 foreach (SoaWeapon weapon in thisSoaActor.Weapons)
                 {
                     weapon.enabled = rb.EnableWeapon();
                 }
             }
+            // Indicate that actor is heading toward target
+            zig = true;
         }
 
         if (other.CompareTag("NGO"))
@@ -173,6 +315,8 @@ public class RedTruckSim : MonoBehaviour
 
                 Debug.Log(transform.name + " attacks " + other.name);
             }
+            // Indicates that actor is heading toward the closestBaseFromTarget
+            zig = false;
         }
 
         if (other.CompareTag("Village"))
@@ -187,6 +331,8 @@ public class RedTruckSim : MonoBehaviour
 
                 Debug.Log(transform.name + " attacks " + other.name);
             }
+            // Indicates that actor is heading toward the closestBaseFromTarget
+            zig = false;
         }
     }
 }

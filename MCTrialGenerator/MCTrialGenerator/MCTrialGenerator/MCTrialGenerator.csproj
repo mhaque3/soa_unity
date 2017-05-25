@@ -94,7 +94,9 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\SoaConfig.cs">
       <Link>SoaConfig.cs</Link>
     </Compile>
+    <Compile Include="RedMovePredExperiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmallUAVNumberExperiment.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

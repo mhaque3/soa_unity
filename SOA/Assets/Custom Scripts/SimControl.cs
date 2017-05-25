@@ -98,6 +98,7 @@ public class SimControl : MonoBehaviour
     public float probRedDismountHasWeapon;
     public Dictionary<string, float> defaultCommsRanges;
     public Dictionary<string, float> defaultJammerRanges;
+    public int predRedMovement;
 
     // For updates
     int randDraw;
@@ -314,8 +315,9 @@ public class SimControl : MonoBehaviour
         // Parse the XML config file
         soaConfig = SoaConfigXMLReader.Parse(ConfigFileName);
 
-        // Set random number generator seed
-        Random.InitState(soaConfig.simulationRandomSeed);
+        // Network settings
+        networkRedRoom = soaConfig.networkRedRoom;
+        networkBlueRoom = soaConfig.networkBlueRoom;
 
         // Logger settings
         soaEventLogger = new SoaEventLogger(soaConfig.loggerOutputFile,
@@ -323,6 +325,9 @@ public class SimControl : MonoBehaviour
             soaConfig.enableLogToUnityConsole);
         soaDetectionLogger = new SoaDetectionLogger(ConfigFileName + "_detection.out");
         soaGridCellMoveLogger = new SoaGridCellMoveLogger(ConfigFileName + "_gridCellMoves.out");
+
+        // Set random number generator seed
+        Random.InitState(soaConfig.simulationRandomSeed);
 
         // Game duration
         gameDurationHr = soaConfig.gameDurationHr;
@@ -333,13 +338,14 @@ public class SimControl : MonoBehaviour
         probRedTruckHasJammer = soaConfig.probRedTruckHasJammer;
         poseUpdatePeriod = soaConfig.controlUpdateRate_s;
 
+        //Predictability of red actor movement
+        predRedMovement = soaConfig.predRedMovement;
+
         // Comms and jammer range defaults
         defaultCommsRanges = soaConfig.defaultCommsRanges;
         defaultJammerRanges = soaConfig.defaultJammerRanges;
 
-        // Network settings
-        networkRedRoom = soaConfig.networkRedRoom;
-        networkBlueRoom = soaConfig.networkBlueRoom;
+        
 
         // Set up sites
         foreach (SiteConfig s in soaConfig.sites)
@@ -600,8 +606,6 @@ public class SimControl : MonoBehaviour
                         //Otherwise, the data in the first arg is represented in the display.
                         //If null the actor is no longer visible.
                         actor.updateActor();
-
-
                     }
                 }
 

@@ -21,6 +21,7 @@
        probRedTruckHasWeapon    ="0.5" 
        probRedTruckHasJammer    ="0.5"
        controlUpdateRate_s      ="0.1"
+       predRedMovement          ="1"
   />
 
   <!-- Fuel Default Settings -->
@@ -181,7 +182,7 @@
        hasWeapon="true" initialWaypoint="Red Base 0"  />
 
     <RedDismount     x_km="-2.190"    z_km="11.744"
-       hasWeapon="false" initialWaypoint="Red Base 1" />
+       hasWeapon="false" initialWaypoint="Red Base 1" /> 
 
     <RedDismount     x_km="-2.124"    z_km="12.733"
        hasWeapon="true" initialWaypoint="Red Base 1"  />
