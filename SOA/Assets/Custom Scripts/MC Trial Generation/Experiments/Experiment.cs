@@ -74,14 +74,14 @@ namespace soa
         {
             trialNumber = 1;
 
-            //Default comms and jammer ranges
+            // Default comms and jammer ranges
             CommsRangeDefault_Km = 10f;
             JammerRangeDefault_Km = 2f;
 
             // Default predictability of red actor movement
             PredRedMovementDefault = 5; 
 
-            //Default red dismounts and trucks and the total
+            // Default red dismounts and trucks and the total
             NumberRedDefault = 6;
             NumberRedDismountDefault = 3;
             NumberRedTrucksDefault = 3;

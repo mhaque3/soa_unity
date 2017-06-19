@@ -10,7 +10,8 @@ enum ExperimentType
     COMMS_RANGE,    //Factor: blue actor comms range
     BLUE_NUM,       //Factor: small UAV number
     RED_NUM,        //Factor: red actors (truck + dismount) number
-    RED_PRED        //Factor: red truck movement predictability
+    RED_PRED,       //Factor: red truck movement predictability
+    FACTORIAL       //Factor: comms x numBlue x numRed x pred
 }
 
 namespace soa
@@ -22,16 +23,17 @@ namespace soa
         int generatorRandomSeed = (int)System.DateTime.Now.Ticks;
 
         /******************** MONTE CARLO ********************/
-        const int numMCRuns = 100;
-        const int numTrialsPerRun = 5;
+        const int numMCRuns = 3;            //previously 100; 2 for ONR review
+        const int numTrialsPerRun = 375;    //previously 5; 375 for ONR review
         const string soaConfigOutputPath = "../../../../GeneratedFiles";
         const string soaConfigFileHeader = "MCConfig_";
 
         /******************** EXPERIMENT TYPE ********************/
         //private ExperimentType experimentType = ExperimentType.COMMS_RANGE;
-        private ExperimentType experimentType = ExperimentType.BLUE_NUM;
+        //private ExperimentType experimentType = ExperimentType.BLUE_NUM;
         //private ExperimentType experimentType = ExperimentType.RED_NUM;
         //private ExperimentType experimentType = ExperimentType.RED_PRED;
+        private ExperimentType experimentType = ExperimentType.FACTORIAL;
 
         private DefaultExperiment experiment;
 
@@ -118,6 +120,9 @@ namespace soa
                     break;
                 case ExperimentType.RED_PRED:
                     experiment = new RedMovePredExperiment(this);
+                    break;
+                case ExperimentType.FACTORIAL:
+                    experiment = new FactorialExperiment(this);
                     break;
             }
             
