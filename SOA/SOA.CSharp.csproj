@@ -123,6 +123,7 @@
     <Compile Include="Assets\Custom Scripts\MC Trial Generation\EnvConfigXMLWriter.cs" />
     <Compile Include="Assets\Custom Scripts\MC Trial Generation\Experiments\CommsRangeExperiment.cs" />
     <Compile Include="Assets\Custom Scripts\MC Trial Generation\Experiments\Experiment.cs" />
+    <Compile Include="Assets\Custom Scripts\MC Trial Generation\Experiments\FactorialExperiment.cs" />
     <Compile Include="Assets\Custom Scripts\MC Trial Generation\Experiments\RedAgentNumberExperiment.cs" />
     <Compile Include="Assets\Custom Scripts\MC Trial Generation\Experiments\RedMovePredExperiment.cs" />
     <Compile Include="Assets\Custom Scripts\MC Trial Generation\Experiments\SmallUAVNumberExperiment.cs" />

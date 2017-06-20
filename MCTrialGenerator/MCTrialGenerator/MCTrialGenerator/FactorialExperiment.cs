@@ -45,16 +45,16 @@ namespace soa
             ++trialNumber;
             GenerateRedPositions();
             GenerateBlueSmallUAVPositions();
-           
+
         }
 
         public override string GetTrialName()
         {
-            return "X_"        + 
-                    "Comms_"    +   fcList[trialNumber - 1].ToString()    +
-                    "numBlue_"  +   fbList[trialNumber - 1].ToString()    +
-                    "numRed_"   +   frList[trialNumber - 1].ToString()    +
-                    "predRed_"  +   fpList[trialNumber - 1].ToString();
+            return "X_" +
+                    "Comms_" + fcList[trialNumber - 1].ToString() +
+                    "numBlue_" + fbList[trialNumber - 1].ToString() +
+                    "numRed_" + frList[trialNumber - 1].ToString() +
+                    "predRed_" + fpList[trialNumber - 1].ToString();
         }
 
         public override void GenerateRunPositions()
@@ -63,7 +63,7 @@ namespace soa
             GenerateBluePolicePositions();
             GenerateBlueHeavyUAVPositions();
         }
-        
+
         public override float GetCommsRange()
         {
             return fcList[trialNumber - 1];
