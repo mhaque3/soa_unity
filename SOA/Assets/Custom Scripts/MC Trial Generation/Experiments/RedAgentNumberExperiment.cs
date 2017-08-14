@@ -15,12 +15,21 @@ namespace soa
         public override void StartNewTrial()
         {
             ++trialNumber;
-            GetRedPositions();
+            GenerateRedPositions(); //this experiment's primary factor is red actor number, so vary starting position every trial
         }
 
         public override string GetTrialName()
         {
             return "RedAgents_" + GetTrialMin().ToString() + "_" + GetTrialMax().ToString();
+        }
+
+        public override void GenerateRunPositions()
+        {
+            GenerateNeutralPositions();
+            GenerateBluePolicePositions();
+            GenerateBlueHeavyUAVPositions();
+            GenerateBlueSmallUAVPositions();
+            //Red actor positions are generated at the start of each trial
         }
 
         public override int GetNumberRed()

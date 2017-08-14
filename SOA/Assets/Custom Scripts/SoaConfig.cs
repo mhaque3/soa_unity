@@ -18,6 +18,7 @@ namespace soa
         public float probRedTruckHasWeapon;
         public float probRedTruckHasJammer;
         public float controlUpdateRate_s;
+        public int predRedMovement;
 
         // Logger configuration
         public string loggerOutputFile;

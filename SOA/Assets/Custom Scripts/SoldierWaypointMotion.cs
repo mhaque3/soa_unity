@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SoldierWaypointMotion : MonoBehaviour
 {
     public bool On;
-    public float RoadCost = 1;
+    public float RoadCost = 10;
     public float waypointEpsilon;
     public bool PATROL;
     public List<GameObject> waypoints;

@@ -15,19 +15,33 @@ namespace soa
         
         protected int trialNumber = 0;
 
-        //Default comms and jammer ranges
+        // Default comms and jammer ranges
         protected float CommsRangeDefault_Km;
         protected float JammerRangeDefault_Km;
 
-        // Default blue and neutral numbers
+        // Default predictability of red actor movement
+        protected int PredRedMovementDefault;
+
+        // Default neutral numbers
         protected int NumberNeutralDismountDefault;
         protected int NumberNeutralTrucksDefault;
-        protected int NumberBluePoliceDefault;
-        protected int NumberHeavyUAVDefault;
-        protected int NumberSmallUAVDefault;
 
-        //Default red dismounts and trucks and the total
-        protected int NumberRedDefault;
+        // Experimental neutral numbers
+        protected int NumberNeutralDismount;        //Currently, not a factor
+        protected int NumberNeutralTrucks;          //Currently, not a factor
+
+        // Default blue numbers
+        protected int NumberBlueHeavyUAVDefault;
+        protected int NumberBlueSmallUAVDefault;
+        protected int NumberBluePoliceDefault;
+
+        // Experimental blue numbers
+        protected int NumberBlueHeavyUAV;           //Currently, not a factor
+        protected int NumberBlueSmallUAV;
+        protected int NumberBluePolice;             //Currently, not a factor
+
+        // Default red 
+        protected int NumberRedDefault;             //truck + dismount
         protected int NumberRedDismountDefault;
         protected int NumberRedTrucksDefault;
 
@@ -60,11 +74,14 @@ namespace soa
         {
             trialNumber = 1;
 
-            //Default comms and jammer ranges
+            // Default comms and jammer ranges
             CommsRangeDefault_Km = 10f;
             JammerRangeDefault_Km = 2f;
 
-            //Default red dismounts and trucks and the total
+            // Default predictability of red actor movement
+            PredRedMovementDefault = 5; 
+
+            // Default red dismounts and trucks and the total
             NumberRedDefault = 6;
             NumberRedDismountDefault = 3;
             NumberRedTrucksDefault = 3;
@@ -72,12 +89,12 @@ namespace soa
             // Default blue and neutral numbers
             NumberNeutralDismountDefault = 3;
             NumberNeutralTrucksDefault = 3;
-            NumberBluePoliceDefault = 1;
-            NumberHeavyUAVDefault = 3;
-            NumberSmallUAVDefault = 3;
+            NumberBluePoliceDefault = 1; 
+            NumberBlueHeavyUAVDefault = 3;
+            NumberBlueSmallUAVDefault = 3;
           
-            GetBlueAndNeutralPositions();
-            GetRedPositions();
+            // Positions
+            GenerateRunPositions();
         }
 
         /**
@@ -104,29 +121,50 @@ namespace soa
             return "Trial_" + trialNumber.ToString(trialNumberFormat);
         }
 
+        public virtual void GenerateRunPositions()
+        {
+            // Generate all at the start of a new run during a comms_range experiment
+            GenerateNeutralPositions();
+            GenerateBluePolicePositions();
+            GenerateBlueHeavyUAVPositions();
+            GenerateBlueSmallUAVPositions();
+            GenerateRedPositions();
+        }
+
         /**
          * Called at the start of a new run.
          */
-        public void GetBlueAndNeutralPositions()
+        public void GenerateNeutralPositions()
         {
-            //Generate red, blue, and neutral positions
-            List<PrimitivePair<float, float>> blueBases = trialGenerator.GetBlueBaseLocations();
-            List<PrimitivePair<float, float>> neutralSites = trialGenerator.GetNeutralSiteLocations();
-            HashSet<PrimitivePair<int, int>> landCells = trialGenerator.GetLandCells();
-            HashSet<PrimitivePair<int, int>> landAndWaterCells = trialGenerator.GetLandAndWaterCells();
-
             Platform2DLaydown neutralVehicleLaydown = new Platform2DLaydown();
             neutralVehicleLaydown.fromAnchorStdDev_km = 2;
             neutralVehicleLaydown.fromAnchorMax_km = 5;
-            neutralVehicleLaydown.anchors = neutralSites;
-            neutralVehicleLaydown.allowedCells = landCells;
+            neutralVehicleLaydown.anchors = trialGenerator.GetNeutralSiteLocations();       //neutral sites
+            neutralVehicleLaydown.allowedCells = trialGenerator.GetLandCells();             //land cells
 
+            NeutralDismountPositions = GenerateGroundPositions(NumberNeutralDismountDefault, neutralVehicleLaydown);
+            NeutralTruckPositions = GenerateGroundPositions(NumberNeutralDismountDefault, neutralVehicleLaydown);
+        }
+
+        /**
+         * Called at the start of a new run.
+         */
+        public void GenerateBluePolicePositions()
+        {
             Platform2DLaydown bluePoliceLaydown = new Platform2DLaydown();
             bluePoliceLaydown.fromAnchorStdDev_km = 2;
             bluePoliceLaydown.fromAnchorMax_km = 5;
-            bluePoliceLaydown.anchors = blueBases;
-            bluePoliceLaydown.allowedCells = landCells;
+            bluePoliceLaydown.anchors = trialGenerator.GetBlueBaseLocations();              //blue bases
+            bluePoliceLaydown.allowedCells = trialGenerator.GetLandCells();                 //land cells
 
+            BluePolicePositions = GenerateGroundPositions(NumberBluePoliceDefault, bluePoliceLaydown);
+        }
+
+        /**
+         * Called at the start of a new run
+         */
+        public void GenerateBlueHeavyUAVPositions()
+        {
             Platform3DLaydown uavLaydown = new Platform3DLaydown();
             uavLaydown.fromAnchorStdDev_km = 5;
             uavLaydown.fromAnchorMax_km = 15;
@@ -134,39 +172,81 @@ namespace soa
             uavLaydown.altitudeStdDev_km = 2.5f;
             uavLaydown.altitudeMin_km = 0.0f;
             uavLaydown.altitudeMax_km = 5.0f;
-            uavLaydown.anchors = blueBases;
-            uavLaydown.allowedCells = landAndWaterCells;
+            uavLaydown.anchors = trialGenerator.GetBlueBaseLocations();                     //blue bases
+            uavLaydown.allowedCells = trialGenerator.GetLandAndWaterCells();                //land and water cells
 
-            NeutralDismountPositions = GenerateGroundPositions(NumberNeutralDismountDefault, neutralVehicleLaydown);
-            NeutralTruckPositions = GenerateGroundPositions(NumberNeutralDismountDefault, neutralVehicleLaydown);
-            BluePolicePositions = GenerateGroundPositions(NumberBluePoliceDefault, bluePoliceLaydown);
-            HeavyUAVPositions = GenerateGroundPositions(NumberHeavyUAVDefault, uavLaydown);
-            SmallUAVPositions = GenerateGroundPositions(NumberSmallUAVDefault, uavLaydown);
+            NumberBlueHeavyUAV = GetNumberBlueHeavyUAV();
+            HeavyUAVPositions = GenerateGroundPositions(NumberBlueHeavyUAV, uavLaydown);
         }
 
         /**
-         * Called at the start of a new run of a comms experiment 
+         * Called at the start of a new run of a comms experiment and a red size experiment
+         * Called at the start of a new trial of a blue size experiment
+         */
+        public void GenerateBlueSmallUAVPositions()
+        {
+            Platform3DLaydown uavLaydown = new Platform3DLaydown();
+            uavLaydown.fromAnchorStdDev_km = 5;
+            uavLaydown.fromAnchorMax_km = 15;
+            uavLaydown.altitudeMean_km = 2.5f;
+            uavLaydown.altitudeStdDev_km = 2.5f;
+            uavLaydown.altitudeMin_km = 0.0f;
+            uavLaydown.altitudeMax_km = 5.0f;
+            uavLaydown.anchors = trialGenerator.GetBlueBaseLocations();                     //blue bases
+            uavLaydown.allowedCells = trialGenerator.GetLandAndWaterCells();                //land and water cells
+
+            // Experimental blue small UAVs
+            NumberBlueSmallUAV = GetNumberBlueSmallUAV();
+            SmallUAVPositions = GenerateGroundPositions(NumberBlueSmallUAV, uavLaydown);
+        }
+
+        /**
+         * Called at the start of a new run of a comms experiment and a blue size experiment
          * Called at the start of a new trial of a red size experiment
          */
-        public void GetRedPositions()
+        public void GenerateRedPositions()
         {
-            //Experimental red dismounts and trucks and the total
+            Platform2DLaydown redVehicleLaydown = new Platform2DLaydown();
+            redVehicleLaydown.fromAnchorStdDev_km = 1;
+            redVehicleLaydown.fromAnchorMax_km = 2;
+            redVehicleLaydown.anchors = trialGenerator.GetRedBaseLocations();               //red bases                   
+            redVehicleLaydown.allowedCells = trialGenerator.GetLandCells();                 //land cells
+
+            // Experimental red dismounts and trucks and the total
             fractionRedDismount = 0.50f;
             NumberRed = GetNumberRed();
             NumberRedDismount = GetNumberRedDismount(NumberRed, fractionRedDismount);
             NumberRedTrucks = GetNumberRedTruck(NumberRed, NumberRedDismount);
-
-            HashSet<PrimitivePair<int, int>> landCells = trialGenerator.GetLandCells();
-            List<PrimitivePair<float, float>> redBases = trialGenerator.GetRedBaseLocations();
-
-            Platform2DLaydown redVehicleLaydown = new Platform2DLaydown();
-            redVehicleLaydown.fromAnchorStdDev_km = 1;
-            redVehicleLaydown.fromAnchorMax_km = 2;
-            redVehicleLaydown.anchors = redBases;
-            redVehicleLaydown.allowedCells = landCells;
-
+            
             RedDismountPositions = GenerateGroundPositions(NumberRedDismount, redVehicleLaydown);    //redVehicleLaydown
             RedTruckPositions = GenerateGroundPositions(NumberRedTrucks, redVehicleLaydown);         //redVehicleLaydown
+        }
+
+        /**
+         * Returns the default number of Heavy UAVs
+         * for the current trial.
+         */
+        public virtual int GetPredRedMovement()
+        {
+            return PredRedMovementDefault;
+        }
+
+        /**
+         * Returns the default number of Heavy UAVs
+         * for the current trial.
+         */
+        public virtual int GetNumberBlueHeavyUAV()
+        {
+            return NumberBlueHeavyUAVDefault;
+        }
+
+        /**
+         * Returns the default number of Small UAVs
+         * for the current trial.
+         */
+        public virtual int GetNumberBlueSmallUAV()
+        {
+            return NumberBlueSmallUAVDefault;
         }
 
         /**

@@ -7,8 +7,11 @@ using System.IO;
 //Two types 
 enum ExperimentType
 {
-    COMMS_RANGE,
-    RED_AGENT_NUM
+    COMMS_RANGE,    //Factor: blue actor comms range
+    BLUE_NUM,       //Factor: small UAV number
+    RED_NUM,        //Factor: red actors (truck + dismount) number
+    RED_PRED,       //Factor: red truck movement predictability
+    FACTORIAL       //Factor: comms x numBlue x numRed x pred
 }
 
 namespace soa
@@ -20,14 +23,18 @@ namespace soa
         int generatorRandomSeed = (int)System.DateTime.Now.Ticks;
 
         /******************** MONTE CARLO ********************/
-        const int numMCRuns = 100;
-        const int numTrialsPerRun = 5;
+        const int numMCRuns = 3;            //previously 100; 2 for ONR review
+        const int numTrialsPerRun = 375;    //previously 5; 375 for ONR review
         const string soaConfigOutputPath = "../../../../GeneratedFiles";
         const string soaConfigFileHeader = "MCConfig_";
 
         /******************** EXPERIMENT TYPE ********************/
-        private ExperimentType experimentType = ExperimentType.COMMS_RANGE;
-        //private ExperimentType experimentType = ExperimentType.RED_AGENT_NUM;
+        //private ExperimentType experimentType = ExperimentType.COMMS_RANGE;
+        //private ExperimentType experimentType = ExperimentType.BLUE_NUM;
+        //private ExperimentType experimentType = ExperimentType.RED_NUM;
+        //private ExperimentType experimentType = ExperimentType.RED_PRED;
+        private ExperimentType experimentType = ExperimentType.FACTORIAL;
+
         private DefaultExperiment experiment;
 
         /******************** ENVIRONMENT ********************/
@@ -50,6 +57,7 @@ namespace soa
         const float probRedTruckHasJammer = 0.5f;
         //const float min_comms_range_km = 0f;
         //const float max_comms_range_km = 25f;
+        //const int defaultPredRedMovement = 0;
 
         /*********************** FUEL ************************/
         const float defaultHeavyUAVFuelTankSize_s = 10000;
@@ -104,9 +112,17 @@ namespace soa
                 case ExperimentType.COMMS_RANGE:
                     experiment = new CommsRangeExperiment(this);
                     break;
-
-                case ExperimentType.RED_AGENT_NUM:
+                case ExperimentType.BLUE_NUM:
+                    experiment = new SmallUAVNumberExperiment(this);
+                    break;
+                case ExperimentType.RED_NUM:
                     experiment = new RedAgentNumberExperiment(this);
+                    break;
+                case ExperimentType.RED_PRED:
+                    experiment = new RedMovePredExperiment(this);
+                    break;
+                case ExperimentType.FACTORIAL:
+                    experiment = new FactorialExperiment(this);
                     break;
             }
             
@@ -376,6 +392,7 @@ namespace soa
             soaConfig.probRedTruckHasWeapon = probRedTruckHasWeapon;
             soaConfig.probRedTruckHasJammer = probRedTruckHasJammer;
             soaConfig.controlUpdateRate_s = 0.1f;
+            //soaConfig.predRedMovement = ?;
 
             // Populate fuel defaults
             soaConfig.defaultSmallUAVFuelTankSize_s = defaultSmallUAVFuelTankSize_s;
@@ -394,6 +411,9 @@ namespace soa
             //SetCommsDefaults(soaConfig, min_comms_range_km, max_comms_range_km, trial);
             SetCommsDefaults(soaConfig);
             SetJammerDefaults(soaConfig);
+
+            // Set predictability or red actor movement
+            soaConfig.predRedMovement = experiment.GetPredRedMovement();
 
             // Initialize and set site locations
             SetSiteLocations(soaConfig);
