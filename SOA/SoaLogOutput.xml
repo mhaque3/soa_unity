@@ -1,0 +1,8 @@
+<Log>
+  <Simulation configFile="SoaSimConfig.xml" startDateTime="05/25/2017 12:48:28.304685" startTimeStamp="1495687708304" stopDateTime="05/25/2017 12:50:45.312928" stopTimeStamp="1495687845312" />
+  <Errors />
+  <Results supplyDelivery="0" redTruckCaptured="1" redDismountCaptured="0" casualtyDelivered="0" heavyUAVLost="0" smallUAVLost="0" civilianInRedCustody="0" />
+  <Events>
+    <RedTruckCaptured timeStamp="1495687816387" capturer="Blue Police 15" captured="Red Truck 9" />
+  </Events>
+</Log>

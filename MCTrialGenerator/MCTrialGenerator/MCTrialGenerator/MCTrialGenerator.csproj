@@ -64,6 +64,9 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\Experiment.cs">
       <Link>Experiment.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\Experiments\RedAgentNumberExperiment.cs">
+      <Link>RedAgentNumberExperiment.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\MC Trial Generation\MCTrialGenerator.cs">
       <Link>MCTrialGenerator.cs</Link>
     </Compile>
@@ -91,7 +94,10 @@
     <Compile Include="..\..\..\SOA\Assets\Custom Scripts\SoaConfig.cs">
       <Link>SoaConfig.cs</Link>
     </Compile>
+    <Compile Include="FactorialExperiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedMovePredExperiment.cs" />
+    <Compile Include="SmallUAVNumberExperiment.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

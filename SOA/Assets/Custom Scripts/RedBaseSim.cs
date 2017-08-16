@@ -44,7 +44,11 @@ public class RedBaseSim : MonoBehaviour
 
     public GameObject AssignTarget()
     {
-        // totally random for now - we can get more clever later...
+        //return simControlScript.NgoSites[0];
+        //return simControlScript.Villages[0];
+
+        // Bob: totally random for now - we can get more clever later...
+        // MAH: keeping this, but calling it in a sophisticated manner from RedTruckSim
 
         int targetCount = simControlScript.NgoSites.Count + simControlScript.Villages.Count;
         int targetIndex = Random.Range(0, targetCount);
