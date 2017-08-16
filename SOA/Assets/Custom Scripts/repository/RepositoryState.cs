@@ -13,7 +13,7 @@ namespace soa
 
         public RepositoryState(int revisionNumber)
         {
-            this.objects = new Dictionary<CacheKey, Hash>();
+            this.objects = new Dictionary<CacheKey, Hash>(1000);
 			this.revisionNumber = revisionNumber;
         }
         
@@ -49,14 +49,16 @@ namespace soa
 
         public ICollection<CacheKey> Diff(RepositoryState other)
         {
-            HashSet<CacheKey> diffSet = new HashSet<CacheKey>();
-            
-            foreach(RepositoryObject obj in GetObjects())
+            ICollection<CacheKey> diffSet = new List<CacheKey>(Size());
+
+            foreach (KeyValuePair<CacheKey, Hash> entry in objects)
             {
-                Hash otherHash = other.Find(obj.key);
-                if (otherHash == null || !obj.hash.Equals(otherHash))
+                CacheKey myKey = entry.Key;
+                Hash myHash = entry.Value;
+                Hash otherHash = other.Find(myKey);
+                if (otherHash == null || !myHash.Equals(otherHash))
                 {
-                    diffSet.Add(obj.key);
+                    diffSet.Add(myKey);
                 }
             }
 

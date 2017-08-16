@@ -53,7 +53,7 @@ namespace soa
             public override int GetHashCode()
             {
                 int hashCode = (int)type;
-                hashCode += customType + 100;
+                hashCode += customType * 100;
                 return hashCode;
             }
 

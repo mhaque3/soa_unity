@@ -7,6 +7,7 @@ using System.Xml;
 using soa;
 using Gamelogic.Grids;
 using System.Net;
+using System.Threading;
 
 public class SimControl : MonoBehaviour
 {
@@ -109,7 +110,7 @@ public class SimControl : MonoBehaviour
     
 
     private bool mouseDown;
-
+    
     #region Initialization
     /*****************************************************************************************************
      *                                        INITIALIZATION                                             *
@@ -477,6 +478,7 @@ public class SimControl : MonoBehaviour
     #endregion
 
     #region Update
+
     /*****************************************************************************************************
      *                                              UPDATE                                               *
      *****************************************************************************************************/
@@ -505,11 +507,19 @@ public class SimControl : MonoBehaviour
         if (poseTimer > poseUpdatePeriod)
         {
             poseTimer = 0;
+
+            WaitHandle[] threads = new WaitHandle[RemotePlatforms.Count];
+            int i = 0;
             foreach (GameObject platform in RemotePlatforms)
             {
                 SoaActor actor = platform.GetComponent<SoaActor>();
                 actor.UpdatePose();
+                threads[i++] = actor.beliefUpdated;
+                ThreadPool.QueueUserWorkItem((contex) => {
+                    actor.UpdatePoseBelief();
+                 });
             }
+            WaitHandle.WaitAll(threads);
         }
 
         // Update sensor clock

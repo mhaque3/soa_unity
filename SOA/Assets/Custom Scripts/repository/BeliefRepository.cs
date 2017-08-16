@@ -7,14 +7,14 @@ namespace soa
 {
     public class BeliefRepository
     {
-        private SortedDictionary<CacheKey, CachedBelief> beliefCache;
+        private Dictionary<CacheKey, CachedBelief> beliefCache;
         private Serializer serializer;
         private IHashFunction hashFunction;
         private RepositoryState currentState;
 
 	    public BeliefRepository(Serializer serializer, IHashFunction hashFunction)
         {
-            this.beliefCache = new SortedDictionary<CacheKey, CachedBelief>();
+            this.beliefCache = new Dictionary<CacheKey, CachedBelief>();
             this.serializer = serializer;
             this.hashFunction = hashFunction;
             this.currentState = new RepositoryState(0);
@@ -110,7 +110,7 @@ namespace soa
                 RepositoryState myState = CurrentState();
                 ICollection<CacheKey> diffKeys = myState.Diff(state);
 
-                List<CachedBelief> beliefs = new List<CachedBelief>();
+                List<CachedBelief> beliefs = new List<CachedBelief>(diffKeys.Count);
                 foreach (CacheKey key in diffKeys)
                 {
                     CachedBelief cachedBelief = beliefCache[key];

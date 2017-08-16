@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using soa;
 using Gamelogic.Grids;
-
+using System.Threading;
 
 public class SoaActor : MonoBehaviour, ISoaActor
 {
@@ -389,10 +389,13 @@ public class SoaActor : MonoBehaviour, ISoaActor
             velocityYValid = true;
             velocityZ = (nma.velocity.z / SimControl.KmToUnity) / 60f * 1000f;
             velocityZValid = true;
-
-            //Debug.Log("VELOCITY " + unique_id + " " + (nma.velocity.magnitude / 60f * 1000f));
         }
+        beliefUpdated.Reset();
+    }
 
+    public ManualResetEvent beliefUpdated = new ManualResetEvent(false);
+    public virtual void UpdatePoseBelief()
+    {
         Belief_Actor newActorData = new Belief_Actor(
             unique_id, (int)affiliation, type, isAlive,
             numStorageSlots, numCasualtiesStored,
@@ -404,6 +407,7 @@ public class SoaActor : MonoBehaviour, ISoaActor
             velocityZValid, velocityZ);
 
         addMyBeliefData(newActorData);
+        beliefUpdated.Set();
     }
 
     /**
