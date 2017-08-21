@@ -770,16 +770,17 @@ public class SimControl : MonoBehaviour
                         }                        
 
                         NavMeshAgent thisNavAgent = thisGameObject.GetComponentInChildren<NavMeshAgent>();
-                        if (thisNavAgent)
+                        
+                        if (thisActor && thisActor.dataManager != null)
+                        {
+                            labels[1].enabled = true;
+                            labels[1].text = thisActor.dataManager.getConnectionInfoForAgent(thisActor.unique_id);
+                        }
+                        else if (thisNavAgent)
                         {
                             labels[1].enabled = true;
                             //labels[1].text = (thisNavAgent.remainingDistance / KmToUnity).ToString("n2") + " km path:" + thisNavAgent.hasPath;
                             labels[1].text = thisActor.motionScript.waypoints[thisActor.motionScript.waypointIndex].name;
-                        }
-                        else if (thisActor)
-                        {
-                            labels[1].enabled = true;
-                            labels[1].text = blueDataManager.getConnectionInfoForAgent(thisActor.unique_id);
                         }
                         else
                         {
@@ -1468,6 +1469,7 @@ public class SimControl : MonoBehaviour
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);
+            RemotePlatforms.Add(g);
             return g;
         }
         else
@@ -1553,6 +1555,7 @@ public class SimControl : MonoBehaviour
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);
+            RemotePlatforms.Add(g);
             return g;
         }
         else
@@ -1637,6 +1640,7 @@ public class SimControl : MonoBehaviour
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);
+            RemotePlatforms.Add(g);
             return g;
         }
         else
@@ -1682,6 +1686,7 @@ public class SimControl : MonoBehaviour
 
             // Add to list of local platforms
             LocalPlatforms.Add(g);
+            RemotePlatforms.Add(g);
             return g;
         }
         else
@@ -1738,6 +1743,9 @@ public class SimControl : MonoBehaviour
         {
             actor.unique_id = RequestUniqueID(smallestAvailableUniqueID);
         }
+
+        actor.dataManager = redDataManager;
+        redDataManager.addNewActor(actor);
     }
 
     public void ActivateNeutralDismount(GameObject platform)
@@ -1782,6 +1790,7 @@ public class SimControl : MonoBehaviour
 
         // Remove from local platform list
         LocalPlatforms.Remove(platform);
+        RemotePlatforms.Remove(platform);
 
         // Destroy now
         Destroy(platform);
@@ -1797,6 +1806,7 @@ public class SimControl : MonoBehaviour
 
         // Remove from local platform list
         LocalPlatforms.Remove(platform);
+        RemotePlatforms.Remove(platform);
 
         // Destroy now
         Destroy(platform);
@@ -1840,6 +1850,7 @@ public class SimControl : MonoBehaviour
 
         // Remove from local platform list
         LocalPlatforms.Remove(platform);
+        RemotePlatforms.Remove(platform);
 
         // Destroy now
         Destroy(platform);
