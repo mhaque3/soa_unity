@@ -31,6 +31,9 @@ public class HeavyUAVSim : MonoBehaviour
         // Set icons
         SupplyIcon.SetActive(thisSoaActor.numSuppliesStored > 0);
         CasualtyIcon.SetActive(thisSoaActor.numCasualtiesStored > 0);
+
+        if (thisSoaActor.distanceToBase_Km < 0.5)
+            thisSoaActor.fuelRemaining_s = fuelTankSize_s;
 	}
 
     void OnTriggerEnter(Collider other)

@@ -630,6 +630,12 @@ public class SimControl : MonoBehaviour
                     //Otherwise, the data in the first arg is represented in the display.
                     //If null the actor is no longer visible.
                     actor.updateActor();
+                    Vector3 position = actor.getPositionVector_km();
+                    BlueBaseSim s = BlueBases[0].GetComponent<BlueBaseSim>();
+                    PrimitivePair<float, float> baseCenter = gridMath.GridToWorld(new PrimitivePair<int, int>(s.gridCells[0].getCol(), s.gridCells[0].getRow()));
+                    Vector3 baseVec = new Vector3(baseCenter.first, 0, baseCenter.second);
+                    position.y = 0;
+                    actor.distanceToBase_Km = (position - baseVec).magnitude;
                 }
 
                 // Push new site beliefs into each blue base

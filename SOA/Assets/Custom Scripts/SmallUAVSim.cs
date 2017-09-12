@@ -19,6 +19,12 @@ public class SmallUAVSim : MonoBehaviour
         thisSoaActor.fuelRemaining_s = fuelTankSize_s;
     }
 
+    void Update()
+    {
+        if (thisSoaActor.distanceToBase_Km < 0.5)
+            thisSoaActor.fuelRemaining_s = fuelTankSize_s;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("BlueBase"))

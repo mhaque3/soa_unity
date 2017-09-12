@@ -32,6 +32,8 @@ public class SoaActor : MonoBehaviour, ISoaActor
     public float maxAltitude_km;
     public float maxVerticalSpeed_m_s;
 
+    public float distanceToBase_Km;
+
     private int[] idArray = new int[1];
 
     public enum ActorType
